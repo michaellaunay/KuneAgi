@@ -9,25 +9,17 @@ import deform.widget
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
-from dace.util import getSite
 from pontus.form import FormView
-from pontus.schema import Schema
+from pontus.schema import select
 
 from novaideo.content.processes.invitation_management.behaviors import (
     AcceptInvitation)
 from novaideo.content.invitation import Invitation
-from novaideo.views.widget import TOUCheckboxWidget
+from novaideo.content.person import PersonSchema
 from novaideo import _
 
 
-@colander.deferred
-def conditions_widget(node, kw):
-    root = getSite()
-    terms_of_use = root['terms_of_use']
-    return TOUCheckboxWidget(tou_file=terms_of_use)
-
-
-class AcceptInvitationSchema(Schema):
+class AcceptInvitationSchema(PersonSchema):
 
     email = colander.SchemaNode(
         colander.String(),
@@ -45,14 +37,6 @@ class AcceptInvitationSchema(Schema):
         title=_('Password')
         )
 
-    accept_conditions = colander.SchemaNode(
-        colander.Boolean(),
-        widget=conditions_widget,
-        label=_('I have read and accept the terms and conditions'),
-        title='',
-        missing=False
-    )
-
 
 @view_config(
     name='accept_invitation',
@@ -61,7 +45,12 @@ class AcceptInvitationSchema(Schema):
     )
 class AcceptInvitationView(FormView):
     title = _('Validate the invitation')
-    schema = AcceptInvitationSchema()
+    schema = select(AcceptInvitationSchema(),
+                    ['email',
+                     'password',
+                     'Keep_me_anonymous',
+                     'pseudonym',
+                     'accept_conditions'])
     behaviors = [AcceptInvitation]
     formid = 'formacceptinvitation'
     name = 'accept_invitation'

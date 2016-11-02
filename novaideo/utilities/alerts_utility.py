@@ -54,10 +54,18 @@ from novaideo import log, _
 #             collection = create_collection(db, collection_id)
 #             collection.create_document(kwargs)
 
-def get_user_data(user, id, request=None):
+def get_user_data(user, id, request=None, ignore_anonymity=False):
     if not isinstance(user, str):
         if not request:
             request = get_current_request()
+
+        is_anonymous = getattr(user, 'Keep_me_anonymous', False)
+        if is_anonymous and not ignore_anonymity:
+            return {
+                id+'_title': '',
+                id+'_last_name': '',
+                id+'_first_name': getattr(user, 'pseudonym', ''),
+            }
 
         localizer = request.localizer
         user_title = getattr(user, 'user_title', '')

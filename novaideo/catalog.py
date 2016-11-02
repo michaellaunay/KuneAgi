@@ -774,6 +774,11 @@ class PersonSearch(SearchableObject):
     def identifier(self):
         identifiers = [getattr(self.context, 'identifier', None),
                        getattr(self.context, 'email', None)]
+        pseudonym = getattr(self.context, 'pseudonym', None)
+        if getattr(self.context, 'Keep_me_anonymous', False) and\
+           pseudonym:
+            identifiers.append(pseudonym)
+
         return [i for i in identifiers if i]
 
     def organizations(self):
@@ -791,6 +796,11 @@ class PreregistrationSearch(SearchableObject):
     def identifier(self):
         identifiers = [getattr(self.context, 'identifier', None),
                        getattr(self.context, 'email', None)]
+        pseudonym = getattr(self.context, 'pseudonym', None)
+        if getattr(self.context, 'Keep_me_anonymous', False) and\
+           pseudonym:
+            identifiers.append(pseudonym)
+
         return [i for i in identifiers if i]
 
 
@@ -799,7 +809,13 @@ class PreregistrationSearch(SearchableObject):
 class InvitationSearch(SearchableObject):
 
     def identifier(self):
-        return [getattr(self.context, 'email', None)]
+        result = [getattr(self.context, 'email', None)]
+        pseudonym = getattr(self.context, 'pseudonym', None)
+        if getattr(self.context, 'Keep_me_anonymous', False) and\
+           pseudonym:
+            result.append(pseudonym)
+
+        return result
 
 
 @adapter(context=IProposal)

@@ -302,13 +302,18 @@ class AcceptInvitation(InfiniteCardinality):
                                          'last_name',
                                          'email',
                                          'organization']))
+        datas['Keep_me_anonymous'] = appstruct.get(
+            'Keep_me_anonymous', False)
+        datas['pseudonym'] = appstruct.get('pseudonym', None)
         roles = datas.pop('roles')
         password = appstruct['password']
         person = Person(password=password, **datas)
         root = getSite(context)
         principals = find_service(root, 'principals')
         users = principals['users']
-        name = person.first_name + ' ' + person.last_name
+        name = person.first_name + ' ' + person.last_name \
+            if not getattr(person, 'Keep_me_anonymous', False) else \
+            person.pseudonym
         name = name_chooser(users, name=name)
         users[name] = person
         if getattr(context, 'ismanager', False) and \
@@ -327,7 +332,7 @@ class AcceptInvitation(InfiniteCardinality):
         if manager:
             mail_template = root.get_mail_template('accept_invitation')
             localizer = request.localizer
-            email_data = get_user_data(person, 'user', request)
+            email_data = get_user_data(person, 'user', request, True)
             novaideo_title = request.root.title
             roles_translate = [localizer.translate(APPLICATION_ROLES.get(r, r))
                                for r in roles]

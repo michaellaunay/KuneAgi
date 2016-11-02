@@ -12,7 +12,7 @@ from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.objectofcollaboration.principal.util import get_current
 from pontus.default_behavior import Cancel
 from pontus.form import FormView
-from pontus.schema import select, Schema
+from pontus.schema import select, omit, Schema
 
 from novaideo.content.processes.user_management.behaviors import Edit
 from novaideo.content.person import PersonSchema, Person
@@ -99,6 +99,17 @@ class EditView(FormView):
     name = 'edit'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/user_management.js']}
+
+    def before_update(self):
+        user = get_current(self.request)
+        if self.context is not user and \
+           getattr(self.context, 'Keep_me_anonymous', False):
+            self.schema = omit(
+                self.schema,
+                ['user_title',
+                 'first_name',
+                 'last_name',
+                 'email'])
 
     def default_data(self):
         return self.context

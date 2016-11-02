@@ -7,11 +7,12 @@
 import os
 import datetime
 import pytz
+import json
 from BTrees.OOBTree import OOBTree
 import colander
 import deform.widget
 from persistent.list import PersistentList
-from zope.interface import implementer
+from zope.interface import implementer, invariant
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
@@ -53,6 +54,8 @@ DEADLINE_PREREGISTRATION = 86400*2  # 2 days
 
 DEFAULT_LOCALE = 'fr'
 
+_default_pseudonym = object()
+
 
 @colander.deferred
 def organization_choice(node, kw):
@@ -91,6 +94,7 @@ def email_validator(node, kw):
                 _('${email} email address already in use',
                   mapping={'email': kw}))
 
+
 @colander.deferred
 def default_contacts(node, kw):
     context = node.bindings['context']
@@ -125,8 +129,8 @@ def locale_missing(node, kw):
 
 @colander.deferred
 def conditions_widget(node, kw):
-    root = getSite()
-    terms_of_use = root.get('terms_of_use')
+    request = node.bindings['request']
+    terms_of_use = request.root.get('terms_of_use')
     return TOUCheckboxWidget(tou_file=terms_of_use)
 
 
@@ -148,6 +152,50 @@ def picture_widget(node, kw):
         source=source,
         selection_message=_("Upload image.")
         )
+
+
+@colander.deferred
+def pseudonym_widget(node, kw):
+    request = node.bindings['request']
+    state = 'closed'
+    if request.POST and json.loads(
+       request.POST.get('Keep_me_anonymous', 'false')):
+        state = ''
+
+    return deform.widget.TextInputWidget(
+        item_css_class='pseudonym-input '+state)
+
+
+@colander.deferred
+def pseudonym_validator(node, kw):
+    request = node.bindings['request']
+    defined = json.loads(
+        request.POST.get('Keep_me_anonymous', 'false')) \
+        if request.POST else False
+    if defined:
+        if kw is _default_pseudonym:
+            raise colander.Invalid(node,
+                _('Pseudonym must be defined'))
+
+        context = node.bindings['context']
+        novaideo_catalog = find_catalog('novaideo')
+        identifier_index = novaideo_catalog['identifier']
+        query = identifier_index.any([kw])
+        users = list(query.execute().all())
+        if context in users:
+            users.remove(context)
+
+        if users:
+            raise colander.Invalid(node,
+                    _('${pseudonym} pseudonym already in use',
+                      mapping={'pseudonym': kw}))
+
+
+def default_pseudonym(appstruct):
+    if not appstruct:
+        return _default_pseudonym
+
+    return appstruct
 
 
 def context_is_a_person(context, request):
@@ -247,6 +295,27 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         title=_('Organization'),
         )
 
+    Keep_me_anonymous = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(
+            item_css_class='Keep-me-anonymous-input'),
+        label=_('Keep me anonymous'),
+        title='',
+        missing=False
+    )
+
+    pseudonym = colander.SchemaNode(
+        colander.String(),
+        widget=pseudonym_widget,
+        preparer=default_pseudonym,
+        validator=colander.All(
+            pseudonym_validator,
+            ),
+        title=_('Pseudonym'),
+        description=_('You will be identified by this pseudonym. This pseudonym is not editable.'),
+        missing=''
+    )
+
     accept_conditions = colander.SchemaNode(
         colander.Boolean(),
         widget=conditions_widget,
@@ -322,8 +391,11 @@ class Person(User, SearchableEntity, CorrelableEntity):
                 value.len_selections -= 1
 
     def set_title(self):
-        self.title = getattr(self, 'first_name', '') + ' ' + \
-                     getattr(self, 'last_name', '')
+        if getattr(self, 'Keep_me_anonymous', False):
+            self.title = self.pseudonym
+        else:
+            self.title = getattr(self, 'first_name', '') + ' ' + \
+                getattr(self, 'last_name', '')
 
     @property
     def proposals(self):
@@ -486,7 +558,7 @@ class Preregistration(VisualisableElement, Entity):
         email = getattr(self, 'email', None)
         if email and trusted_emails:
             return any(
-                email.find(t)>=0 for t in trusted_emails)
+                email.find(t) >= 0 for t in trusted_emails)
 
         return True
 

@@ -377,7 +377,6 @@ class Registration(InfiniteCardinality):
             subject = mail_template['subject'].format(
                 novaideo_title=root.title)
             url = request.resource_url(preregistration, '@@index')
-            localizer = request.localizer
             for admin in [a for a in admins if getattr(a, 'email', '')]:
                 recipientdata = get_user_data(admin, 'recipient', request)
                 message = mail_template['template'].format(
@@ -480,7 +479,10 @@ class ConfirmRegistration(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         data = context.get_data(PersonSchema())
-        annotations = getattr(context, 'annotations', {}).get(PROCESS_HISTORY_KEY, [])
+        data['Keep_me_anonymous'] = getattr(context, 'Keep_me_anonymous', False)
+        data['pseudonym'] = getattr(context, 'pseudonym', None)
+        annotations = getattr(context, 'annotations', {}).get(
+            PROCESS_HISTORY_KEY, [])
         data.update({'password': appstruct['password']})
         data = {key: value for key, value in data.items()
                 if value is not colander.null}
@@ -488,7 +490,9 @@ class ConfirmRegistration(InfiniteCardinality):
         root = getSite()
         person = Person(**data)
         principals = find_service(root, 'principals')
-        name = person.first_name + ' ' + person.last_name
+        name = person.first_name + ' ' + person.last_name \
+            if not getattr(person, 'Keep_me_anonymous', False) else \
+            person.pseudonym
         users = principals['users']
         name = name_chooser(users, name=name)
         users[name] = person

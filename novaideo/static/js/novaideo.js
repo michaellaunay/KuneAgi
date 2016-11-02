@@ -622,6 +622,14 @@ $(document).on('click', '.sidebar-nav li > a.primary', function(event){
     
 })
 
+
+$(document).on('change', '.Keep-me-anonymous-input input', function(){
+  var $this = $(this)
+  var form = $this.parents('form').first()
+  $(form.find('.pseudonym-input')).toggleClass('closed')
+})
+
+
 $(document).on('click', '.sidebar-background.toggled', function(){
   $(".menu-toggle.close").click()
   $($(this).find(".comment-form-group.active")).removeClass('active')

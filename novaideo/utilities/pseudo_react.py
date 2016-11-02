@@ -732,7 +732,7 @@ def get_remind_registration_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request, context, api,
         _("L'inscrit ${context} a bien été rappelé.",
-        mapping={'context': context.first_name + ' ' + context.last_name}),
+        mapping={'context': getattr(context, 'title', context.__name__)}),
         'seeregistrations', **kwargs)
 
 
@@ -740,7 +740,7 @@ def get_accept_registration_metadata(action, request, context, api, **kwargs):
     return get_edit_entity_metadata(
         action, request, context, api,
         _("L'inscription de ${context} a bien été accepter.",
-          mapping={'context': context.first_name + ' ' + context.last_name}),
+          mapping={'context': getattr(context, 'title', context.__name__)}),
         'seeregistrations', **kwargs)
 
 
@@ -1011,8 +1011,7 @@ def get_user_edit_organization_metadata(action, request, context, api, **kwargs)
                     "de l'utilisateur ${context} ont bien été"
                     " modifiées.",
                     mapping={
-                        'context': context.first_name + ' ' + \
-                        context.last_name})
+                        'context': getattr(context, 'title', context.__name__)})
                 source_context = kwargs.get('source_context', None)
                 oid = get_oid(context, None)
                 object_views_to_update = [
@@ -1028,8 +1027,7 @@ def get_user_edit_organization_metadata(action, request, context, api, **kwargs)
                             "L'utilisateur ${context} a bien"
                             " changé d'organisation.",
                             mapping={
-                                'context': context.first_name + \
-                                ' ' + context.last_name})
+                                'context': getattr(context, 'title', context.__name__)})
 
                 if isinstance(view_result, HTTPFound):
                     redirect_url = view_result.headers['location']

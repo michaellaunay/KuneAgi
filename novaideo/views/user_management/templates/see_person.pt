@@ -30,7 +30,7 @@
               </span>
           </h3>
           <div class="user-function" tal:condition="getattr(user, 'function', '')">${user.function}</div>
-          <div tal:omit-tag="" tal:condition="is_portal_manager" tal:define="mail getattr(user, 'email', '')">
+          <div tal:omit-tag="" tal:condition="is_portal_manager and not getattr(user, 'Keep_me_anonymous', False)" tal:define="mail getattr(user, 'email', '')">
                 <span class="glyphicon glyphicon-envelope"></span> <a  href="mailto:${mail}">${mail}</a>
           </div>
           <div>
