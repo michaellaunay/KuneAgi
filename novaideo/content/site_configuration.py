@@ -10,14 +10,12 @@ import deform
 from pontus.schema import omit, select, Schema
 from pontus.widget import (
     SequenceWidget, SimpleMappingWidget,
-    CheckboxChoiceWidget, Select2Widget, FileWidget)
+    CheckboxChoiceWidget, Select2Widget)
 from pontus.file import ObjectData, File
 
 from novaideo.content.processes.proposal_management import WORK_MODES
 from novaideo import _
 from novaideo.mail import DEFAULT_SITE_MAILS
-from novaideo.views.widget import (
-    EmailInputWidget)
 from novaideo.core_schema import ContactSchema
 from novaideo import core
 from novaideo.content import get_file_widget
@@ -78,6 +76,14 @@ class WorkParamsConfigurationSchema(Schema):
         description=_('Contents must be examined by a review committee.'),
         missing=[]
     )
+
+    proposal_template = colander.SchemaNode(
+        ObjectData(File),
+        widget=get_file_widget(file_extensions=['html']),
+        title=_('Proposal template'),
+        missing=None,
+        description=_("Only HTML files are supported."),
+        )
 
     work_modes = colander.SchemaNode(
         colander.Set(),

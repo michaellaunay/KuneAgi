@@ -37,14 +37,13 @@ from novaideo.content.interface import (
 from ..user_management.behaviors import (
     global_user_processsecurity,
     access_user_processsecurity)
-from novaideo import _, nothing
+from novaideo import _, nothing, log
 from novaideo.content.idea import Idea
 from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
 from novaideo.utilities.util import connect, disconnect
 from novaideo.event import (
-    ObjectPublished, CorrelableRemoved,
-    ObjectModified)
+    ObjectPublished, CorrelableRemoved)
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from novaideo.content.alert import InternalAlertKind
@@ -169,7 +168,8 @@ class CrateAndPublishAsProposal(CrateAndPublish):
     submission_title = _('Create a working group')
 
     def start(self, context, request, appstruct, **kw):
-        result = super(CrateAndPublishAsProposal, self).start(context, request, appstruct, **kw)
+        result = super(CrateAndPublishAsProposal, self).start(
+            context, request, appstruct, **kw)
         root = getSite()
         state = result.get('state', False)
         if state:
@@ -181,10 +181,19 @@ class CrateAndPublishAsProposal(CrateAndPublish):
                 localizer = request.localizer
                 title = idea.title + \
                     localizer.translate(_(" (the proposal)"))
+                template = getattr(root, 'proposal_template', None)
+                text = '<p>{idea_text}</p>'
+                if template:
+                    try:
+                        text = template.fp.readall().decode()
+                    except Exception as error:
+                        log.warning(error)
+
                 proposal = Proposal(
                     title=title,
                     description=idea.text[:600],
-                    text='<p>'+idea.text.replace('\n', '<br/>')+'</p>',
+                    text=text.format(
+                        idea_text=idea.text.replace('\n', '<br/>')),
                     keywords=list(idea.keywords)
                     )
                 proposal.text = html_diff_wrapper.normalize_text(proposal.text)
