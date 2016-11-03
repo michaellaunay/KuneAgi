@@ -89,7 +89,7 @@ class EditView(FormView):
                      'organization',
                      'function',
                      'description',
-                     'keywords',
+                     'tree',
                      'picture',
                      'email',
                      'locale',

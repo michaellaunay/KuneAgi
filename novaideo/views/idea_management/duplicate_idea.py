@@ -32,7 +32,7 @@ class DuplicateIdeaView(FormView):
     name = 'duplicateidea'
     schema = select(IdeaSchema(), ['title',
                                    'text',
-                                   'keywords',
+                                   'tree',
                                    'attached_files',
                                    'note'])
     behaviors = [DuplicateIdea, Cancel]

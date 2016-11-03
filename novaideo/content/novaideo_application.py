@@ -28,7 +28,11 @@ from pontus.widget import (
     SimpleMappingWidget)
 from pontus.file import ObjectData as ObjectDataOrigine, OBJECT_DATA
 from pontus.schema import omit, select
+from deform_treepy.utilities.tree_utility import (
+    get_tree_nodes_by_level, merge_tree,
+    get_keywords_by_level)
 
+from novaideo.content.keyword import ROOT_TREE, DEFAULT_TREE
 from novaideo import _, DEFAULT_FILES
 from novaideo.core import FileEntity, Channel
 from .organization import OrganizationSchema, Organization
@@ -47,6 +51,7 @@ from novaideo.content.site_configuration import (
     NotificationConfigurationSchema,
     OtherSchema,
 )
+from novaideo.utilities.attr_utility import synchronize_tree
 
 
 DEFAULT_TITLES = [
@@ -300,9 +305,11 @@ class NovaIdeoApplication(VisualisableElement, Application):
     channels = CompositeMultipleProperty('channels', 'subject')
     general_chanel = SharedUniqueProperty('general_chanel')
     newsletters = CompositeMultipleProperty('newsletters')
+    tree = synchronize_tree()
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)
+        self.branches = PersistentList()
         self.keywords = PersistentList()
         self.initialization()
 
@@ -367,6 +374,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.participants_maxi = 12
         self.participations_maxi = 5
         self.tokens_mini = 7
+        self.tree = DEFAULT_TREE
 
     @property
     def titles(self):
@@ -452,10 +460,15 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.add_colors_mapping([key])
         return self.colors_mapping[key]
 
-    def merge_keywords(self, newkeywords):
-        current_keywords = list(self.keywords)
-        current_keywords.extend(newkeywords)
-        self.keywords = PersistentList(list(set(current_keywords)))
-
     def get_title(self, user=None):
         return getattr(self, 'title', '')
+
+    def get_keywords_by_level(self):
+        return get_keywords_by_level(dict(self.tree), ROOT_TREE)
+
+    def get_tree_nodes_by_level(self):
+        return get_tree_nodes_by_level(dict(self.tree))
+
+    def merge_tree(self, tree):
+        if getattr(self, 'can_add_keywords', True):
+            self.tree = merge_tree(dict(self.tree), tree)

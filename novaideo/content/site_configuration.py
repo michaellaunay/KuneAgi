@@ -12,6 +12,10 @@ from pontus.widget import (
     SequenceWidget, SimpleMappingWidget,
     CheckboxChoiceWidget, Select2Widget)
 from pontus.file import ObjectData, File
+from deform_treepy.widget import (
+    DictSchemaType, KeywordsTreeWidget)
+from deform_treepy.utilities.tree_utility import (
+    tree_min_len)
 
 from novaideo.content.processes.proposal_management import WORK_MODES
 from novaideo import _
@@ -19,6 +23,8 @@ from novaideo.mail import DEFAULT_SITE_MAILS
 from novaideo.core_schema import ContactSchema
 from novaideo import core
 from novaideo.content import get_file_widget
+from novaideo.content.keyword import (
+    DEFAULT_TREE, DEFAULT_TREE_LEN)
 
 
 @colander.deferred
@@ -261,6 +267,26 @@ class MailTemplatesConfigurationSchema(Schema):
 
 
 @colander.deferred
+def keyword_widget(node, kw):
+    request = node.bindings['request']
+    root = request.root
+    can_create = 0
+    levels = root.get_tree_nodes_by_level()
+    return KeywordsTreeWidget(
+        min_len=1,
+        max_len=DEFAULT_TREE_LEN,
+        can_create=can_create,
+        levels=levels)
+
+
+@colander.deferred
+def keywords_validator(node, kw):
+    if DEFAULT_TREE == kw or tree_min_len(kw) < 2:
+        raise colander.Invalid(
+            node, _('Minimum one keyword required. You can specify a second keyword level for each keyword chosen.'))
+
+
+@colander.deferred
 def keywords_choice(node, kw):
     context = node.bindings['context']
     values = [(i, i) for i in sorted(getattr(context, 'keywords', []))]
@@ -271,10 +297,12 @@ def keywords_choice(node, kw):
 
 class KeywordsConfSchema(Schema):
 
-    keywords = colander.SchemaNode(
-        colander.Set(),
-        widget=keywords_choice,
-        title='Keywords',
+    tree = colander.SchemaNode(
+        typ=DictSchemaType(),
+        validator=colander.All(keywords_validator),
+        widget=keyword_widget,
+        default=DEFAULT_TREE,
+        title=_('Keywords'),
         )
 
     can_add_keywords = colander.SchemaNode(

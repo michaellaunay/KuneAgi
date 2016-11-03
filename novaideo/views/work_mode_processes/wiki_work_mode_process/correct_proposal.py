@@ -35,6 +35,7 @@ from novaideo.core import can_access
 from novaideo.views.widget import SimpleMappingtWidget
 from novaideo.views.proposal_management.create_proposal import ideas_choice
 from novaideo.utilities.util import to_localized_time
+from novaideo.content.keyword import DEFAULT_TREE
 
 
 @colander.deferred
@@ -71,13 +72,13 @@ class AddIdeaSchema(Schema):
 
     new_idea = select(IdeaSchema(factory=Idea,
                                  editable=True,
-                                 omit=['keywords'],
+                                 omit=['tree'],
                                  widget=SimpleMappingtWidget(
                                     mapping_css_class='hide-bloc new-idea-form',
                                     ajax=False)),
                     ['title',
                      'text',
-                     'keywords'])
+                     'tree'])
 
 
 class AddIdea(Behavior):
@@ -110,7 +111,7 @@ class AddIdeaFormView(FormView):
                                            '@@ideasmanagement')
         self.schema.widget = formwidget
         self.schema.widget.ajax_button = _('Validate')
-        self.schema.get('new_idea').get('keywords').default = []
+        self.schema.get('new_idea').get('tree').default = DEFAULT_TREE
 
     def default_data(self):
         localizer = self.request.localizer
@@ -177,7 +178,7 @@ class CorrectProposalFormView(FormView):
     schema = select(ProposalSchema(),
                     ['title',
                      'description',
-                     'keywords',
+                     'tree',
                      'text',
                      'related_ideas',
                      'add_files'

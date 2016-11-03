@@ -36,11 +36,14 @@ from pontus.widget import (
     )
 from pontus.form import FileUploadTempStore
 from pontus.file import ObjectData, Object as ObjectType
+from deform_treepy.widget import (
+    DictSchemaType)
 
 from novaideo.core import (
     SearchableEntity,
     SearchableEntitySchema,
-    keywords_choice,
+    keyword_widget,
+    keywords_validator,
     CorrelableEntity,
     generate_access_keys)
 from .interface import IPerson, IPreregistration, IAlert
@@ -48,6 +51,8 @@ from novaideo import _
 from novaideo.file import Image
 from novaideo.views.widget import (
     TOUCheckboxWidget, LimitedTextAreaWidget, EmailInputWidget)
+from novaideo.utilities.attr_utility import synchronize_tree
+from novaideo.content.keyword import DEFAULT_TREE
 
 
 DEADLINE_PREREGISTRATION = 86400*2  # 2 days
@@ -227,11 +232,13 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         missing=""
     )
 
-    keywords = colander.SchemaNode(
-        colander.Set(),
-        widget=keywords_choice,
+    tree = colander.SchemaNode(
+        typ=DictSchemaType(),
+        validator=colander.All(keywords_validator),
+        widget=keyword_widget,
+        default=DEFAULT_TREE,
         title=_('Preferences'),
-        missing=[]
+        description=_('Indicate keywords. You can specify a second keyword level for each keyword chosen.')
         )
 
     email = colander.SchemaNode(
@@ -349,11 +356,14 @@ class Person(User, SearchableEntity, CorrelableEntity):
     working_groups = SharedMultipleProperty('working_groups', 'members')
     old_alerts = SharedMultipleProperty('old_alerts')
     following_channels = SharedMultipleProperty('following_channels', 'members')
+    tree = synchronize_tree()
 
     def __init__(self, **kwargs):
         if 'locale' not in kwargs:
             kwargs['locale'] = DEFAULT_LOCALE
 
+        self.branches = PersistentList()
+        self.keywords = PersistentList()
         super(Person, self).__init__(**kwargs)
         kwargs.pop('password')
         self.set_data(kwargs)

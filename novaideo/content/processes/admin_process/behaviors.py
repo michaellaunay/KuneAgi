@@ -19,6 +19,7 @@ from dace.objectofcollaboration.principal.util import (
     get_current)
 from dace.processinstance.activity import (
     InfiniteCardinality)
+from deform_treepy.utilities.tree_utility import edit_keywords
 
 from novaideo.adapters import (
     IExtractionAdapter, EXTRACTION_ATTR)
@@ -77,24 +78,17 @@ class ManageKeywords(InfiniteCardinality):
         source = appstruct['source']
         targets = appstruct['targets']
         root = getSite()
-        root.keywords = PersistentList(list(root.keywords))
-        for target in [t for t in targets if t in root.keywords]:
-            root.keywords.remove(target)
+        edited = edit_keywords(targets, source, root.tree)
+        if edited:
+            root.tree = edited
 
-        root.keywords.append(source)
-        root.reindex()
-
-        objects = find_entities(
-            interfaces=[ISearchableEntity],
-            metadata_filter={'keywords': [kw.lower() for kw in targets]})
-
+        objects = find_entities(interfaces=[ISearchableEntity],
+                                keywords=[kw.lower() for kw in targets])
         for obj in objects:
-            obj.keywords = PersistentList(list(obj.keywords))
-            for target in [t for t in targets if t in obj.keywords]:
-                obj.keywords.remove(target)
-
-            obj.keywords.append(source)
-            obj.reindex()
+            edited = edit_keywords(targets, source, obj.tree)
+            if edited:
+                obj.tree = edited
+                obj.reindex()
 
         return {}
 

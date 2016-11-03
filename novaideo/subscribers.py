@@ -93,9 +93,9 @@ def mysubscriber(event):
 @subscriber(ObjectPublished)
 def mysubscriber_object_published(event):
     content = event.object
-    keywords = content.keywords
+    tree = content.tree
     request = get_current_request()
-    users = get_users_by_keywords(keywords)
+    users = get_users_by_keywords(tree)
     root = request.root
     mail_template = root.get_mail_template('alert_new_content')
     subject_data = get_entity_data(content, 'subject', request)

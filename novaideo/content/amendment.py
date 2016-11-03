@@ -87,7 +87,7 @@ class NewIdeaSchema(Schema):
                                  widget=SimpleMappingWidget()),
                       ['title',
                        'text',
-                       'keywords'])
+                       'tree'])
 
 
 class IntentionItemSchema(Schema):

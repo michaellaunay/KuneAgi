@@ -82,7 +82,7 @@ class EditProposalFormView(FormView):
                                omit=['related_ideas', 'add_files']),
                     ['title',
                      'description',
-                     'keywords',
+                     'tree',
                      'text',
                      'related_ideas',
                      'add_files'])

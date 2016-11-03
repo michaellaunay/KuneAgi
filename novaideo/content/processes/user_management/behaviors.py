@@ -158,7 +158,7 @@ class Edit(InfiniteCardinality):
             context.set_password(password)
 
         root = getSite()
-        root.merge_keywords(context.keywords)
+        root.merge_tree(context.tree)
         context.set_title()
         context.set_organization(organization)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)

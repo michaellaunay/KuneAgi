@@ -21,6 +21,10 @@ from pontus.form import FormView
 from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 from pontus.file import Object as ObjectType
+from deform_treepy.utilities.tree_utility import (
+    get_branches, get_all_branches)
+from deform_treepy.widget import (
+    DictSchemaType)
 
 from novaideo.content.processes.novaideo_view_manager.behaviors import (
     SeeAnalytics)
@@ -32,6 +36,7 @@ from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.views.filter import (
     get_contents_by_keywords, get_contents_by_states,
     get_contents_by_dates)
+from novaideo.content.keyword import DEFAULT_TREE, ROOT_TREE
 
 
 DEFAULT_CONTENT_TYPES = ['idea', 'proposal']
@@ -220,12 +225,13 @@ class ContentsByKeywordsSchema(Schema):
         missing=['published']
     )
 
-    keywords = colander.SchemaNode(
-        colander.Set(),
-        widget=keywords_choice,
+    tree = colander.SchemaNode(
+        typ=DictSchemaType(),
+        validator=colander.All(core.keywords_validator),
+        widget=core.keyword_widget,
+        default=DEFAULT_TREE,
         title=_('Keywords'),
-        description=_("You can select the keywords of the contents to be displayed."),
-        missing=[]
+        description=_('Indicate keywords. You can specify a second keyword level for each keyword chosen.')
         )
 
     author = colander.SchemaNode(
@@ -236,7 +242,6 @@ class ContentsByKeywordsSchema(Schema):
         default=None,
         missing=None
         )
-
 
     dates = omit(PublicationDates(
         widget=SimpleMappingWidget(css_class="filter-block"
@@ -464,7 +469,7 @@ class ContentsByDatesSchema(ContentsByKeywordsSchema):
 class ContentsByDatesForm(AnalyticsForm):
     title = _('Contents by dates')
     schema = select(ContentsByDatesSchema(),
-                    ['content_types', 'keywords', 'author', 'dates'])
+                    ['content_types', 'tree', 'author', 'dates'])
     formid = 'content_by_dates_form'
     name = 'content_by_dates_form'
 
@@ -545,7 +550,15 @@ class AnalyticsAPIJsonView(BasicView):
         validated = getattr(formview, 'validated', {})
         default_contents = self.request.analytics_default_content_types
         states = validated.get('states', [])
-        keywords = validated.get('keywords', [])
+        tree = validated.get('tree', {})
+        if not tree:
+            keywords = get_all_branches(root.tree)
+        else:
+            keywords = get_branches(tree)
+
+        if ROOT_TREE in keywords:
+            keywords.remove(ROOT_TREE)
+
         types = validated.get('content_types', default_contents)
         author = validated.get('author', None)
         date_date = validated.get('dates', {})
@@ -564,7 +577,7 @@ class AnalyticsAPIJsonView(BasicView):
                 'metadata_filter': {
                     'content_types': [type_],
                     'states': states,
-                    'keywords': keywords
+                    'tree': tree
                 },
                 'contribution_filter': contribution_filter
             }
@@ -607,7 +620,7 @@ class AnalyticsAPIJsonView(BasicView):
             default_content = 'idea'
 
         states = validated.get('states', [])
-        keywords = validated.get('keywords', [])
+        tree = validated.get('tree', {})
         type_ = validated.get('content_types', default_content)
         author = validated.get('author', None)
         date_date = validated.get('dates', {})
@@ -630,7 +643,7 @@ class AnalyticsAPIJsonView(BasicView):
                 'metadata_filter': {
                     'content_types': [type_],
                     'states': states,
-                    'keywords': keywords
+                    'tree': tree
                 },
                 'contribution_filter': contribution_filter}
             data = get_contents_by_states(
@@ -682,7 +695,7 @@ class AnalyticsAPIJsonView(BasicView):
         else:
             states = ['examined']
 
-        keywords = validated.get('keywords', [])
+        tree = validated.get('tree', {})
         author = validated.get('author', None)
         contribution_filter = {'authors': []}
         if author is not None:
@@ -697,7 +710,7 @@ class AnalyticsAPIJsonView(BasicView):
                 'metadata_filter': {
                     'content_types': [type_],
                     'states': states,
-                    'keywords': keywords
+                    'tree': tree
                 },
                 'contribution_filter': contribution_filter}
             data = get_contents_by_dates(

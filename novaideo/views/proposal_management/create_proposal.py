@@ -31,6 +31,7 @@ from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.utilities.util import to_localized_time
 from novaideo.views.widget import SimpleMappingtWidget
 from novaideo import _, log
+from novaideo.content.keyword import DEFAULT_TREE
 
 
 def add_file_data(file_):
@@ -79,7 +80,7 @@ class AddIdeaSchema(Schema):
                                         ajax=False)),
                     ['title',
                      'text',
-                     'keywords'])
+                     'tree'])
 
 
 class AddIdea(Behavior):
@@ -112,7 +113,7 @@ class AddIdeaFormView(FormView):
                                            '@@ideasmanagement')
         self.schema.widget = formwidget
         self.schema.widget.ajax_button = _('Validate')
-        self.schema.get('new_idea').get('keywords').default = []
+        self.schema.get('new_idea').get('tree').default = DEFAULT_TREE
 
     def default_data(self):
         localizer = self.request.localizer
@@ -195,7 +196,7 @@ class CreateProposalFormView(FormView):
                                omit=['related_ideas', 'add_files']),
                     ['title',
                      'description',
-                     'keywords',
+                     'tree',
                      'text',
                      'related_ideas',
                      ('add_files', ['attached_files'])])

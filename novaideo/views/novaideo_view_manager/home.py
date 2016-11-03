@@ -57,7 +57,7 @@ class ContentView(BasicView):
 
         url = self.request.resource_url(
             self.context, '@@novaideoapi')
-        select = [('metadata_filter', ['states', 'keywords']), 'geographic_filter',
+        select = [('metadata_filter', ['states', 'tree']), 'geographic_filter',
                   'contribution_filter',
                   ('temporal_filter', ['negation', 'created_date']),
                   'text_filter', 'other_filter']

@@ -17,6 +17,13 @@ from pontus.core import VisualisableElement, VisualisableElementSchema
 from .interface import IKeyword
 
 
+ROOT_TREE = "#"
+
+DEFAULT_TREE = {ROOT_TREE: {}}
+
+DEFAULT_TREE_LEN = 5
+
+
 def context_is_a_keyword(context, request):
     return request.registry.content.istype(context, 'keyword')
 
@@ -36,7 +43,6 @@ class KeywordSchema(VisualisableElementSchema):
 @implementer(IKeyword)
 class Keyword(VisualisableElement, Entity):
     """Keyword class"""
-    
     name = renamer()
     referenced_elements = SharedMultipleProperty('referenced_elements',
                                                  'keywords')

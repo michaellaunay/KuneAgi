@@ -81,7 +81,10 @@ class CreateIdea(InfiniteCardinality):
         root = getSite()
         user = get_current()
         idea = appstruct['_object_data']
-        root.merge_keywords(idea.keywords)
+        if getattr(idea, '_tree', None):
+            tree = getattr(idea, '_tree')
+            root.merge_tree(tree)
+        
         root.addtoproperty('ideas', idea)
         idea.state.append('to work')
         grant_roles(user=user, roles=(('Owner', idea), ))
@@ -262,7 +265,7 @@ class DuplicateIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
-        root.merge_keywords(appstruct['keywords'])
+        root.merge_tree(appstruct['tree'])
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
         copy_of_idea = copy(
@@ -368,7 +371,10 @@ class EditIdea(InfiniteCardinality):
 
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
-        root.merge_keywords(appstruct['keywords'])
+        if getattr(context, '_tree', None):
+            tree = getattr(context, '_tree')
+            root.merge_tree(tree)
+
         copy_of_idea.state = PersistentList(['version', 'archived'])
         copy_of_idea.setproperty('author', user)
         note = appstruct.pop('note', '')

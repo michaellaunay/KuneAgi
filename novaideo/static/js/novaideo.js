@@ -731,7 +731,8 @@ $(document).ready(function(){
         var parent = $($this.parents('.home-add-idea').first());
         var title = $this.find('input[name="title"]').val();
         var text = $this.find('textarea[name="text"]').val();
-        var keywords = $($this.find('select[name="keywords"]')).val();
+        var keywords = $($this.find('input[name="tree"]')).val();
+        keywords = Object.keys(jQuery.parseJSON(keywords)['#'])
         if(title=='' || text=='' || !keywords || keywords.length == 0){
           var form_groups = $this.find('.form-group')
           form_groups.removeClass('has-error')
@@ -758,7 +759,7 @@ $(document).ready(function(){
 
           if (!keywords || keywords.length == 0)
           {
-             form_group = $this.find('select[name="keywords"]').parents('.form-group').first()
+             form_group = $this.find('input[name="tree"]').parents('.form-group').first()
              form_group.addClass('has-error')
              form_group.append($(error_help))
           }

@@ -105,7 +105,7 @@ class PublishFormView(CreateProposalFormView):
                 'description': self.context.text,
                 'text': text.format(
                     idea_text=self.context.text.replace('\n', '<br/>')),
-                'keywords': self.context.keywords,
+                'tree': self.context.tree,
                 'related_ideas': [self.context]}
         attached_files = self.context.attached_files
         data['add_files'] = {'attached_files': []}

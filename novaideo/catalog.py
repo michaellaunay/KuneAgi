@@ -611,11 +611,7 @@ class SearchableObject(Adapter):
         return getattr(self.context, 'release_date', self.modified_at())
 
     def object_keywords(self):
-        keywords = list(getattr(self.context, 'keywords', []))
-        if keywords:
-            keywords = list([k.lower() for k in keywords])
-
-        return keywords
+        return list(getattr(self.context, 'branches', []))
 
     def object_authors(self):
         author = getattr(self.context, 'author', None)

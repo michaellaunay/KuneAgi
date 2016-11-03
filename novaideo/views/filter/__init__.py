@@ -29,6 +29,10 @@ from pontus.widget import (
     Select2Widget, AjaxSelect2Widget, SimpleMappingWidget)
 from pontus.schema import Schema, omit, select
 from pontus.form import FormView
+from deform_treepy.utilities.tree_utility import (
+    get_branches, tree_to_keywords)
+from deform_treepy.widget import (
+    DictSchemaType, KeywordsTreeWidget)
 
 from novaideo import _
 from novaideo import core
@@ -46,6 +50,8 @@ from novaideo.views.filter.util import (
 from novaideo.views.widget import SimpleMappingtWidget
 from novaideo import log
 from .sort import sort_on as filter_sort
+from novaideo.content.keyword import (
+    DEFAULT_TREE, DEFAULT_TREE_LEN, ROOT_TREE)
 
 
 #If updated: See data_manager utility FILTER_DEFAULT_DATA
@@ -165,14 +171,41 @@ def states_query(node, **args):
     return states_index.notany(['version']) & states_index.any(states)
 
 
-def keywords_query(node, **args):
+# def keywords_query(node, **args):
+#     value = None
+#     if 'metadata_filter' in args:
+#         value = args['metadata_filter']
+
+#     keywords = value.get('keywords', None) if value else []
+#     if not keywords:
+#         return None
+
+#     keywords = set(keywords)
+#     keywords = [k.lower() for k in keywords]
+#     novaideo_catalog = None
+#     if 'novaideo' in args:
+#         novaideo_catalog = args['novaideo']
+#     else:
+#         novaideo_catalog = find_catalog('novaideo')
+
+#     #index
+#     keywords_index = novaideo_catalog['object_keywords']
+#     #query
+#     return keywords_index.any(keywords)
+
+def tree_query(node, **args):
     value = None
     if 'metadata_filter' in args:
         value = args['metadata_filter']
 
-    keywords = value.get('keywords', None) if value else []
-    if not keywords:
+    tree = value.get('tree', {}) if value else {}
+    keywords = args.get('keywords', None)
+    if (not tree or tree == DEFAULT_TREE) and\
+       not keywords:
         return None
+
+    if not keywords:
+        keywords = get_branches(tree)
 
     keywords = set(keywords)
     keywords = [k.lower() for k in keywords]
@@ -735,10 +768,14 @@ def authors_choices(node, kw):
 
 @colander.deferred
 def keyword_widget(node, kw):
-    root = getSite()
-    values = [(i, i) for i in sorted(root.keywords)]
-    return Select2Widget(values=values,
-                         multiple=True)
+    request = node.bindings['request']
+    can_create = 100
+    levels = request.root.get_tree_nodes_by_level()
+    return KeywordsTreeWidget(
+        min_len=1,
+        max_len=DEFAULT_TREE_LEN,
+        can_create=can_create,
+        levels=levels)
 
 
 class MetadataFilter(Schema):
@@ -763,13 +800,14 @@ class MetadataFilter(Schema):
         analyzer=content_types_analyzer
         )
 
-    keywords = colander.SchemaNode(
-        colander.Set(),
+    tree = colander.SchemaNode(
+        typ=DictSchemaType(),
         widget=keyword_widget,
-        title=_('keywords'),
-        description=_('You can select the keywords of the contents to be displayed.'),
-        missing=[],
-        query=keywords_query
+        title=_('Keywords'),
+        description=_('You can select keywords of the contents to be displayed.'),
+        default=DEFAULT_TREE,
+        missing=None,
+        query=tree_query
     )
 
     states = colander.SchemaNode(
@@ -782,7 +820,6 @@ class MetadataFilter(Schema):
         query=states_query,
         analyzer=states_analyzer
     )
-
 
 
 class CreatedDates(Schema):
@@ -1217,14 +1254,14 @@ def get_entities_by_title(interfaces, title, **args):
         **args)
 
 
-def get_users_by_keywords(keywords):
-    if not keywords:
-        return []
+def get_users_by_keywords(tree):
+    if not tree:
+        return {}
 
     return find_entities(
         metadata_filter={'content_types': ['person'],
                          'states': ['active'],
-                         'keywords': keywords})
+                         'tree': tree})
 
 
 def get_users_by_preferences(content):
@@ -1265,7 +1302,12 @@ def get_contents_by_keywords(
         else:
             query = query & date_index.lt(date_to)
 
-    keywords = filter_.get('keywords', root.keywords)
+    tree = filter_.get('metadata_filter', {}).get('tree', root.tree)
+    tree = tree if tree else root.tree
+    keywords = tree_to_keywords(tree)
+    if ROOT_TREE in keywords:
+        keywords.remove(ROOT_TREE)
+
     keywords_mapping = dict([(k.lower(), k) for k in keywords])
     objects = find_entities(
         user=user,

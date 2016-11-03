@@ -12,14 +12,16 @@ from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.schema import Schema
 from pontus.view import BasicView
+from pontus.widget import Select2Widget
 from pontus.view_operation import MultipleView
+from deform_treepy.utilities.tree_utility import tree_to_keywords
 
 from novaideo.content.processes.admin_process.behaviors import (
     ManageKeywords)
 from novaideo.content.novaideo_application import (
     NovaIdeoApplication)
-from novaideo.content.site_configuration import keywords_choice
 from novaideo import _
+from novaideo.content.keyword import ROOT_TREE
 
 
 class ManageKeywordsViewStudyReport(BasicView):
@@ -36,11 +38,27 @@ class ManageKeywordsViewStudyReport(BasicView):
         return result
 
 
+@colander.deferred
+def targets_choice(node, kw):
+    request = node.bindings['request']
+    root = request.root
+    keywords = [kw_.split('/') for kw_ in tree_to_keywords(root.tree)]
+    keywords = list(set([item for sublist in keywords for item in sublist]))
+    if ROOT_TREE in keywords:
+        keywords.remove(ROOT_TREE)
+
+    values = [(v, v) for v in sorted(keywords)]
+    return Select2Widget(
+        values=values,
+        multiple=True
+        )
+
+
 class ManageKeywordsSchema(Schema):
 
     targets = colander.SchemaNode(
         colander.Set(),
-        widget=keywords_choice,
+        widget=targets_choice,
         title=_("Keywords")
         )
 

@@ -259,9 +259,9 @@ class Proposal(VersionableEntity,
         "return specific query, filter values"
         return None, {
             'metadata_filter': {
-                'content_types': ['proposal', 'idea'],
-                'keywords': list(self.keywords)
-            }
+                'content_types': ['proposal', 'idea']
+            },
+            'keywords': list(self.branches)
         }
 
     def get_attached_files_data(self):

@@ -109,7 +109,7 @@ class DuplicateAmendment(InfiniteCardinality):
                                  omit=('created_at',
                                        'modified_at',
                                        'explanations'))
-        # root.merge_keywords(appstruct['keywords'])
+        # root.merge_tree(appstruct['tree'])
         copy_of_amendment.set_data(appstruct)
         copy_of_amendment.text = html_diff_wrapper.normalize_text(
             copy_of_amendment.text)
@@ -193,8 +193,8 @@ class EditAmendment(InfiniteCardinality):
     state_validation = edit_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        root = getSite()
-        # root.merge_keywords(context.keywords)
+        # root = getSite()
+        # root.merge_tree(context.tree)
         context.set_data(appstruct)
         context.text = html_diff_wrapper.normalize_text(context.text)
         context.text_diff = get_text_amendment_diff(

@@ -13,7 +13,7 @@ from pontus.form import FormView
 from pontus.schema import select
 from pontus.view_operation import MultipleView
 
-from novaideo.content.processes.idea_management.behaviors import  EditIdea
+from novaideo.content.processes.idea_management.behaviors import EditIdea
 from novaideo.content.idea import IdeaSchema, Idea
 from novaideo import _
 from .compare_idea import CompareIdeaView
@@ -23,10 +23,10 @@ class EditIdeaFormView(FormView):
 
     title = _('Edit idea')
     schema = select(IdeaSchema(), ['title',
-                                  'text',
-                                  'keywords',
-                                  'attached_files',
-                                  'note'])
+                                   'text',
+                                   'tree',
+                                   'attached_files',
+                                   'note'])
     behaviors = [EditIdea, Cancel]
     formid = 'formeditidea'
     wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
@@ -69,4 +69,4 @@ class EditIdeaView(MultipleView):
                     'js_links': ['novaideo:static/js/compare_idea.js']}
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({EditIdea:EditIdeaView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({EditIdea: EditIdeaView})

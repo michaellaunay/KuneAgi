@@ -510,8 +510,8 @@ class MoreContents(object):
                 else:
                     more_result = find_entities(
                         user=get_current(),
-                        metadata_filter={'content_types': ['proposal', 'idea'],
-                                         'keywords': getattr(user, 'keywords', [])},
+                        metadata_filter={'content_types': ['proposal', 'idea']},
+                        keywords=keywords,
                         sort_on='release_date')
 
                 is_root = True

@@ -54,7 +54,7 @@ class SeeUsersView(BasicView):
     css_class = 'simple-bloc'
     container_css_class = 'home'
     contents_messages = CONTENTS_MESSAGES
-    selected_filter = [('metadata_filter', ['neagtion', 'states', 'keywords']),
+    selected_filter = [('metadata_filter', ['neagtion', 'states', 'tree']),
                        'temporal_filter',
                        'text_filter', 'other_filter']
 
@@ -79,7 +79,7 @@ class SeeUsersView(BasicView):
                                         '@@novaideoapi')
         select = self.selected_filter
         if not is_manager:
-            select = [('metadata_filter', ['neagtion', 'states', 'keywords']),
+            select = [('metadata_filter', ['neagtion', 'states', 'tree']),
                       ('temporal_filter', ['negation', 'created_date']),
                       'text_filter', 'other_filter']
 
@@ -168,7 +168,7 @@ class SeeInactiveUsersView(BasicView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seeinactiveusers'
     contents_messages = CONTENTS_MESSAGES
-    selected_filter = [('metadata_filter', ['neagtion', 'states', 'keywords']),
+    selected_filter = [('metadata_filter', ['neagtion', 'states', 'tree']),
                        'temporal_filter',
                        'text_filter', 'other_filter']
 

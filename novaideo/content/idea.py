@@ -169,7 +169,7 @@ class Idea(VersionableEntity, DuplicableEntity,
     def relevant_data(self):
         return [getattr(self, 'title', ''),
                 getattr(self, 'text', ''),
-                ', '.join(self.keywords)]
+                ', '.join(self.branches)]
 
     def init_published_at(self):
         setattr(self, 'published_at', datetime.datetime.now(tz=pytz.UTC))
@@ -188,9 +188,9 @@ class Idea(VersionableEntity, DuplicableEntity,
         "return specific query, filter values"
         return None, {
             'metadata_filter': {
-                'content_types': ['proposal', 'idea'],
-                'keywords': list(self.keywords)
-            }
+                'content_types': ['proposal', 'idea']
+            },
+            'keywords': list(self.branches)
         }
 
     def get_attached_files_data(self):

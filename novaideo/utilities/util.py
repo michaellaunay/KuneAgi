@@ -33,6 +33,7 @@ from dace.objectofcollaboration.principal.util import get_current
 from dace.util import getSite, getAllBusinessAction
 from daceui.interfaces import IDaceUIAPI
 
+from .attr_utility import deepcopy
 from .ical_date_utility import getDatesFromString, set_recurrence
 from novaideo.content.correlation import Correlation, CorrelationType
 from novaideo.content.processes import get_states_mapping
@@ -41,7 +42,6 @@ from novaideo import _, log
 from novaideo.fr_stopdict import _words
 from novaideo.core import Node
 from novaideo.emojis import DEFAULT_EMOJIS
-
 
 try:
     _LETTERS = string.letters
@@ -467,21 +467,6 @@ def extract_keywords(text):
         word_frequencies(text, _words),
         key=lambda e: e[0], reverse=True)
     return [e[1] for e in result]
-
-
-def deepcopy(obj):
-    result = None
-    if isinstance(obj, (dict, PersistentDict)):
-        result = {}
-        for key, value in obj.items():
-            result[key] = deepcopy(value)
-
-    elif isinstance(obj, (list, tuple, PersistentList)):
-        result = [deepcopy(value) for value in obj]
-    else:
-        result = obj
-
-    return result
 
 
 def normalize_title(obj_title):

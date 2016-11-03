@@ -42,7 +42,7 @@ class SeeMySupportsView(SeeMyContentsView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seemysupports'
     contents_messages = CONTENTS_MESSAGES
-    selected_filter = [('metadata_filter', ['negation', 'keywords', 'states']),
+    selected_filter = [('metadata_filter', ['negation', 'tree', 'states']),
                        ('temporal_filter', ['negation', 'created_date']),
                        'text_filter', 'other_filter']
     include_archived = False

@@ -19,7 +19,8 @@ from substanced.util import renamer
 from substanced.content import content
 
 from dace.objectofcollaboration.principal.role import DACE_ROLES
-from dace.objectofcollaboration.principal.util import get_access_keys
+from dace.objectofcollaboration.principal.util import (
+    get_access_keys, has_role, has_any_roles)
 from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import (
     SharedUniqueProperty,
@@ -30,8 +31,15 @@ from dace.util import getSite, get_obj, find_catalog
 from pontus.schema import Schema
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
-    RichTextWidget, Select2Widget)
+    RichTextWidget)
+from deform_treepy.utilities.tree_utility import (
+    tree_min_len)
+from deform_treepy.widget import (
+    KeywordsTreeWidget,
+    DictSchemaType)
 
+from novaideo.content.keyword import (
+    DEFAULT_TREE, DEFAULT_TREE_LEN)
 from novaideo import _, ACCESS_ACTIONS
 from novaideo.content.interface import (
     IVersionableEntity,
@@ -46,6 +54,7 @@ from novaideo.content.interface import (
     INode,
     IEmojiable,
     IPerson)
+from novaideo.utilities.attr_utility import synchronize_tree
 
 
 BATCH_DEFAULT_SIZE = 8
@@ -351,24 +360,39 @@ class DuplicableEntity(Entity):
 
 
 @colander.deferred
-def keywords_choice(node, kw):
-    root = getSite()
-    values = [(i, i) for i in sorted(root.keywords)]
-    create = getattr(root, 'can_add_keywords', True)
-    return Select2Widget(max_len=5,
-                         values=values,
-                         create=create,
-                         multiple=True)
+def keyword_widget(node, kw):
+    request = node.bindings['request']
+    root = request.root
+    can_create = 0
+    if has_role(role=('Member', )):
+        can_create = 1
+    if has_any_roles(roles=('Admin', 'SiteAdmin')):
+        can_create = 0
+
+    levels = root.get_tree_nodes_by_level()
+    return KeywordsTreeWidget(
+        min_len=2,
+        max_len=DEFAULT_TREE_LEN,
+        can_create=can_create,
+        levels=levels)
+
+
+@colander.deferred
+def keywords_validator(node, kw):
+    if DEFAULT_TREE == kw or tree_min_len(kw) < 2:
+        raise colander.Invalid(
+            node, _('Minimum one keyword required. You can specify a second keyword level for each keyword chosen.'))
 
 
 class SearchableEntitySchema(Schema):
 
-    keywords = colander.SchemaNode(
-        colander.Set(),
-        widget=keywords_choice,
+    tree = colander.SchemaNode(
+        typ=DictSchemaType(),
+        validator=colander.All(keywords_validator),
+        widget=keyword_widget,
+        default=DEFAULT_TREE,
         title=_('Keywords'),
-        description=_("To add keywords, you need to tap the « Enter »"
-                      " key after each keyword or separate them with commas.")
+        description=_('Indicate keywords. You can specify a second keyword level for each keyword chosen.')
         )
 
 
@@ -380,10 +404,12 @@ class SearchableEntity(VisualisableElement, Entity):
                  'bloc': 'novaideo:templates/views/default_result.pt'}
     channels = CompositeMultipleProperty('channels', 'subject')
     comments = CompositeMultipleProperty('comments')
+    tree = synchronize_tree()
 
     def __init__(self, **kwargs):
-        super(SearchableEntity, self).__init__(**kwargs)
+        self.branches = PersistentList()
         self.keywords = PersistentList()
+        super(SearchableEntity, self).__init__(**kwargs)
 
     @property
     def is_published(self):
@@ -397,7 +423,7 @@ class SearchableEntity(VisualisableElement, Entity):
     def relevant_data(self):
         return [getattr(self, 'title', ''),
                 getattr(self, 'description', ''),
-                ', '.join(getattr(self, 'keywords', []))]
+                ', '.join(getattr(self, 'branches', []))]
 
     @property
     def channel(self):
@@ -428,9 +454,9 @@ class SearchableEntity(VisualisableElement, Entity):
         "return specific query, filter values"
         return None, {
             'metadata_filter': {
-                'states': ['published'],
-                'keywords': list(self.keywords)
-            }
+                'states': ['published']
+            },
+            'keywords': list(self.branches)
         }
 
 

@@ -262,7 +262,7 @@ class CreateProposal(InfiniteCardinality):
         user = get_current()
         related_ideas = appstruct.pop('related_ideas')
         proposal = appstruct['_object_data']
-        root.merge_keywords(proposal.keywords)
+        root.merge_tree(proposal.tree)
         proposal.text = html_diff_wrapper.normalize_text(proposal.text)
         root.addtoproperty('proposals', proposal)
         proposal.state.append('draft')
@@ -499,7 +499,7 @@ class DuplicateProposal(InfiniteCardinality):
         root = getSite()
         user = get_current()
         related_ideas = appstruct.pop('related_ideas')
-        root.merge_keywords(appstruct['keywords'])
+        root.merge_tree(appstruct['tree'])
         copy_of_proposal = copy(
             context, (root, 'proposals'),
             omit=('created_at', 'modified_at',
@@ -578,7 +578,7 @@ class EditProposal(InfiniteCardinality):
         add_attached_files(appstruct, context)
         context.text = html_diff_wrapper.normalize_text(context.text)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        root.merge_keywords(context.keywords)
+        root.merge_tree(context.tree)
         context.reindex()
         request.registry.notify(ActivityExecuted(self, [context], user))
         return {}

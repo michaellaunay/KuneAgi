@@ -4,13 +4,11 @@
 # licence: AGPL
 # author: Amen Souissi
 
-import pytz
-import datetime
+import json
 import deform
 from pyramid.view import view_config
 from substanced.util import get_oid
 from pyramid import renderers
-from pyramid.httpexceptions import HTTPFound
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from dace.util import get_obj
@@ -28,6 +26,7 @@ from novaideo.content.processes.idea_management.behaviors import (
 from novaideo.content.idea import IdeaSchema, Idea
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _, log
+from novaideo.content.keyword import DEFAULT_TREE
 
 
 @view_config(
@@ -41,12 +40,11 @@ class CreateIdeaView(FormView):
     schema = select(IdeaSchema(factory=Idea, editable=True),
                     ['title',
                      'text',
-                     'keywords',
+                     'tree',
                      'attached_files'])
     behaviors = [CrateAndPublishAsProposal, CrateAndPublish, CreateIdea, Cancel]
     formid = 'formcreateidea'
     name = 'createidea'
-
 
     def before_update(self):
         if not getattr(self, 'is_home_form', False):
@@ -130,16 +128,17 @@ class CreateIdeaView_Json(BasicView):
     def creat_idea(self):
         behavior = None
         try:
+            tree = self.params('tree')
+            tree = json.loads(tree) if tree else DEFAULT_TREE
             behavior = self.behaviors_instances['Create_an_idea']
             values = {'title': self.params('title'),
                       'text': self.params('text'),
-                      'keywords': self.params('keywords')}
+                      'tree': tree}
             idea = Idea()
             idea.set_data(values)
             appstruct = {'_object_data': idea}
             behavior.execute(self.context, self.request, appstruct)
             oid = get_oid(idea)
-            user = get_current()
             new_title = ''#self._get_new_title(user)
             data = {'title': idea.title,
                     'oid': str(oid),
@@ -150,7 +149,8 @@ class CreateIdeaView_Json(BasicView):
                     }
             result = data
             return result
-        except Exception:
+        except Exception as error:
+            log.warning(error)
             return {}
 
     def get_idea(self):

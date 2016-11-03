@@ -33,7 +33,7 @@ class CreateIdeaView(FormView):
     schema = select(IdeaSchema(factory=Idea, editable=True),
                     ['title',
                      'text',
-                     'keywords',
+                     'tree',
                      'attached_files'])
     behaviors = [CrateAndPublishAsProposal, CrateAndPublish, TransformToIdea, Cancel]
     formid = 'formcreateidea'

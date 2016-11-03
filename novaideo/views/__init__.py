@@ -5,8 +5,8 @@
 # author: Amen Souissi, Sophie Jazwiecki
 import datetime
 import pytz
+import json
 from pyramid.view import view_config
-from pyramid import renderers
 from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_registry
 
@@ -31,8 +31,7 @@ from novaideo.content.interface import (
     ICorrelableEntity,
     Iidea)
 from novaideo.utilities.util import (
-    render_small_listing_objs, extract_keywords,
-    render_listing_obj)
+    render_small_listing_objs, extract_keywords)
 from novaideo.utilities.pseudo_react import (
     get_components_data, get_all_updated_data)
 from novaideo.views.filter import find_entities, FILTER_SOURCES
@@ -323,24 +322,26 @@ class NovaideoAPI(IndexManagementJsonView):
         user = get_current()
         # text = self.params('text')
         title = self.params('title')
-        keywords = self.params('keywords')
+        tree = self.params('tree')
         # text = text if text else ''
         title = title if title else ''
-        keywords = keywords if keywords else []
-        if not isinstance(keywords, list):
-            keywords = [keywords]
+        tree = tree if tree else {}
+        if not isinstance(tree, dict):
+            tree = json.loads(tree)
 
-        if not keywords and not title:# and not text:
+        if not tree and not title:# and not text:
             return {'body': ''}
 
         title_keywords = extract_keywords(title)
         # text_keywords = extract_keywords(text)
         # keywords.extend(text_keywords[:5])
-        keywords.extend(title_keywords)
         result = find_entities(
             interfaces=[Iidea],
             user=user,
-            text_filter={'text_to_search': ', '.join(keywords)},
+            metadata_filter={
+                'tree': tree
+            },
+            text_filter={'text_to_search': ', '.join(title_keywords)},
             defined_search=True,
             generate_text_search=True)
         result_body = render_small_listing_objs(

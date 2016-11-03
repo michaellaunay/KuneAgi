@@ -58,7 +58,7 @@ def get_adapted_content(email, request, last_sending_date=None):
         metadata_filter={
             'content_types': ['idea', 'proposal'],
             'states': ['published'],
-            'keywords': getattr(member, 'keywords', [])},
+            'tree': getattr(member, 'tree', {})},
         sort_on='release_date',
         add_query=query)
 
