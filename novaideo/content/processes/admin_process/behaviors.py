@@ -235,7 +235,7 @@ def createsub_roles_validation(process, context):
 
 
 class AddSubSmartFolder(InfiniteCardinality):
-    style_descriminator = 'admin-action'
+    style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-folder-open'
     style_interaction = 'ajax-action'
     style_order = 0
@@ -296,7 +296,7 @@ class RemoveSmartFolder(InfiniteCardinality):
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-trash'
-    style_order = 2
+    style_order = 5
     submission_title = _('Continue')
     context = ISmartFolder
     roles_validation = edit_roles_validation
@@ -313,10 +313,6 @@ class RemoveSmartFolder(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return nothing
-
-
-def admin_roles_validation(process, context):
-    return has_role(role=('Admin',))
 
 
 def siteadmin_roles_validation(process, context):
@@ -378,7 +374,7 @@ def seesmartfolders_roles_validation(process, context):
 class SeeSmartFolders(InfiniteCardinality):
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-folder-open'
-    style_order = 2
+    style_order = 0
     context = INovaIdeoApplication
     roles_validation = seesmartfolders_roles_validation
 

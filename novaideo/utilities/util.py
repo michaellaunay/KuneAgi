@@ -592,8 +592,8 @@ def html_article_to_text(html):
 
     return ''
 
-ALL_DESCRIMINATORS = ['global-action',
-                      'text-action',
+ALL_DESCRIMINATORS = ['text-action',
+                      'global-action',
                       'lateral-action',
                       'access-action',
                       'primary-action',
