@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-11-03 13:59+0100\n"
+"POT-Creation-Date: 2016-11-04 12:42+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -51,24 +51,32 @@ msgstr "La proposition"
 msgid "The idea"
 msgstr "L'idée"
 
-#: novaideo/__init__.py:509
+#: novaideo/__init__.py:39
+msgid "Default view"
+msgstr ""
+
+#: novaideo/__init__.py:40
+msgid "Bloc view"
+msgstr ""
+
+#: novaideo/__init__.py:513
 msgid "Legal notices"
 msgstr "Mentions légales"
 
-#: novaideo/__init__.py:510
+#: novaideo/__init__.py:514
 msgid "The legal notices"
 msgstr "Les mentions légales"
 
-#: novaideo/__init__.py:513
+#: novaideo/__init__.py:517
 msgid "Terms of use"
 msgstr "Conditions d'utilisation"
 
-#: novaideo/__init__.py:514
+#: novaideo/__init__.py:518
 msgid "The terms of use"
 msgstr "Les conditions d'utilisation"
 
-#: novaideo/__init__.py:259 novaideo/content/correlation.py:133
-#: novaideo/content/novaideo_application.py:369
+#: novaideo/__init__.py:263 novaideo/content/correlation.py:133
+#: novaideo/content/novaideo_application.py:370
 msgid "General"
 msgstr "Générale"
 
@@ -148,7 +156,7 @@ msgstr "Examinateur"
 msgid "Channel"
 msgstr "Channel"
 
-#: novaideo/core.py:609 novaideo/content/idea.py:90
+#: novaideo/core.py:610 novaideo/content/idea.py:90
 #: novaideo/content/workspace.py:44 novaideo/content/proposal.py:115
 #: novaideo/content/comment.py:148
 msgid "File"
@@ -184,6 +192,7 @@ msgstr ""
 
 #: novaideo/core.py:595 novaideo/views/filter/__init__.py:925
 #: novaideo/views/proposal_management/templates/idea_data.pt:3
+#: novaideo/views/templates/style_picker.pt:22
 #: novaideo/views/correlation_management/templates/see_correlation.pt:7
 #: novaideo/content/idea.py:72 novaideo/content/correction.py:51
 #: novaideo/content/proposal.py:149 novaideo/content/amendment.py:233
@@ -518,24 +527,24 @@ msgstr ""
 msgid "${context} ne fait maintenant plus partie de vos suivis."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:1223
+#: novaideo/utilities/pseudo_react.py:1265
 #: novaideo/views/templates/panels/novaideo_contents.pt:9
 msgid "Published idea"
 msgstr "Idée publiée"
 
-#: novaideo/utilities/pseudo_react.py:1275
+#: novaideo/utilities/pseudo_react.py:1317
 #: novaideo/views/user_management/see_person.py:89
 #, python-format
 msgid "Her working groups (${nb})"
 msgstr "Ses groupes de travail (${nb})"
 
-#: novaideo/utilities/pseudo_react.py:1292
+#: novaideo/utilities/pseudo_react.py:1334
 #: novaideo/views/user_management/see_person.py:78
 #, python-format
 msgid "Her ideas (${nb})"
 msgstr "Ses idées (${nb})"
 
-#: novaideo/utilities/pseudo_react.py:1311
+#: novaideo/utilities/pseudo_react.py:1353
 #: novaideo/views/novaideo_view_manager/home.py:132
 #, python-format
 msgid "Ideas (${nb})"
@@ -597,100 +606,120 @@ msgid "L'inscription a bien été supprimée."
 msgstr ""
 
 #: novaideo/utilities/pseudo_react.py:775
-#: novaideo/utilities/pseudo_react.py:823
+msgid "Le dossier a bien été modifié."
+msgstr ""
+
+#: novaideo/utilities/pseudo_react.py:782
+msgid "Le dossier a bien été supprimé."
+msgstr ""
+
+#: novaideo/utilities/pseudo_react.py:792
+msgid "Le dossier a bien été publié."
+msgstr ""
+
+#: novaideo/utilities/pseudo_react.py:800
+msgid "Le dossier a bien été retiré."
+msgstr ""
+
+#: novaideo/utilities/pseudo_react.py:808
+msgid "Le sous dossier a bien été ajouté."
+msgstr ""
+
+#: novaideo/utilities/pseudo_react.py:817
+#: novaideo/utilities/pseudo_react.py:865
 msgid "L'idée a bien été archivée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:795
+#: novaideo/utilities/pseudo_react.py:837
 msgid "L'idée a bien été publiée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:803
+#: novaideo/utilities/pseudo_react.py:845
 msgid "L'idée a bien été examinée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:815
-#: novaideo/utilities/pseudo_react.py:846
+#: novaideo/utilities/pseudo_react.py:857
+#: novaideo/utilities/pseudo_react.py:888
 msgid "L'idée a bien été modifiée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:838
+#: novaideo/utilities/pseudo_react.py:880
 msgid "L'idée a bien été récupérée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:853
+#: novaideo/utilities/pseudo_react.py:895
 msgid "L'idée a bien été supprimée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:865
+#: novaideo/utilities/pseudo_react.py:907
 msgid "L'idée a bien été créée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:881
+#: novaideo/utilities/pseudo_react.py:923
 msgid "La proposition a bien été examinée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:893
+#: novaideo/utilities/pseudo_react.py:935
 msgid "La proposition a bien été publiée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:900
+#: novaideo/utilities/pseudo_react.py:942
 msgid "La proposition a bien été supprimée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:914
+#: novaideo/utilities/pseudo_react.py:956
 msgid "Vous êtes maintenant sur la liste d'attente."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:917
+#: novaideo/utilities/pseudo_react.py:959
 msgid "Vous êtes maintenant membre du groupe de travail."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:938
+#: novaideo/utilities/pseudo_react.py:980
 msgid "Votre validation est bien pris en compte"
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:957
+#: novaideo/utilities/pseudo_react.py:999
 msgid "Vous n'êtes plus maintenant membre du groupe de travail."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:976
+#: novaideo/utilities/pseudo_react.py:1018
 msgid "Les fichiers ont bien été ajoutés dans l'espace de  travail."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:984
+#: novaideo/utilities/pseudo_react.py:1026
 msgid "Le fichier à bien été supprimé de l'espace de  travail."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:994
+#: novaideo/utilities/pseudo_react.py:1036
 msgid "Les fichiers ont bien été attachés à la proposition."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:1055
+#: novaideo/utilities/pseudo_react.py:1097
 msgid "Les données de l'organisation ont été mis à jour."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:1062
+#: novaideo/utilities/pseudo_react.py:1104
 msgid "L'organisation a bien été supprimée."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:1084
+#: novaideo/utilities/pseudo_react.py:1126
 msgid "Le rôle de l'utilisateur a bien été modifié."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:1092
+#: novaideo/utilities/pseudo_react.py:1134
 msgid "Les processus sont bien mis à jour."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:1101
+#: novaideo/utilities/pseudo_react.py:1143
 msgid "Le fichier a bien été publié."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:1109
+#: novaideo/utilities/pseudo_react.py:1151
 msgid "Le fichier a bien été privatisé."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:1225
+#: novaideo/utilities/pseudo_react.py:1267
 #: novaideo/views/templates/panels/novaideo_contents.pt:10
 msgid "Published ideas"
 msgstr "Idées publiées"
@@ -700,25 +729,25 @@ msgstr "Idées publiées"
 msgid "Vous soutenez maintenant le contenu ${context}."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:1127
+#: novaideo/utilities/pseudo_react.py:1169
 #: novaideo/views/novaideo_view_manager/see_my_selections.py:35
 #: novaideo/content/processes/novaideo_view_manager/definition.py:67
 msgid "My following"
 msgstr "Mes suivis"
 
-#: novaideo/utilities/pseudo_react.py:1157
+#: novaideo/utilities/pseudo_react.py:1199
 #: novaideo/views/novaideo_view_manager/see_my_supports.py:39
 #: novaideo/content/processes/novaideo_view_manager/definition.py:75
 msgid "My supports"
 msgstr "Mes appréciations"
 
-#: novaideo/utilities/pseudo_react.py:1193
+#: novaideo/utilities/pseudo_react.py:1235
 #: novaideo/views/novaideo_view_manager/see_my_contents.py:42
 #: novaideo/content/processes/novaideo_view_manager/definition.py:63
 msgid "My contents"
 msgstr "Mes contenus"
 
-#: novaideo/utilities/pseudo_react.py:1242
+#: novaideo/utilities/pseudo_react.py:1284
 #: novaideo/views/novaideo_view_manager/see_my_participations.py:36
 #: novaideo/content/processes/novaideo_view_manager/definition.py:71
 msgid "My participations"
@@ -729,7 +758,7 @@ msgstr "Mes groupes de travail"
 msgid "Votre jeton est bien récupéré du contenu ${context}."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:1009
+#: novaideo/utilities/pseudo_react.py:1051
 #, python-format
 msgid ""
 "Les données associées à l'organisation de l'utilisateur ${context} ont bien "
@@ -740,13 +769,13 @@ msgstr ""
 msgid "Le commentaire est maintenant supprimé."
 msgstr ""
 
-#: novaideo/utilities/pseudo_react.py:1026
+#: novaideo/utilities/pseudo_react.py:1068
 #, python-format
 msgid "L'utilisateur ${context} a bien changé d'organisation."
 msgstr ""
 
-#: novaideo/views/__init__.py:385 novaideo/views/__init__.py:414
-#: novaideo/views/__init__.py:444 novaideo/views/__init__.py:474
+#: novaideo/views/__init__.py:389 novaideo/views/__init__.py:418
+#: novaideo/views/__init__.py:448 novaideo/views/__init__.py:478
 #: novaideo/views/idea_management/withdraw_token.py:24
 #: novaideo/views/proposal_management/withdraw_token.py:24
 #: novaideo/content/processes/idea_management/definition.py:146
@@ -754,7 +783,7 @@ msgstr ""
 msgid "Withdraw my token"
 msgstr "Retirer son jeton"
 
-#: novaideo/views/__init__.py:390 novaideo/views/__init__.py:419
+#: novaideo/views/__init__.py:394 novaideo/views/__init__.py:423
 #: novaideo/views/idea_management/support_idea.py:24
 #: novaideo/views/proposal_management/support_proposal.py:24
 #: novaideo/content/processes/idea_management/definition.py:138
@@ -762,7 +791,7 @@ msgstr "Retirer son jeton"
 msgid "Support"
 msgstr "Soutenir"
 
-#: novaideo/views/__init__.py:449 novaideo/views/__init__.py:479
+#: novaideo/views/__init__.py:453 novaideo/views/__init__.py:483
 #: novaideo/views/idea_management/oppose_idea.py:24
 #: novaideo/views/proposal_management/oppose_proposal.py:24
 #: novaideo/content/processes/idea_management/definition.py:142
@@ -770,15 +799,19 @@ msgstr "Soutenir"
 msgid "Oppose"
 msgstr "S'opposer"
 
-#: novaideo/views/panels.py:332
+#: novaideo/views/panels.py:344
 #: novaideo/views/novaideo_view_manager/templates/search_result.pt:21
 #: novaideo/views/novaideo_view_manager/templates/home.pt:24
-#: novaideo/content/processes/admin_process/definition.py:45
-#: novaideo/content/processes/admin_process/definition.py:49
-#: novaideo/content/processes/admin_process/definition.py:53
+#: novaideo/content/processes/admin_process/definition.py:55
+#: novaideo/content/processes/admin_process/definition.py:59
+#: novaideo/content/processes/admin_process/definition.py:63
 #: novaideo/content/processes/novaideo_process_management/definition.py:42
 msgid "More"
 msgstr "Plus"
+
+#: novaideo/views/panels.py:624
+msgid "My private folders"
+msgstr ""
 
 #: novaideo/views/advertising_panels.py:97
 msgid "Banner"
@@ -831,12 +864,14 @@ msgstr "Alerte pour publication"
 #: novaideo/views/novaideo_file_management/publish_file.py:37
 #: novaideo/views/idea_management/publish_idea_moderation.py:37
 #: novaideo/views/idea_management/publish_idea.py:36
+#: novaideo/views/admin_process/publish_smart_folder.py:37
 #: novaideo/views/proposal_management/publish_proposal.py:114
 #: novaideo/views/advertising_management/publish_advertising.py:38
 #: novaideo/content/processes/novaideo_file_management/definition.py:57
 #: novaideo/content/processes/novaideo_file_management/definition.py:58
 #: novaideo/content/processes/idea_management/definition.py:94
 #: novaideo/content/processes/idea_management/definition.py:106
+#: novaideo/content/processes/admin_process/definition.py:86
 #: novaideo/content/processes/proposal_management/definition.py:309
 #: novaideo/content/processes/advertising_management/definition.py:64
 msgid "Publish"
@@ -987,11 +1022,13 @@ msgstr "L'utilisateur (${email}) n'est pas abonné"
 #: novaideo/views/newsletter_management/remove_newsletter.py:38
 #: novaideo/views/user_management/remind.py:37
 #: novaideo/views/user_management/remove_registration.py:36
+#: novaideo/views/admin_process/remove_smart_folder.py:37
 #: novaideo/views/advertising_management/remove_advertising.py:37
 #: novaideo/views/templates/dragdrop_sequence/sequence_item.pt:20
 #: novaideo/content/processes/newsletter_management/definition.py:74
 #: novaideo/content/processes/user_management/definition.py:152
 #: novaideo/content/processes/user_management/behaviors.py:671
+#: novaideo/content/processes/admin_process/definition.py:78
 #: novaideo/content/processes/advertising_management/definition.py:72
 #: novaideo/content/processes/comment_management/definition.py:56
 #: novaideo/content/processes/comment_management/definition.py:57
@@ -1007,6 +1044,9 @@ msgstr "Supprimer la newsletter"
 #: novaideo/views/newsletter_management/templates/alert_remove.pt:1
 #: novaideo/views/user_management/templates/alert_remove_registration.pt:1
 #: novaideo/views/user_management/templates/alert_refuse_registration.pt:1
+#: novaideo/views/admin_process/templates/alert_smartfolder_remove.pt:1
+#: novaideo/views/admin_process/templates/alert_smartfolder_withdraw.pt:1
+#: novaideo/views/admin_process/templates/alert_smartfolder_publish.pt:1
 #: novaideo/views/proposal_management/templates/alert_remove_file.pt:1
 #: novaideo/views/advertising_management/templates/alert_validation.pt:1
 #: novaideo/views/advertising_management/templates/alert_submission.pt:1
@@ -1154,6 +1194,7 @@ msgstr "Supression de l'idée"
 #: novaideo/content/processes/user_management/definition.py:144
 #: novaideo/content/processes/user_management/behaviors.py:320
 #: novaideo/content/processes/user_management/behaviors.py:632
+#: novaideo/content/processes/admin_process/behaviors.py:195
 #: novaideo/content/processes/proposal_management/definition.py:372
 #: novaideo/content/processes/proposal_management/definition.py:373
 #: novaideo/content/processes/proposal_management/behaviors.py:1265
@@ -2261,9 +2302,58 @@ msgstr "Désactiver"
 msgid "Send the news letter"
 msgstr "Envoyer la newsletter"
 
+#: novaideo/views/admin_process/publish_smart_folder.py:58
+#: novaideo/content/processes/admin_process/definition.py:85
+msgid "Publish the smart folder"
+msgstr "Publier le dossier dynamique"
+
+#: novaideo/views/admin_process/see_smart_folder.py:80
+msgid "Open a folder"
+msgstr "Ouvrir le dossier"
+
+#: novaideo/views/admin_process/see_smart_folder.py:101
+#: novaideo/views/admin_process/see_smart_folder.py:112
+msgid "Access to the requested folder has been denied"
+msgstr "L'accès au dossier demandé a été refusé"
+
+#: novaideo/views/admin_process/see_smart_folder.py:102
+#: novaideo/views/admin_process/see_smart_folder.py:167
+msgid "Folder not valid"
+msgstr "Dossier non valide"
+
+#: novaideo/views/admin_process/see_smart_folder.py:113
+#: novaideo/views/novaideo_view_manager/doc_anonymous.py:25
+#: novaideo/web_services/export_entities.py:119
+msgid "Permission denied"
+msgstr "Permission refusée"
+
+#: novaideo/views/admin_process/order_smart_folders.py:70
+#: novaideo/views/admin_process/order_sub_smart_folders.py:67
+#: novaideo/content/processes/admin_process/definition.py:97
+#: novaideo/content/processes/admin_process/definition.py:98
+#: novaideo/content/processes/admin_process/definition.py:101
+#: novaideo/content/processes/admin_process/definition.py:102
+msgid "Order"
+msgstr "Ordonner"
+
+#: novaideo/views/admin_process/order_smart_folders.py:58
+#: novaideo/views/admin_process/order_sub_smart_folders.py:55
+msgid "Folders"
+msgstr "Les dossiers dynamiques"
+
+#: novaideo/views/admin_process/order_smart_folders.py:59
+#: novaideo/views/admin_process/order_sub_smart_folders.py:56
+msgid "Drag and drop folders to order"
+msgstr "Glisser déposer les dossiers afin de les ordonner"
+
+#: novaideo/views/admin_process/order_smart_folders.py:55
+#: novaideo/views/admin_process/order_sub_smart_folders.py:52
+msgid "folder"
+msgstr "dossier dynamique"
+
 #: novaideo/views/admin_process/extract.py:48
-#: novaideo/content/processes/admin_process/definition.py:51
-#: novaideo/content/processes/admin_process/definition.py:52
+#: novaideo/content/processes/admin_process/definition.py:61
+#: novaideo/content/processes/admin_process/definition.py:62
 msgid "Extract"
 msgstr "Extraire"
 
@@ -2271,15 +2361,34 @@ msgstr "Extraire"
 msgid "Attributes to extract"
 msgstr "Attributs à extraire"
 
+#: novaideo/views/admin_process/addsub_smart_folder.py:29
+#: novaideo/views/admin_process/add_smart_folder.py:30
+msgid "Add smart folder"
+msgstr "Ajouter un dossier dynamique"
+
+#: novaideo/views/admin_process/see_smart_folders.py:25
+msgid "No smart folder found"
+msgstr "Pas de dossiers dynamiques trouvés"
+
+#: novaideo/views/admin_process/see_smart_folders.py:26
+msgid "One smart folder found"
+msgstr "Un dossier dynamique trouvé"
+
+# python-format
+#: novaideo/views/admin_process/see_smart_folders.py:27
+#, python-format
+msgid "${nember} smart folders found"
+msgstr "${nember} dossiers dynamiques trouvés"
+
 #: novaideo/views/admin_process/configure_site_folder.py:34
-#: novaideo/content/processes/admin_process/definition.py:43
+#: novaideo/content/processes/admin_process/definition.py:53
 msgid "Configure the site"
 msgstr "Configurer le site"
 
 #: novaideo/views/admin_process/manage_keywords.py:73
 #: novaideo/views/admin_process/manage_keywords.py:86
-#: novaideo/content/processes/admin_process/definition.py:47
-#: novaideo/content/processes/admin_process/definition.py:48
+#: novaideo/content/processes/admin_process/definition.py:57
+#: novaideo/content/processes/admin_process/definition.py:58
 msgid "Manage keywords"
 msgstr "Gestion des mots clés"
 
@@ -2287,12 +2396,38 @@ msgstr "Gestion des mots clés"
 msgid "New keyword"
 msgstr "Nouveau mot clé"
 
+#: novaideo/views/admin_process/remove_smart_folder.py:58
+#: novaideo/content/processes/admin_process/definition.py:77
+msgid "Remove the smart folder"
+msgstr "Supprimer le dossier dynamique"
+
+#: novaideo/views/admin_process/withdraw_smart_folder.py:37
+#: novaideo/views/proposal_management/withdraw.py:23
+#: novaideo/content/processes/proposal_management/definition.py:325
+msgid "Withdraw"
+msgstr "Retirer"
+
+#: novaideo/views/admin_process/withdraw_smart_folder.py:58
+#: novaideo/content/processes/admin_process/definition.py:89
+#: novaideo/content/processes/admin_process/definition.py:90
+msgid "Withdraw the smart folder"
+msgstr "Retirer le dossier dynamique"
+
+#: novaideo/views/admin_process/edit_smart_folder.py:29
+#: novaideo/content/processes/admin_process/definition.py:73
+msgid "Edit the smart folder"
+msgstr "Modifier le dossier dynamique"
+
 #: novaideo/views/admin_process/templates/alert_event_keywords.pt:1
 msgid ""
 "Attention, la fusion d'un ou plusieurs mots-clefs entraine la modification "
 "des mots-clefs enregistrés par les différents contenus présents sur "
 "l'application."
 msgstr ""
+
+#: novaideo/views/admin_process/templates/see_smartfolder.pt:19
+msgid "Contents"
+msgstr "Contenus"
 
 #: novaideo/views/proposal_management/publish_proposal.py:159
 msgid "Améliorer la proposition ou la soumettre en l'état"
@@ -2365,11 +2500,6 @@ msgstr "Voir les versions amendées"
 #: novaideo/views/proposal_management/work.py:23
 msgid "Amendable"
 msgstr "En cours d'amendement"
-
-#: novaideo/views/proposal_management/withdraw.py:23
-#: novaideo/content/processes/proposal_management/definition.py:325
-msgid "Withdraw"
-msgstr "Retirer"
 
 #: novaideo/views/proposal_management/associate.py:53
 #: novaideo/content/processes/proposal_management/definition.py:360
@@ -2461,8 +2591,9 @@ msgstr "Rédiger une proposition"
 #: novaideo/views/proposal_management/create_proposal.py:49
 #: novaideo/views/amendment_management/explanation_amendment.py:26
 #: novaideo/views/work_mode_processes/wiki_work_mode_process/correct_proposal.py:46
-#: novaideo/content/correlation.py:78 novaideo/content/comment.py:40
-#: novaideo/content/person.py:75 novaideo/content/person.py:83
+#: novaideo/content/correlation.py:78 novaideo/content/smart_folder.py:51
+#: novaideo/content/comment.py:40 novaideo/content/person.py:75
+#: novaideo/content/person.py:83
 msgid "- Select -"
 msgstr "- Sélectionner -"
 
@@ -2791,6 +2922,22 @@ msgstr "Filtrer les résultats"
 msgid "${group['title']}"
 msgstr "${group['title']}"
 
+#: novaideo/views/templates/folder_breadcrumb.pt:7
+#: novaideo/views/novaideo_view_manager/search.py:41
+#: novaideo/views/novaideo_view_manager/home.py:32
+msgid "No element found"
+msgstr "Pas d'éléments trouvés"
+
+#: novaideo/views/templates/folder_breadcrumb.pt:8
+#: novaideo/views/novaideo_view_manager/search.py:42
+#: novaideo/views/novaideo_view_manager/home.py:33
+msgid "One element found"
+msgstr "Un élément trouvé"
+
+#: novaideo/views/templates/folder_breadcrumb.pt:9
+msgid "elements found"
+msgstr "éléments trouvés"
+
 #: novaideo/views/templates/web_advertisting_result.pt:15
 msgid "click(s)"
 msgstr "clic(s)"
@@ -2823,6 +2970,10 @@ msgstr "tous les résultats"
 msgid "Advanced search"
 msgstr "Recherche avancée"
 
+#: novaideo/views/templates/style_picker.pt:24
+msgid "Background"
+msgstr ""
+
 #: novaideo/views/templates/textarea_comment.pt:9
 msgid "Add Emoji"
 msgstr "Ajouyter un Emoji"
@@ -2848,6 +2999,12 @@ msgstr "Annuler"
 #: novaideo/content/processes/amendment_management/definition.py:73
 msgid "Submit"
 msgstr "Soumettre"
+
+#: novaideo/views/templates/order_smart_folders.pt:1
+msgid ""
+"Vous pouvez ordonner les dossier dynamiques en cliquant sur le bouton "
+"suivant <dynamic element>"
+msgstr ""
 
 #: novaideo/views/templates/ajax_form.pt:42
 #: novaideo/views/novaideo_view_manager/templates/search_form.pt:35
@@ -4175,6 +4332,7 @@ msgstr "Détacher le commentaire"
 #: novaideo/content/processes/user_management/definition.py:63
 #: novaideo/content/processes/user_management/definition.py:64
 #: novaideo/content/processes/user_management/behaviors.py:144
+#: novaideo/content/processes/admin_process/definition.py:74
 #: novaideo/content/processes/proposal_management/definition.py:313
 #: novaideo/content/processes/comment_management/definition.py:52
 #: novaideo/content/processes/comment_management/definition.py:53
@@ -4639,16 +4797,6 @@ msgstr "Le graphe de dépendances"
 msgid "Processes history"
 msgstr "Historique des processus"
 
-#: novaideo/views/novaideo_view_manager/search.py:41
-#: novaideo/views/novaideo_view_manager/home.py:32
-msgid "No element found"
-msgstr "Pas d'éléments trouvés"
-
-#: novaideo/views/novaideo_view_manager/search.py:42
-#: novaideo/views/novaideo_view_manager/home.py:33
-msgid "One element found"
-msgstr "Un élément trouvé"
-
 # python-format
 #: novaideo/views/novaideo_view_manager/search.py:43
 #: novaideo/views/novaideo_view_manager/home.py:34
@@ -4733,11 +4881,6 @@ msgstr "Les groupes de travail (${nb})"
 #: novaideo/views/novaideo_view_manager/doc_anonymous.py:32
 msgid "Contribute"
 msgstr "Contribuer"
-
-#: novaideo/views/novaideo_view_manager/doc_anonymous.py:25
-#: novaideo/web_services/export_entities.py:119
-msgid "Permission denied"
-msgstr "Permission refusée"
 
 #: novaideo/views/novaideo_view_manager/see_my_contents.py:30
 msgid "Aucun contenus auxquels j'ai contribué"
@@ -4870,7 +5013,8 @@ msgid "Detail"
 msgstr "Détail"
 
 #: novaideo/views/correlation_management/templates/see_correlation.pt:9
-#: novaideo/content/comment.py:88 novaideo/content/comment.py:138
+#: novaideo/content/smart_folder.py:136 novaideo/content/comment.py:88
+#: novaideo/content/comment.py:138
 msgid "Associated contents"
 msgstr "Contenus associés"
 
@@ -5169,6 +5313,53 @@ msgstr "J'ai une idée !"
 msgid "You do not have the right to assign these/this role(s): ${roles}"
 msgstr ""
 
+#: novaideo/content/smart_folder.py:60
+msgid "Usual color"
+msgstr ""
+
+#: novaideo/content/smart_folder.py:62
+msgid "Choose the text and background color of the menu section."
+msgstr ""
+
+#: novaideo/content/smart_folder.py:68
+msgid "Hover color"
+msgstr ""
+
+#: novaideo/content/smart_folder.py:70
+msgid "Choose the text and background color of the menu section on mouse-over."
+msgstr ""
+
+#: novaideo/content/smart_folder.py:117
+#: novaideo/content/site_configuration.py:215
+#: novaideo/content/site_configuration.py:322 novaideo/adapters/__init__.py:22
+msgid "Title"
+msgstr "Titre"
+
+#: novaideo/content/smart_folder.py:123 novaideo/content/newsletter.py:170
+#: novaideo/content/person.py:231 novaideo/adapters/__init__.py:27
+msgid "Description"
+msgstr "Description"
+
+#: novaideo/content/smart_folder.py:128 novaideo/content/person.py:285
+msgid "Locale"
+msgstr "Langue"
+
+#: novaideo/content/smart_folder.py:137 novaideo/content/comment.py:89
+msgid "Choose contents to associate."
+msgstr "Choisissez le contenu à associer"
+
+#: novaideo/content/smart_folder.py:145
+msgid "View type"
+msgstr "Type de vue"
+
+#: novaideo/content/smart_folder.py:152
+msgid "Icon"
+msgstr "Icône"
+
+#: novaideo/content/smart_folder.py:155
+msgid "Select an icon."
+msgstr "Sélectionner une icône."
+
 #: novaideo/content/workspace.py:48
 msgid "Add file"
 msgstr "Ajouter une pièce jointe"
@@ -5328,11 +5519,6 @@ msgstr "Activer le partage avec les réseaux sociaux"
 msgid "Mail id"
 msgstr ""
 
-#: novaideo/content/site_configuration.py:215
-#: novaideo/content/site_configuration.py:322 novaideo/adapters/__init__.py:22
-msgid "Title"
-msgstr "Titre"
-
 #: novaideo/content/site_configuration.py:227
 msgid "Template"
 msgstr "Modèle"
@@ -5446,11 +5632,6 @@ msgstr "Le contenu ne doit pas contenir la variable \"unsubscribeurl\""
 msgid "The subject of the newsletter."
 msgstr "Le sujet de la newsletter"
 
-#: novaideo/content/newsletter.py:170 novaideo/content/person.py:231
-#: novaideo/adapters/__init__.py:27
-msgid "Description"
-msgstr "Description"
-
 #: novaideo/content/newsletter.py:181 novaideo/adapters/__init__.py:33
 msgid "Content"
 msgstr "Contenu"
@@ -5534,10 +5715,6 @@ msgstr "Donner une explication spécifique"
 msgid "Choose related ideas."
 msgstr "Sélectionner les idées liées"
 
-#: novaideo/content/comment.py:89
-msgid "Choose contents to associate."
-msgstr "Choisissez le contenu à associer"
-
 #: novaideo/content/comment.py:131
 msgid "Choose your intention"
 msgstr "Choisissez votre intention"
@@ -5598,10 +5775,6 @@ msgid ""
 msgstr ""
 "Veuillez ne rien sélectionner si vous ne souhaitez pas communiquer cette "
 "information."
-
-#: novaideo/content/person.py:285
-msgid "Locale"
-msgstr "Langue"
 
 #: novaideo/content/person.py:309
 msgid "Keep me anonymous"
@@ -5789,6 +5962,7 @@ msgstr "Les documents"
 #: novaideo/content/processes/newsletter_management/definition.py:55
 #: novaideo/content/processes/idea_management/definition.py:67
 #: novaideo/content/processes/invitation_management/definition.py:53
+#: novaideo/content/processes/admin_process/definition.py:67
 #: novaideo/content/processes/proposal_management/definition.py:294
 #: novaideo/content/processes/advertising_management/definition.py:49
 #: novaideo/content/processes/organization_management/definition.py:52
@@ -5802,6 +5976,7 @@ msgstr "Ajouter"
 #: novaideo/content/processes/newsletter_management/definition.py:99
 #: novaideo/content/processes/invitation_management/definition.py:61
 #: novaideo/content/processes/user_management/definition.py:149
+#: novaideo/content/processes/admin_process/definition.py:95
 #: novaideo/content/processes/advertising_management/definition.py:61
 #: novaideo/content/processes/novaideo_view_manager/definition.py:80
 #: novaideo/content/processes/novaideo_view_manager/definition.py:84
@@ -5831,8 +6006,12 @@ msgstr "Voir"
 #: novaideo/content/processes/user_management/behaviors.py:350
 #: novaideo/content/processes/user_management/behaviors.py:474
 #: novaideo/content/processes/ballot_processes/__init__.py:32
-#: novaideo/content/processes/admin_process/behaviors.py:43
-#: novaideo/content/processes/admin_process/behaviors.py:73
+#: novaideo/content/processes/admin_process/behaviors.py:48
+#: novaideo/content/processes/admin_process/behaviors.py:78
+#: novaideo/content/processes/admin_process/behaviors.py:215
+#: novaideo/content/processes/admin_process/behaviors.py:242
+#: novaideo/content/processes/admin_process/behaviors.py:279
+#: novaideo/content/processes/admin_process/behaviors.py:402
 #: novaideo/content/processes/proposal_management/behaviors.py:255
 #: novaideo/content/processes/proposal_management/behaviors.py:316
 #: novaideo/content/processes/proposal_management/behaviors.py:494
@@ -5874,7 +6053,10 @@ msgstr "Enregistrer"
 #: novaideo/content/processes/user_management/behaviors.py:423
 #: novaideo/content/processes/user_management/behaviors.py:446
 #: novaideo/content/processes/user_management/behaviors.py:575
-#: novaideo/content/processes/admin_process/behaviors.py:104
+#: novaideo/content/processes/admin_process/behaviors.py:109
+#: novaideo/content/processes/admin_process/behaviors.py:300
+#: novaideo/content/processes/admin_process/behaviors.py:336
+#: novaideo/content/processes/admin_process/behaviors.py:360
 #: novaideo/content/processes/proposal_management/behaviors.py:336
 #: novaideo/content/processes/proposal_management/behaviors.py:413
 #: novaideo/content/processes/proposal_management/behaviors.py:1647
@@ -5905,7 +6087,7 @@ msgid "Edit the newsletter"
 msgstr "Editer la newsletter"
 
 #: novaideo/content/processes/newsletter_management/definition.py:62
-#: novaideo/content/processes/admin_process/definition.py:44
+#: novaideo/content/processes/admin_process/definition.py:54
 msgid "Configure"
 msgstr "Configurer"
 
@@ -6164,10 +6346,30 @@ msgstr ""
 msgid "Deactivate users"
 msgstr "Désactiver les utilisateurs"
 
-#: novaideo/content/processes/admin_process/definition.py:35
-#: novaideo/content/processes/admin_process/definition.py:36
+#: novaideo/content/processes/admin_process/definition.py:45
+#: novaideo/content/processes/admin_process/definition.py:46
 msgid "Admin process"
 msgstr "Le processus administrateur"
+
+#: novaideo/content/processes/admin_process/definition.py:65
+#: novaideo/content/processes/admin_process/definition.py:66
+msgid "Add a smart folder"
+msgstr "Ajouter un dossier dynamique"
+
+#: novaideo/content/processes/admin_process/definition.py:69
+#: novaideo/content/processes/admin_process/definition.py:70
+msgid "Add a sub smart folder"
+msgstr "Ajouter un sous-dossier dynamique"
+
+#: novaideo/content/processes/admin_process/definition.py:81
+#: novaideo/content/processes/admin_process/definition.py:82
+msgid "See a smart folder"
+msgstr "Voir le dossier dynamique"
+
+#: novaideo/content/processes/admin_process/definition.py:93
+#: novaideo/content/processes/admin_process/definition.py:94
+msgid "Smart folders"
+msgstr "Dossiers dynamiques"
 
 #: novaideo/content/processes/proposal_management/__init__.py:35
 msgid ""
