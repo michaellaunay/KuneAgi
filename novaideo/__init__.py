@@ -36,6 +36,10 @@ ANALYTICS_DEFAUT_CONTENTS = ['idea', 'proposal']
 ACCESS_ACTIONS = {}
 
 
+VIEW_TYPES = {'default': _('Default view'),
+              'bloc': _('Bloc view')}
+
+
 def get_access_keys(context):
     declared = context.__provides__.declared
     if declared:

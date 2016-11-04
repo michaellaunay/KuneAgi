@@ -29,7 +29,8 @@ from novaideo.views.novaideo_view_manager.search import (
 from novaideo.content.interface import (
     IPerson,
     ICorrelableEntity,
-    Iidea)
+    Iidea,
+    IFile)
 from novaideo.utilities.util import (
     render_small_listing_objs, extract_keywords)
 from novaideo.utilities.pseudo_react import (
@@ -241,6 +242,9 @@ class NovaideoAPI(IndexManagementJsonView):
 
     def find_correlable_entity(self):
         return self.find_entity(interfaces=[ICorrelableEntity])
+
+    def find_smart_folder_contents(self):
+        return self.find_entity(interfaces=[IFile], states=['published'])
 
     def find_ideas(self):
         novaideo_index = find_catalog('novaideo')

@@ -305,6 +305,7 @@ class NovaIdeoApplication(VisualisableElement, Application):
     channels = CompositeMultipleProperty('channels', 'subject')
     general_chanel = SharedUniqueProperty('general_chanel')
     newsletters = CompositeMultipleProperty('newsletters')
+    smart_folders = CompositeMultipleProperty('smart_folders')
     tree = synchronize_tree()
 
     def __init__(self, **kwargs):
