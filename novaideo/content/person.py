@@ -234,9 +234,9 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 
     tree = colander.SchemaNode(
         typ=DictSchemaType(),
-        validator=colander.All(keywords_validator),
         widget=keyword_widget,
         default=DEFAULT_TREE,
+        missing=DEFAULT_TREE,
         title=_('Preferences'),
         description=_('Indicate keywords. You can specify a second keyword level for each keyword chosen.')
         )

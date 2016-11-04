@@ -30,7 +30,7 @@ from pontus.widget import (
 from pontus.schema import Schema, omit, select
 from pontus.form import FormView
 from deform_treepy.utilities.tree_utility import (
-    get_branches, tree_to_keywords)
+    get_branches, tree_to_keywords, get_all_branches)
 from deform_treepy.widget import (
     DictSchemaType, KeywordsTreeWidget)
 
@@ -1302,9 +1302,13 @@ def get_contents_by_keywords(
         else:
             query = query & date_index.lt(date_to)
 
-    tree = filter_.get('metadata_filter', {}).get('tree', root.tree)
-    tree = tree if tree else root.tree
-    keywords = tree_to_keywords(tree)
+    tree = filter_.get('metadata_filter', {}).get('tree', {})
+    if not tree:
+        tree = root.tree
+        keywords = get_all_branches(tree)
+    else:
+        keywords = get_branches(tree)
+
     if ROOT_TREE in keywords:
         keywords.remove(ROOT_TREE)
 

@@ -26,7 +26,7 @@ class DuplicateProposalFormView(FormView):
     schema = select(ProposalSchema(),
                     ['title',
                      'description',
-                     'keywords',
+                     'tree',
                      'text',
                      'related_ideas',
                      ('add_files', ['attached_files'])])
