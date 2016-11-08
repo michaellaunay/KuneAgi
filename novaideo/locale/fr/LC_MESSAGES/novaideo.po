@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-11-04 12:42+0100\n"
+"POT-Creation-Date: 2016-11-08 13:07+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -190,7 +190,7 @@ msgstr ""
 "Renseigner les mots clés. Vous pouvez préciser un second niveau de mot-clef "
 "pour chaque mot-clef choisi."
 
-#: novaideo/core.py:595 novaideo/views/filter/__init__.py:925
+#: novaideo/core.py:595 novaideo/views/filter/__init__.py:921
 #: novaideo/views/proposal_management/templates/idea_data.pt:3
 #: novaideo/views/templates/style_picker.pt:22
 #: novaideo/views/correlation_management/templates/see_correlation.pt:7
@@ -1736,7 +1736,7 @@ msgstr "${nember} invitations trouvées"
 msgid "Organization"
 msgstr "Organisation"
 
-#: novaideo/views/filter/__init__.py:566 novaideo/views/filter/__init__.py:940
+#: novaideo/views/filter/__init__.py:566 novaideo/views/filter/__init__.py:936
 #: novaideo/web_services/export_entities.py:168
 msgid "Metadata filter"
 msgstr "Filtre sur les métadonnées"
@@ -1745,15 +1745,15 @@ msgstr "Filtre sur les métadonnées"
 msgid "Geographic filter"
 msgstr "Filtre géographique"
 
-#: novaideo/views/filter/__init__.py:580 novaideo/views/filter/__init__.py:953
+#: novaideo/views/filter/__init__.py:580 novaideo/views/filter/__init__.py:949
 msgid "Temporal filter"
 msgstr "Filtre temporel"
 
-#: novaideo/views/filter/__init__.py:587 novaideo/views/filter/__init__.py:966
+#: novaideo/views/filter/__init__.py:587 novaideo/views/filter/__init__.py:962
 msgid "Contribution filter"
 msgstr "Filtre sur les contributeurs"
 
-#: novaideo/views/filter/__init__.py:594 novaideo/views/filter/__init__.py:979
+#: novaideo/views/filter/__init__.py:594 novaideo/views/filter/__init__.py:975
 msgid "Text filter"
 msgstr "Filtre textuel"
 
@@ -1761,17 +1761,17 @@ msgstr "Filtre textuel"
 msgid "Other filter"
 msgstr "Autre filtre"
 
-#: novaideo/views/filter/__init__.py:993 novaideo/views/templates/filter.pt:7
+#: novaideo/views/filter/__init__.py:989 novaideo/views/templates/filter.pt:9
 msgid "Filter"
 msgstr "Filtrer"
 
 #: novaideo/views/filter/__init__.py:786 novaideo/views/filter/__init__.py:865
-#: novaideo/views/filter/__init__.py:894 novaideo/views/filter/__init__.py:917
+#: novaideo/views/filter/__init__.py:890 novaideo/views/filter/__init__.py:913
 msgid "Not"
 msgstr "Sauf"
 
 #: novaideo/views/filter/__init__.py:788 novaideo/views/filter/__init__.py:867
-#: novaideo/views/filter/__init__.py:896 novaideo/views/filter/__init__.py:919
+#: novaideo/views/filter/__init__.py:892 novaideo/views/filter/__init__.py:915
 msgid "Check the box to exclude values entered below."
 msgstr "Cochez pour exclure les valeurs saisis ci-dessous."
 
@@ -1829,15 +1829,15 @@ msgstr ""
 "Vous pouvez sélectionner la date de la dernière connection des membres à "
 "afficher."
 
-#: novaideo/views/filter/__init__.py:903
+#: novaideo/views/filter/__init__.py:899
 msgid "Authors"
 msgstr "Auteurs"
 
-#: novaideo/views/filter/__init__.py:904
+#: novaideo/views/filter/__init__.py:900
 msgid "You can enter the authors names of the contents to be displayed."
 msgstr "Vous pouvez saisir les noms des auteurs des contenus à afficher."
 
-#: novaideo/views/filter/__init__.py:926
+#: novaideo/views/filter/__init__.py:922
 msgid "You can enter the words that appear in the contents to be displayed."
 msgstr ""
 "Vous pouvez saisir les mots qui apparaissent dans les contenus à afficher."
@@ -2913,10 +2913,6 @@ msgstr "Les responsables"
 #: novaideo/views/organization_management/templates/see_organization.pt:24
 msgid "The manager"
 msgstr "Le responsable"
-
-#: novaideo/views/templates/filter.pt:9
-msgid "Filter results"
-msgstr "Filtrer les résultats"
 
 #: novaideo/views/templates/emoji_selector.pt:5
 msgid "${group['title']}"
@@ -6011,7 +6007,7 @@ msgstr "Voir"
 #: novaideo/content/processes/admin_process/behaviors.py:215
 #: novaideo/content/processes/admin_process/behaviors.py:242
 #: novaideo/content/processes/admin_process/behaviors.py:279
-#: novaideo/content/processes/admin_process/behaviors.py:402
+#: novaideo/content/processes/admin_process/behaviors.py:398
 #: novaideo/content/processes/proposal_management/behaviors.py:255
 #: novaideo/content/processes/proposal_management/behaviors.py:316
 #: novaideo/content/processes/proposal_management/behaviors.py:494
@@ -6055,8 +6051,8 @@ msgstr "Enregistrer"
 #: novaideo/content/processes/user_management/behaviors.py:575
 #: novaideo/content/processes/admin_process/behaviors.py:109
 #: novaideo/content/processes/admin_process/behaviors.py:300
-#: novaideo/content/processes/admin_process/behaviors.py:336
-#: novaideo/content/processes/admin_process/behaviors.py:360
+#: novaideo/content/processes/admin_process/behaviors.py:332
+#: novaideo/content/processes/admin_process/behaviors.py:356
 #: novaideo/content/processes/proposal_management/behaviors.py:336
 #: novaideo/content/processes/proposal_management/behaviors.py:413
 #: novaideo/content/processes/proposal_management/behaviors.py:1647
@@ -6843,79 +6839,3 @@ msgstr "Trouver des entités"
 #: novaideo/web_services/export_entities.py:157
 msgid "Content type"
 msgstr "Type de contenu"
-
-#~ msgid ""
-#~ "To add keywords, you need to tap the « Enter » key after each keyword or "
-#~ "separate them with commas."
-#~ msgstr ""
-#~ "Pour ajouter des mots clés, vous devez taper sur la touche « Entrée » "
-#~ "après chaque mot clé ou les séparer par des virgules."
-
-#~ msgid "keywords"
-#~ msgstr "Mots clés"
-
-#~ msgid "I have read and accept the terms and conditions."
-#~ msgstr "J'ai lu et accepte les termes et conditions d'utilisation"
-
-#~ msgid "Third on the right"
-#~ msgstr "Troisième à droite"
-
-#~ msgid "Third on the right banner"
-#~ msgstr "Troisième sur la bannière de droite"
-
-#~ msgid "Fourth on the right"
-#~ msgstr "Quatrième à droite"
-
-#~ msgid "Fourth on the right banner"
-#~ msgstr "Quatrième sur la bannière de droite"
-
-#~ msgid "Fifth on the right"
-#~ msgstr "Cinquième à droite"
-
-#~ msgid "Fifth on the right banner"
-#~ msgstr "Cinquième sur la bannière de droite"
-
-#~ msgid "Sixth on the right"
-#~ msgstr "Sixième à droite"
-
-#~ msgid "Sixth on the right banner"
-#~ msgstr "Sixième sur la bannière de droite"
-
-#~ msgid "Seventh on the right"
-#~ msgstr "Septième à droite"
-
-#~ msgid "Seventh on the right banner"
-#~ msgstr "Septième sur la bannière de droite"
-
-#~ msgid "Eighth on the right"
-#~ msgstr "Huitième à droite"
-
-#~ msgid "Eighth on the right banner"
-#~ msgstr "Huitième sur la bannière de droite"
-
-#~ msgid "Ninth on the right"
-#~ msgstr "Neuvième à droite"
-
-#~ msgid "Ninth on the right banner"
-#~ msgstr "Neuvième sur la bannière de droite"
-
-#~ msgid "Tenth on the right"
-#~ msgstr "Dixième à droite"
-
-#~ msgid "Tenth on the right banner"
-#~ msgstr "Dixième sur la bannière de droite"
-
-#~ msgid "Votes"
-#~ msgstr "Votes"
-
-#~ msgid "Miss"
-#~ msgstr "Mademoiselle"
-
-#~ msgid "Site sender"
-#~ msgstr "Courriel d'envoi du site"
-
-#~ msgid "Remove file"
-#~ msgstr "Supprimer le fichier"
-
-#~ msgid "Edit organization"
-#~ msgstr "Modifier l'organisation"

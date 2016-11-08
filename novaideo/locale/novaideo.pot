@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-11-04 12:42+0100\n"
+"POT-Creation-Date: 2016-11-08 13:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -194,7 +194,7 @@ msgid ""
 "chosen."
 msgstr ""
 
-#: ./novaideo/core.py:595 ./novaideo/views/filter/__init__.py:925
+#: ./novaideo/core.py:595 ./novaideo/views/filter/__init__.py:921
 #: ./novaideo/views/proposal_management/templates/idea_data.pt:3
 #: ./novaideo/views/templates/style_picker.pt:22
 #: ./novaideo/views/correlation_management/templates/see_correlation.pt:7
@@ -1731,7 +1731,7 @@ msgid "Organization"
 msgstr ""
 
 #: ./novaideo/views/filter/__init__.py:566
-#: ./novaideo/views/filter/__init__.py:940
+#: ./novaideo/views/filter/__init__.py:936
 #: ./novaideo/web_services/export_entities.py:168
 msgid "Metadata filter"
 msgstr ""
@@ -1741,17 +1741,17 @@ msgid "Geographic filter"
 msgstr ""
 
 #: ./novaideo/views/filter/__init__.py:580
-#: ./novaideo/views/filter/__init__.py:953
+#: ./novaideo/views/filter/__init__.py:949
 msgid "Temporal filter"
 msgstr ""
 
 #: ./novaideo/views/filter/__init__.py:587
-#: ./novaideo/views/filter/__init__.py:966
+#: ./novaideo/views/filter/__init__.py:962
 msgid "Contribution filter"
 msgstr ""
 
 #: ./novaideo/views/filter/__init__.py:594
-#: ./novaideo/views/filter/__init__.py:979
+#: ./novaideo/views/filter/__init__.py:975
 msgid "Text filter"
 msgstr ""
 
@@ -1759,22 +1759,22 @@ msgstr ""
 msgid "Other filter"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:993
-#: ./novaideo/views/templates/filter.pt:7
+#: ./novaideo/views/filter/__init__.py:989
+#: ./novaideo/views/templates/filter.pt:9
 msgid "Filter"
 msgstr ""
 
 #: ./novaideo/views/filter/__init__.py:786
 #: ./novaideo/views/filter/__init__.py:865
-#: ./novaideo/views/filter/__init__.py:894
-#: ./novaideo/views/filter/__init__.py:917
+#: ./novaideo/views/filter/__init__.py:890
+#: ./novaideo/views/filter/__init__.py:913
 msgid "Not"
 msgstr ""
 
 #: ./novaideo/views/filter/__init__.py:788
 #: ./novaideo/views/filter/__init__.py:867
-#: ./novaideo/views/filter/__init__.py:896
-#: ./novaideo/views/filter/__init__.py:919
+#: ./novaideo/views/filter/__init__.py:892
+#: ./novaideo/views/filter/__init__.py:915
 msgid "Check the box to exclude values entered below."
 msgstr ""
 
@@ -1829,15 +1829,15 @@ msgstr ""
 msgid "You can select the last connection dates of users to be displayed."
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:903
+#: ./novaideo/views/filter/__init__.py:899
 msgid "Authors"
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:904
+#: ./novaideo/views/filter/__init__.py:900
 msgid "You can enter the authors names of the contents to be displayed."
 msgstr ""
 
-#: ./novaideo/views/filter/__init__.py:926
+#: ./novaideo/views/filter/__init__.py:922
 msgid "You can enter the words that appear in the contents to be displayed."
 msgstr ""
 
@@ -2896,10 +2896,6 @@ msgstr ""
 #: ./novaideo/views/templates/organization_result.pt:28
 #: ./novaideo/views/organization_management/templates/see_organization.pt:24
 msgid "The manager"
-msgstr ""
-
-#: ./novaideo/views/templates/filter.pt:9
-msgid "Filter results"
 msgstr ""
 
 #: ./novaideo/views/templates/emoji_selector.pt:5
@@ -5968,7 +5964,7 @@ msgstr ""
 #: ./novaideo/content/processes/admin_process/behaviors.py:215
 #: ./novaideo/content/processes/admin_process/behaviors.py:242
 #: ./novaideo/content/processes/admin_process/behaviors.py:279
-#: ./novaideo/content/processes/admin_process/behaviors.py:402
+#: ./novaideo/content/processes/admin_process/behaviors.py:398
 #: ./novaideo/content/processes/proposal_management/behaviors.py:255
 #: ./novaideo/content/processes/proposal_management/behaviors.py:316
 #: ./novaideo/content/processes/proposal_management/behaviors.py:494
@@ -6012,8 +6008,8 @@ msgstr ""
 #: ./novaideo/content/processes/user_management/behaviors.py:575
 #: ./novaideo/content/processes/admin_process/behaviors.py:109
 #: ./novaideo/content/processes/admin_process/behaviors.py:300
-#: ./novaideo/content/processes/admin_process/behaviors.py:336
-#: ./novaideo/content/processes/admin_process/behaviors.py:360
+#: ./novaideo/content/processes/admin_process/behaviors.py:332
+#: ./novaideo/content/processes/admin_process/behaviors.py:356
 #: ./novaideo/content/processes/proposal_management/behaviors.py:336
 #: ./novaideo/content/processes/proposal_management/behaviors.py:413
 #: ./novaideo/content/processes/proposal_management/behaviors.py:1647
