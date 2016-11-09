@@ -20,7 +20,8 @@ from substanced.util import find_service
 
 from dace.util import (
     getSite, name_chooser,
-    push_callback_after_commit, get_socket)
+    push_callback_after_commit, get_socket,
+    find_service as dace_find_service)
 from dace.objectofcollaboration.principal.role import DACE_ROLES
 from dace.objectofcollaboration.principal.util import (
     grant_roles,
@@ -33,6 +34,7 @@ from dace.objectofcollaboration.principal.util import (
     get_users_with_role)
 from dace.processinstance.activity import (
     InfiniteCardinality,
+    ElementaryAction,
     ActionType)
 from dace.processinstance.core import ActivityExecuted, PROCESS_HISTORY_KEY
 
@@ -47,13 +49,58 @@ from novaideo.utilities.util import (
 from novaideo import _, nothing
 from novaideo.core import (
     access_action, serialize_roles, PrivateChannel)
-from novaideo.views.filter import get_users_by_preferences
+from novaideo.views.filter import (
+    get_users_by_preferences, get_random_users)
 from novaideo.content.alert import InternalAlertKind
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes import global_user_processsecurity
 from novaideo.role import get_authorized_roles
+from novaideo.content.processes.ballot_processes import close_votes
+
+
+def close_ballot(action, preregistration, request):
+    if action.sub_process:
+        exec_ctx = action.sub_process.execution_context
+        vote_processes = exec_ctx.get_involved_collection(
+            'vote_processes')
+        opened_vote_processes = [process for process in vote_processes
+                                 if not process._finished]
+        if opened_vote_processes:
+            close_votes(preregistration, request, opened_vote_processes)
+
+
+def start_moderation_proc(preregistration):
+    def_container = dace_find_service('process_definition_container')
+    runtime = dace_find_service('runtime')
+    pd = def_container.get_definition('registrationmoderation')
+    proc = pd()
+    proc.__name__ = proc.id
+    runtime.addtoproperty('processes', proc)
+    proc.defineGraph(pd)
+    proc.execution_context.add_created_entity(
+        'preregistration', preregistration)
+    proc.execute()
+    return proc
+
+
+def moderation_result(process):
+    preregistration = process.execution_context.created_entity(
+        'preregistration')
+    if preregistration:
+        report = preregistration.moderation_ballot.report
+        report.calculate_votes()
+        if not report.voters:
+            return False
+
+        electeds = report.get_electeds()
+        if electeds is None:
+            return False
+        else:
+            return True
+
+    return False
 
 
 def accept_preregistration(request, preregistration, root):
@@ -61,7 +108,7 @@ def accept_preregistration(request, preregistration, root):
         deadline_date = preregistration.get_deadline_date()
         url = request.resource_url(preregistration, "")
         mail_template = root.get_mail_template('preregistration')
-        recipientdata = get_user_data(preregistration, 'recipient', request)     
+        recipientdata = get_user_data(preregistration, 'recipient', request)
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
         deadline_str = to_localized_time(
@@ -368,23 +415,19 @@ class Registration(InfiniteCardinality):
         if not getattr(root, 'moderate_registration', False):
             accept_preregistration(request, preregistration, root)
         else:
-            admins = get_users_with_role(role='SiteAdmin')
-            alert(
-                'internal', [root], admins,
-                internal_kind=InternalAlertKind.admin_alert,
-                subjects=[preregistration], alert_kind='new_registration')
-            mail_template = root.get_mail_template('moderate_preregistration')
-            subject = mail_template['subject'].format(
-                novaideo_title=root.title)
-            url = request.resource_url(preregistration, '@@index')
-            for admin in [a for a in admins if getattr(a, 'email', '')]:
-                recipientdata = get_user_data(admin, 'recipient', request)
-                message = mail_template['template'].format(
-                    url=url,
-                    novaideo_title=root.title,
-                    **recipientdata)
-                alert('email', [root.get_site_sender()], [admin.email],
-                      subject=subject, body=message)
+            moderators = get_random_users(3)
+            for moderator in moderators:
+                grant_roles(
+                    user=moderator,
+                    roles=(('LocalModerator', preregistration),))
+
+            preregistration.setproperty('moderators', moderators)
+            moderation_proc = start_moderation_proc(
+                preregistration)
+            preregistration.setproperty(
+                'moderation_proc', moderation_proc)
+            moderation_proc.execute_action(
+                preregistration, request, 'moderation_vote', {})
 
         request.registry.notify(ActivityExecuted(self, [preregistration], None))
         return {'preregistration': preregistration}
@@ -392,70 +435,6 @@ class Registration(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(
             context, "@@registrationsubmitted"))
-
-
-def ar_processsecurity_validation(process, context):
-    root = getSite()
-    return getattr(root, 'moderate_registration', False) and\
-        not context.is_expired and\
-        global_user_processsecurity()
-
-
-def ar_roles_validation(process, context):
-    organization = getattr(context, 'organization', None)
-    if organization:
-        return has_any_roles(
-            roles=('SiteAdmin', ('OrganizationResponsible', organization)))
-
-    return has_role(role=('SiteAdmin',))
-
-
-def ar_state_validation(process, context):
-    return 'pending' in context.state
-
-
-class AcceptRegistration(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
-    style_descriminator = 'primary-action'
-    style_interaction = 'ajax-action'
-    style_picto = 'glyphicon glyphicon-ok'
-    style_order = 1
-    submission_title = _('Continue')
-    context = IPreregistration
-    roles_validation = ar_roles_validation
-    processsecurity_validation = ar_processsecurity_validation
-    state_validation = ar_state_validation
-
-    def start(self, context, request, appstruct, **kw):
-        root = getSite()
-        context.state = PersistentList(['accepted'])
-        accept_preregistration(request, context, root)
-        request.registry.notify(ActivityExecuted(self, [context], None))
-        return {}
-
-    def redirect(self, context, request, **kw):
-        return nothing
-
-
-class RefuseRegistration(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
-    style_descriminator = 'primary-action'
-    style_interaction = 'ajax-action'
-    style_picto = 'glyphicon glyphicon-remove'
-    style_order = 2
-    submission_title = _('Continue')
-    context = IPreregistration
-    roles_validation = ar_roles_validation
-    processsecurity_validation = ar_processsecurity_validation
-    state_validation = ar_state_validation
-
-    def start(self, context, request, appstruct, **kw):
-        root = getSite()
-        remove_expired_preregistration(root, context)
-        return {}
-
-    def redirect(self, context, request, **kw):
-        return nothing
 
 
 def confirm_processsecurity_validation(process, context):
@@ -519,7 +498,6 @@ class ConfirmRegistration(InfiniteCardinality):
 
         transaction.commit()
         if email:
-            localizer = request.localizer
             mail_template = root.get_mail_template('registration_confiramtion')
             subject = mail_template['subject'].format(
                 novaideo_title=root.title)
@@ -609,9 +587,12 @@ class Remind(InfiniteCardinality):
 def get_access_key_reg(obj):
     organization = getattr(obj, 'organization', None)
     if organization:
-        return serialize_roles(('SiteAdmin', 'Admin', ('OrganizationResponsible', obj)))
+        return serialize_roles(
+            ('SiteAdmin', 'Admin',
+             ('OrganizationResponsible', obj),
+             ('LocalModerator', obj)))
 
-    return serialize_roles(('SiteAdmin', 'Admin'))
+    return serialize_roles(('SiteAdmin', 'Admin', ('LocalModerator', obj)))
 
 
 def seereg_processsecurity_validation(process, context):
@@ -619,9 +600,12 @@ def seereg_processsecurity_validation(process, context):
     organization = getattr(context, 'organization', None)
     if organization:
         has_role_cond = has_any_roles(
-            roles=('SiteAdmin', ('OrganizationResponsible', context)))
+            roles=('SiteAdmin',
+                   ('OrganizationResponsible', context),
+                   ('LocalModerator', context)))
     else:
-        has_role_cond = has_role(role=('SiteAdmin',))
+        has_role_cond = has_any_roles(
+            roles=('SiteAdmin', ('LocalModerator', context)))
 
     return has_role_cond and \
         global_user_processsecurity()
@@ -642,8 +626,9 @@ class SeeRegistration(InfiniteCardinality):
 
 
 def seeregs_processsecurity_validation(process, context):
-    return has_any_roles(roles=('SiteAdmin', 'OrganizationResponsible')) and \
-           global_user_processsecurity()
+    return has_any_roles(
+        roles=('SiteAdmin', 'OrganizationResponsible', 'LocalModerator')) and \
+        global_user_processsecurity()
 
 
 class SeeRegistrations(InfiniteCardinality):
@@ -662,6 +647,11 @@ class SeeRegistrations(InfiniteCardinality):
         return HTTPFound(request.resource_url(context))
 
 
+def remove_processsecurity_validation(process, context):
+    return has_any_roles(roles=('SiteAdmin', 'OrganizationResponsible')) and \
+           global_user_processsecurity()
+
+
 class RemoveRegistration(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'global-action'
@@ -670,10 +660,20 @@ class RemoveRegistration(InfiniteCardinality):
     style_order = 5
     submission_title = _('Remove')
     context = IPreregistration
-    processsecurity_validation = seereg_processsecurity_validation
+    processsecurity_validation = remove_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
+        for moderator in context.moderators:
+            revoke_roles(user=moderator, roles=(('LocalModerator', context),))
+
+        if context.moderation_proc:
+            vote_actions = context.moderation_proc.get_actions(
+                'moderation_vote')
+            if vote_actions:
+                action = vote_actions[0]
+                close_ballot(action, context, request)
+
         root.delfromproperty('preregistrations', context)
         return {'root': root}
 
@@ -874,6 +874,88 @@ class GeneralDiscuss(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
+
+
+# Registration moderation
+
+def decision_relation_validation(process, context):
+    return process.execution_context.has_relation(context, 'preregistration')
+
+
+def decision_roles_validation(process, context):
+    return has_role(role=('SiteAdmin',))
+
+
+def decision_state_validation(process, context):
+    return 'pending' in context.state
+
+
+class ModerationVote(ElementaryAction):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'plus-action'
+    style_order = 5
+    context = IPreregistration
+    processs_relation_id = 'preregistration'
+    #actionType = ActionType.system
+    relation_validation = decision_relation_validation
+    roles_validation = decision_roles_validation
+    state_validation = decision_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        moderators = context.moderators
+        alert(
+            'internal', [root], moderators,
+            internal_kind=InternalAlertKind.admin_alert,
+            subjects=[context], alert_kind='new_registration')
+        mail_template = root.get_mail_template('moderate_preregistration')
+        subject = mail_template['subject'].format(
+            novaideo_title=root.title)
+        url = request.resource_url(context, '@@index')
+        subject_data = get_user_data(context, 'subject', request)
+        for moderator in [a for a in moderators if getattr(a, 'email', '')]:
+            email_data = get_user_data(moderator, 'recipient', request)
+            email_data.update(subject_data)
+            message = mail_template['template'].format(
+                url=url,
+                novaideo_title=root.title,
+                subject_email=getattr(context, 'email', ''),
+                duration=getattr(root, 'duration_moderation_vote', 1),
+                **email_data)
+            alert('email', [root.get_site_sender()], [moderator.email],
+                  subject=subject, body=message)
+
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
+        return {}
+
+    def after_execution(self, context, request, **kw):
+        preregistration = self.process.execution_context.created_entity(
+            'preregistration')
+        close_ballot(self, preregistration, request)
+        # preregistration not removed
+        if preregistration and preregistration.__parent__:
+            for moderator in preregistration.moderators:
+                revoke_roles(
+                    user=moderator,
+                    roles=(('LocalModerator', preregistration),))
+
+            accepted = moderation_result(self.process)
+            root = getSite()
+            if accepted:
+                preregistration.state = PersistentList(['accepted'])
+                accept_preregistration(request, preregistration, root)
+                preregistration.reindex()
+            else:
+                remove_expired_preregistration(root, preregistration)
+
+        super(ModerationVote, self).after_execution(
+            preregistration, request, **kw)
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
 #TODO behaviors
 
 VALIDATOR_BY_CONTEXT[Person] = Discuss

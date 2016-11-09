@@ -70,6 +70,12 @@ class Participant(Role):
     pass
 
 
+@role(name='LocalModerator',
+      islocal=True)
+class LocaModerator(Role):
+    pass
+
+
 @role(name='Elector',
       islocal=True)
 class Elector(Role):

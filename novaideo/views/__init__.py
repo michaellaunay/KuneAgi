@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi, Sophie Jazwiecki
 import datetime
+import random
 import pytz
 import json
 from pyramid.view import view_config

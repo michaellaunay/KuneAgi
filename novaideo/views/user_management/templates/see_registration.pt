@@ -6,6 +6,7 @@
       oid registration.__oid__;">
 
 <div tal:replace="structure navbar_body"/>
+<div tal:replace="structure vote_actions_body"/>
 <div class="media" tal:define="
               trusted_email registration.has_trusted_email(getattr(request.root, 'trusted_emails', []))">
   <div class="media-body">

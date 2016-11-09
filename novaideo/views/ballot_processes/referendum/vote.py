@@ -9,6 +9,7 @@ import colander
 import deform
 from pyramid.view import view_config
 
+from dace.objectofcollaboration.entity import Entity
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.form import FormView
 from pontus.view_operation import MultipleView
@@ -91,7 +92,7 @@ class VoteFormView(FormView):
 
 @view_config(
     name='referendumvote',
-    context=Proposal,
+    context=Entity,
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class VoteViewMultipleView(MultipleView):
@@ -115,4 +116,5 @@ class VoteViewMultipleView(MultipleView):
         return ballot_report.ballot.title
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({Vote:VoteViewMultipleView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {Vote: VoteViewMultipleView})

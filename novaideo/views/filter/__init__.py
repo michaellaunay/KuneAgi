@@ -11,6 +11,7 @@ import datetime
 import pytz
 import types
 import json
+import random
 from hypatia.text.parsetree import ParseError
 from hypatia.util import ResultSet
 from hypatia.query import Not
@@ -36,7 +37,8 @@ from deform_treepy.widget import (
 
 from novaideo import _
 from novaideo import core
-from novaideo.content.interface import IComment
+from novaideo.content.interface import (
+    IComment, IPerson)
 from novaideo.content.processes import (
     FLATTENED_STATES_MEMBER_MAPPING,
     get_content_types_states)
@@ -1455,3 +1457,14 @@ def get_comments(channel, filters, text_to_search='', filtered=False):
         add_query=query,
         sort_on='created_at')
     return objects
+
+
+def get_random_users(nember):
+    result_set = find_entities(
+        interfaces=[IPerson],
+        metadata_filter={'states': ['active']})
+    users_ids = random.sample(list(result_set.ids), nember)
+    if len(users_ids) == nember:
+        return [get_obj(oid) for oid in users_ids]
+
+    return []

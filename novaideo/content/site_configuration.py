@@ -115,9 +115,17 @@ class UserParamsConfigurationSchema(Schema):
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
         label=_('Moderate user registration'),
-        description=_('Moderate user registration'),
+        description=_('Moderate user registration.'),
         title='',
         missing=False
+    )
+
+    duration_moderation_vote = colander.SchemaNode(
+        colander.Int(),
+        title=_('Vote duration for the moderation of user registrations'),
+        description=_('The voting duration is defined by a number of days.'),
+        default=1,
+        missing=1
     )
 
     trusted_emails = colander.SchemaNode(

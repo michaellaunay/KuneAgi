@@ -544,6 +544,9 @@ class Preregistration(VisualisableElement, Entity):
                  'bloc': 'novaideo:views/templates/preregistration_result.pt'}
     name = renamer()
     structure = CompositeUniqueProperty('structure')
+    ballots = CompositeMultipleProperty('ballots')
+    moderators = SharedMultipleProperty('moderators')
+    moderation_proc = SharedUniqueProperty('moderation_proc')
 
     def __init__(self, **kwargs):
         super(Preregistration, self).__init__(**kwargs)

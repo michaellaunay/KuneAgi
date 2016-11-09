@@ -74,6 +74,7 @@ from . import (
     init_proposal_ballots,
     add_files_to_workspace,
     add_attached_files)
+from novaideo.content.processes.ballot_processes import close_votes
 
 
 VOTE_PUBLISHING_MESSAGE = _("Chaque participant du groupe de travail vote pour" 
@@ -158,15 +159,6 @@ def start_improvement_cycle(proposal):
     proc.execution_context.add_created_entity('proposal', proposal)
     proc.execute()
     return proc
-
-
-def close_votes(context, request, vote_processes):
-    vote_actions = [process.get_actions('vote')
-                    for process in vote_processes]
-    vote_actions = [action for actions in vote_actions
-                    for action in actions]
-    for action in vote_actions:
-        action.close_vote(context, request)
 
 
 def first_vote_registration(user, working_group, appstruct):

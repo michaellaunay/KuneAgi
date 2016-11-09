@@ -15,6 +15,15 @@ from ..user_management.behaviors import global_user_processsecurity
 from novaideo import _
 
 
+def close_votes(context, request, vote_processes):
+    vote_actions = [process.get_actions('vote')
+                    for process in vote_processes]
+    vote_actions = [action for actions in vote_actions
+                    for action in actions]
+    for action in vote_actions:
+        action.close_vote(context, request)
+
+
 def vote_relation_validation(process, context):
     return process.execution_context.has_relation(context, 'subject')
 

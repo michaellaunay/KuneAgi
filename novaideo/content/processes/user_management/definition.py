@@ -3,9 +3,13 @@
 
 # licence: AGPL
 # author: Amen Souissi
+import datetime
+from persistent.list import PersistentList
 
 from dace.processdefinition.processdef import ProcessDefinition
-from dace.processdefinition.activitydef import ActivityDefinition
+from dace.processdefinition.activitydef import (
+    ActivityDefinition,
+    SubProcessDefinition as OriginSubProcessDefinition)
 from dace.processdefinition.gatewaydef import (
     ExclusiveGatewayDefinition,
     ParallelGatewayDefinition)
@@ -13,8 +17,11 @@ from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (
     StartEventDefinition,
     EndEventDefinition)
+from dace.processinstance.activity import (
+    SubProcess as OriginSubProcess)
 from dace.objectofcollaboration.services.processdef_container import (
     process_definition)
+from dace.util import getSite
 from pontus.core import VisualisableElement
 
 from .behaviors import (
@@ -33,9 +40,10 @@ from .behaviors import (
     SeeRegistration,
     SeeRegistrations,
     RemoveRegistration,
-    AcceptRegistration,
-    RefuseRegistration)
+    ModerationVote,
+    close_votes)
 from novaideo import _
+from novaideo.content.ballot import Ballot
 
 
 @process_definition(name='usermanagement', id='usermanagement')
@@ -151,14 +159,6 @@ class RegistrationManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Remove the registration"),
                                        title=_("Remove"),
                                        groups=[]),
-                accept = ActivityDefinition(contexts=[AcceptRegistration],
-                                       description=_("Accept the registration"),
-                                       title=_("Accept"),
-                                       groups=[]),
-                refuse = ActivityDefinition(contexts=[RefuseRegistration],
-                                       description=_("Refuse the registration"),
-                                       title=_("Refuse"),
-                                       groups=[]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -166,10 +166,6 @@ class RegistrationManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'registration'),
                 TransitionDefinition('registration', 'eg'),
-                TransitionDefinition('pg', 'accept'),
-                TransitionDefinition('accept', 'eg'),
-                TransitionDefinition('pg', 'refuse'),
-                TransitionDefinition('refuse', 'eg'),
                 TransitionDefinition('pg', 'confirmregistration'),
                 TransitionDefinition('confirmregistration', 'eg'),
                 TransitionDefinition('pg', 'remind'),
@@ -181,4 +177,83 @@ class RegistrationManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'remove'),
                 TransitionDefinition('remove', 'eg'),
                 TransitionDefinition('eg', 'end'),
+        )
+
+
+MODERATION_DESCRIPTION = _("Vous êtes invité à vérifier et confirmer l'identité de "
+                           "l'utilisateur enregistré. Cela afin de garantir l'unicité "
+                           "de ce compte. Si la majorité confirme l'identité de ce compte, "
+                           "le compte sera validé, sinon le compte sera supprimé.")
+
+
+class SubProcessFirstVote(OriginSubProcess):
+
+    def __init__(self, definition):
+        super(SubProcessFirstVote, self).__init__(definition)
+
+    def stop(self):
+        request = get_current_request()
+        for process in self.sub_processes:
+            exec_ctx = process.execution_context
+            vote_processes = exec_ctx.get_involved_collection('vote_processes')
+            vote_processes = [process for process in vote_processes
+                              if not process._finished]
+            if vote_processes:
+                close_votes(None, request, vote_processes)
+
+        super(SubProcessFirstVote, self).stop()
+
+
+class SubProcessDefinition(OriginSubProcessDefinition):
+    """Run the voting process for the moderation of registrations"""
+
+    factory = SubProcessFirstVote
+
+    def _init_subprocess(self, process, subprocess):
+        root = getSite()
+        duration = datetime.timedelta(
+            days=getattr(root, 'duration_moderation_vote', 1))
+        preregistration = process.execution_context.created_entity(
+            'preregistration')
+        electors = preregistration.moderators
+        subjects = [preregistration]
+        ballot = Ballot('Referendum', electors, subjects, duration,
+                        true_val=_("Confirmed identity"),
+                        false_val=_("Not confirmed identity"))
+        preregistration.addtoproperty('ballots', ballot)
+        ballot.report.description = MODERATION_DESCRIPTION
+        ballot.title = _("Confirm the user identity")
+        processes = ballot.run_ballot()
+        subprocess.ballots = PersistentList()
+        subprocess.ballots.append(ballot)
+        preregistration.moderation_ballot = ballot
+        subprocess.execution_context.add_involved_collection(
+            'vote_processes', processes)
+        subprocess.duration = duration
+
+
+@process_definition(
+    name='registrationmoderation',
+    id='registrationmoderation')
+class RegistrationModeration(ProcessDefinition, VisualisableElement):
+    isControlled = True
+    isVolatile = True
+
+    def __init__(self, **kwargs):
+        super(RegistrationModeration, self).__init__(**kwargs)
+        self.title = _('Registration moderation')
+        self.description = _('Registration moderation')
+
+    def _init_definition(self):
+        self.defineNodes(
+                start = StartEventDefinition(),
+                moderation_vote = SubProcessDefinition(pd='ballotprocess', contexts=[ModerationVote],
+                                       description=_("Start voting for moderation"),
+                                       title=_("Start voting for moderation"),
+                                       groups=[]),
+                end = EndEventDefinition(),
+        )
+        self.defineTransitions(
+                TransitionDefinition('start', 'moderation_vote'),
+                TransitionDefinition('moderation_vote', 'end'),
         )

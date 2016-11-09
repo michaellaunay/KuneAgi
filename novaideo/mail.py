@@ -354,7 +354,19 @@ ADMIN_PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {
 ADMIN_PREREGISTRATION_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Une nouvelle inscription à la plateforme participative {novaideo_title} vient d'être ajoutée. L'inscription est sous {url}. Vous devez donner votre avis pour la modérer.
+Vous avez été choisie aléatoirement par la plateforme {novaideo_title} afin de confirmer l'identité d'une nouvelle inscription.
+
+À chaque nouvelle inscription à la plateforme {novaideo_title} le système tire aléatoirement trois membres afin de vérifier et statuer sur l'identité de la personne inscrite. Pour cela il vous suffit de suivre les étapes suivantes:
+
+- Contacter la personne par email afin de vérifier son identité,
+- Connectez-vous à la plateforme à l'adresse suivante {url} et donnez votre avis.
+
+Les données de l'identité de la personne inscrite sont:
+  Nom: {subject_last_name}
+  Prénom: {subject_first_name}
+  Email: {subject_email}
+
+La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée.
 
 """+ PORTAL_SIGNATURE
 
