@@ -60,6 +60,9 @@ from novaideo.role import get_authorized_roles
 from novaideo.content.processes.ballot_processes import close_votes
 
 
+MODERATORS_NB = 3
+
+
 def close_ballot(action, preregistration, request):
     if action.sub_process:
         exec_ctx = action.sub_process.execution_context
@@ -415,7 +418,7 @@ class Registration(InfiniteCardinality):
         if not getattr(root, 'moderate_registration', False):
             accept_preregistration(request, preregistration, root)
         else:
-            moderators = get_random_users(3)
+            moderators = get_random_users(MODERATORS_NB)
             for moderator in moderators:
                 grant_roles(
                     user=moderator,
@@ -947,6 +950,19 @@ class ModerationVote(ElementaryAction):
                 accept_preregistration(request, preregistration, root)
                 preregistration.reindex()
             else:
+                mail_template = root.get_mail_template(
+                    'moderate_preregistration_refused')
+                subject = mail_template['subject'].format(
+                    novaideo_title=root.title)
+                email_data = get_user_data(
+                    preregistration, 'recipient', request)
+                message = mail_template['template'].format(
+                    novaideo_title=root.title,
+                    **email_data)
+                alert(
+                    'email', [root.get_site_sender()],
+                    [preregistration.email],
+                    subject=subject, body=message)
                 remove_expired_preregistration(root, preregistration)
 
         super(ModerationVote, self).after_execution(

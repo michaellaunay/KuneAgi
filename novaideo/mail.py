@@ -371,6 +371,18 @@ La durée de la vérification est de {duration} jour(s). Au-delà de cette duré
 """+ PORTAL_SIGNATURE
 
 
+ADMIN_PREREGISTRATION_REF_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
+
+
+ADMIN_PREREGISTRATION_REF_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Votre inscription a été refusée par la plateforme {novaideo_title}. Les modérateurs n'ont pas pu confirmer votre identité.
+
+
+"""+ PORTAL_SIGNATURE
+
+
 ALERTCOMMENT_SUBJECT = u"""Nouveau commentaire sur {subject_type} « {subject_title} »"""
 
 
@@ -608,5 +620,10 @@ DEFAULT_SITE_MAILS = {
               'title': _("New registration"),
               'subject': ADMIN_PREREGISTRATION_SUBJECT,
               'template': ADMIN_PREREGISTRATION_MESSAGE
-    }
+    },
+    'moderate_preregistration_refused': {
+              'title': _("New registration"),
+              'subject': ADMIN_PREREGISTRATION_REF_SUBJECT,
+              'template': ADMIN_PREREGISTRATION_REF_MESSAGE
+    },
 }
