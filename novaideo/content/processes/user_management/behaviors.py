@@ -407,16 +407,16 @@ class Registration(InfiniteCardinality):
         preregistration.__name__ = gen_random_token()
         root = getSite()
         root.addtoproperty('preregistrations', preregistration)
-        deadline = DEADLINE_PREREGISTRATION * 1000
-        call_id = 'persistent_' + str(get_oid(preregistration))
-        push_callback_after_commit(
-            remove_expired_preregistration, deadline, call_id,
-            root=root, preregistration=preregistration)
         preregistration.state.append('pending')
         preregistration.reindex()
         transaction.commit()
         if not getattr(root, 'moderate_registration', False):
             accept_preregistration(request, preregistration, root)
+            deadline = DEADLINE_PREREGISTRATION * 1000
+            call_id = 'persistent_' + str(get_oid(preregistration))
+            push_callback_after_commit(
+                remove_expired_preregistration, deadline, call_id,
+                root=root, preregistration=preregistration)
         else:
             moderators = get_random_users(MODERATORS_NB)
             for moderator in moderators:
@@ -919,10 +919,16 @@ class ModerationVote(ElementaryAction):
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
+            birth_date = getattr(context, 'birth_date', '')
+            if birth_date:
+                birth_date = to_localized_time(
+                    birth_date, request, translate=True)
+
             message = mail_template['template'].format(
                 url=url,
                 novaideo_title=root.title,
                 subject_email=getattr(context, 'email', ''),
+                birth_date=birth_date,
                 duration=getattr(root, 'duration_moderation_vote', 1),
                 **email_data)
             alert('email', [root.get_site_sender()], [moderator.email],
@@ -949,6 +955,11 @@ class ModerationVote(ElementaryAction):
                 preregistration.state = PersistentList(['accepted'])
                 accept_preregistration(request, preregistration, root)
                 preregistration.reindex()
+                deadline = DEADLINE_PREREGISTRATION * 1000
+                call_id = 'persistent_' + str(get_oid(preregistration))
+                push_callback_after_commit(
+                    remove_expired_preregistration, deadline, call_id,
+                    root=root, preregistration=preregistration)
             else:
                 mail_template = root.get_mail_template(
                     'moderate_preregistration_refused')

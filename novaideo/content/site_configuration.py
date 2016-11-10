@@ -124,8 +124,8 @@ class UserParamsConfigurationSchema(Schema):
         colander.Int(),
         title=_('Vote duration for the moderation of user registrations'),
         description=_('The voting duration is defined by a number of days.'),
-        default=1,
-        missing=1
+        default=7,
+        missing=7
     )
 
     trusted_emails = colander.SchemaNode(

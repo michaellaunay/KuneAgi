@@ -28,9 +28,9 @@ class InviteUsersSchema(Schema):
                                          editable=True,
                                          name='Invitation',
                                          widget=SimpleMappingWidget(css_class='object-well default-well')), 
-                            ['_csrf_token_']), 
-                       ['user_title', 'roles', 'first_name', 
-                       'last_name','email']),
+                            ['_csrf_token_']),
+                       ['user_title', 'roles', 'first_name',
+                       'last_name', 'birth_date', 'email']),
                 widget=SequenceWidget(min_len=1),
                 title=_('Invitations')
                 )

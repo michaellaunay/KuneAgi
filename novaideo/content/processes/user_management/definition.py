@@ -212,7 +212,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
     def _init_subprocess(self, process, subprocess):
         root = getSite()
         duration = datetime.timedelta(
-            days=getattr(root, 'duration_moderation_vote', 1))
+            days=getattr(root, 'duration_moderation_vote', 7))
         preregistration = process.execution_context.created_entity(
             'preregistration')
         electors = preregistration.moderators

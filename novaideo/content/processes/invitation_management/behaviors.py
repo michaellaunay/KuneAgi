@@ -300,6 +300,7 @@ class AcceptInvitation(InfiniteCardinality):
                                          'roles',
                                          'first_name',
                                          'last_name',
+                                         'birth_date',
                                          'email',
                                          'organization']))
         datas['Keep_me_anonymous'] = appstruct.get(

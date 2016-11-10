@@ -20,7 +20,7 @@ from novaideo import get_access_keys
 from novaideo.fr_lexicon import (
     Splitter, CaseNormalizer,
     StopWordRemover, Lexicon,
-    normalize_word)
+    normalize_word, normalize_title)
 from novaideo.content.interface import (
     IEntity,
     IPerson,
@@ -771,9 +771,16 @@ class PersonSearch(SearchableObject):
         identifiers = [getattr(self.context, 'identifier', None),
                        getattr(self.context, 'email', None)]
         pseudonym = getattr(self.context, 'pseudonym', None)
-        if getattr(self.context, 'Keep_me_anonymous', False) and\
-           pseudonym:
+        if pseudonym and isinstance(pseudonym, str):
             identifiers.append(pseudonym)
+
+        birth_date = getattr(self.context, 'birth_date', None)
+        if birth_date:
+            first_name = getattr(self.context, 'first_name', '')
+            last_name = getattr(self.context, 'last_name', '')
+            key = first_name + last_name + birth_date.strftime("%d/%m/%Y")
+            key = normalize_title(key).replace(' ', '')
+            identifiers.append(key)
 
         return [i for i in identifiers if i]
 
@@ -793,9 +800,16 @@ class PreregistrationSearch(SearchableObject):
         identifiers = [getattr(self.context, 'identifier', None),
                        getattr(self.context, 'email', None)]
         pseudonym = getattr(self.context, 'pseudonym', None)
-        if getattr(self.context, 'Keep_me_anonymous', False) and\
-           pseudonym:
+        if pseudonym and isinstance(pseudonym, str):
             identifiers.append(pseudonym)
+
+        birth_date = getattr(self.context, 'birth_date', None)
+        if birth_date:
+            first_name = getattr(self.context, 'first_name', '')
+            last_name = getattr(self.context, 'last_name', '')
+            key = first_name + last_name + birth_date.strftime("%d/%m/%Y")
+            key = normalize_title(key).replace(' ', '')
+            identifiers.append(key)
 
         return [i for i in identifiers if i]
 
@@ -807,9 +821,16 @@ class InvitationSearch(SearchableObject):
     def identifier(self):
         result = [getattr(self.context, 'email', None)]
         pseudonym = getattr(self.context, 'pseudonym', None)
-        if getattr(self.context, 'Keep_me_anonymous', False) and\
-           pseudonym:
+        if pseudonym and isinstance(pseudonym, str):
             result.append(pseudonym)
+
+        birth_date = getattr(self.context, 'birth_date', None)
+        if birth_date:
+            first_name = getattr(self.context, 'first_name', '')
+            last_name = getattr(self.context, 'last_name', '')
+            key = first_name + last_name + birth_date.strftime("%d/%m/%Y")
+            key = normalize_title(key).replace(' ', '')
+            result.append(key)
 
         return result
 

@@ -53,6 +53,8 @@ from novaideo.views.widget import (
     TOUCheckboxWidget, LimitedTextAreaWidget, EmailInputWidget)
 from novaideo.utilities.attr_utility import synchronize_tree
 from novaideo.content.keyword import DEFAULT_TREE
+from novaideo.fr_lexicon import normalize_title
+
 
 
 DEADLINE_PREREGISTRATION = 86400*2  # 2 days
@@ -272,6 +274,11 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         title=_('Last name'),
         )
 
+    birth_date = colander.SchemaNode(
+        colander.Date(),
+        title=_('Birth date')
+        )
+
     user_title = colander.SchemaNode(
         colander.String(),
         widget=titles_choice,
@@ -331,6 +338,29 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         missing=False
     )
 
+    @invariant
+    def user_invariant(self, appstruct):
+        first_name = appstruct.get('first_name', None)
+        last_name = appstruct.get('last_name', None)
+        birth_date = appstruct.get('birth_date', None)
+        if first_name and last_name and birth_date:
+            try:
+                birth_date = colander.iso8601.parse_date(birth_date)
+                birth_date = birth_date.date()
+            except colander.iso8601.ParseError as e:
+                return
+
+            key = first_name + last_name + birth_date.strftime("%d/%m/%Y")
+            key = normalize_title(key).replace(' ', '')
+            novaideo_catalog = find_catalog('novaideo')
+            identifier_index = novaideo_catalog['identifier']
+            query = identifier_index.any([key])
+            users = list(query.execute().all())
+            if users:
+                raise colander.Invalid(
+                    self,
+                    _('User already exists'))
+
 
 @content(
     'person',
@@ -341,7 +371,7 @@ class Person(User, SearchableEntity, CorrelableEntity):
     """Person class"""
 
     type_title = _('Person')
-    icon = 'icon glyphicon glyphicon-user' #'icon novaideo-icon icon-user'
+    icon = 'icon glyphicon glyphicon-user'
     templates = {'default': 'novaideo:views/templates/person_result.pt',
                  'bloc': 'novaideo:views/templates/person_result.pt',
                  'small': 'novaideo:views/templates/small_person_result.pt',

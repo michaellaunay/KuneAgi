@@ -33,6 +33,7 @@ class RegistrationView(FormView):
                     ['user_title',
                      'first_name',
                      'last_name',
+                     'birth_date',
                      'email',
                      'Keep_me_anonymous',
                      'pseudonym',
