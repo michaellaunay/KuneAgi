@@ -383,6 +383,36 @@ Votre inscription a été refusée par la plateforme {novaideo_title}. Les modé
 
 """+ PORTAL_SIGNATURE
 
+ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
+
+
+ADMIN_PREREGISTRATION_SUB_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Votre inscription a été soumise à modération. 
+
+À chaque nouvelle inscription à la plateforme {novaideo_title} le système tire aléatoirement trois membres afin de vérifier et statuer sur l'identité de la personne inscrite.
+
+Afin de pouvoir vérifier votre inscription, veuillez adresser autant de courriels séparés la copie de documents officiels aux modérateurs choisis.
+Ces documents permettront de vérifier la concordance entre vos informations d'identité données à l'inscription et celles de documents officiels.
+
+Les modérateurs assignés à la vérification de votre inscription sont:
+Modérateur 1:
+  Nom prénom: {subject_0_last_name} {subject_0_first_name}
+  Email: {subject_0_email}
+
+Modérateur 2:
+  Nom prénom: {subject_1_last_name} {subject_1_first_name}
+  Email: {subject_1_email}
+
+Modérateur 3:
+  Nom prénom: {subject_2_last_name} {subject_2_first_name}
+  Email: {subject_2_email}
+
+La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée. Veuillez donc envoyer une copie de vos documents officiels avant la fin de cette durée.
+
+"""+ PORTAL_SIGNATURE
+
 
 ALERTCOMMENT_SUBJECT = u"""Nouveau commentaire sur {subject_type} « {subject_title} »"""
 
@@ -623,8 +653,13 @@ DEFAULT_SITE_MAILS = {
               'template': ADMIN_PREREGISTRATION_MESSAGE
     },
     'moderate_preregistration_refused': {
-              'title': _("New registration"),
+              'title': _("Registration refused"),
               'subject': ADMIN_PREREGISTRATION_REF_SUBJECT,
               'template': ADMIN_PREREGISTRATION_REF_MESSAGE
+    },
+    'preregistration_submit': {
+              'title': _("Registration submission"),
+              'subject': ADMIN_PREREGISTRATION_SUB_SUBJECT,
+              'template': ADMIN_PREREGISTRATION_SUB_MESSAGE
     },
 }

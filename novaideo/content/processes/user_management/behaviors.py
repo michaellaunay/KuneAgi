@@ -418,13 +418,30 @@ class Registration(InfiniteCardinality):
                 remove_expired_preregistration, deadline, call_id,
                 root=root, preregistration=preregistration)
         else:
+            # get random moderators
             moderators = get_random_users(MODERATORS_NB)
-            for moderator in moderators:
+            email_data = get_user_data(preregistration, 'recipient', request)
+            for index, moderator in enumerate(moderators):
+                data_id = 'subject_'+str(index)
+                email_data.update(get_user_data(
+                    moderator, data_id, request))
+                email_data[data_id+'_email'] = moderator.email
                 grant_roles(
                     user=moderator,
                     roles=(('LocalModerator', preregistration),))
 
             preregistration.setproperty('moderators', moderators)
+            # send an email to user
+            mail_template = root.get_mail_template('preregistration_submit')
+            subject = mail_template['subject'].format(
+                novaideo_title=root.title)
+            message = mail_template['template'].format(
+                duration=getattr(root, 'duration_moderation_vote', 7),
+                novaideo_title=root.title,
+                **email_data)
+            alert('email', [root.get_site_sender()], [preregistration.email],
+                  subject=subject, body=message)
+            # start a moderation process
             moderation_proc = start_moderation_proc(
                 preregistration)
             preregistration.setproperty(
@@ -929,7 +946,7 @@ class ModerationVote(ElementaryAction):
                 novaideo_title=root.title,
                 subject_email=getattr(context, 'email', ''),
                 birth_date=birth_date,
-                duration=getattr(root, 'duration_moderation_vote', 1),
+                duration=getattr(root, 'duration_moderation_vote', 7),
                 **email_data)
             alert('email', [root.get_site_sender()], [moderator.email],
                   subject=subject, body=message)
