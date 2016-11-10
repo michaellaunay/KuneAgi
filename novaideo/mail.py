@@ -397,22 +397,17 @@ Afin de pouvoir vérifier votre inscription, veuillez adresser autant de courrie
 Ces documents permettront de vérifier la concordance entre vos informations d'identité données à l'inscription et celles de documents officiels.
 
 Les modérateurs assignés à la vérification de votre inscription sont:
-Modérateur 1:
-  Nom prénom: {subject_0_last_name} {subject_0_first_name}
-  Email: {subject_0_email}
-
-Modérateur 2:
-  Nom prénom: {subject_1_last_name} {subject_1_first_name}
-  Email: {subject_1_email}
-
-Modérateur 3:
-  Nom prénom: {subject_2_last_name} {subject_2_first_name}
-  Email: {subject_2_email}
+{moderators}
 
 La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée. Veuillez donc envoyer une copie de vos documents officiels avant la fin de cette durée.
 
 """+ PORTAL_SIGNATURE
 
+MODERATOR_DATA = u"""
+Modérateur {index}:
+  Nom prénom: {subject_last_name} {subject_first_name}
+  Email: {subject_email}
+"""
 
 ALERTCOMMENT_SUBJECT = u"""Nouveau commentaire sur {subject_type} « {subject_title} »"""
 

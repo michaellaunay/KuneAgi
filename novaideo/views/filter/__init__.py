@@ -1463,8 +1463,10 @@ def get_random_users(nember):
     result_set = find_entities(
         interfaces=[IPerson],
         metadata_filter={'states': ['active']})
-    users_ids = random.sample(list(result_set.ids), nember)
-    if len(users_ids) == nember:
-        return [get_obj(oid) for oid in users_ids]
+    ids = list(result_set.ids)
+    try:
+        users_ids = random.sample(ids, nember)
+    except ValueError as error:
+        users_ids = ids
 
-    return []
+    return [get_obj(oid) for oid in users_ids]

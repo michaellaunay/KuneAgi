@@ -58,6 +58,7 @@ from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes import global_user_processsecurity
 from novaideo.role import get_authorized_roles
 from novaideo.content.processes.ballot_processes import close_votes
+from novaideo.mail import MODERATOR_DATA
 
 
 MODERATORS_NB = 3
@@ -410,44 +411,59 @@ class Registration(InfiniteCardinality):
         preregistration.state.append('pending')
         preregistration.reindex()
         transaction.commit()
-        if not getattr(root, 'moderate_registration', False):
+
+        def accept():
             accept_preregistration(request, preregistration, root)
             deadline = DEADLINE_PREREGISTRATION * 1000
             call_id = 'persistent_' + str(get_oid(preregistration))
             push_callback_after_commit(
                 remove_expired_preregistration, deadline, call_id,
                 root=root, preregistration=preregistration)
+
+        if not getattr(root, 'moderate_registration', False):
+            accept()
         else:
             # get random moderators
             moderators = get_random_users(MODERATORS_NB)
-            email_data = get_user_data(preregistration, 'recipient', request)
-            for index, moderator in enumerate(moderators):
-                data_id = 'subject_'+str(index)
-                email_data.update(get_user_data(
-                    moderator, data_id, request))
-                email_data[data_id+'_email'] = moderator.email
-                grant_roles(
-                    user=moderator,
-                    roles=(('LocalModerator', preregistration),))
+            if not moderators:
+                preregistration.state = PersistentList(['accepted'])
+                preregistration.reindex()
+                accept()
+            else:
+                email_data = get_user_data(
+                    preregistration, 'recipient', request)
+                moderators_str = ""
+                for index, moderator in enumerate(moderators):
+                    moderator_data = get_user_data(
+                        moderator, 'subject', request)
+                    moderator_data['subject_email'] = moderator.email
+                    moderator_data['index'] = str(index+1)
+                    moderator_str = MODERATOR_DATA.format(
+                        **moderator_data)
+                    moderators_str += "\n" + moderator_str
+                    grant_roles(
+                        user=moderator,
+                        roles=(('LocalModerator', preregistration),))
 
-            preregistration.setproperty('moderators', moderators)
-            # send an email to user
-            mail_template = root.get_mail_template('preregistration_submit')
-            subject = mail_template['subject'].format(
-                novaideo_title=root.title)
-            message = mail_template['template'].format(
-                duration=getattr(root, 'duration_moderation_vote', 7),
-                novaideo_title=root.title,
-                **email_data)
-            alert('email', [root.get_site_sender()], [preregistration.email],
-                  subject=subject, body=message)
-            # start a moderation process
-            moderation_proc = start_moderation_proc(
-                preregistration)
-            preregistration.setproperty(
-                'moderation_proc', moderation_proc)
-            moderation_proc.execute_action(
-                preregistration, request, 'moderation_vote', {})
+                email_data['moderators'] = moderators_str
+                preregistration.setproperty('moderators', moderators)
+                # send an email to user
+                mail_template = root.get_mail_template('preregistration_submit')
+                subject = mail_template['subject'].format(
+                    novaideo_title=root.title)
+                message = mail_template['template'].format(
+                    duration=getattr(root, 'duration_moderation_vote', 7),
+                    novaideo_title=root.title,
+                    **email_data)
+                alert('email', [root.get_site_sender()], [preregistration.email],
+                      subject=subject, body=message)
+                # start a moderation process
+                moderation_proc = start_moderation_proc(
+                    preregistration)
+                preregistration.setproperty(
+                    'moderation_proc', moderation_proc)
+                moderation_proc.execute_action(
+                    preregistration, request, 'moderation_vote', {})
 
         request.registry.notify(ActivityExecuted(self, [preregistration], None))
         return {'preregistration': preregistration}
