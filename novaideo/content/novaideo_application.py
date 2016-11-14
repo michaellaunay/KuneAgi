@@ -378,6 +378,14 @@ class NovaIdeoApplication(VisualisableElement, Application):
         self.tree = DEFAULT_TREE
 
     @property
+    def moderate_proposals(self):
+        return 'proposal' in getattr(self, 'content_to_moderate', [])
+
+    @property
+    def moderate_ideas(self):
+        return 'idea' in getattr(self, 'content_to_moderate', [])
+
+    @property
     def titles(self):
         return DEFAULT_TITLES
 
