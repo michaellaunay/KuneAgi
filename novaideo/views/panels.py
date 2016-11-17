@@ -14,7 +14,7 @@ from pyramid.threadlocal import get_current_registry
 
 from substanced.util import get_oid
 
-from pontus.util import update_resources, merge_dicts
+from pontus.util import update_resources
 from dace.objectofcollaboration.entity import Entity
 from dace.util import (
     getBusinessAction, getSite,
@@ -44,15 +44,19 @@ from novaideo.utilities.util import (
     render_navbar_body,
     deepcopy,
     FOOTER_NAVBAR_TEMPLATE,
-    update_all_ajax_action)
+    update_all_ajax_action,
+    get_debatescore_data)
 from novaideo.views.filter import find_entities, find_more_contents
 from novaideo.contextual_help_messages import render_contextual_help
 from novaideo.steps import steps_panels
 from novaideo.content.smart_folder import SmartFolder
 from novaideo.fr_lexicon import normalize_title
+from novaideo.content.idea import Idea
+from novaideo.content.proposal import Proposal
 
 
 LEVEL_MENU = 3
+
 
 DEFAULT_FOLDER_COLORS = {'usual_color': 'white, #2d6ca2',
                          'hover_color': 'white, #2d6ca2'}
@@ -607,6 +611,28 @@ class Channels(object):
             'others_channels': general_result_body,
         })
         return result
+
+
+@panel_config(
+    name='debatescore',
+    context=SearchableEntity,
+    renderer='templates/panels/debates_core.pt'
+    )
+class Debates_core(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        debatescore_data = {}
+        if self.request.view_name == 'index' and \
+           self.context.is_published and \
+           isinstance(self.context, (Idea, Proposal)):
+            debatescore_data = get_debatescore_data(
+                self.context, self.request)
+
+        return {'debatescore': debatescore_data}
 
 
 @panel_config(
