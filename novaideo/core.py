@@ -53,7 +53,8 @@ from novaideo.content.interface import (
     IFile,
     INode,
     IEmojiable,
-    IPerson)
+    IPerson,
+    ISignalableEntity)
 from novaideo.utilities.attr_utility import synchronize_tree
 
 
@@ -403,7 +404,6 @@ class SearchableEntity(VisualisableElement, Entity):
     templates = {'default': 'novaideo:templates/views/default_result.pt',
                  'bloc': 'novaideo:templates/views/default_result.pt'}
     channels = CompositeMultipleProperty('channels', 'subject')
-    comments = CompositeMultipleProperty('comments')
     tree = synchronize_tree()
 
     def __init__(self, **kwargs):
@@ -612,3 +612,30 @@ class FileEntity(SearchableEntity):
     def __init__(self, **kwargs):
         super(FileEntity, self).__init__(**kwargs)
         self.set_data(kwargs)
+
+
+@implementer(ISignalableEntity)
+class SignalableEntity(Entity):
+
+    reports = CompositeMultipleProperty('reports')
+    censoring_reason = CompositeUniqueProperty('censoring_reason')
+
+    def __init__(self, **kwargs):
+        super(SignalableEntity, self).__init__(**kwargs)
+        self.len_reports = 0
+        self.init_len_current_reports()
+
+    @property
+    def subject(self):
+        return self.__parent__
+
+    def init_len_current_reports(self):
+        self.len_current_reports = 0
+
+    def addtoproperty(self, name, value, moving=None):
+        super(SignalableEntity, self).addtoproperty(name, value, moving)
+        if name == 'reports':
+            self.len_current_reports = getattr(self, 'len_current_reports', 0)
+            self.len_reports = getattr(self, 'len_reports', 0)
+            self.len_current_reports += 1
+            self.len_reports += 1

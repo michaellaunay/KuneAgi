@@ -34,7 +34,7 @@ from deform_treepy.utilities.tree_utility import (
 
 from novaideo.content.keyword import ROOT_TREE, DEFAULT_TREE
 from novaideo import _, DEFAULT_FILES
-from novaideo.core import FileEntity, Channel
+from novaideo.core import FileEntity, Channel, CorrelableEntity
 from .organization import OrganizationSchema, Organization
 from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation
@@ -283,7 +283,7 @@ class NovaIdeoApplicationPropertySheet(PropertySheet):
     after_create='after_create',
     )
 @implementer(INovaIdeoApplication)
-class NovaIdeoApplication(VisualisableElement, Application):
+class NovaIdeoApplication(VisualisableElement, CorrelableEntity, Application):
     """Nova-Ideo class (Root)"""
 
     name = renamer()

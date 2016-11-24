@@ -30,7 +30,6 @@ from dace.objectofcollaboration.principal.util import (
     has_any_roles,
     revoke_roles,
     get_roles,
-    Anonymous,
     get_users_with_role)
 from dace.processinstance.activity import (
     InfiniteCardinality,
@@ -811,6 +810,8 @@ class Discuss(InfiniteCardinality):
         if channel:
             channel.addtoproperty('comments', comment)
             channel.add_comment(comment)
+            comment.state = PersistentList(['published'])
+            comment.reindex()
             comment.format(request)
             comment.setproperty('author', user)
             grant_roles(user=user, roles=(('Owner', comment), ))
@@ -888,6 +889,8 @@ class GeneralDiscuss(InfiniteCardinality):
         if channel:
             channel.addtoproperty('comments', comment)
             channel.add_comment(comment)
+            comment.state = PersistentList(['published'])
+            comment.reindex()
             comment.format(request)
             comment.setproperty('author', user)
             grant_roles(user=user, roles=(('Owner', comment), ))
@@ -1018,6 +1021,14 @@ class ModerationVote(ElementaryAction):
 
 #TODO behaviors
 
-VALIDATOR_BY_CONTEXT[Person] = Discuss
+VALIDATOR_BY_CONTEXT[Person] = {
+    'action': Discuss,
+    'see': SeePerson,
+    'access_key': get_access_key
+}
 
-VALIDATOR_BY_CONTEXT[NovaIdeoApplication] = GeneralDiscuss
+VALIDATOR_BY_CONTEXT[NovaIdeoApplication] = {
+    'action': GeneralDiscuss,
+    'see': None,
+    'access_key': None
+}

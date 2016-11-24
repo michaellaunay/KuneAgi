@@ -161,25 +161,6 @@ def confirm_proposal(
     return not_published_ideas
 
 
-def remove_tokens(proposal):
-    tokens = [t for t in proposal.tokens if not t.proposal]
-    proposal_tokens = [t for t in proposal.tokens if t.proposal]
-    for token in list(tokens):
-        token.owner.addtoproperty('tokens', token)
-
-    for proposal_token in list(proposal_tokens):
-        proposal_token.owner.delfromproperty('tokens_ref', proposal_token)
-        proposal.__delitem__(proposal_token.__name__)
-
-    members = proposal.working_group.members
-    for member in members:
-        to_remove = [t for t in member.tokens
-                     if t.proposal is proposal]
-        if to_remove:
-            token = to_remove[0]
-            token.owner.delfromproperty('tokens_ref', token)
-
-
 def publish_ideas(ideas, request):
     for idea in ideas:
         idea.state = PersistentList(['published'])
@@ -392,7 +373,7 @@ class DeleteProposal(InfiniteCardinality):
         root = getSite()
         not_draft_owner = 'draft' not in context.state or \
                           not has_role(role=('Owner', context))
-        remove_tokens(context)
+        context.remove_tokens()
         wg = context.working_group
         members = list(wg.members)
         for member in members:
@@ -521,7 +502,7 @@ class ArchiveProposalModeration(InfiniteCardinality):
         user = context.author
         alert('internal', [root], [user],
               internal_kind=InternalAlertKind.moderation_alert,
-              subjects=[context])
+              subjects=[context], alert_kind='moderation')
         if getattr(user, 'email', ''):
             mail_template = root.get_mail_template('archive_proposal_decision')
             subject = mail_template['subject'].format(
@@ -563,7 +544,7 @@ class PublishProposalModeration(InfiniteCardinality):
             context, request, user, submitted_appstruct, root)
         alert('internal', [root], [user],
               internal_kind=InternalAlertKind.moderation_alert,
-              subjects=[context])
+              subjects=[context], alert_kind='moderation')
         if getattr(user, 'email', ''):
             mail_template = root.get_mail_template('publish_proposal_decision')
             subject = mail_template['subject'].format(
@@ -848,7 +829,7 @@ class MakeOpinion(InfiniteCardinality):
             ['examined', 'published', context.opinion['opinion']])
         context.init_examined_at()
         context.reindex()
-        remove_tokens(context)
+        context.remove_tokens()
         members = context.working_group.members
         root = getSite()
         mail_template = root.get_mail_template('opinion_proposal')
@@ -933,7 +914,8 @@ def comm_processsecurity_validation(process, context):
 
 
 def comm_state_validation(process, context):
-    return 'draft' not in context.state
+    return 'draft' not in context.state and \
+        'censored' not in context.state
 
 
 class CommentProposal(CommentIdea):
@@ -994,7 +976,8 @@ def present_processsecurity_validation(process, context):
 
 
 def present_state_validation(process, context):
-    return 'draft' not in context.state #TODO ?
+    return 'draft' not in context.state and \
+        'censored' not in context.state
 
 
 class PresentProposal(PresentIdea):
@@ -1810,4 +1793,8 @@ class RemoveFile(InfiniteCardinality):
 
 #TODO behaviors
 
-VALIDATOR_BY_CONTEXT[Proposal] = CommentProposal
+VALIDATOR_BY_CONTEXT[Proposal] = {
+    'action': CommentProposal,
+    'see': SeeProposal,
+    'access_key': get_access_key
+}
