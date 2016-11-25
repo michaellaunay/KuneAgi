@@ -262,7 +262,7 @@ function update_sidebar_action(){
            $this.addClass('activated')
            target.find('.carousel').carousel()
            init_emoji(target.find('.emoji-container:not(.emojified)'));
-           init_content_text(target.find(".content-text"))
+           init_content_text_scroll(target.find(".content-text"))
            rebuild_scrolls(target.find('.malihu-scroll'))
            initscroll(target.find(".result-scroll"))
            finish_progress()
