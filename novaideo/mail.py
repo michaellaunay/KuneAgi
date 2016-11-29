@@ -693,7 +693,6 @@ DEFAULT_SITE_MAILS = {
               'subject': ADMIN_PREREGISTRATION_SUBJECT,
               'template': ADMIN_PREREGISTRATION_MESSAGE
     },
-<<<<<<< HEAD
     'moderate_preregistration_refused': {
               'title': _("Registration refused"),
               'subject': ADMIN_PREREGISTRATION_REF_SUBJECT,
