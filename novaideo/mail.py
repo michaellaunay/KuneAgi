@@ -144,6 +144,17 @@ Chaque membre de la plateforme peut dorénavant soutenir ou s'opposer à la prop
 """ + PORTAL_SIGNATURE
 
 
+SYSTEM_CLOSE_PROPOSAL_SUBJECT = u"""Décision de cloturer la proposition « {subject_title} » à l'appréciation des membres de la plateforme"""
+
+SYSTEM_CLOSE_PROPOSAL_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Le groupe de travail sur la proposition « {subject_title} » qui se trouve sous {subject_url} n'est plus actif depuis quelques cycles de plus d'une semaine.
+Pour cette raison, le groupe de travail a été dissout et la proposition est maintenant ouverte à un groupe de travail.
+
+""" + PORTAL_SIGNATURE
+
+
 VOTINGPUBLICATION_SUBJECT = u"""Début du vote pour améliorer la proposition « {subject_title} » ou la soumettre à l'appréciation des membres de la plateforme """
 
 VOTINGPUBLICATION_MESSAGE = u"""
@@ -682,6 +693,7 @@ DEFAULT_SITE_MAILS = {
               'subject': ADMIN_PREREGISTRATION_SUBJECT,
               'template': ADMIN_PREREGISTRATION_MESSAGE
     },
+<<<<<<< HEAD
     'moderate_preregistration_refused': {
               'title': _("Registration refused"),
               'subject': ADMIN_PREREGISTRATION_REF_SUBJECT,
@@ -692,4 +704,9 @@ DEFAULT_SITE_MAILS = {
               'subject': ADMIN_PREREGISTRATION_SUB_SUBJECT,
               'template': ADMIN_PREREGISTRATION_SUB_MESSAGE
     },
+    'close_proposal': {
+              'title': _("Close proposal"),
+              'subject': SYSTEM_CLOSE_PROPOSAL_SUBJECT,
+              'template': SYSTEM_CLOSE_PROPOSAL_MESSAGE
+    }
 }
