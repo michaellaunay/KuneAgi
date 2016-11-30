@@ -1,1 +1,2 @@
 <div tal:replace="structure navbar_body"/>
+<div tal:replace="structure vote_actions_body"/>

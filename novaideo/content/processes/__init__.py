@@ -13,6 +13,9 @@ from dace.util import request_memoize
 from novaideo.core import _
 
 
+MODERATORS_NB = 3
+
+
 STATES_PARTICIPANT_MAPPING = {
     'default': {
         'draft': _('Draft'),

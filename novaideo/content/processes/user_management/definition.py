@@ -3,13 +3,10 @@
 
 # licence: AGPL
 # author: Amen Souissi
-import datetime
-from persistent.list import PersistentList
 
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import (
-    ActivityDefinition,
-    SubProcessDefinition as OriginSubProcessDefinition)
+    ActivityDefinition)
 from dace.processdefinition.gatewaydef import (
     ExclusiveGatewayDefinition,
     ParallelGatewayDefinition)
@@ -17,11 +14,8 @@ from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (
     StartEventDefinition,
     EndEventDefinition)
-from dace.processinstance.activity import (
-    SubProcess as OriginSubProcess)
 from dace.objectofcollaboration.services.processdef_container import (
     process_definition)
-from dace.util import getSite
 from pontus.core import VisualisableElement
 
 from .behaviors import (
@@ -40,10 +34,13 @@ from .behaviors import (
     SeeRegistration,
     SeeRegistrations,
     RemoveRegistration,
-    ModerationVote,
-    close_votes)
+    ModerationVote)
 from novaideo import _
-from novaideo.content.ballot import Ballot
+from novaideo.content.person import Preregistration
+from novaideo.content.processes.moderation_management import (
+    MODERATION_DATA)
+from novaideo.content.processes.moderation_management.definition import (
+    ContentModeration)
 
 
 @process_definition(name='usermanagement', id='usermanagement')
@@ -185,75 +182,20 @@ MODERATION_DESCRIPTION = _("Vous êtes invité à vérifier et confirmer l'ident
                            "de ce compte. Si la majorité confirme l'identité de ce compte, "
                            "le compte sera validé, sinon le compte sera supprimé.")
 
-
-class SubProcessFirstVote(OriginSubProcess):
-
-    def __init__(self, definition):
-        super(SubProcessFirstVote, self).__init__(definition)
-
-    def stop(self):
-        request = get_current_request()
-        for process in self.sub_processes:
-            exec_ctx = process.execution_context
-            vote_processes = exec_ctx.get_involved_collection('vote_processes')
-            vote_processes = [process for process in vote_processes
-                              if not process._finished]
-            if vote_processes:
-                close_votes(None, request, vote_processes)
-
-        super(SubProcessFirstVote, self).stop()
-
-
-class SubProcessDefinition(OriginSubProcessDefinition):
-    """Run the voting process for the moderation of registrations"""
-
-    factory = SubProcessFirstVote
-
-    def _init_subprocess(self, process, subprocess):
-        root = getSite()
-        duration = datetime.timedelta(
-            days=getattr(root, 'duration_moderation_vote', 7))
-        preregistration = process.execution_context.created_entity(
-            'preregistration')
-        electors = preregistration.moderators
-        subjects = [preregistration]
-        ballot = Ballot('Referendum', electors, subjects, duration,
-                        true_val=_("Confirmed identity"),
-                        false_val=_("Not confirmed identity"))
-        preregistration.addtoproperty('ballots', ballot)
-        ballot.report.description = MODERATION_DESCRIPTION
-        ballot.title = _("Confirm the user identity")
-        processes = ballot.run_ballot()
-        subprocess.ballots = PersistentList()
-        subprocess.ballots.append(ballot)
-        preregistration.moderation_ballot = ballot
-        subprocess.execution_context.add_involved_collection(
-            'vote_processes', processes)
-        subprocess.duration = duration
+MODERATION_DATA[Preregistration.__name__+'-registrationmoderation'] = {
+    'ballot_description': MODERATION_DESCRIPTION,
+    'ballot_title': _("Confirm the user identity"),
+    'true_value': _("Confirmed identity"),
+    'false_value': _("Not confirmed identity"),
+    'process_id': 'registrationmoderation'
+}
 
 
 @process_definition(
     name='registrationmoderation',
     id='registrationmoderation')
-class RegistrationModeration(ProcessDefinition, VisualisableElement):
-    isControlled = True
-    isVolatile = True
+class RegistrationModeration(ContentModeration):
+    moderation_action = ModerationVote
 
     def __init__(self, **kwargs):
         super(RegistrationModeration, self).__init__(**kwargs)
-        self.title = _('Registration moderation')
-        self.description = _('Registration moderation')
-
-    def _init_definition(self):
-        self.defineNodes(
-                start = StartEventDefinition(),
-                moderation_vote = SubProcessDefinition(pd='ballotprocess', contexts=[ModerationVote],
-                                       description=_("Start voting for moderation"),
-                                       title=_("Start voting for moderation"),
-                                       groups=[]),
-                end = EndEventDefinition(),
-        )
-        self.defineTransitions(
-                TransitionDefinition('start', 'moderation_vote'),
-                TransitionDefinition('moderation_vote', 'end'),
-        )

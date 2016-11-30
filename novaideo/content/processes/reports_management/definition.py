@@ -19,11 +19,17 @@ from pontus.core import VisualisableElement
 
 from .behaviors import (
     Report,
-    Ignore,
-    Censor,
     Restor,
-    SeeReports)
+    SeeReports,
+    ModerationVote)
 from novaideo import _
+from novaideo.content.proposal import Proposal
+from novaideo.content.idea import Idea
+from novaideo.content.comment import Comment
+from novaideo.content.processes.moderation_management import (
+    MODERATION_DATA)
+from novaideo.content.processes.moderation_management.definition import (
+    ContentModeration)
 
 
 @process_definition(name='reportsmanagement', id='reportsmanagement')
@@ -47,14 +53,6 @@ class ReportsManagementProcess(ProcessDefinition, VisualisableElement):
                                        description=_("See reports"),
                                        title=_("Reports"),
                                        groups=[]),
-                ignore = ActivityDefinition(contexts=[Ignore],
-                                       description=_("Ignore reports"),
-                                       title=_("Ignore reports"),
-                                       groups=[]),
-                censor = ActivityDefinition(contexts=[Censor],
-                                       description=_("Censor the content"),
-                                       title=_("Censor the content"),
-                                       groups=[]),
                 restor = ActivityDefinition(contexts=[Restor],
                                        description=_("Restor the content"),
                                        title=_("Restor the content"),
@@ -68,12 +66,49 @@ class ReportsManagementProcess(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('report', 'eg'),
                 TransitionDefinition('pg', 'see_reports'),
                 TransitionDefinition('see_reports', 'eg'),
-                TransitionDefinition('pg', 'ignore'),
-                TransitionDefinition('ignore', 'eg'),
-                TransitionDefinition('pg', 'censor'),
-                TransitionDefinition('censor', 'eg'),
                 TransitionDefinition('pg', 'restor'),
                 TransitionDefinition('restor', 'eg'),
                 TransitionDefinition('eg', 'end'),
 
         )
+
+
+MODERATION_DESCRIPTION = _("Vous êtes invité à vérifier et modérer le contenu signalé. "
+                           "Cela afin de garantir le respect de la charte d'utilisation. "
+                           "Si la majorité vote en faveur du contenu, "
+                           "les signalisations seront ignorées, sinon le contenu sera censuré.")
+
+
+MODERATION_DATA[Idea.__name__+'-contentreportdecision'] = {
+    'ballot_description': MODERATION_DESCRIPTION,
+    'ballot_title': _("Moderate the content"),
+    'true_value': _("Ignore"),
+    'false_value': _("Censor"),
+    'process_id': 'contentreportdecision'
+}
+
+MODERATION_DATA[Proposal.__name__+'-contentreportdecision'] = {
+    'ballot_description': MODERATION_DESCRIPTION,
+    'ballot_title': _("Moderate the content"),
+    'true_value': _("Ignore"),
+    'false_value': _("Censor"),
+    'process_id': 'contentreportdecision'
+}
+
+MODERATION_DATA[Comment.__name__+'-contentreportdecision'] = {
+    'ballot_description': MODERATION_DESCRIPTION,
+    'ballot_title': _("Moderate the content"),
+    'true_value': _("Ignore"),
+    'false_value': _("Censor"),
+    'process_id': 'contentreportdecision'
+}
+
+
+@process_definition(
+    name='contentreportdecision',
+    id='contentreportdecision')
+class ReportingProcess(ContentModeration):
+    moderation_action = ModerationVote
+
+    def __init__(self, **kwargs):
+        super(ReportingProcess, self).__init__(**kwargs)

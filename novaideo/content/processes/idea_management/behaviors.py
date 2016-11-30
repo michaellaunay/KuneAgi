@@ -26,7 +26,8 @@ from dace.objectofcollaboration.principal.util import (
     has_role,
     has_any_roles,
     grant_roles,
-    get_current)
+    get_current,
+    revoke_roles)
 from dace.processinstance.activity import InfiniteCardinality, ActionType
 from dace.processinstance.core import ActivityExecuted
 
@@ -47,13 +48,74 @@ from novaideo.event import (
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from novaideo.content.alert import InternalAlertKind
-from novaideo.views.filter import get_users_by_preferences
+from novaideo.views.filter import (
+    get_users_by_preferences, get_random_users)
 from novaideo.content.proposal import Proposal
 from novaideo.content.working_group import WorkingGroup
 from novaideo.content.correlation import CorrelationType
 from novaideo.content.processes.proposal_management import (
     init_proposal_ballots, add_attached_files)
 from novaideo.content.comment import Comment
+from novaideo.content.processes.moderation_management import (
+    moderation_result, close_ballot,
+    MODERATORS_NB, start_moderation)
+from novaideo.content.processes.moderation_management.behaviors import (
+    ModerationVote as ModerationVoteBase)
+
+
+def publish_idea_moderation(context, request, root):
+    if root.support_ideas:
+        context.state = PersistentList(['submitted_support', 'published'])
+    else:
+        context.state = PersistentList(['published', 'submitted_support'])
+
+    context.init_published_at()
+    context.reindex()
+    user = context.author
+    alert('internal', [root], [user],
+          internal_kind=InternalAlertKind.moderation_alert,
+          subjects=[context], alert_kind='moderation')
+    if getattr(user, 'email', ''):
+        mail_template = root.get_mail_template('publish_idea_decision')
+        subject = mail_template['subject'].format(
+            subject_title=context.title)
+        email_data = get_user_data(user, 'recipient', request)
+        email_data.update(get_entity_data(context, 'subject', request))
+        message = mail_template['template'].format(
+            novaideo_title=root.title,
+            **email_data
+        )
+        alert('email', [root.get_site_sender()], [user.email],
+              subject=subject, body=message)
+
+    request.registry.notify(ObjectPublished(object=context))
+
+
+def archive_idea(context, request, root, appstruct):
+    explanation = appstruct['explanation']
+    context.state = PersistentList(['archived'])
+    context.reindex()
+    for token in list(context.tokens):
+        token.owner.addtoproperty('tokens', token)
+
+    user = context.author
+    alert('internal', [root], [user],
+          internal_kind=InternalAlertKind.moderation_alert,
+          subjects=[context], alert_kind='moderation')
+
+    if getattr(user, 'email', ''):
+        mail_template = root.get_mail_template('archive_idea_decision')
+        subject = mail_template['subject'].format(
+            subject_title=context.title)
+        email_data = get_user_data(user, 'recipient', request)
+        email_data.update(get_entity_data(context, 'subject', request))
+        message = mail_template['template'].format(
+            explanation=explanation,
+            novaideo_title=root.title,
+            **email_data
+        )
+        alert('email', [root.get_site_sender()], [user.email],
+              subject=subject, body=message)
 
 
 def createidea_roles_validation(process, context):
@@ -437,6 +499,18 @@ class SubmitIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         context.state = PersistentList(['submitted'])
         context.reindex()
+        root = getSite()
+        # get random moderators
+        moderators = get_random_users(MODERATORS_NB)
+        if not moderators:
+            publish_idea_moderation(context, request, root)
+        else:
+            author = context.author
+            start_moderation(
+                context, author, request, root,
+                'content_submit', moderators,
+                'ideamoderation')
+
         return {}
 
     def redirect(self, context, request, **kw):
@@ -473,102 +547,7 @@ class ArchiveIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        explanation = appstruct['explanation']
-        context.state = PersistentList(['archived'])
-        context.reindex()
-        for token in list(context.tokens):
-            token.owner.addtoproperty('tokens', token)
-
-        user = context.author
-        alert('internal', [root], [user],
-              internal_kind=InternalAlertKind.moderation_alert,
-              subjects=[context], alert_kind='moderation')
-
-        if getattr(user, 'email', ''):
-            mail_template = root.get_mail_template('archive_idea_decision')
-            subject = mail_template['subject'].format(
-                subject_title=context.title)
-            email_data = get_user_data(user, 'recipient', request)
-            email_data.update(get_entity_data(context, 'subject', request))
-            message = mail_template['template'].format(
-                explanation=explanation,
-                novaideo_title=root.title,
-                **email_data
-            )
-            alert('email', [root.get_site_sender()], [user.email],
-                  subject=subject, body=message)
-
-        return {}
-
-    def redirect(self, context, request, **kw):
-        return nothing
-
-
-def archive_roles_validation(process, context):
-    return has_role(role=('Moderator',))
-
-
-def archive_processsecurity_validation(process, context):
-    return not context.target_correlations and\
-        global_user_processsecurity()
-
-
-def archive_state_validation(process, context):
-    return 'published' in context.state
-
-
-class ModerationArchiveIdea(ArchiveIdea):
-    style = 'button' #TODO add style abstract class
-    style_descriminator = 'plus-action'
-    style_interaction = 'ajax-action'
-    style_picto = 'glyphicon glyphicon-inbox'
-    style_order = 4
-    submission_title = _('Continue')
-    context = Iidea
-    roles_validation = archive_roles_validation
-    processsecurity_validation = archive_processsecurity_validation
-    state_validation = archive_state_validation
-
-
-class PublishIdeaModeration(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
-    style_descriminator = 'global-action'
-    style_interaction = 'ajax-action'
-    style_picto = 'glyphicon glyphicon-share'
-    style_order = 5
-    submission_title = _('Continue')
-    context = Iidea
-    roles_validation = decision_roles_validation
-    processsecurity_validation = decision_processsecurity_validation
-    state_validation = decision_state_validation
-
-    def start(self, context, request, appstruct, **kw):
-        root = getSite()
-        if root.support_ideas:
-            context.state = PersistentList(['submitted_support', 'published'])
-        else:
-            context.state = PersistentList(['published', 'submitted_support'])
-
-        context.init_published_at()
-        context.reindex()
-        user = context.author
-        alert('internal', [root], [user],
-              internal_kind=InternalAlertKind.moderation_alert,
-              subjects=[context], alert_kind='moderation')
-        if getattr(user, 'email', ''):
-            mail_template = root.get_mail_template('publish_idea_decision')
-            subject = mail_template['subject'].format(
-                subject_title=context.title)
-            email_data = get_user_data(user, 'recipient', request)
-            email_data.update(get_entity_data(context, 'subject', request))
-            message = mail_template['template'].format(
-                novaideo_title=root.title,
-                **email_data
-            )
-            alert('email', [root.get_site_sender()], [user.email],
-                  subject=subject, body=message)
-
-        request.registry.notify(ObjectPublished(object=context))
+        archive_idea(context, request, root, appstruct)
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
         return {}
@@ -916,13 +895,16 @@ def get_access_key(obj):
         return ['always']
     else:
         return serialize_roles(
-            (('Owner', obj), 'SiteAdmin', 'Admin', 'Moderator'))
+            (('Owner', obj), 'SiteAdmin', 'Moderator',
+             'Admin', ('LocalModerator', obj)))
 
 
 def seeidea_processsecurity_validation(process, context):
     return access_user_processsecurity(process, context) and \
            ('published' in context.state or 'censored' in context.state or\
-            has_any_roles(roles=(('Owner', context), 'Moderator')))
+            has_any_roles(
+                roles=(('Owner', context), ('LocalModerator', context),
+                        'SiteAdmin', 'Moderator')))
 
 
 @access_action(access_key=get_access_key)
@@ -1184,6 +1166,69 @@ class SeeRelatedWorkingGroups(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return nothing
+
+
+# Idea moderation
+
+def decision_state_validation(process, context):
+    return 'submitted' in context.state
+
+
+class ModerationVote(ModerationVoteBase):
+    context = Iidea
+    state_validation = decision_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        moderators = context.moderators
+        alert(
+            'internal', [root], moderators,
+            internal_kind=InternalAlertKind.moderation_alert,
+            subjects=[context], alert_kind='moderate_content')
+        mail_template = root.get_mail_template('moderate_content')
+        subject = mail_template['subject'].format(
+            novaideo_title=root.title)
+        subject_data = get_entity_data(context, 'subject', request)
+        subject_data.update(get_user_data(context, 'subject', request))
+        for moderator in [a for a in moderators if getattr(a, 'email', '')]:
+            email_data = get_user_data(moderator, 'recipient', request)
+            email_data.update(subject_data)
+            message = mail_template['template'].format(
+                novaideo_title=root.title,
+                subject_email=getattr(context, 'email', ''),
+                duration=getattr(root, 'duration_moderation_vote', 7),
+                **email_data)
+            alert('email', [root.get_site_sender()], [moderator.email],
+                  subject=subject, body=message)
+
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
+        return {}
+
+    def after_execution(self, context, request, **kw):
+        idea = self.process.execution_context.created_entity(
+            'content')
+        close_ballot(self, idea, request)
+        # idea not removed
+        if idea and idea.__parent__:
+            for moderator in idea.moderators:
+                revoke_roles(
+                    user=moderator,
+                    roles=(('LocalModerator', idea),))
+
+            accepted = moderation_result(self.process)
+            root = getSite()
+            if accepted:
+                publish_idea_moderation(idea, request, root)
+            else:
+                archive_idea(idea, request, root, {'explanation': ''})
+
+        super(ModerationVote, self).after_execution(
+            idea, request, **kw)
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
 #TODO behaviors
 
 VALIDATOR_BY_CONTEXT[Idea] = {

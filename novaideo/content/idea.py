@@ -19,7 +19,8 @@ from substanced.content import content
 from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
-from dace.descriptors import SharedUniqueProperty, CompositeMultipleProperty
+from dace.descriptors import (
+    SharedUniqueProperty, CompositeMultipleProperty, SharedMultipleProperty)
 from pontus.core import VisualisableElementSchema
 from pontus.widget import (
     SequenceWidget)
@@ -124,6 +125,9 @@ class Idea(VersionableEntity, DuplicableEntity,
     url_files = CompositeMultipleProperty('url_files')
     tokens_opposition = CompositeMultipleProperty('tokens_opposition')
     tokens_support = CompositeMultipleProperty('tokens_support')
+    ballots = CompositeMultipleProperty('ballots')
+    moderators = SharedMultipleProperty('moderators')
+    moderation_proc = SharedUniqueProperty('moderation_proc')
 
     def __init__(self, **kwargs):
         super(Idea, self).__init__(**kwargs)

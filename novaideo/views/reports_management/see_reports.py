@@ -24,7 +24,9 @@ from novaideo.core import BATCH_DEFAULT_SIZE
 from novaideo.views.filter import find_entities
 from novaideo.core import SignalableEntity
 from novaideo.content.interface import ISReport
-from novaideo.utilities.util import generate_navbars, ObjectRemovedException
+from novaideo.utilities.util import (
+    generate_navbars, ObjectRemovedException,
+    get_vote_actions_body)
 
 
 CONTENTS_MESSAGES = {
@@ -117,25 +119,41 @@ class DetailSubjectView(BasicView):
 
     def update(self):
         self.execute(None)
+        vote_actions = get_vote_actions_body(
+            self.context, self.request)
         try:
+            text_action = [{'title': _('Moderate'),
+                            'class_css': 'vote-action',
+                            'style_picto': 'glyphicon glyphicon-stats'}] \
+                if vote_actions['actions'] else []
             navbars = generate_navbars(
                 self.request, self.context,
                 process_id='reportsmanagement',
                 descriminators=['plus-action'],
-                flatten=True)
+                flatten=True,
+                text_action=text_action)
         except ObjectRemovedException:
             return HTTPFound(self.request.resource_url(getSite(), ''))
+
+        resources = merge_dicts(navbars['resources'], vote_actions['resources'],
+                                ('js_links', 'css_links'))
+        resources['js_links'] = list(set(resources['js_links']))
+        resources['css_links'] = list(set(resources['css_links']))
+        messages = vote_actions['messages']
+        if not messages:
+            messages = navbars['messages']
 
         result = {}
         values = {
             'navbar_body': navbars['navbar_body'],
-            'object': self.context
+            'object': self.context,
+            'vote_actions_body': vote_actions['body']
         }
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
-        item['messages'] = navbars['messages']
-        item['isactive'] = navbars['isactive']
-        result.update(navbars['resources'])
+        item['messages'] = messages
+        item['isactive'] = vote_actions['isactive'] or navbars['isactive']
+        result.update(resources)
         result['coordinates'] = {self.coordinates: [item]}
         return result
 
@@ -151,6 +169,8 @@ class SeeReportsView(MultipleView):
     template = 'novaideo:views/reports_management/templates/reports_multiple_view.pt'
     viewid = 'seereports'
     views = (DetailSubjectView, SeeReportsPartsView)
+    requirements = {'css_links': [],
+                    'js_links': ['novaideo:static/js/ballot_management.js']}
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

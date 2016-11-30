@@ -20,8 +20,7 @@ from substanced.util import find_service
 
 from dace.util import (
     getSite, name_chooser,
-    push_callback_after_commit, get_socket,
-    find_service as dace_find_service)
+    push_callback_after_commit, get_socket)
 from dace.objectofcollaboration.principal.role import DACE_ROLES
 from dace.objectofcollaboration.principal.util import (
     grant_roles,
@@ -29,11 +28,9 @@ from dace.objectofcollaboration.principal.util import (
     get_current,
     has_any_roles,
     revoke_roles,
-    get_roles,
-    get_users_with_role)
+    get_roles)
 from dace.processinstance.activity import (
     InfiniteCardinality,
-    ElementaryAction,
     ActionType)
 from dace.processinstance.core import ActivityExecuted, PROCESS_HISTORY_KEY
 
@@ -56,54 +53,11 @@ from novaideo.utilities.alerts_utility import (
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes import global_user_processsecurity
 from novaideo.role import get_authorized_roles
-from novaideo.content.processes.ballot_processes import close_votes
-from novaideo.mail import MODERATOR_DATA
-
-
-MODERATORS_NB = 3
-
-
-def close_ballot(action, preregistration, request):
-    if action.sub_process:
-        exec_ctx = action.sub_process.execution_context
-        vote_processes = exec_ctx.get_involved_collection(
-            'vote_processes')
-        opened_vote_processes = [process for process in vote_processes
-                                 if not process._finished]
-        if opened_vote_processes:
-            close_votes(preregistration, request, opened_vote_processes)
-
-
-def start_moderation_proc(preregistration):
-    def_container = dace_find_service('process_definition_container')
-    runtime = dace_find_service('runtime')
-    pd = def_container.get_definition('registrationmoderation')
-    proc = pd()
-    proc.__name__ = proc.id
-    runtime.addtoproperty('processes', proc)
-    proc.defineGraph(pd)
-    proc.execution_context.add_created_entity(
-        'preregistration', preregistration)
-    proc.execute()
-    return proc
-
-
-def moderation_result(process):
-    preregistration = process.execution_context.created_entity(
-        'preregistration')
-    if preregistration:
-        report = preregistration.moderation_ballot.report
-        report.calculate_votes()
-        if not report.voters:
-            return False
-
-        electeds = report.get_electeds()
-        if electeds is None:
-            return False
-        else:
-            return True
-
-    return False
+from novaideo.content.processes.moderation_management import (
+    moderation_result, close_ballot,
+    MODERATORS_NB, start_moderation)
+from novaideo.content.processes.moderation_management.behaviors import (
+    ModerationVote as ModerationVoteBase)
 
 
 def accept_preregistration(request, preregistration, root):
@@ -429,40 +383,10 @@ class Registration(InfiniteCardinality):
                 preregistration.reindex()
                 accept()
             else:
-                email_data = get_user_data(
-                    preregistration, 'recipient', request)
-                moderators_str = ""
-                for index, moderator in enumerate(moderators):
-                    moderator_data = get_user_data(
-                        moderator, 'subject', request)
-                    moderator_data['subject_email'] = moderator.email
-                    moderator_data['index'] = str(index+1)
-                    moderator_str = MODERATOR_DATA.format(
-                        **moderator_data)
-                    moderators_str += "\n" + moderator_str
-                    grant_roles(
-                        user=moderator,
-                        roles=(('LocalModerator', preregistration),))
-
-                email_data['moderators'] = moderators_str
-                preregistration.setproperty('moderators', moderators)
-                # send an email to user
-                mail_template = root.get_mail_template('preregistration_submit')
-                subject = mail_template['subject'].format(
-                    novaideo_title=root.title)
-                message = mail_template['template'].format(
-                    duration=getattr(root, 'duration_moderation_vote', 7),
-                    novaideo_title=root.title,
-                    **email_data)
-                alert('email', [root.get_site_sender()], [preregistration.email],
-                      subject=subject, body=message)
-                # start a moderation process
-                moderation_proc = start_moderation_proc(
-                    preregistration)
-                preregistration.setproperty(
-                    'moderation_proc', moderation_proc)
-                moderation_proc.execute_action(
-                    preregistration, request, 'moderation_vote', {})
+                start_moderation(
+                    preregistration, preregistration, request, root,
+                    'preregistration_submit', moderators,
+                    'registrationmoderation')
 
         request.registry.notify(ActivityExecuted(self, [preregistration], None))
         return {'preregistration': preregistration}
@@ -917,27 +841,12 @@ class GeneralDiscuss(InfiniteCardinality):
 
 # Registration moderation
 
-def decision_relation_validation(process, context):
-    return process.execution_context.has_relation(context, 'preregistration')
-
-
-def decision_roles_validation(process, context):
-    return has_role(role=('SiteAdmin',))
-
-
 def decision_state_validation(process, context):
     return 'pending' in context.state
 
 
-class ModerationVote(ElementaryAction):
-    style = 'button' #TODO add style abstract class
-    style_descriminator = 'plus-action'
-    style_order = 5
+class ModerationVote(ModerationVoteBase):
     context = IPreregistration
-    processs_relation_id = 'preregistration'
-    #actionType = ActionType.system
-    relation_validation = decision_relation_validation
-    roles_validation = decision_roles_validation
     state_validation = decision_state_validation
 
     def start(self, context, request, appstruct, **kw):
@@ -950,8 +859,8 @@ class ModerationVote(ElementaryAction):
         mail_template = root.get_mail_template('moderate_preregistration')
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
-        url = request.resource_url(context, '@@index')
-        subject_data = get_user_data(context, 'subject', request)
+        subject_data = get_entity_data(context, 'subject', request)
+        subject_data.update(get_user_data(context, 'subject', request))
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
@@ -961,7 +870,6 @@ class ModerationVote(ElementaryAction):
                     birth_date, request, translate=True)
 
             message = mail_template['template'].format(
-                url=url,
                 novaideo_title=root.title,
                 subject_email=getattr(context, 'email', ''),
                 birth_date=birth_date,
@@ -976,7 +884,7 @@ class ModerationVote(ElementaryAction):
 
     def after_execution(self, context, request, **kw):
         preregistration = self.process.execution_context.created_entity(
-            'preregistration')
+            'content')
         close_ballot(self, preregistration, request)
         # preregistration not removed
         if preregistration and preregistration.__parent__:

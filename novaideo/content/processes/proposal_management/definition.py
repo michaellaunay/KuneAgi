@@ -40,8 +40,6 @@ from .behaviors import (
     EditProposal,
     PublishProposal,
     SubmitProposalModeration,
-    PublishProposalModeration,
-    ArchiveProposalModeration,
     CommentProposal,
     PresentProposal,
     Associate,
@@ -73,10 +71,16 @@ from .behaviors import (
     SeeWorkspace,
     AddFiles,
     RemoveFile,
-    AttachFiles
+    AttachFiles,
+    ModerationVote
     )
 from novaideo import _, log
 from novaideo.content.ballot import Ballot
+from novaideo.content.proposal import Proposal
+from novaideo.content.processes.moderation_management import (
+    MODERATION_DATA)
+from novaideo.content.processes.moderation_management.definition import (
+    ContentModeration)
 
 
 def firs_alert(process, date):
@@ -316,14 +320,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Submit the proposal"),
                                        title=_("Submit for publishing"),
                                        groups=[]),
-                publish_moderation = ActivityDefinition(contexts=[PublishProposalModeration],
-                                       description=_("Publish the proposal"),
-                                       title=_("Publish"),
-                                       groups=[]),
-                archive_moderation = ActivityDefinition(contexts=[ArchiveProposalModeration],
-                                       description=_("Archive the proposal"),
-                                       title=_("Archive"),
-                                       groups=[]),
                 edit = ActivityDefinition(contexts=[EditProposal],
                                        description=_("Edit the proposal"),
                                        title=_("Edit"),
@@ -401,8 +397,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'duplicate'),
                 TransitionDefinition('pg', 'publish'),
                 TransitionDefinition('pg', 'submit'),
-                TransitionDefinition('pg', 'publish_moderation'),
-                TransitionDefinition('pg', 'archive_moderation'),
                 TransitionDefinition('pg', 'edit'),
                 TransitionDefinition('pg', 'delete'),
                 TransitionDefinition('pg', 'seerelatedideas'),
@@ -428,8 +422,6 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('duplicate', 'eg'),
                 TransitionDefinition('publish', 'eg'),
                 TransitionDefinition('submit', 'eg'),
-                TransitionDefinition('publish_moderation', 'eg'),
-                TransitionDefinition('archive_moderation', 'eg'),
                 TransitionDefinition('edit', 'eg'),
                 TransitionDefinition('delete', 'eg'),
                 TransitionDefinition('seerelatedideas', 'eg'),
@@ -542,3 +534,27 @@ class WorkspaceManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('add_files', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )
+
+
+MODERATION_DESCRIPTION = _("Vous êtes invité à vérifier et modérer la proposition enregistrée. "
+                           "Cela afin de garantir le respect de la charte d'utilisation. "
+                           "Si la majorité vote en faveur de la publication de la proposition, "
+                           "la proposition sera validée, sinon la proposition sera archivée.")
+
+MODERATION_DATA[Proposal.__name__+'-proposalmoderation'] = {
+    'ballot_description': MODERATION_DESCRIPTION,
+    'ballot_title': _("Moderate the proposal"),
+    'true_value': _("Accept the proposal"),
+    'false_value': _("Refuse the proposal"),
+    'process_id': 'proposalmoderation'
+}
+
+
+@process_definition(
+    name='proposalmoderation',
+    id='proposalmoderation')
+class ProposalModeration(ContentModeration):
+    moderation_action = ModerationVote
+
+    def __init__(self, **kwargs):
+        super(ProposalModeration, self).__init__(**kwargs)

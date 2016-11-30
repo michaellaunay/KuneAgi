@@ -996,9 +996,9 @@ def generate_navbars(request, context, **args):
         actions_navbar['global-action'].extend(
             actions_navbar.pop('primary-action', []))
 
-    if 'text-action' in actions_navbar:
-        actions_navbar['text-action'].extend(
-            args.get('text_action', []))
+    actions_navbar['text-action'] = []
+    actions_navbar['text-action'].extend(
+        args.get('text_action', []))
 
     if 'plus-action' in actions_navbar:
         actions_navbar['plus-action'].extend(

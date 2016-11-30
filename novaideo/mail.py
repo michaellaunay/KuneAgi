@@ -408,6 +408,22 @@ La durée de la vérification est de {duration} jour(s). Au-delà de cette duré
 """+ PORTAL_SIGNATURE
 
 
+ADMIN_CONTENT_SUBJECT = u"""Nouveau contenu sur la plateforme participative {novaideo_title}"""
+
+
+ADMIN_CONTENT_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Vous avez été choisi par la plateforme {novaideo_title} afin de modérer et statuer sur un nouveau contenu ajouté à la plateforme.
+
+À chaque nouvel ajout d'un contenu à la plateforme {novaideo_title} le système tire aléatoirement trois membres afin de vérifier et statuer sur le contenu. Pour cela il vous suffit de suivre les étapes suivantes:
+
+- Connectez-vous à la plateforme à l'adresse suivante {subject_url} et donnez votre avis.
+
+La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée.
+
+"""+ PORTAL_SIGNATURE
+
 ADMIN_PREREGISTRATION_REF_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
 
 
@@ -438,6 +454,25 @@ Les modérateurs assignés à la vérification de votre inscription sont:
 La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée. Veuillez donc envoyer une copie de vos documents officiels avant la fin de cette durée.
 
 """+ PORTAL_SIGNATURE
+
+
+ADMIN_CONTENT_SUB_SUBJECT = u"""Nouveau contenu sur la plateforme participative {novaideo_title}"""
+
+
+ADMIN_CONTENT_SUB_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Votre contenu a été soumis à modération. 
+
+À chaque nouvel ajout d'un contenu à la plateforme {novaideo_title} le système tire aléatoirement trois membres afin de vérifier et statuer sur le contenu ajouté.
+
+Les modérateurs assignés à la vérification de votre contenu sont:
+{moderators}
+
+La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée.
+
+"""+ PORTAL_SIGNATURE
+
 
 MODERATOR_DATA = u"""
 Modérateur {index}:
@@ -707,5 +742,16 @@ DEFAULT_SITE_MAILS = {
               'title': _("Close proposal"),
               'subject': SYSTEM_CLOSE_PROPOSAL_SUBJECT,
               'template': SYSTEM_CLOSE_PROPOSAL_MESSAGE
+    },
+    'moderate_content': {
+              'title': _("New content to moderate"),
+              'subject': ADMIN_CONTENT_SUBJECT,
+              'template': ADMIN_CONTENT_MESSAGE
+    },
+    'content_submit': {
+              'title': _("Content submission"),
+              'subject': ADMIN_CONTENT_SUB_SUBJECT,
+              'template': ADMIN_CONTENT_SUB_MESSAGE
     }
 }
+

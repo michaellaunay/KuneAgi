@@ -197,6 +197,9 @@ class Proposal(VersionableEntity,
     amendments = CompositeMultipleProperty('amendments', 'proposal')
     corrections = CompositeMultipleProperty('corrections', 'proposal')
     attached_files = SharedMultipleProperty('attached_files')
+    ballots = CompositeMultipleProperty('ballots')
+    moderators = SharedMultipleProperty('moderators')
+    moderation_proc = SharedUniqueProperty('moderation_proc')
 
     def __init__(self, **kwargs):
         super(Proposal, self).__init__(**kwargs)

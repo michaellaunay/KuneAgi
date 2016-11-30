@@ -8,8 +8,10 @@ This module represent the Idea management process definition
 powered by the dace engine. This process is unique, which means that
 this process is instantiated only once.
 """
+
 from dace.processdefinition.processdef import ProcessDefinition
-from dace.processdefinition.activitydef import ActivityDefinition
+from dace.processdefinition.activitydef import (
+    ActivityDefinition)
 from dace.processdefinition.gatewaydef import (
     ExclusiveGatewayDefinition,
     ParallelGatewayDefinition)
@@ -37,15 +39,19 @@ from .behaviors import (
     Associate,
     SeeIdea,
     CompareIdea,
-    PublishIdeaModeration,
     SubmitIdea,
     ArchiveIdea,
-    ModerationArchiveIdea,
     OpposeIdea,
     SupportIdea,
     WithdrawToken,
-    MakeOpinion)
+    MakeOpinion,
+    ModerationVote)
 from novaideo import _
+from novaideo.content.idea import Idea
+from novaideo.content.processes.moderation_management import (
+    MODERATION_DATA)
+from novaideo.content.processes.moderation_management.definition import (
+    ContentModeration)
 
 
 @process_definition(name='ideamanagement', id='ideamanagement')
@@ -89,15 +95,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Submit the idea"),
                                        title=_("Submit for publishing"),
                                        groups=[]),
-                publish_moderation = ActivityDefinition(contexts=[PublishIdeaModeration],
-                                       description=_("Publish the idea"),
-                                       title=_("Publish"),
-                                       groups=[]),
                 archive = ActivityDefinition(contexts=[ArchiveIdea],
-                                       description=_("Archive the idea"),
-                                       title=_("Archive"),
-                                       groups=[]),
-                moderationarchive = ActivityDefinition(contexts=[ModerationArchiveIdea],
                                        description=_("Archive the idea"),
                                        title=_("Archive"),
                                        groups=[]),
@@ -174,10 +172,8 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'associate'),
                 TransitionDefinition('pg', 'see'),
                 TransitionDefinition('pg', 'compare'),
-                TransitionDefinition('pg', 'publish_moderation'),
                 TransitionDefinition('pg', 'submit'),
                 TransitionDefinition('pg', 'archive'),
-                TransitionDefinition('pg', 'moderationarchive'),
                 TransitionDefinition('pg', 'makeitsopinion'),
                 TransitionDefinition('makeitsopinion', 'eg'),
                 TransitionDefinition('pg', 'support'),
@@ -201,9 +197,31 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('see', 'eg'),
                 TransitionDefinition('compare', 'eg'),
                 TransitionDefinition('submit', 'eg'),
-                TransitionDefinition('publish_moderation', 'eg'),
                 TransitionDefinition('archive', 'eg'),
-                TransitionDefinition('moderationarchive', 'eg'),
                 TransitionDefinition('seeworkinggroups', 'eg'),
                 TransitionDefinition('eg', 'end'),
         )
+
+
+MODERATION_DESCRIPTION = _("Vous êtes invité à vérifier et modérer l'idée enregistrée. "
+                           "Cela afin de garantir le respect de la charte d'utilisation. "
+                           "Si la majorité vote en faveur de la publication de l'idée, "
+                           "l'idée sera validée, sinon l'idée sera archivée.")
+
+MODERATION_DATA[Idea.__name__+'-ideamoderation'] = {
+    'ballot_description': MODERATION_DESCRIPTION,
+    'ballot_title': _("Moderate the idea"),
+    'true_value': _("Accept the idea"),
+    'false_value': _("Refuse the idea"),
+    'process_id': 'ideamoderation'
+}
+
+
+@process_definition(
+    name='ideamoderation',
+    id='ideamoderation')
+class IdeaModeration(ContentModeration):
+    moderation_action = ModerationVote
+
+    def __init__(self, **kwargs):
+        super(IdeaModeration, self).__init__(**kwargs)
