@@ -16,7 +16,10 @@
       Le groupe de travail de cette proposition n'est plus actif depuis quelques cycles de plus d'une semaine. Pour cette raison, le groupe de travail a été dissout et la proposition est maintenant ouverte à un groupe de travail.
     </span>
     <span tal:condition="alert_kind == 'moderate_content'">
-      Un nouveau contenu vient d'être ajouté. Vous êtes invité à le modérer.
+      Ce nouveau contenu vient d'être ajouté. Vous êtes invité à le modérer.
+    </span>
+    <span tal:condition="alert_kind == 'moderate_report'">
+      Ce contenu vient d'être signalé. Vous êtes invité à le modérer.
     </span>
   </div>
 </div>

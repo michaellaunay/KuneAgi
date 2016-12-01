@@ -416,9 +416,24 @@ Bonjour {recipient_first_name},
 
 Vous avez été choisi par la plateforme {novaideo_title} afin de modérer et statuer sur un nouveau contenu ajouté à la plateforme.
 
-À chaque nouvel ajout d'un contenu à la plateforme {novaideo_title} le système tire aléatoirement trois membres afin de vérifier et statuer sur le contenu. Pour cela il vous suffit de suivre les étapes suivantes:
+À chaque nouvel ajout d'un contenu à la plateforme {novaideo_title} le système tire aléatoirement trois membres afin de vérifier et statuer sur le contenu.
+Pour cela, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et de vérifier et donner votre avis sur le contenu.
 
-- Connectez-vous à la plateforme à l'adresse suivante {subject_url} et donnez votre avis.
+La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée.
+
+"""+ PORTAL_SIGNATURE
+
+
+ADMIN_REPORT_SUBJECT = u"""Nouvelle signalisation sur la plateforme participative {novaideo_title}"""
+
+
+ADMIN_REPORT_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Vous avez été choisi par la plateforme {novaideo_title} afin de modérer et statuer sur un contenu signalé sur la plateforme.
+
+À chaque signalisation d'un contenu sur la plateforme {novaideo_title} le système tire aléatoirement trois membres afin de vérifier et statuer sur le contenu.
+Pour cela, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et de vérifier et donner votre avis sur le contenu.
 
 La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée.
 
@@ -752,6 +767,11 @@ DEFAULT_SITE_MAILS = {
               'title': _("Content submission"),
               'subject': ADMIN_CONTENT_SUB_SUBJECT,
               'template': ADMIN_CONTENT_SUB_MESSAGE
+    },
+    'moderate_report': {
+              'title': _("Content reporting"),
+              'subject': ADMIN_REPORT_SUBJECT,
+              'template': ADMIN_REPORT_MESSAGE
     }
 }
 

@@ -59,7 +59,6 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             'content')
         electors = content.moderators
         subjects = [content]
-        import pdb; pdb.set_trace()
         ballot_data = get_moderation_data_by_type(content, process.id)
         ballot = Ballot('Referendum', electors, subjects, duration,
                         true_val=ballot_data.get(

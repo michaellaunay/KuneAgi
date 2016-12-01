@@ -385,8 +385,8 @@ class Registration(InfiniteCardinality):
             else:
                 start_moderation(
                     preregistration, preregistration, request, root,
-                    'preregistration_submit', moderators,
-                    'registrationmoderation')
+                    moderators, 'registrationmoderation',
+                    'preregistration_submit')
 
         request.registry.notify(ActivityExecuted(self, [preregistration], None))
         return {'preregistration': preregistration}

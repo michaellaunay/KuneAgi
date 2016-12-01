@@ -530,8 +530,8 @@ class SubmitProposalModeration(InfiniteCardinality):
             author = context.author
             start_moderation(
                 context, author, request, root,
-                'content_submit', moderators,
-                'proposalmoderation')
+                moderators, 'proposalmoderation',
+                'content_submit')
         return {}
 
     def redirect(self, context, request, **kw):

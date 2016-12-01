@@ -127,8 +127,7 @@ class Report(InfiniteCardinality):
                 author = context.author
                 start_moderation(
                     context, author, request, root,
-                    'content_submit', moderators,
-                    'contentreportdecision')
+                    moderators, 'contentreportdecision')
 
         return {}
 
@@ -225,8 +224,8 @@ class ModerationVote(ModerationVoteBase):
         alert(
             'internal', [root], moderators,
             internal_kind=InternalAlertKind.moderation_alert,
-            subjects=[context], alert_kind='moderate_content')
-        mail_template = root.get_mail_template('moderate_content')
+            subjects=[context], alert_kind='moderate_report')
+        mail_template = root.get_mail_template('moderate_report')
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
         subject_data = get_entity_data(context, 'subject', request)

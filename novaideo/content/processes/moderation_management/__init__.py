@@ -83,7 +83,7 @@ def moderation_result(process):
 
 def start_moderation(
     context, author, request,
-    root, mail_id, moderators, process_id):
+    root, moderators, process_id, mail_id=None):
     email_data = get_user_data(
         author, 'recipient', request)
     email_data.update(get_entity_data(context, 'subject', request))
@@ -103,15 +103,16 @@ def start_moderation(
     email_data['moderators'] = moderators_str
     context.setproperty('moderators', moderators)
     # send an email to user
-    mail_template = root.get_mail_template(mail_id)
-    subject = mail_template['subject'].format(
-        novaideo_title=root.title)
-    message = mail_template['template'].format(
-        duration=getattr(root, 'duration_moderation_vote', 7),
-        novaideo_title=root.title,
-        **email_data)
-    alert('email', [root.get_site_sender()], [author.email],
-          subject=subject, body=message)
+    if mail_id:
+        mail_template = root.get_mail_template(mail_id)
+        subject = mail_template['subject'].format(
+            novaideo_title=root.title)
+        message = mail_template['template'].format(
+            duration=getattr(root, 'duration_moderation_vote', 7),
+            novaideo_title=root.title,
+            **email_data)
+        alert('email', [root.get_site_sender()], [author.email],
+              subject=subject, body=message)
     # start a moderation process
     moderation_proc = start_moderation_proc(
         context, process_id)
