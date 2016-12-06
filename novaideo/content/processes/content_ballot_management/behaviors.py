@@ -20,10 +20,7 @@ def decision_roles_validation(process, context):
     return has_role(role=('SiteAdmin',))
 
 
-class ModerationVote(ElementaryAction):
-    style = 'button' #TODO add style abstract class
-    style_descriminator = 'plus-action'
-    style_order = 5
+class StartBallot(ElementaryAction):
     processs_relation_id = 'content'
     #actionType = ActionType.system
     relation_validation = decision_relation_validation

@@ -16,10 +16,10 @@ from novaideo.utilities.alerts_utility import (
 from novaideo.mail import MODERATOR_DATA
 
 
-MODERATORS_NB = 3
+ELECTORS_NB = 3
 
 
-MODERATION_DATA = {
+BALLOT_DATA = {
     'default': {
         'ballot_description': _("Moderation"),
         'ballot_title': _("Moderation"),
@@ -30,9 +30,9 @@ MODERATION_DATA = {
 }
 
 
-def get_moderation_data_by_type(context, process_id):
+def get_ballot_data_by_type(context, process_id):
     id_ = context.__class__.__name__ + '-' + process_id
-    return MODERATION_DATA.get(id_, MODERATION_DATA['default'])
+    return BALLOT_DATA.get(id_, BALLOT_DATA['default'])
 
 
 def close_ballot(action, context, request):
@@ -46,7 +46,7 @@ def close_ballot(action, context, request):
             close_votes(context, request, opened_vote_processes)
 
 
-def start_moderation_proc(context, process_id):
+def start_ballot_proc(context, process_id):
     def_container = dace_find_service('process_definition_container')
     runtime = dace_find_service('runtime')
     proc = None
@@ -63,11 +63,11 @@ def start_moderation_proc(context, process_id):
     return proc
 
 
-def moderation_result(process):
-    context = process.execution_context.created_entity(
-        'content')
-    if context:
-        report = context.moderation_ballot.report
+def ballot_result(process):
+    content_ballot = getattr(
+        process, 'content_ballot', None)
+    if content_ballot:
+        report = content_ballot.report
         report.calculate_votes()
         if not report.voters:
             return False
@@ -81,29 +81,33 @@ def moderation_result(process):
     return False
 
 
-def start_moderation(
+def start_ballot(
     context, author, request,
-    root, moderators, process_id, mail_id=None):
-    email_data = get_user_data(
-        author, 'recipient', request)
-    email_data.update(get_entity_data(context, 'subject', request))
-    moderators_str = ""
-    for index, moderator in enumerate(moderators):
-        moderator_data = get_user_data(
-            moderator, 'subject', request)
-        moderator_data['subject_email'] = moderator.email
-        moderator_data['index'] = str(index+1)
-        moderator_str = MODERATOR_DATA.format(
-            **moderator_data)
-        moderators_str += "\n" + moderator_str
-        grant_roles(
-            user=moderator,
-            roles=(('LocalModerator', context),))
-
-    email_data['moderators'] = moderators_str
-    context.setproperty('moderators', moderators)
+    root, electors, process_id,
+    mail_id=None, role='LocalModerator',
+    before_start=None):
     # send an email to user
+    if role:
+        for elector in electors:
+            grant_roles(
+                user=elector,
+                roles=((role, context),))
+
     if mail_id:
+        email_data = get_user_data(
+            author, 'recipient', request)
+        email_data.update(get_entity_data(context, 'subject', request))
+        moderators_str = ""
+        for index, elector in enumerate(electors):
+            elector_data = get_user_data(
+                elector, 'subject', request)
+            elector_data['subject_email'] = elector.email
+            elector_data['index'] = str(index+1)
+            moderator_str = MODERATOR_DATA.format(
+                **elector_data)
+            moderators_str += "\n" + moderator_str
+
+        email_data['moderators'] = moderators_str
         mail_template = root.get_mail_template(mail_id)
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
@@ -113,11 +117,42 @@ def start_moderation(
             **email_data)
         alert('email', [root.get_site_sender()], [author.email],
               subject=subject, body=message)
+
     # start a moderation process
-    moderation_proc = start_moderation_proc(
+    ballot_proc = start_ballot_proc(
         context, process_id)
-    if moderation_proc:
-        context.setproperty(
-            'moderation_proc', moderation_proc)
-        moderation_proc.execute_action(
-            context, request, 'moderation_vote', {})
+    if ballot_proc:
+        ballot_proc.execution_context.add_involved_collection(
+            'electors', electors)
+        context.addtoproperty('ballot_processes', ballot_proc)
+        if before_start:
+            before_start(ballot_proc)
+
+        ballot_proc.execute_action(
+            context, request, 'start_ballot', {})
+
+    return ballot_proc
+
+
+def remove_vote_processes(ballot_action, runtime):
+    ballot_process = ballot_action.sub_process
+    if ballot_process:
+        runtime.delfromproperty('processes', ballot_process)
+        exec_ctx = ballot_process.execution_context
+        vote_processes = exec_ctx.get_involved_collection(
+            'vote_processes')
+        for v_proc in vote_processes:
+            runtime.delfromproperty('processes', v_proc)
+
+
+def remove_ballot_processes(content, runtime, exclude=[]):
+    processes = content.ballot_processes
+    if exclude:
+        processes = [p for p in processes if p.id not in exclude]
+
+    for ballot_proc in processes:
+        a_vote_actions = ballot_proc.get_actions('start_ballot')
+        if a_vote_actions:
+            remove_vote_processes(a_vote_actions[0], runtime)
+
+        runtime.delfromproperty('processes', ballot_proc)
