@@ -4,15 +4,17 @@
 # licence: AGPL
 # author: Amen Souissi
 
-from novaideo.content.processes.ballot_processes import close_votes
+import datetime
 
 from dace.util import (
     find_service as dace_find_service)
 from dace.objectofcollaboration.principal.util import grant_roles
 
+from novaideo.content.processes.ballot_processes import close_votes
 from novaideo import _
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
+from novaideo.utilities.util import to_localized_time
 from novaideo.mail import MODERATOR_DATA
 
 
@@ -107,11 +109,21 @@ def start_ballot(
             moderators_str += "\n" + moderator_str
 
         email_data['moderators'] = moderators_str
+        import pdb;pdb.set_trace()
+        email_data['url_terms_of_use'] = request.resource_url(
+            root.terms_of_use, '@@index')
+        duration = getattr(root, 'duration_moderation_vote', 7)
+        date_end = datetime.datetime.now() + \
+            datetime.timedelta(days=duration)
+        date_end_vote = to_localized_time(
+            date_end, request, translate=True)
         mail_template = root.get_mail_template(mail_id)
         subject = mail_template['subject'].format(
-            novaideo_title=root.title)
+            novaideo_title=root.title,
+            **email_data)
         message = mail_template['template'].format(
-            duration=getattr(root, 'duration_moderation_vote', 7),
+            date_end_vote=date_end_vote,
+            duration=duration,
             novaideo_title=root.title,
             **email_data)
         alert('email', [root.get_site_sender()], [author.email],

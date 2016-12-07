@@ -525,8 +525,6 @@ class Remind(InfiniteCardinality):
         recipientdata = get_user_data(context, 'recipient', request)
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
-        deadline_str = to_localized_time(
-            deadline_date, request, translate=True)
         message = mail_template['template'].format(
             url=url,
             deadline_date=deadline_str.lower(),
@@ -853,6 +851,11 @@ class ModerationVote(StartBallot):
             novaideo_title=root.title)
         subject_data = get_entity_data(context, 'subject', request)
         subject_data.update(get_user_data(context, 'subject', request))
+        duration = getattr(root, 'duration_moderation_vote', 7)
+        date_end = datetime.datetime.now() + \
+            datetime.timedelta(days=duration)
+        date_end_vote = to_localized_time(
+            date_end, request, translate=True)
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
@@ -865,7 +868,8 @@ class ModerationVote(StartBallot):
                 novaideo_title=root.title,
                 subject_email=getattr(context, 'email', ''),
                 birth_date=birth_date,
-                duration=getattr(root, 'duration_moderation_vote', 7),
+                date_end_vote=date_end_vote,
+                duration=duration,
                 **email_data)
             alert('email', [root.get_site_sender()], [moderator.email],
                   subject=subject, body=message)

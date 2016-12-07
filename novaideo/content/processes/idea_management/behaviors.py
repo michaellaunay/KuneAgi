@@ -42,7 +42,8 @@ from novaideo import _, nothing, log
 from novaideo.content.idea import Idea
 from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
-from novaideo.utilities.util import connect, disconnect
+from novaideo.utilities.util import(
+    connect, disconnect, to_localized_time)
 from novaideo.event import (
     ObjectPublished, CorrelableRemoved)
 from novaideo.utilities.alerts_utility import (
@@ -1192,13 +1193,19 @@ class ModerationVote(StartBallot):
             novaideo_title=root.title)
         subject_data = get_entity_data(context, 'subject', request)
         subject_data.update(get_user_data(context, 'subject', request))
+        duration = getattr(root, 'duration_moderation_vote', 7)
+        date_end = datetime.datetime.now() + \
+            datetime.timedelta(days=duration)
+        date_end_vote = to_localized_time(
+            date_end, request, translate=True)
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
             message = mail_template['template'].format(
                 novaideo_title=root.title,
                 subject_email=getattr(context, 'email', ''),
-                duration=getattr(root, 'duration_moderation_vote', 7),
+                date_end_vote=date_end_vote,
+                duration=duration,
                 **email_data)
             alert('email', [root.get_site_sender()], [moderator.email],
                   subject=subject, body=message)

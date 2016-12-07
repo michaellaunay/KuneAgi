@@ -4,7 +4,7 @@
 
 # licence: AGPL
 # author: Amen Souissi
-
+import datetime
 from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_registry
 from pyramid.httpexceptions import HTTPFound
@@ -31,6 +31,7 @@ from novaideo.views.filter import (
 from novaideo.adapters.report_adapter import ISignalableObject
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
+from novaideo.utilities.util import to_localized_time
 from novaideo.content.alert import InternalAlertKind
 from novaideo.content.processes.content_ballot_management import (
     ballot_result, close_ballot,
@@ -129,7 +130,8 @@ class Report(InfiniteCardinality):
                 author = context.author
                 start_ballot(
                     context, author, request, root,
-                    moderators, 'contentreportdecision')
+                    moderators, 'contentreportdecision',
+                    'alert_report')
 
         return {}
 
@@ -233,13 +235,21 @@ class ModerationVote(StartBallot):
             novaideo_title=root.title)
         subject_data = get_entity_data(context, 'subject', request)
         subject_data.update(get_user_data(context, 'subject', request))
+        duration = getattr(root, 'duration_moderation_vote', 7)
+        date_end = datetime.datetime.now() + \
+            datetime.timedelta(days=duration)
+        date_end_vote = to_localized_time(
+            date_end, request, translate=True)
+        subject_data['url_terms_of_use'] = request.resource_url(
+            root.terms_of_use, '@@index')
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
             message = mail_template['template'].format(
                 novaideo_title=root.title,
                 subject_email=getattr(context, 'email', ''),
-                duration=getattr(root, 'duration_moderation_vote', 7),
+                date_end_vote=date_end_vote,
+                duration=duration,
                 **email_data)
             alert('email', [root.get_site_sender()], [moderator.email],
                   subject=subject, body=message)

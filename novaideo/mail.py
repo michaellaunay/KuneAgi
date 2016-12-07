@@ -453,12 +453,13 @@ ADMIN_CONTENT_SUBJECT = u"""Nouveau contenu sur la plateforme participative {nov
 ADMIN_CONTENT_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Vous avez été choisi par la plateforme {novaideo_title} afin de modérer et statuer sur un nouveau contenu ajouté à la plateforme.
+Vous avez été choisi par la plateforme {novaideo_title} afin de modérer un nouveau contenu ajouté à la plateforme.
 
-À chaque nouvel ajout d'un contenu à la plateforme {novaideo_title} le système tire aléatoirement trois membres afin de vérifier et statuer sur le contenu.
-Pour cela, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et de vérifier et donner votre avis sur le contenu.
+À chaque nouvel ajout à la plateforme {novaideo_title} d'un contenu (idée ou proposition), le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération {url_terms_of_use}.
 
-La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée.
+Pour exercer votre rôle de Modérateur sur ce nouveau contenu, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et d'y donner votre avis sur la conformité de ce contenu avec la Charte de Modération.
+
+La durée de la Modération est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la Modération sera clôturée, et votre vote ne sera plus pris en compte. Attention ! Par défaut, si aucun Modérateur n'a voté pour Modérer ce contenu à cette date, le contenu sera accepté.
 
 """+ PORTAL_SIGNATURE
 
@@ -469,14 +470,33 @@ ADMIN_REPORT_SUBJECT = u"""Nouvelle signalisation sur la plateforme participativ
 ADMIN_REPORT_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Vous avez été choisi par la plateforme {novaideo_title} afin de modérer et statuer sur un contenu signalé sur la plateforme.
+Vous avez été choisi par la plateforme {novaideo_title} afin de modérer un contenu signalé sur la plateforme comme étant potentiellement non conforme à la Charte de Modération {url_terms_of_use}.
 
-À chaque signalisation d'un contenu sur la plateforme {novaideo_title} le système tire aléatoirement trois membres afin de vérifier et statuer sur le contenu.
-Pour cela, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et de vérifier et donner votre avis sur le contenu.
+À chaque signalement d'un contenu sur la plateforme {novaideo_title} d'un contenu comme étant potentiellement non conforme à la Charte de Modération, le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération.
 
-La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée.
+Pour exercer votre rôle de Modérateur sur ce contenu, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et d'y donner votre avis sur la conformité de ce contenu avec la Charte de Modération.
+
+La durée de la Modération est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la Modération sera clôturée, et votre vote ne sera plus pris en compte. Attention ! Par défaut, si aucun Modérateur n'a voté pour Modérer ce contenu à cette date, le contenu sera accepté.
 
 """+ PORTAL_SIGNATURE
+
+
+
+AUTHOR_REPORT_SUBJECT = u"""Nouvelle signalisation sur la plateforme participative {novaideo_title}"""
+
+
+AUTHOR_REPORT_MESSAGE = u"""
+
+Bonjour {recipient_first_name},
+
+Votre contenu {subject_url} a été signalé par un Membre comme potentiellement contraire à la Charte de Modération {url_terms_of_use}.
+
+À chaque nouvel fois qu'un contenu est signalé comme potentiellement contraire à la Charte de Modération, le système tire au sort trois membres afin que ceux-ci statuent sur la conformité de ce contenu avec la Charte de Modération .
+
+La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée, et vous serez informé(e) de son résultat.
+
+"""+ PORTAL_SIGNATURE
+
 
 ADMIN_PREREGISTRATION_REF_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
 
@@ -516,14 +536,11 @@ ADMIN_CONTENT_SUB_SUBJECT = u"""Nouveau contenu sur la plateforme participative 
 ADMIN_CONTENT_SUB_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Votre contenu a été soumis à modération. 
+Votre contenu a été soumis à Modération.
 
-À chaque nouvel ajout d'un contenu à la plateforme {novaideo_title} le système tire aléatoirement trois membres afin de vérifier et statuer sur le contenu ajouté.
+À chaque nouvel ajout à la plateforme {novaideo_title} d'un contenu, le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération {url_terms_of_use}.
 
-Les modérateurs assignés à la vérification de votre contenu sont:
-{moderators}
-
-La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée.
+La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée, et vous serez informé(e) de son résultat.
 
 """+ PORTAL_SIGNATURE
 
@@ -816,6 +833,11 @@ DEFAULT_SITE_MAILS = {
               'title': _("Content reporting"),
               'subject': ADMIN_REPORT_SUBJECT,
               'template': ADMIN_REPORT_MESSAGE
+    },
+    'alert_report': {
+              'title': _("Alert the author of the reported content"),
+              'subject': AUTHOR_REPORT_SUBJECT,
+              'template': AUTHOR_REPORT_MESSAGE
     },
     'exclude_participant': {
               'title': _("Exclude a participant"),
