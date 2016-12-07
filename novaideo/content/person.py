@@ -575,8 +575,7 @@ class Preregistration(VisualisableElement, Entity):
     name = renamer()
     structure = CompositeUniqueProperty('structure')
     ballots = CompositeMultipleProperty('ballots')
-    moderators = SharedMultipleProperty('moderators')
-    moderation_proc = SharedUniqueProperty('moderation_proc')
+    ballot_processes = SharedMultipleProperty('ballot_processes')
 
     def __init__(self, **kwargs):
         super(Preregistration, self).__init__(**kwargs)

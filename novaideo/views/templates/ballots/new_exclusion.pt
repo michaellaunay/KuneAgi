@@ -1,0 +1,18 @@
+<div tal:condition="process">
+	<p>
+		Une nouvelle demande d'exclusion a été enregistrée contre
+	     <a tal:attributes="href request.resource_url(participant, '@@index')"
+	        data-oid="${getattr(participant, '__oid__', '')}"
+	        class="toggle-popover"
+	        tal:define="
+	            participant process.participant;
+	            picture getattr(participant, 'picture', None);
+	            profil_picture getattr(picture, 'profil', None)">
+	        <img class="author-img img-circle" 
+	          tal:condition="profil_picture is not None"
+	           tal:attributes="src profil_picture.url"  width="25"/>
+	        <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+	        ${getattr(participant, 'title', participant.name)}
+	    </a> de ce groupe de travail. Étant membre du groupe vous êtes invité à voter pour ou contre l'exclusion de ce participant du groupe de travail. Si la majorité vote en faveur de l'exclusion, le membre sera exclu du groupe, sinon l'exclusion sera ignorée.
+	</p>
+</div>

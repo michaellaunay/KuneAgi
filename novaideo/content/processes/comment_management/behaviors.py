@@ -21,7 +21,7 @@ from dace.objectofcollaboration.principal.util import (
     has_role,
     has_any_roles)
 from dace.processinstance.activity import (
-    InfiniteCardinality, ActionType)
+    InfiniteCardinality)
 
 from novaideo.content.processes import global_user_processsecurity
 from novaideo.content.interface import IComment
@@ -33,6 +33,8 @@ from novaideo.content.alert import InternalAlertKind
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
 from . import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
+from novaideo.content.processes.content_ballot_management import (
+    remove_ballot_processes)
 
 
 def respond_relation_validation(process, context):
@@ -268,6 +270,7 @@ class Remove(InfiniteCardinality):
             targets = getattr(current_correlation, 'targets', [])
             disconnect(content, targets)
 
+        remove_ballot_processes(context, request.root['runtime'])
         context.channel.remove_comment(context)
         context.__parent__.delfromproperty('comments', context)
         return {}

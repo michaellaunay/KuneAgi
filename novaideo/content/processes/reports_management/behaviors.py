@@ -32,11 +32,11 @@ from novaideo.adapters.report_adapter import ISignalableObject
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from novaideo.content.alert import InternalAlertKind
-from novaideo.content.processes.moderation_management import (
-    moderation_result, close_ballot,
-    MODERATORS_NB, start_moderation)
-from novaideo.content.processes.moderation_management.behaviors import (
-    ModerationVote as ModerationVoteBase)
+from novaideo.content.processes.content_ballot_management import (
+    ballot_result, close_ballot,
+    ELECTORS_NB, start_ballot)
+from novaideo.content.processes.content_ballot_management.behaviors import (
+    StartBallot)
 
 
 def ignore(context, request, root):
@@ -119,13 +119,15 @@ class Report(InfiniteCardinality):
         context.reindex()
         root = getSite()
         # get random moderators
-        if not context.moderation_proc:
-            moderators = get_random_users(MODERATORS_NB)
+        ballots = [b for b in getattr(context, 'ballot_processes', [])
+                   if b.id == 'contentreportdecision']
+        if not ballots:
+            moderators = get_random_users(ELECTORS_NB)
             if not moderators:
                 ignore(context, request, root)
             else:
                 author = context.author
-                start_moderation(
+                start_ballot(
                     context, author, request, root,
                     moderators, 'contentreportdecision')
 
@@ -214,13 +216,14 @@ def decision_state_validation(process, context):
     return 'reported' in context.state
 
 
-class ModerationVote(ModerationVoteBase):
+class ModerationVote(StartBallot):
     context = ISignalableEntity
     state_validation = decision_state_validation
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        moderators = context.moderators
+        moderators = self.process.execution_context.get_involved_collection(
+            'electors')
         alert(
             'internal', [root], moderators,
             internal_kind=InternalAlertKind.moderation_alert,
@@ -246,17 +249,19 @@ class ModerationVote(ModerationVoteBase):
         return {}
 
     def after_execution(self, context, request, **kw):
-        content = self.process.execution_context.created_entity(
+        content = self.process.execution_context.involved_entity(
             'content')
         close_ballot(self, content, request)
-        # proposal not removed
+        # content not removed
         if content and content.__parent__:
-            for moderator in content.moderators:
+            moderators = self.process.execution_context.get_involved_collection(
+                'electors')
+            for moderator in moderators:
                 revoke_roles(
                     user=moderator,
                     roles=(('LocalModerator', content),))
 
-            accepted = moderation_result(self.process)
+            accepted = ballot_result(self)
             root = getSite()
             if accepted:
                 ignore(content, request, root)

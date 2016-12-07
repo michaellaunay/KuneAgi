@@ -56,11 +56,11 @@ from novaideo.content.correlation import CorrelationType
 from novaideo.content.processes.proposal_management import (
     init_proposal_ballots, add_attached_files)
 from novaideo.content.comment import Comment
-from novaideo.content.processes.moderation_management import (
-    moderation_result, close_ballot,
-    MODERATORS_NB, start_moderation)
-from novaideo.content.processes.moderation_management.behaviors import (
-    ModerationVote as ModerationVoteBase)
+from novaideo.content.processes.content_ballot_management import (
+    ballot_result, close_ballot,
+    ELECTORS_NB, start_ballot, remove_ballot_processes)
+from novaideo.content.processes.content_ballot_management.behaviors import (
+    StartBallot)
 
 
 def publish_idea_moderation(context, request, root):
@@ -501,12 +501,12 @@ class SubmitIdea(InfiniteCardinality):
         context.reindex()
         root = getSite()
         # get random moderators
-        moderators = get_random_users(MODERATORS_NB)
+        moderators = get_random_users(ELECTORS_NB)
         if not moderators:
             publish_idea_moderation(context, request, root)
         else:
             author = context.author
-            start_moderation(
+            start_ballot(
                 context, author, request, root,
                 moderators, 'ideamoderation',
                 'content_submit')
@@ -548,6 +548,7 @@ class ArchiveIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         archive_idea(context, request, root, appstruct)
+        remove_ballot_processes(context, request.root['runtime'])
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
         return {}
@@ -1174,13 +1175,14 @@ def decision_state_validation(process, context):
     return 'submitted' in context.state
 
 
-class ModerationVote(ModerationVoteBase):
+class ModerationVote(StartBallot):
     context = Iidea
     state_validation = decision_state_validation
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        moderators = context.moderators
+        moderators = self.process.execution_context.get_involved_collection(
+            'electors')
         alert(
             'internal', [root], moderators,
             internal_kind=InternalAlertKind.moderation_alert,
@@ -1206,17 +1208,19 @@ class ModerationVote(ModerationVoteBase):
         return {}
 
     def after_execution(self, context, request, **kw):
-        idea = self.process.execution_context.created_entity(
+        idea = self.process.execution_context.involved_entity(
             'content')
         close_ballot(self, idea, request)
         # idea not removed
         if idea and idea.__parent__:
-            for moderator in idea.moderators:
+            moderators = self.process.execution_context.get_involved_collection(
+                'electors')
+            for moderator in moderators:
                 revoke_roles(
                     user=moderator,
                     roles=(('LocalModerator', idea),))
 
-            accepted = moderation_result(self.process)
+            accepted = ballot_result(self)
             root = getSite()
             if accepted:
                 publish_idea_moderation(idea, request, root)

@@ -63,11 +63,10 @@ def start_ballot_proc(context, process_id):
     return proc
 
 
-def ballot_result(process):
-    content_ballot = getattr(
-        process, 'content_ballot', None)
-    if content_ballot:
-        report = content_ballot.report
+def ballot_result(vote_action):
+    ballots = getattr(vote_action.sub_process, 'ballots', [])
+    if ballots:
+        report = ballots[0].report
         report.calculate_votes()
         if not report.voters:
             return False
@@ -156,3 +155,23 @@ def remove_ballot_processes(content, runtime, exclude=[]):
             remove_vote_processes(a_vote_actions[0], runtime)
 
         runtime.delfromproperty('processes', ballot_proc)
+
+
+def remove_elector_vote_processes(ballot_action, user):
+    ballot_process = ballot_action.sub_process
+    ballots = ballot_process.ballots
+    for ballot in ballots:
+        report = ballot.report
+        if user in report.electors and user not in report.voters:
+            report.delfromproperty('electors', user)
+
+
+def remove_elector_from_ballot_processes(content, user, exclude=[]):
+    processes = content.ballot_processes
+    if exclude:
+        processes = [p for p in processes if p.id not in exclude]
+
+    for ballot_proc in processes:
+        a_vote_actions = ballot_proc.get_actions('start_ballot')
+        if a_vote_actions:
+            remove_elector_vote_processes(a_vote_actions[0], user)

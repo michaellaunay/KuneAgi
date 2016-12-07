@@ -37,10 +37,10 @@ from .behaviors import (
     ModerationVote)
 from novaideo import _
 from novaideo.content.person import Preregistration
-from novaideo.content.processes.moderation_management import (
-    MODERATION_DATA)
-from novaideo.content.processes.moderation_management.definition import (
-    ContentModeration)
+from novaideo.content.processes.content_ballot_management import (
+    BALLOT_DATA)
+from novaideo.content.processes.content_ballot_management.definition import (
+    ContentBallot)
 
 
 @process_definition(name='usermanagement', id='usermanagement')
@@ -182,7 +182,7 @@ MODERATION_DESCRIPTION = _("Vous êtes invité à vérifier et confirmer l'ident
                            "de ce compte. Si la majorité confirme l'identité de ce compte, "
                            "le compte sera validé, sinon le compte sera supprimé.")
 
-MODERATION_DATA[Preregistration.__name__+'-registrationmoderation'] = {
+BALLOT_DATA[Preregistration.__name__+'-registrationmoderation'] = {
     'ballot_description': MODERATION_DESCRIPTION,
     'ballot_title': _("Confirm the user identity"),
     'true_value': _("Confirmed identity"),
@@ -194,8 +194,8 @@ MODERATION_DATA[Preregistration.__name__+'-registrationmoderation'] = {
 @process_definition(
     name='registrationmoderation',
     id='registrationmoderation')
-class RegistrationModeration(ContentModeration):
-    moderation_action = ModerationVote
+class RegistrationModeration(ContentBallot):
+    ballot_action = ModerationVote
 
     def __init__(self, **kwargs):
         super(RegistrationModeration, self).__init__(**kwargs)

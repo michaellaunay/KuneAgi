@@ -48,10 +48,10 @@ from .behaviors import (
     ModerationVote)
 from novaideo import _
 from novaideo.content.idea import Idea
-from novaideo.content.processes.moderation_management import (
-    MODERATION_DATA)
-from novaideo.content.processes.moderation_management.definition import (
-    ContentModeration)
+from novaideo.content.processes.content_ballot_management import (
+    BALLOT_DATA)
+from novaideo.content.processes.content_ballot_management.definition import (
+    ContentBallot)
 
 
 @process_definition(name='ideamanagement', id='ideamanagement')
@@ -208,9 +208,14 @@ MODERATION_DESCRIPTION = _("Vous êtes invité à vérifier et modérer l'idée 
                            "Si la majorité vote en faveur de la publication de l'idée, "
                            "l'idée sera validée, sinon l'idée sera archivée.")
 
-MODERATION_DATA[Idea.__name__+'-ideamoderation'] = {
+def idea_title(process, context):
+    return _("Moderation of ${content}",
+             mapping={'content': context.title})
+
+
+BALLOT_DATA[Idea.__name__+'-ideamoderation'] = {
     'ballot_description': MODERATION_DESCRIPTION,
-    'ballot_title': _("Moderate the idea"),
+    'ballot_title': idea_title,
     'true_value': _("Accept the idea"),
     'false_value': _("Refuse the idea"),
     'process_id': 'ideamoderation'
@@ -220,8 +225,8 @@ MODERATION_DATA[Idea.__name__+'-ideamoderation'] = {
 @process_definition(
     name='ideamoderation',
     id='ideamoderation')
-class IdeaModeration(ContentModeration):
-    moderation_action = ModerationVote
+class IdeaModeration(ContentBallot):
+    ballot_action = ModerationVote
 
     def __init__(self, **kwargs):
         super(IdeaModeration, self).__init__(**kwargs)

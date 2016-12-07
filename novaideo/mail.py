@@ -220,6 +220,45 @@ Vous pourrez à tout moment le rejoindre de nouveau, si vous ne faites pas parti
 
 """ + PORTAL_SIGNATURE
 
+
+EXCLUDE_SUBJECT = u"""Exclusion du groupe de travail de la proposition « {subject_title} »"""
+
+EXCLUDE_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Le groupe de travail a dessidé de vous exclure du groupe. Vous ne faites plus partie du groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}.
+
+Vous pourrez à tout moment rejoindre un autre groupe de travail, si vous ne faites pas partie déjà de cinq autres groupes de travail, qui est le nombre maximum de groupes de travail auxquels un membre a le droit de participer simultanément.
+
+""" + PORTAL_SIGNATURE
+
+
+EXCLUDE_PARTICIPANT_SUBJECT = u"""Une nouvelle demande d'exclusion du groupe de travail de la proposition « {subject_title} »"""
+
+EXCLUDE_PARTICIPANT_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Une nouvelle demande d'exclusion a été enregistrée contre le participant « {user_first_name} » du groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}.
+Étant membre du groupe vous êtes invité à voter pour ou contre l'exclusion de ce membre du groupe de travail. Si la majorité vote en faveur de l'exclusion, le membre sera exclu au groupe, sinon la demande d'exclusion sera ignorée.
+
+La durée du vote est de {duration} jour(s). Au-delà de cette durée, le vote sera clôturé.
+
+""" + PORTAL_SIGNATURE
+
+
+NEW_PARTICIPANT_SUBJECT = u"""Une nouvelle demande de participation au groupe de travail de la proposition « {subject_title} »"""
+
+NEW_PARTICIPANT_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Une nouvelle demande de participation a été enregistrée par {user_first_name} pour le groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}.
+Étant membre du groupe vous êtes invité à voter pour ou contre la participation de ce membre du groupe de travail. Si la majorité vote en faveur de la participation, le membre sera intégré au groupe, sinon la demande de participation sera ignorée.
+
+La durée du vote est de {duration} jour(s). Au-delà de cette durée, le vote sera clôturé.
+
+""" + PORTAL_SIGNATURE
+
+
 WATINGLIST_SUBJECT = u"""Inscription sur la liste d'attente du groupe de travail de la proposition « {subject_title} »"""
 
 WATINGLIST_MESSAGE = u"""
@@ -659,9 +698,14 @@ DEFAULT_SITE_MAILS = {
               'template': PARTICIPATE_MESSAGE
     },
     'wg_resign': {
-              'title': _("Resignation of the working group"),
+              'title': _("Resignation from the working group"),
               'subject': RESIGN_SUBJECT,
               'template': RESIGN_SUBJECT
+    },
+    'wg_exclude': {
+              'title': _("Exclusion from the working group"),
+              'subject': EXCLUDE_SUBJECT,
+              'template': EXCLUDE_SUBJECT
     },
     'wating_list': {
               'title': _("Registration on the waiting list"),
@@ -772,6 +816,15 @@ DEFAULT_SITE_MAILS = {
               'title': _("Content reporting"),
               'subject': ADMIN_REPORT_SUBJECT,
               'template': ADMIN_REPORT_MESSAGE
+    },
+    'exclude_participant': {
+              'title': _("Exclude a participant"),
+              'subject': EXCLUDE_PARTICIPANT_SUBJECT,
+              'template': EXCLUDE_PARTICIPANT_MESSAGE
+    },
+    'new_participant': {
+              'title': _("New participation"),
+              'subject': NEW_PARTICIPANT_SUBJECT,
+              'template': NEW_PARTICIPANT_MESSAGE
     }
 }
-

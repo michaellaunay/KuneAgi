@@ -8,6 +8,7 @@
 import colander
 import deform
 from pyramid.view import view_config
+from pyramid import renderers
 
 from dace.objectofcollaboration.entity import Entity
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -16,13 +17,10 @@ from pontus.view_operation import MultipleView
 from pontus.schema import Schema
 from pontus.view import BasicView
 from pontus.widget import RadioChoiceWidget
-from pontus.default_behavior import Cancel
 
 from novaideo.content.processes.ballot_processes.referendum.behaviors import (
     Vote)
-from novaideo.content.proposal import Proposal
 from novaideo import _
-
 
 
 class VoteViewStudyReport(BasicView):
@@ -30,17 +28,42 @@ class VoteViewStudyReport(BasicView):
     name = 'ballotreport'
     template = 'novaideo:views/ballot_processes/referendum/templates/referendum_vote.pt'
 
+    def _get_ballot_description(self, ballot_process, ballot_report):
+        template = getattr(ballot_report, 'description_template', None)
+        process = None
+        ballot_managers = ballot_process.involvers
+        if ballot_managers:
+            process = ballot_managers[0].attachedTo.process
+
+        if template:
+            return renderers.render(
+                template,
+                {'ballot_report': ballot_report,
+                 'ballot_process': ballot_process,
+                 'process': process,
+                 'context': self.context},
+                self.request)
+
+        return ballot_report.description
+
     def update(self):
         result = {}
         ballot_report = None
+        ballot_process = None
         try:
             voteform_view = self.parent.validated_children[1]
             voteform_actions = list(voteform_view.behaviors_instances.values())
-            ballot_report = voteform_actions[0].process.ballot.report
+            ballot_process = voteform_actions[0].process
+            ballot_report = ballot_process.ballot.report
         except Exception:
             pass
 
-        values = {'context': self.context, 'ballot_report': ballot_report}
+        description = self._get_ballot_description(
+            ballot_process, ballot_report)
+        values = {
+            'context': self.context,
+            'ballot_report': ballot_report,
+            'description': description}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}

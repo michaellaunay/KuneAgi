@@ -159,6 +159,15 @@ class UserParamsConfigurationSchema(Schema):
         missing=False
     )
 
+    working_group_composition_control = colander.SchemaNode(
+        colander.Boolean(),
+        widget=deform.widget.CheckboxWidget(),
+        label=_('Control the composition of the working group'),
+        description=_('The composition of the working group can be controlled by her members.'),
+        title='',
+        missing=False
+    )
+
     participants_mini = colander.SchemaNode(
         colander.Integer(),
         title=_('Minimum number of participants for a working group'),

@@ -14,7 +14,8 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer, get_oid
 
 from dace.descriptors import (
-    SharedUniqueProperty, CompositeMultipleProperty)
+    SharedUniqueProperty, CompositeMultipleProperty,
+    SharedMultipleProperty)
 from dace.util import getSite, get_obj
 from pontus.core import VisualisableElementSchema
 from pontus.widget import (
@@ -178,6 +179,8 @@ class Comment(Commentable, Emojiable, SignalableEntity):
     files = CompositeMultipleProperty('files')
     url_files = CompositeMultipleProperty('url_files')
     related_correlation = SharedUniqueProperty('related_correlation', 'targets')
+    ballots = CompositeMultipleProperty('ballots')
+    ballot_processes = SharedMultipleProperty('ballot_processes')
 
     def __init__(self, **kwargs):
         super(Comment, self).__init__(**kwargs)

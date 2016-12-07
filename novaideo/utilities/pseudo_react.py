@@ -1113,6 +1113,14 @@ def get_publish_proposal_metadata(action, request, context, api, **kwargs):
         **kwargs)
 
 
+def get_exclude_participant_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("La demande d'exclusion a bien été soumise au groupe de travail."),
+        **kwargs)
+
+
 def get_remove_proposal_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request, context, api,
@@ -1134,6 +1142,9 @@ def get_participate_proposal_metadata(action, request, context, api, **kwargs):
 
     if user in working_group.members:
         msg = _("Vous êtes maintenant membre du groupe de travail.")
+
+    if user in working_group.wating_list_participation:
+        msg = _("Votre demande de participation est maintenant prise en compte.")
 
     result = get_dirct_edit_entity_metadata(
         action, request, context, api,
@@ -1566,11 +1577,9 @@ METADATA_GETTERS = {
     'ideamanagement.edit': get_edit_idea_metadata,
     'ideamanagement.archive': get_archive_idea_metadata,
     'ideamanagement.submit': get_submit_idea_metadata,
-    'ideamanagement.moderationarchive': get_archive_idea_metadata,
     'ideamanagement.abandon': get_dirct_archive_idea_metadata,
     'ideamanagement.recuperate': get_dirct_recuperate_idea_metadata,
     'ideamanagement.publish': get_publish_idea_metadata,
-    'ideamanagement.publish_moderation': get_publish_idea_metadata,
     'ideamanagement.makeitsopinion': get_opinion_idea_metadata,
     'ideamanagement.support': get_support_metadata,
     'ideamanagement.oppose': get_support_metadata,
@@ -1579,8 +1588,6 @@ METADATA_GETTERS = {
     'ideamanagement.present': get_present_metadata,
 
     'proposalmanagement.submit': get_submit_proposal_metadata,
-    'proposalmanagement.publish_moderation': get_publish_proposal_metadata,
-    'proposalmanagement.archive_moderation': get_archive_proposal_metadata,
     'proposalmanagement.support': get_support_metadata,
     'proposalmanagement.oppose': get_support_metadata,
     'proposalmanagement.withdraw_token': get_support_metadata,
@@ -1590,6 +1597,7 @@ METADATA_GETTERS = {
     'proposalmanagement.delete': get_remove_proposal_metadata,
     'proposalmanagement.attach_files': get_attachfiles_proposal_metadata,
     'proposalmanagement.publish': get_publish_proposal_metadata,
+    'proposalmanagement.exclude_participant': get_exclude_participant_metadata,
     'proposalmanagement.resign': get_resign_proposal_metadata,
     'proposalmanagement.participate': get_participate_proposal_metadata,
     'workspacemanagement.add_files': get_addfiles_proposal_metadata,
@@ -1611,8 +1619,6 @@ METADATA_GETTERS = {
     'commentmanagement.transformtoidea': get_tranform_into_idea_metadata,
 
     'registrationmanagement.remove': get_remove_registration_metadata,
-    'registrationmanagement.refuse': get_remove_registration_metadata,
-    'registrationmanagement.accept': get_accept_registration_metadata,
     'registrationmanagement.remind': get_remind_registration_metadata,
 
     'invitationmanagement.edit': get_edit_invitation_metadata,

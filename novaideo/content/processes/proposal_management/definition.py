@@ -72,15 +72,18 @@ from .behaviors import (
     AddFiles,
     RemoveFile,
     AttachFiles,
-    ModerationVote
+    ModerationVote,
+    ParticipationVote,
+    ExcludeParticipant,
+    ExclusionVote
     )
 from novaideo import _, log
 from novaideo.content.ballot import Ballot
 from novaideo.content.proposal import Proposal
-from novaideo.content.processes.moderation_management import (
-    MODERATION_DATA)
-from novaideo.content.processes.moderation_management.definition import (
-    ContentModeration)
+from novaideo.content.processes.content_ballot_management import (
+    BALLOT_DATA)
+from novaideo.content.processes.content_ballot_management.definition import (
+    ContentBallot)
 
 
 def firs_alert(process, date):
@@ -332,6 +335,10 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Resign"),
                                        title=_("Resign"),
                                        groups=[]),
+                exclude_participant = ActivityDefinition(contexts=[ExcludeParticipant],
+                                       description=_("Exclude a participant"),
+                                       title=_("Exclude a participant"),
+                                       groups=[]),
                 withdraw = ActivityDefinition(contexts=[Withdraw],
                                        description=_("Withdraw from the wating list"),
                                        title=_("Withdraw"),
@@ -415,6 +422,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'withdraw_token'),
                 TransitionDefinition('pg', 'seeproposal'),
                 TransitionDefinition('pg', 'attach_files'),
+                TransitionDefinition('pg', 'exclude_participant'),
                 TransitionDefinition('attach_files', 'eg'),
                 TransitionDefinition('seeproposal', 'eg'),
                 TransitionDefinition('creat', 'eg'),
@@ -438,6 +446,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('makeitsopinion', 'eg'),
                 TransitionDefinition('oppose', 'eg'),
                 TransitionDefinition('withdraw_token', 'eg'),
+                TransitionDefinition('exclude_participant', 'eg'),
                 TransitionDefinition('eg', 'end')
         )
 
@@ -541,9 +550,15 @@ MODERATION_DESCRIPTION = _("Vous êtes invité à vérifier et modérer la propo
                            "Si la majorité vote en faveur de la publication de la proposition, "
                            "la proposition sera validée, sinon la proposition sera archivée.")
 
-MODERATION_DATA[Proposal.__name__+'-proposalmoderation'] = {
+
+def proposal_title(process, context):
+    return _("Moderation of ${proposal}",
+             mapping={'proposal': context.title})
+
+
+BALLOT_DATA[Proposal.__name__+'-proposalmoderation'] = {
     'ballot_description': MODERATION_DESCRIPTION,
-    'ballot_title': _("Moderate the proposal"),
+    'ballot_title': proposal_title,
     'true_value': _("Accept the proposal"),
     'false_value': _("Refuse the proposal"),
     'process_id': 'proposalmoderation'
@@ -553,8 +568,56 @@ MODERATION_DATA[Proposal.__name__+'-proposalmoderation'] = {
 @process_definition(
     name='proposalmoderation',
     id='proposalmoderation')
-class ProposalModeration(ContentModeration):
-    moderation_action = ModerationVote
+class ProposalModeration(ContentBallot):
+    ballot_action = ModerationVote
 
     def __init__(self, **kwargs):
         super(ProposalModeration, self).__init__(**kwargs)
+
+
+def participation_title(process, context):
+    return _("New participation of ${participant}",
+             mapping={'participant': process.participant.title})
+
+
+BALLOT_DATA[Proposal.__name__+'-proposalparticipation'] = {
+    'ballot_description_template': 'novaideo:views/templates/ballots/new_participation.pt',
+    'ballot_title': participation_title,
+    'true_value': _("Accept the participation"),
+    'false_value': _("Refuse the participation"),
+    'process_id': 'proposalparticipation'
+}
+
+
+@process_definition(
+    name='proposalparticipation',
+    id='proposalparticipation')
+class ProposalParticipation(ContentBallot):
+    ballot_action = ParticipationVote
+
+    def __init__(self, **kwargs):
+        super(ProposalParticipation, self).__init__(**kwargs)
+
+
+def exclusion_title(process, context):
+    return _("Exclusion of ${participant}",
+             mapping={'participant': process.participant.title})
+
+
+BALLOT_DATA[Proposal.__name__+'-exclusionparticipant'] = {
+    'ballot_description_template': 'novaideo:views/templates/ballots/new_exclusion.pt',
+    'ballot_title': participation_title,
+    'true_value': _("Accept the exclusion"),
+    'false_value': _("Refuse the exclusion"),
+    'process_id': 'exclusionparticipant'
+}
+
+
+@process_definition(
+    name='exclusionparticipant',
+    id='exclusionparticipant')
+class ExclusionParticipant(ContentBallot):
+    ballot_action = ExclusionVote
+
+    def __init__(self, **kwargs):
+        super(ExclusionParticipant, self).__init__(**kwargs)

@@ -26,10 +26,10 @@ from novaideo import _
 from novaideo.content.proposal import Proposal
 from novaideo.content.idea import Idea
 from novaideo.content.comment import Comment
-from novaideo.content.processes.moderation_management import (
-    MODERATION_DATA)
-from novaideo.content.processes.moderation_management.definition import (
-    ContentModeration)
+from novaideo.content.processes.content_ballot_management import (
+    BALLOT_DATA)
+from novaideo.content.processes.content_ballot_management.definition import (
+    ContentBallot)
 
 
 @process_definition(name='reportsmanagement', id='reportsmanagement')
@@ -79,25 +79,30 @@ MODERATION_DESCRIPTION = _("Vous êtes invité à vérifier et modérer le conte
                            "les signalisations seront ignorées, sinon le contenu sera censuré.")
 
 
-MODERATION_DATA[Idea.__name__+'-contentreportdecision'] = {
+def content_title(process, context):
+    return _("Moderation of ${content}",
+             mapping={'content': context.title})
+
+
+BALLOT_DATA[Idea.__name__+'-contentreportdecision'] = {
     'ballot_description': MODERATION_DESCRIPTION,
-    'ballot_title': _("Moderate the content"),
+    'ballot_title': content_title,
     'true_value': _("Ignore"),
     'false_value': _("Censor"),
     'process_id': 'contentreportdecision'
 }
 
-MODERATION_DATA[Proposal.__name__+'-contentreportdecision'] = {
+BALLOT_DATA[Proposal.__name__+'-contentreportdecision'] = {
     'ballot_description': MODERATION_DESCRIPTION,
-    'ballot_title': _("Moderate the content"),
+    'ballot_title': content_title,
     'true_value': _("Ignore"),
     'false_value': _("Censor"),
     'process_id': 'contentreportdecision'
 }
 
-MODERATION_DATA[Comment.__name__+'-contentreportdecision'] = {
+BALLOT_DATA[Comment.__name__+'-contentreportdecision'] = {
     'ballot_description': MODERATION_DESCRIPTION,
-    'ballot_title': _("Moderate the content"),
+    'ballot_title': _("Moderation of a comment"),
     'true_value': _("Ignore"),
     'false_value': _("Censor"),
     'process_id': 'contentreportdecision'
@@ -107,8 +112,8 @@ MODERATION_DATA[Comment.__name__+'-contentreportdecision'] = {
 @process_definition(
     name='contentreportdecision',
     id='contentreportdecision')
-class ReportingProcess(ContentModeration):
-    moderation_action = ModerationVote
+class ReportingProcess(ContentBallot):
+    ballot_action = ModerationVote
 
     def __init__(self, **kwargs):
         super(ReportingProcess, self).__init__(**kwargs)

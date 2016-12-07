@@ -53,11 +53,11 @@ from novaideo.utilities.alerts_utility import (
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.processes import global_user_processsecurity
 from novaideo.role import get_authorized_roles
-from novaideo.content.processes.moderation_management import (
-    moderation_result, close_ballot,
-    MODERATORS_NB, start_moderation)
-from novaideo.content.processes.moderation_management.behaviors import (
-    ModerationVote as ModerationVoteBase)
+from novaideo.content.processes.content_ballot_management import (
+    ballot_result, close_ballot,
+    ELECTORS_NB, start_ballot, remove_ballot_processes)
+from novaideo.content.processes.content_ballot_management.behaviors import (
+    StartBallot)
 
 
 def accept_preregistration(request, preregistration, root):
@@ -377,13 +377,13 @@ class Registration(InfiniteCardinality):
             accept()
         else:
             # get random moderators
-            moderators = get_random_users(MODERATORS_NB)
+            moderators = get_random_users(ELECTORS_NB)
             if not moderators:
                 preregistration.state = PersistentList(['accepted'])
                 preregistration.reindex()
                 accept()
             else:
-                start_moderation(
+                start_ballot(
                     preregistration, preregistration, request, root,
                     moderators, 'registrationmoderation',
                     'preregistration_submit')
@@ -623,16 +623,7 @@ class RemoveRegistration(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        for moderator in context.moderators:
-            revoke_roles(user=moderator, roles=(('LocalModerator', context),))
-
-        if context.moderation_proc:
-            vote_actions = context.moderation_proc.get_actions(
-                'moderation_vote')
-            if vote_actions:
-                action = vote_actions[0]
-                close_ballot(action, context, request)
-
+        remove_ballot_processes(context, request.root['runtime'])
         root.delfromproperty('preregistrations', context)
         return {'root': root}
 
@@ -845,13 +836,14 @@ def decision_state_validation(process, context):
     return 'pending' in context.state
 
 
-class ModerationVote(ModerationVoteBase):
+class ModerationVote(StartBallot):
     context = IPreregistration
     state_validation = decision_state_validation
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        moderators = context.moderators
+        moderators = self.process.execution_context.get_involved_collection(
+            'electors')
         alert(
             'internal', [root], moderators,
             internal_kind=InternalAlertKind.admin_alert,
@@ -883,17 +875,19 @@ class ModerationVote(ModerationVoteBase):
         return {}
 
     def after_execution(self, context, request, **kw):
-        preregistration = self.process.execution_context.created_entity(
+        preregistration = self.process.execution_context.involved_entity(
             'content')
         close_ballot(self, preregistration, request)
         # preregistration not removed
         if preregistration and preregistration.__parent__:
-            for moderator in preregistration.moderators:
+            moderators = self.process.execution_context.get_involved_collection(
+                'electors')
+            for moderator in moderators:
                 revoke_roles(
                     user=moderator,
                     roles=(('LocalModerator', preregistration),))
 
-            accepted = moderation_result(self.process)
+            accepted = ballot_result(self)
             root = getSite()
             if accepted:
                 preregistration.state = PersistentList(['accepted'])
