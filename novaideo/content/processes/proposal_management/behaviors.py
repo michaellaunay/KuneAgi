@@ -2061,7 +2061,6 @@ class ExclusionVote(StartBallot):
         return {}
 
     def after_execution(self, context, request, **kw):
-        import pdb;pdb.set_trace()
         proposal = self.process.execution_context.involved_entity(
             'content')
         close_ballot(self, proposal, request)
