@@ -73,19 +73,13 @@ class ReportsManagementProcess(ProcessDefinition, VisualisableElement):
         )
 
 
-MODERATION_DESCRIPTION = _("Vous êtes invité à vérifier et modérer le contenu signalé. "
-                           "Cela afin de garantir le respect de la charte d'utilisation. "
-                           "Si la majorité vote en faveur du contenu, "
-                           "les signalisations seront ignorées, sinon le contenu sera censuré.")
-
-
 def content_title(process, context):
     return _("Moderation of ${content}",
              mapping={'content': context.title})
 
 
 BALLOT_DATA[Idea.__name__+'-contentreportdecision'] = {
-    'ballot_description': MODERATION_DESCRIPTION,
+    'ballot_description_template': 'novaideo:views/templates/ballots/content_report.pt',
     'ballot_title': content_title,
     'true_value': _("Ignore"),
     'false_value': _("Censor"),
@@ -93,7 +87,7 @@ BALLOT_DATA[Idea.__name__+'-contentreportdecision'] = {
 }
 
 BALLOT_DATA[Proposal.__name__+'-contentreportdecision'] = {
-    'ballot_description': MODERATION_DESCRIPTION,
+    'ballot_description_template': 'novaideo:views/templates/ballots/content_report.pt',
     'ballot_title': content_title,
     'true_value': _("Ignore"),
     'false_value': _("Censor"),
@@ -101,7 +95,7 @@ BALLOT_DATA[Proposal.__name__+'-contentreportdecision'] = {
 }
 
 BALLOT_DATA[Comment.__name__+'-contentreportdecision'] = {
-    'ballot_description': MODERATION_DESCRIPTION,
+    'ballot_description_template': 'novaideo:views/templates/ballots/content_report.pt',
     'ballot_title': _("Moderation of a comment"),
     'true_value': _("Ignore"),
     'false_value': _("Censor"),

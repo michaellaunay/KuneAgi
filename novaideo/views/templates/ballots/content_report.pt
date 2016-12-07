@@ -1,0 +1,10 @@
+<div tal:condition="process">
+	<p tal:define="
+		content getattr(process, 'content', context);
+		icon getattr(content, 'icon', '')">
+        Vous êtes invité à modérer ce contenu <a href="${request.resource_url(content, '@@index')}"><span class="${icon}"></span> ${content.title}</a> signalé sur la plateforme comme étant potentiellement non conforme à la <a href="${request.resource_url(request.virtual_root.terms_of_use, '@@index')}">Charte de Modération</a>.
+    </p>
+    <p>
+    	Pour exercer votre rôle de Modérateur sur ce contenu, il vous suffit de donner votre avis sur la conformité de ce contenu avec la Charte de Modération.
+    </p>
+</div>

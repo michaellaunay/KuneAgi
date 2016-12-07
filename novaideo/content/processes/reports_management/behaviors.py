@@ -128,10 +128,14 @@ class Report(InfiniteCardinality):
                 ignore(context, request, root)
             else:
                 author = context.author
+
+                def before_start(b_proc):
+                    b_proc.content = context
+
                 start_ballot(
                     context, author, request, root,
                     moderators, 'contentreportdecision',
-                    'alert_report')
+                    'alert_report', before_start=before_start)
 
         return {}
 

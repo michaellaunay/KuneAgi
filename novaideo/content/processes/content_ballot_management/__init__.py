@@ -109,7 +109,6 @@ def start_ballot(
             moderators_str += "\n" + moderator_str
 
         email_data['moderators'] = moderators_str
-        import pdb;pdb.set_trace()
         email_data['url_terms_of_use'] = request.resource_url(
             root.terms_of_use, '@@index')
         duration = getattr(root, 'duration_moderation_vote', 7)
