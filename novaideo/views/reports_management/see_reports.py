@@ -120,7 +120,8 @@ class DetailSubjectView(BasicView):
     def update(self):
         self.execute(None)
         vote_actions = get_vote_actions_body(
-            self.context, self.request)
+            self.context, self.request,
+            activator_ids=['content_vote_contentreportdecision'])
         try:
             text_action = [{'title': _('Moderate'),
                             'class_css': 'vote-action',

@@ -56,7 +56,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         duration = datetime.timedelta(
             days=getattr(root, 'duration_moderation_vote', 7))
         execution_context = process.execution_context
-        content = execution_context.created_entity(
+        content = execution_context.involved_entity(
             'content')
         electors = execution_context.get_involved_collection(
             'electors')
@@ -77,7 +77,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             title = title(process, content)
 
         ballot.title = title
-        processes = ballot.run_ballot()
+        proc_id = 'content_vote_'+process.id
+        processes = ballot.run_ballot(id_=proc_id)
         subprocess.ballots = PersistentList()
         subprocess.ballots.append(ballot)
         subprocess.execution_context.add_involved_collection(

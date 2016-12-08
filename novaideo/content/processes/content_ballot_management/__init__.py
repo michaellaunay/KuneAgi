@@ -58,7 +58,7 @@ def start_ballot_proc(context, process_id):
         proc.__name__ = proc.id
         runtime.addtoproperty('processes', proc)
         proc.defineGraph(pd)
-        proc.execution_context.add_created_entity(
+        proc.execution_context.add_involved_entity(
             'content', context)
         proc.execute()
 
