@@ -1207,6 +1207,9 @@ def accept_participation(context, request, user, root):
     participants = working_group.members
     mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
     len_participants = len(participants)
+    if user in working_group.wating_list_participation:
+        working_group.delfromproperty('wating_list_participation', user)
+
     if len_participants < mode.participants_maxi:
         #Alert new participant
         if participants:
@@ -1215,9 +1218,6 @@ def accept_participation(context, request, user, root):
                   subjects=[context], alert_kind='participate')
 
         working_group.addtoproperty('members', user)
-        if user in working_group.wating_list_participation:
-            working_group.delfromproperty('wating_list_participation', user)
-
         grant_roles(user, (('Participant', context),))
         #alert maw working groups
         active_wgs = getattr(user, 'active_working_groups', [])
@@ -1298,12 +1298,14 @@ class Participate(InfiniteCardinality):
                 accept_participation(context, request, user, root)
             else:
                 working_group.addtoproperty('wating_list_participation', user)
+
                 def before_start(b_proc):
                     b_proc.participant = user
 
                 start_ballot(
                     context, user, request, root,
                     moderators, 'proposalparticipation',
+                    'participation_submission',
                     before_start=before_start)
 
         request.registry.notify(ActivityExecuted(
@@ -2007,8 +2009,12 @@ class ParticipationVote(StartBallot):
         # proposal not removed
         if proposal and proposal.__parent__:
             participant = self.process.participant
+            participant_data = get_entity_data(
+                participant, 'participant', request)
             accepted = ballot_result(self)
             root = getSite()
+            working_group = proposal.working_group
+            members = working_group.members
             if accepted:
                 wgs = getattr(participant, 'active_working_groups', [])
                 if len(wgs) < root.participations_maxi:
@@ -2017,11 +2023,31 @@ class ParticipationVote(StartBallot):
                     request.registry.notify(ActivityExecuted(
                         self, [proposal, proposal.working_group], participant))
                 else:
-                    pass
-                    #TODO alert participant, alert members
+                    working_group.delfromproperty(
+                        'wating_list_participation', participant)
+                    alert(
+                        'internal', [root], [participant],
+                        internal_kind=InternalAlertKind.working_group_alert,
+                        subjects=[proposal], alert_kind='cancel_participation')
+                    alert(
+                        'internal', [root], members,
+                        internal_kind=InternalAlertKind.working_group_alert,
+                        subjects=[proposal],
+                        alert_kind='cancel_participation_members',
+                        **participant_data)
             else:
-                pass
-                #TODO alert participant, alert members
+                working_group.delfromproperty(
+                    'wating_list_participation', participant)
+                alert(
+                    'internal', [root], [participant],
+                    internal_kind=InternalAlertKind.working_group_alert,
+                    subjects=[proposal], alert_kind='refuse_participant')
+                alert(
+                    'internal', [root], members,
+                    internal_kind=InternalAlertKind.working_group_alert,
+                    subjects=[proposal],
+                    alert_kind='refuse_participant_members',
+                    **participant_data)
 
         super(ParticipationVote, self).after_execution(
             proposal, request, **kw)
@@ -2085,8 +2111,19 @@ class ExclusionVote(StartBallot):
                 exclude_participant_from_wg(
                     proposal, request, participant, root, 'exclude')
             else:
-                pass
-                #TODO alert participant, alert members
+                participant_data = get_entity_data(
+                    participant, 'participant', request)
+                members = proposal.working_group.members
+                alert(
+                    'internal', [root], [participant],
+                    internal_kind=InternalAlertKind.working_group_alert,
+                    subjects=[proposal], alert_kind='refuse_exclusion')
+                alert(
+                    'internal', [root], members,
+                    internal_kind=InternalAlertKind.working_group_alert,
+                    subjects=[proposal],
+                    alert_kind='refuse_exclusion_members',
+                    **participant_data)
 
         super(ExclusionVote, self).after_execution(
             proposal, request, **kw)

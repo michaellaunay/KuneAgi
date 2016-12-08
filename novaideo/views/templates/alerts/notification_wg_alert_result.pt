@@ -61,6 +61,25 @@
       Une demande d'exclusion d'un membre du groupe de travail lié à cette proposition a  été formulée. Vous êtes invité à voter pour ou contre l'exclusion.</span>
 
     <span tal:condition="alert_kind == 'new_participant'">
-      Une demande de participation d'un membre au groupe de travail lié à cett proposition a  été formulée. Vous êtes invité à voter pour ou contre la participation.</span>
+      Une demande de participation d'un membre au groupe de travail lié à cett proposition a été formulée. Vous êtes invité à voter pour ou contre la participation.</span>
+
+  <span tal:condition="alert_kind == 'cancel_participation'">
+    Votre demande de participation au groupe de travail lié à la proposition ${subject.title} a été annulée. Vous avez atteint la limite de nombre de participations aux groupes de travail qui est de ${getattr(request.virtual_root, 'participations_maxi', 5)} participations maximum.</span>
+
+  <span tal:condition="alert_kind == 'cancel_participation_members'">
+    La demande de participation de ${object.participant_title} au groupe de travail lié à la proposition ${subject.title} a été annulée. Le membre a atteint la limite de nombre de participations aux groupes de travail qui est de ${getattr(request.virtual_root, 'participations_maxi', 5)} participations maximum.
+  </span>
+
+  <span tal:condition="alert_kind == 'refuse_participant'">
+    Votre demande de participation au groupe de travail lié à la proposition ${subject.title} a été refusée par les membres du groupe.</span>
+
+  <span tal:condition="alert_kind == 'refuse_participant_members'">
+     La demande de participation de ${object.participant_title} au groupe de travail lié à la proposition ${subject.title} a été refusée par les membres du groupe.</span>
+
+  <span tal:condition="alert_kind == 'refuse_exclusion'">
+        La demande d'exclusion de votre participation du groupe de travail lié à la proposition ${subject.title} a été refusée par les membres du groupe.</span>
+
+  <span tal:condition="alert_kind == 'refuse_exclusion_members'">
+     La demande d'exclusion de ${object.participant_title} du groupe de travail lié à la proposition ${subject.title} a été refusée par les membres du groupe.</span>
   </div>
 </div>

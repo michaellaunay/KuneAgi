@@ -209,6 +209,22 @@ Vous pouvez en tant que participant au groupe de travail améliorer la propositi
 
 """ + PORTAL_SIGNATURE
 
+PARTICIPATE_SUB_SUBJECT = u"""Soumisson de votre participation au groupe de travail de la proposition « {subject_title} »"""
+
+
+PARTICIPATE_SUB_MESSAGE = u"""
+
+Bonjour {recipient_first_name},
+
+Votre demande de participation au groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url} a été soumise aux membres du groupe.
+
+À chaque nouvelle demande de participation, les membres du groupe statuent sur l'acceptation ou pas de la demande.
+
+La durée de la vérification est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la vérification sera clôturée, et vous serez informé(e) de son résultat.
+
+"""+ PORTAL_SIGNATURE
+
+
 RESIGN_SUBJECT = u"""Votre départ du groupe de travail de la proposition « {subject_title} »"""
 
 RESIGN_MESSAGE = u"""
@@ -239,9 +255,9 @@ EXCLUDE_PARTICIPANT_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
 Une nouvelle demande d'exclusion a été enregistrée contre le participant « {user_first_name} » du groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}.
-Étant membre du groupe vous êtes invité à voter pour ou contre l'exclusion de ce membre du groupe de travail. Si la majorité vote en faveur de l'exclusion, le membre sera exclu au groupe, sinon la demande d'exclusion sera ignorée.
+Étant membre du groupe vous êtes invité à voter pour ou contre l'exclusion de ce membre du groupe de travail. Si la majorité vote en faveur de l'exclusion, le membre sera exclu du groupe, sinon la demande d'exclusion sera ignorée.
 
-La durée du vote est de {duration} jour(s). Au-delà de cette durée, le vote sera clôturé.
+La durée du vote est de {duration} jour(s). Au-delà de la date du {date_end_vote}, le vote sera clôturé.
 
 """ + PORTAL_SIGNATURE
 
@@ -254,7 +270,7 @@ Bonjour {recipient_first_name},
 Une nouvelle demande de participation a été enregistrée par {user_first_name} pour le groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}.
 Étant membre du groupe vous êtes invité à voter pour ou contre la participation de ce membre du groupe de travail. Si la majorité vote en faveur de la participation, le membre sera intégré au groupe, sinon la demande de participation sera ignorée.
 
-La durée du vote est de {duration} jour(s). Au-delà de cette durée, le vote sera clôturé.
+La durée du vote est de {duration} jour(s). Au-delà de la date du {date_end_vote}, le vote sera clôturé.
 
 """ + PORTAL_SIGNATURE
 
@@ -442,7 +458,7 @@ Les données de l'identité de la personne inscrite sont:
   Date de naissance: {birth_date}
   Email: {subject_email}
 
-La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée.
+La durée de la vérification est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la vérification sera clôturée.
 
 """+ PORTAL_SIGNATURE
 
@@ -481,7 +497,6 @@ La durée de la Modération est de {duration} jour(s). Au-delà de la date du {d
 """+ PORTAL_SIGNATURE
 
 
-
 AUTHOR_REPORT_SUBJECT = u"""Nouvelle signalisation sur la plateforme participative {novaideo_title}"""
 
 
@@ -493,7 +508,7 @@ Votre contenu {subject_url} a été signalé par un Membre comme potentiellement
 
 À chaque nouvel fois qu'un contenu est signalé comme potentiellement contraire à la Charte de Modération, le système tire au sort trois membres afin que ceux-ci statuent sur la conformité de ce contenu avec la Charte de Modération .
 
-La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée, et vous serez informé(e) de son résultat.
+La durée de la vérification est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la vérification sera clôturée, et vous serez informé(e) de son résultat.
 
 """+ PORTAL_SIGNATURE
 
@@ -525,7 +540,7 @@ Ces documents permettront de vérifier la concordance entre vos informations d'i
 Les modérateurs assignés à la vérification de votre inscription sont:
 {moderators}
 
-La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée. Veuillez donc envoyer une copie de vos documents officiels avant la fin de cette durée.
+La durée de la vérification est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la vérification sera clôturée. Veuillez donc envoyer une copie de vos documents officiels avant la fin de cette durée.
 
 """+ PORTAL_SIGNATURE
 
@@ -540,7 +555,7 @@ Votre contenu a été soumis à Modération.
 
 À chaque nouvel ajout à la plateforme {novaideo_title} d'un contenu, le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération {url_terms_of_use}.
 
-La durée de la vérification est de {duration} jour(s). Au-delà de cette durée, la vérification sera clôturée, et vous serez informé(e) de son résultat.
+La durée de la vérification est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la vérification sera clôturée, et vous serez informé(e) de son résultat.
 
 """+ PORTAL_SIGNATURE
 
@@ -717,12 +732,12 @@ DEFAULT_SITE_MAILS = {
     'wg_resign': {
               'title': _("Resignation from the working group"),
               'subject': RESIGN_SUBJECT,
-              'template': RESIGN_SUBJECT
+              'template': RESIGN_MESSAGE
     },
     'wg_exclude': {
               'title': _("Exclusion from the working group"),
               'subject': EXCLUDE_SUBJECT,
-              'template': EXCLUDE_SUBJECT
+              'template': EXCLUDE_MESSAGE
     },
     'wating_list': {
               'title': _("Registration on the waiting list"),
@@ -848,5 +863,10 @@ DEFAULT_SITE_MAILS = {
               'title': _("New participation"),
               'subject': NEW_PARTICIPANT_SUBJECT,
               'template': NEW_PARTICIPANT_MESSAGE
+    },
+    'participation_submission': {
+              'title': _("New participation"),
+              'subject': PARTICIPATE_SUB_SUBJECT,
+              'template': PARTICIPATE_SUB_MESSAGE
     }
 }

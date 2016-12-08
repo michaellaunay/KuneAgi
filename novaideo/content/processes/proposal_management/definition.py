@@ -606,7 +606,7 @@ def exclusion_title(process, context):
 
 BALLOT_DATA[Proposal.__name__+'-exclusionparticipant'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/new_exclusion.pt',
-    'ballot_title': participation_title,
+    'ballot_title': exclusion_title,
     'true_value': _("Accept the exclusion"),
     'false_value': _("Refuse the exclusion"),
     'process_id': 'exclusionparticipant'
