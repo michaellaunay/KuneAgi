@@ -1,0 +1,4 @@
+<div class="vote-subject alert alert-info" i18n:domain="novaideo">  
+    ${structure: description}
+</div>
+

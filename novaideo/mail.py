@@ -262,6 +262,19 @@ La durée du vote est de {duration} jour(s). Au-delà de la date du {date_end_vo
 """ + PORTAL_SIGNATURE
 
 
+NOTING_MEMBER_SUBJECT = u"""Vous êtes invité à noter « {user_first_name} »"""
+
+NOTING_MEMBER_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+À chaque nouveau départ d'un membre d'un groupe de travail ou la fin de l'amélioration d'une proposition, le système demande aux membres du groupe de travail de juger le ou les membres sur leurs qualités de leurs comportements coopératifs dans le cadre du groupe. 
+
+Vous êtes invité à noter {user_title} sur la qualité de son comportement coopératif dans le cadre du groupe lié à la proposition « {subject_title} ».
+Pour cela il vous suffit d'accéder à cette URL {subject_url} et de donner une note parmi celles proposées.
+
+""" + PORTAL_SIGNATURE
+
+
 NEW_PARTICIPANT_SUBJECT = u"""Une nouvelle demande de participation au groupe de travail de la proposition « {subject_title} »"""
 
 NEW_PARTICIPANT_MESSAGE = u"""
@@ -868,5 +881,10 @@ DEFAULT_SITE_MAILS = {
               'title': _("New participation"),
               'subject': PARTICIPATE_SUB_SUBJECT,
               'template': PARTICIPATE_SUB_MESSAGE
+    },
+    'member_notation': {
+              'title': _("Give a note to a member"),
+              'subject': NOTING_MEMBER_SUBJECT,
+              'template': NOTING_MEMBER_MESSAGE
     }
 }

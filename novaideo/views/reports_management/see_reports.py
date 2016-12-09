@@ -121,11 +121,12 @@ class DetailSubjectView(BasicView):
         self.execute(None)
         vote_actions = get_vote_actions_body(
             self.context, self.request,
-            activator_ids=['content_vote_contentreportdecision'])
+            activator_ids=['content_vote_contentreportdecision'],
+            activate=False)
         try:
             text_action = [{'title': _('Moderate'),
                             'class_css': 'vote-action',
-                            'style_picto': 'glyphicon glyphicon-stats'}] \
+                            'style_picto': 'octicon octicon-check'}] \
                 if vote_actions['actions'] else []
             navbars = generate_navbars(
                 self.request, self.context,

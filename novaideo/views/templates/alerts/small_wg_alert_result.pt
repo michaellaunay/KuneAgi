@@ -85,5 +85,7 @@
 
       <span tal:condition="alert_kind == 'refuse_exclusion_members'">
          La demande d'exclusion de <a href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> du groupe de travail lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> a été refusée par les membres du groupe.</span>
+      <span tal:condition="alert_kind == 'member_notation'">
+         Vous êtes invité à juger le membre <a href="${object.user_url}"><span class="${object.user_icon}"></span> ${object.user_title}</a> sur la qualité de son comportement coopératif dans le cadre du groupe de travail lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
   </div>
 </div>

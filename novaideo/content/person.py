@@ -561,6 +561,10 @@ class Person(User, SearchableEntity, CorrelableEntity):
 
         return alerts
 
+    def set_confidence_index(self, user, note, time_constant):
+        pass
+        #TODO
+
 
 @content(
     'preregistration',

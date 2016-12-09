@@ -1,0 +1,14 @@
+<div tal:condition="process">
+	<p tal:define="
+		member process.execution_context.involved_entity(
+            'member');
+		member_icon getattr(member, 'icon', '');
+		subject process.execution_context.involved_entity(
+            'subject');
+        subject_icon getattr(subject, 'icon', '');">
+        Vous êtes invité à noter <a href="${request.resource_url(member, '@@index')}"><span class="${member_icon}"></span> ${member.title}</a> sur la qualité de son comportement coopératif dans le cadre du groupe lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
+    </p>
+    <p>
+    	Pour cela il vous suffit de donner une note parmi celles proposées.
+    </p>
+</div>

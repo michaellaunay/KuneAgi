@@ -81,6 +81,9 @@ from novaideo.content.processes.content_ballot_management import (
     ELECTORS_NB, start_ballot, remove_ballot_processes)
 from novaideo.content.processes.content_ballot_management.behaviors import (
     StartBallot)
+from novaideo.content.processes.member_notation_management import (
+    run_notation_process)
+
 
 
 VOTE_PUBLISHING_MESSAGE = _("Chaque participant du groupe de travail vote pour" 
@@ -393,6 +396,8 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign'):
         )
         alert('email', [sender], [user.email],
               subject=subject, body=message)
+
+    run_notation_process(context, request, user, members)
 
 
 def calculate_improvement_cycle_date(process):
@@ -1737,6 +1742,11 @@ class SubmitProposal(ElementaryAction):
                   subject=subject, body=message)
 
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        for member in members:
+            members_ = list(members)
+            members_.remove(member)
+            run_notation_process(context, request, member, members_)
+
         working_group.reindex()
         context.reindex()
         request.registry.notify(ActivityExecuted(
