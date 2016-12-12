@@ -132,7 +132,7 @@ class UserParamsConfigurationSchema(Schema):
 
     duration_moderation_vote = colander.SchemaNode(
         colander.Int(),
-        title=_('Vote duration for the moderation of user registrations'),
+        title=_('Vote duration'),
         description=_('The voting duration is defined by a number of days.'),
         default=7,
         missing=7
@@ -166,6 +166,14 @@ class UserParamsConfigurationSchema(Schema):
         description=_('The composition of the working group can be controlled by her members.'),
         title='',
         missing=False
+    )
+
+    time_constant = colander.SchemaNode(
+        colander.Int(),
+        title=_('Time constant'),
+        description=_('The time constant is defined by a number of days.'),
+        default=90,
+        missing=90
     )
 
     participants_mini = colander.SchemaNode(
