@@ -71,8 +71,8 @@ def notes_choice(ballot_report):
 class NotesSchema(Schema):
 
     note = colander.SchemaNode(
-        colander.String(),
-        default="0",
+        colander.Int(),
+        default=0,
         title=_('Notes'),
     )
 

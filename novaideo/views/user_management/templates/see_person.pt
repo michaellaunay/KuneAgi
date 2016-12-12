@@ -30,6 +30,7 @@
               </span>
           </h3>
           <div class="user-function" tal:condition="getattr(user, 'function', '')">${user.function}</div>
+          <div class="user-score pull-right" ><span class="score">${getattr(user, 'confidence_index', 0)}</span> <span i18n:translate="">score</span></div>
           <div tal:omit-tag="" tal:condition="is_portal_manager and not getattr(user, 'Keep_me_anonymous', False)" tal:define="mail getattr(user, 'email', '')">
                 <span class="glyphicon glyphicon-envelope"></span> <a  href="mailto:${mail}">${mail}</a>
           </div>

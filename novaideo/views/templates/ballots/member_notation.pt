@@ -2,13 +2,34 @@
 	<p tal:define="
 		member process.execution_context.involved_entity(
             'member');
-		member_icon getattr(member, 'icon', '');
 		subject process.execution_context.involved_entity(
             'subject');
         subject_icon getattr(subject, 'icon', '');">
-        Vous êtes invité à noter <a href="${request.resource_url(member, '@@index')}"><span class="${member_icon}"></span> ${member.title}</a> sur la qualité de son comportement coopératif dans le cadre du groupe lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
+        Vous êtes invité à noter
+         <a tal:attributes="href request.resource_url(member, '@@index')"
+            data-oid="${getattr(member, '__oid__', '')}"
+            class="alert-link toggle-popover"
+            tal:define="
+                picture getattr(member, 'picture', None);
+                profil_picture getattr(picture, 'profil', None)">
+            <img class="author-img img-circle" 
+              tal:condition="profil_picture is not None"
+               tal:attributes="src profil_picture.url"  width="25"/>
+            <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+            ${getattr(member, 'title', member.name)}
+        </a>
+        sur la qualité de son comportement coopératif dans le cadre du groupe lié à la proposition 
+        <a href="${request.resource_url(subject, '@@index')}" data-oid="${getattr(subject, '__oid__', '')}"
+            class="alert-link toggle-popover">
+            <span class="${getattr(subject, 'icon')}"></span> ${subject.title}
+        </a>.
     </p>
     <p>
     	Pour cela il vous suffit de donner une note parmi celles proposées.
+        <ul>
+            <li>-1 = comportement coopératif inférieur à ce que j'attends dans le cadre d'un groupe de travail</li>
+            <li>0 = comportement coopératif conforme à ce que j'attends dans le cadre d'un groupe de travail</li>
+            <li>+1 = comportement coopératif meilleur que ce que j'attends dans le cadre d'un groupe de travail</li>
+        </ul>
     </p>
 </div>

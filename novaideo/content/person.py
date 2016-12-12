@@ -8,6 +8,8 @@ import os
 import datetime
 import pytz
 import json
+from math import ceil, floor
+import numpy as np
 from BTrees.OOBTree import OOBTree
 import colander
 import deform.widget
@@ -400,6 +402,8 @@ class Person(User, SearchableEntity, CorrelableEntity):
         self.set_title()
         self.last_connection = datetime.datetime.now(tz=pytz.UTC)
         self._read_at = OOBTree()
+        self.confidence_index = 0
+        self._notes = OOBTree()
 
     def set_read_date(self, channel, date):
         self._read_at[get_oid(channel)] = date
@@ -436,6 +440,10 @@ class Person(User, SearchableEntity, CorrelableEntity):
         else:
             self.title = getattr(self, 'first_name', '') + ' ' + \
                 getattr(self, 'last_name', '')
+
+    def add_note(self, user, context, note, date, time_constant):
+        self._notes[date] = (get_oid(user), get_oid(context), note)
+        self.calculate_confidence_index(time_constant)
 
     @property
     def proposals(self):
@@ -478,6 +486,9 @@ class Person(User, SearchableEntity, CorrelableEntity):
     @property
     def managed_organization(self):
         return get_objects_with_role(user=self, role='OrganizationResponsible')
+
+    def get_confidence_index(self):
+        return getattr(self, 'confidence_index', 0)
 
     def reindex(self):
         super(Person, self).reindex()
@@ -561,9 +572,17 @@ class Person(User, SearchableEntity, CorrelableEntity):
 
         return alerts
 
-    def set_confidence_index(self, user, note, time_constant):
-        pass
-        #TODO
+    def calculate_confidence_index(self, time_constant):
+        now = datetime.datetime.utcnow().timestamp()
+        notes = np.array([v[2] for v in self._notes.values()])
+        dates = np.array([int(t.timestamp()) for t in self._notes.keys()])
+        time_c = time_constant * 86400
+        confidence_index = np.sum(
+            np.dot(notes, np.exp(-(now-dates)/time_c)))
+        if confidence_index < 0:
+            self.confidence_index = floor(confidence_index)
+        else:
+            self.confidence_index = ceil(confidence_index)
 
 
 @content(

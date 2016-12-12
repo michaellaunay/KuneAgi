@@ -334,7 +334,7 @@ def evolve_channels(root, registry):
     log.info('Comments evolved.')
 
 
-def evolve_person(root, registry):
+def evolve_readed_channels(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IPerson
     from BTrees.OOBTree import OOBTree
@@ -355,10 +355,27 @@ def evolve_person(root, registry):
     log.info('Persons evolved.')
 
 
-def evolve_access_keys(root, registry):
+def evolve_confidence_index(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IPerson
     from BTrees.OOBTree import OOBTree
+
+    contents = find_entities(
+        interfaces=[IPerson]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        if not hasattr(node, '_notes'):
+            node._notes = OOBTree()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Confidence index evolved.')
+
+
+def evolve_access_keys(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IPerson
 
     contents = find_entities(
         interfaces=[IPerson]
@@ -586,7 +603,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_comments)
     config.add_evolution_step(evolve_nodes)
     config.add_evolution_step(evolve_channels)
-    config.add_evolution_step(evolve_person)
+    config.add_evolution_step(evolve_readed_channels)
     config.add_evolution_step(evolve_channel_comments_at)
     config.add_evolution_step(subscribe_users_newsletter)
     config.add_evolution_step(evolve_roles_comments)
@@ -598,6 +615,7 @@ def main(global_config, **settings):
     config.add_evolution_step(format_ideas)
     config.add_evolution_step(publish_comments)
     config.add_evolution_step(evolve_nonproductive_cycle)
+    config.add_evolution_step(evolve_confidence_index)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

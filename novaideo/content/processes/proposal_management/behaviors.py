@@ -397,7 +397,8 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign'):
         alert('email', [sender], [user.email],
               subject=subject, body=message)
 
-    run_notation_process(context, request, user, members)
+    run_notation_process(
+        context, request, user, members, 'member_notation')
 
 
 def calculate_improvement_cycle_date(process):
@@ -1742,10 +1743,30 @@ class SubmitProposal(ElementaryAction):
                   subject=subject, body=message)
 
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        for member in members:
-            members_ = list(members)
-            members_.remove(member)
-            run_notation_process(context, request, member, members_)
+        if len(members) > 1:
+            alert(
+                'internal', [root], members,
+                internal_kind=InternalAlertKind.working_group_alert,
+                subjects=[context], alert_kind='members_notation')
+            alert_data = get_entity_data(context, 'subject', request)
+            mail_template = root.get_mail_template('members_notation')
+            subject = mail_template['subject'].format(
+                novaideo_title=root.title,
+                **alert_data)
+            for member in [a for a in members if getattr(a, 'email', '')]:
+                email_data = get_user_data(member, 'recipient', request)
+                alert_data.update(email_data)
+                message = mail_template['template'].format(
+                    novaideo_title=root.title,
+                    **alert_data)
+                alert('email', [root.get_site_sender()], [member.email],
+                      subject=subject, body=message)
+
+            for member in members:
+                members_ = list(members)
+                members_.remove(member)
+                run_notation_process(
+                    context, request, member, members_)
 
         working_group.reindex()
         context.reindex()

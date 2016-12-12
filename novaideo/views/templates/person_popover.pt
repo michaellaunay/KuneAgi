@@ -21,7 +21,8 @@
 	      ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)}
 	      <small class="date" tal:condition="getattr(object, 'function', '')">
             ${object.function}
-          </small>
+        </small>
+        <small style="margin-top: 0px;" class="user-score pull-right" ><span class="score">${getattr(object, 'confidence_index', 0)}</span> <span i18n:translate="">score</span></small>
     </h4>
   </a>
     <div class="popover-content">

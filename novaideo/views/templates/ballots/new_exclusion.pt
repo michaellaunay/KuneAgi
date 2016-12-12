@@ -3,7 +3,7 @@
 		Une nouvelle demande d'exclusion a été enregistrée contre
 	     <a tal:attributes="href request.resource_url(participant, '@@index')"
 	        data-oid="${getattr(participant, '__oid__', '')}"
-	        class="toggle-popover"
+	        class="alert-link toggle-popover"
 	        tal:define="
 	            participant process.participant;
 	            picture getattr(participant, 'picture', None);

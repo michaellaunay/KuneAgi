@@ -77,11 +77,15 @@
      La demande de participation de ${object.participant_title} au groupe de travail lié à la proposition ${subject.title} a été refusée par les membres du groupe.</span>
 
   <span tal:condition="alert_kind == 'refuse_exclusion'">
-        La demande d'exclusion de votre participation du groupe de travail lié à la proposition ${subject.title} a été refusée par les membres du groupe.</span>
+    La demande d'exclusion de votre participation du groupe de travail lié à la proposition ${subject.title} a été refusée par les membres du groupe.</span>
 
   <span tal:condition="alert_kind == 'refuse_exclusion_members'">
-     La demande d'exclusion de ${object.participant_title} du groupe de travail lié à la proposition ${subject.title} a été refusée par les membres du groupe.</span>
+    La demande d'exclusion de ${object.participant_title} du groupe de travail lié à la proposition ${subject.title} a été refusée par les membres du groupe.</span>
+
   <span tal:condition="alert_kind == 'member_notation'">
     Vous êtes invité à juger le membre ${object.user_title} sur la qualité de son comportement coopératif dans le cadre du groupe de travail lié à la proposition ${subject.title}.</span>
   </div>
+
+  <span tal:condition="alert_kind == 'members_notation'">
+    Vous êtes invité à juger les membres sur la qualité de leur comportement coopératif dans le cadre du groupe de travail lié à la proposition ${subject.title}.</span>
 </div>

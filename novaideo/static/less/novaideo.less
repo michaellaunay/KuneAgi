@@ -2963,7 +2963,8 @@ ins {
     margin-top: 15px
 }
 
-.user-function{
+.user-function,
+.user-score{
     color: gray;
     margin-top: -5px;
     margin-bottom: 5px;
@@ -2971,14 +2972,21 @@ ins {
 }
 
 
-.small-result .user-function
+.small-result .user-function,
+.small-result .user-score
 {
    font-size: 13px;
 }
 
 
-.user-panel-container .user-function{
+.user-panel-container .user-function,
+.user-panel-container .user-score{
     color: white;
+}
+
+.user-score>.score{
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .author-block{
@@ -3248,7 +3256,6 @@ ins {
 }
 
 .content-text-scroll{
-   height:600px;
    overflow: auto;
 }
 

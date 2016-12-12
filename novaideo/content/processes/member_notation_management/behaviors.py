@@ -9,6 +9,7 @@
 This module represent all of behaviors used in the
 FPTP election process definition.
 """
+import datetime
 from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
@@ -46,8 +47,10 @@ class Note(InfiniteCardinality):
         user = get_current()
         root = getSite()
         member = self.process.execution_context.involved_entity('member')
-        member.set_confidence_index(
-            user, note, getattr(root, 'time_constant', 6))
+        now = datetime.datetime.utcnow()
+        member.add_note(
+            user, context, note, now, getattr(root, 'time_constant', 6))
+        member.reindex()
         ballot = self.process.ballot
         report = ballot.report
         report.addtoproperty('voters', user)

@@ -262,15 +262,38 @@ La durée du vote est de {duration} jour(s). Au-delà de la date du {date_end_vo
 """ + PORTAL_SIGNATURE
 
 
-NOTING_MEMBER_SUBJECT = u"""Vous êtes invité à noter « {user_first_name} »"""
+NOTING_MEMBER_SUBJECT = u"""Vous êtes invité(e) à noter le comportement coopératif de « {user_first_name} »"""
 
 NOTING_MEMBER_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-À chaque nouveau départ d'un membre d'un groupe de travail ou la fin de l'amélioration d'une proposition, le système demande aux membres du groupe de travail de juger le ou les membres sur leurs qualités de leurs comportements coopératifs dans le cadre du groupe. 
+{user_title} vient de quitter le Groupe de Travail, par sa démission ou parce qu'il (elle) en a été exclu(e). À chaque fois qu'un membre quitte un groupe de travail, le système demande aux membres restants du groupe de travail de juger la qualité de son comportement coopératif, tel que ces membres restants ont pu le percevoir dans le cadre du travail de ce groupe.
 
-Vous êtes invité à noter {user_title} sur la qualité de son comportement coopératif dans le cadre du groupe lié à la proposition « {subject_title} ».
-Pour cela il vous suffit d'accéder à cette URL {subject_url} et de donner une note parmi celles proposées.
+C'est pourquoi vous êtes invité(e) à attribuer une note à la qualité du comportement coopératif de {user_title} dans le cadre du groupe lié à la proposition {subject_title}. Les notes possibles sont:
+-1 = comportement coopératif inférieur à ce que j'attends dans le cadre d'un groupe de travail
+0 = comportement coopératif conforme à ce que j'attends dans le cadre d'un groupe de travail
++1 = comportement coopératif meilleur que ce que j'attends dans le cadre d'un groupe de travail
+
+Pour attribuer votre note au comportement coopératif de {user_title}, il vous suffit d'accéder à cette URL {subject_url} et de donner une note parmi celles proposées.
+
+""" + PORTAL_SIGNATURE
+
+
+NOTING_MEMBERS_SUBJECT = u"""Vous êtes invité(e) à noter le comportement coopératif des autres membres du groupe lié à la proposition « {subject_title} »"""
+
+NOTING_MEMBERS_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Le groupe de travail lié à la proposition {subject_title} vient de la publier, et de la soumettre pour appréciation aux autres membres de la plate-forme. Il a donc fini ses travaux. Il est dissout, et ses membres peuvent se consacrer à d'autres propositions.
+
+À chaque fois qu'un groupe de travail cesse ses activités et se dissout, le système demande à chacun de ses membres de juger la qualité du comportement coopératif des autres membres, tel que ce membre a pu le percevoir dans le cadre du travail de ce groupe.
+
+C'est pourquoi vous êtes invité(e) à attribuer une note à la qualité du comportement coopératif des autres membres du groupe lié à la proposition {subject_title}. Les notes possibles sont:
+-1 = comportement coopératif inférieur à ce que j'attends dans le cadre d'un groupe de travail
+0 = comportement coopératif conforme à ce que j'attends dans le cadre d'un groupe de travail
++1 = comportement coopératif meilleur que ce que j'attends dans le cadre d'un groupe de travail
+
+Pour attribuer votre note au comportement coopératif des autres membres du groupe de travail lié à la proposition {subject_title}, il vous suffit d'accéder à cette URL {subject_url} et de donner une note parmi celles proposées, à chacun(e) des autres membres de ce groupe.
 
 """ + PORTAL_SIGNATURE
 
@@ -886,5 +909,10 @@ DEFAULT_SITE_MAILS = {
               'title': _("Give a note to a member"),
               'subject': NOTING_MEMBER_SUBJECT,
               'template': NOTING_MEMBER_MESSAGE
+    },
+    'members_notation': {
+              'title': _("Give a note to members"),
+              'subject': NOTING_MEMBERS_SUBJECT,
+              'template': NOTING_MEMBERS_MESSAGE
     }
 }
