@@ -800,10 +800,18 @@ def render_small_listing_objs(request, objs, user, **kw):
     return result_body
 
 
-def render_listing_obj(request, obj, user, listing_template='default', **kw):
+def render_listing_obj(request, obj, user, **kw):
+    listing_type = kw.get('listing_template', 'default')
     try:
+        args = {}
+        if listing_type == 'bloc':
+            args = {
+                'tounmerge': [
+                    'communication-action',
+                    'access-action']
+            }
         navbars = generate_listing_menu(
-            request, obj)
+            request, obj, **args)
     except ObjectRemovedException:
         return ''
 
@@ -820,7 +828,7 @@ def render_listing_obj(request, obj, user, listing_template='default', **kw):
             getattr(obj, 'state_or_none', [None])[0])}
     object_values.update(kw)
     return renderers.render(
-        obj.templates.get(listing_template),
+        obj.templates.get(listing_type),
         object_values,
         request)
 
@@ -878,10 +886,19 @@ def render_view_comment(request, comment, **kw):
 def render_listing_objs(request, objs, user, **kw):
     result_body = []
     resources = {'css_links': [], 'js_links': []}
+    listing_type = kw.get('listing_template', 'default')
+    args = {}
+    if listing_type == 'bloc':
+        args = {
+            'tounmerge': [
+                'communication-action',
+                'access-action']
+        }
+
     for obj in objs:
         try:
             navbars = generate_listing_menu(
-                request, obj)
+                request, obj, **args)
         except ObjectRemovedException:
             continue
 
@@ -1139,6 +1156,7 @@ def generate_listing_menu(request, context, **args):
         'communication-action', 'wg-action',
         'primary-action', 'communication-body-action',
         'access-action']
+    tounmerge = args.get('tounmerge', tounmerge)
     tomerge = [d for d in descriminators
                if d not in tounmerge and d in actions_navbar]
     for descriminator in tomerge:

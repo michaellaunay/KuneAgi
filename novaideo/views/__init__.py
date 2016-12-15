@@ -4,7 +4,6 @@
 # licence: AGPL
 # author: Amen Souissi, Sophie Jazwiecki
 import datetime
-import random
 import pytz
 import json
 from pyramid.view import view_config
@@ -23,21 +22,20 @@ from dace.objectofcollaboration.principal.util import (
 from dace.objectofcollaboration.object import Object
 from pontus.view import BasicView
 
-from novaideo.views.idea_management.comment_idea import (
-    CommentsView)
 from novaideo.views.novaideo_view_manager.search import (
     get_default_searchable_content)
 from novaideo.content.interface import (
     IPerson,
     ICorrelableEntity,
     Iidea,
+    ISearchableEntity,
     IFile)
 from novaideo.utilities.util import (
     render_small_listing_objs, extract_keywords)
 from novaideo.utilities.pseudo_react import (
     get_components_data, get_all_updated_data)
 from novaideo.views.filter import find_entities, FILTER_SOURCES
-from novaideo import _, log
+from novaideo import _
 from novaideo.core import can_access
 
 
@@ -245,7 +243,7 @@ class NovaideoAPI(IndexManagementJsonView):
         return self.find_entity(interfaces=[ICorrelableEntity])
 
     def find_smart_folder_contents(self):
-        return self.find_entity(interfaces=[IFile], states=['published'])
+        return self.find_entity(interfaces=[ISearchableEntity, IFile], states=[])
 
     def find_ideas(self):
         novaideo_index = find_catalog('novaideo')
