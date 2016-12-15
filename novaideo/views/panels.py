@@ -650,7 +650,7 @@ class NavigationBar(object):
         self.default_folder = SmartFolder(title=_('My private folders'),
                                           style=DEFAULT_FOLDER_COLORS,
                                           )
-        self.default_folder.folder_order = 1000
+        self.default_folder.folder_order = -1
 
     def get_sub_menu(
         self, nodes, parent_name, current_level,
@@ -680,11 +680,14 @@ class NavigationBar(object):
         children = node.children if node is not self.default_folder\
             else self.default_folder.volatile_children
         nodes = [sf for sf in children if can_access(user, sf)
-                 and sf.locale == locale]
+                 and (not sf.locale or sf.locale == locale)]
         nodes = sorted(nodes, key=lambda e: e.get_order())
         return nodes
 
     def get_folder_id(self, node):
+        if node is self.default_folder:
+            return None
+
         return get_oid(node)
 
     def get_folder_name(self, node):
@@ -718,7 +721,8 @@ class NavigationBar(object):
             if my_folders:
                 self.default_folder.volatile_children = my_folders
 
-        nodes = [sf for sf in nodes if not sf.parents and sf.locale == locale]
+        nodes = [sf for sf in nodes
+                 if not sf.parents and (not sf.locale or sf.locale == locale)]
         if getattr(self.default_folder, 'volatile_children', []):
             nodes.append(self.default_folder)
 

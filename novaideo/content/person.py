@@ -388,6 +388,7 @@ class Person(User, SearchableEntity, CorrelableEntity):
     working_groups = SharedMultipleProperty('working_groups', 'members')
     old_alerts = SharedMultipleProperty('old_alerts')
     following_channels = SharedMultipleProperty('following_channels', 'members')
+    folders = SharedMultipleProperty('folders', 'author')
     tree = synchronize_tree()
 
     def __init__(self, **kwargs):

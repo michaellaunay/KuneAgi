@@ -7,8 +7,6 @@
 import colander
 import deform
 from zope.interface import implementer, invariant
-from persistent.dict import PersistentDict
-from persistent.list import PersistentList
 from pyramid.threadlocal import get_current_request
 
 from substanced.content import content
@@ -18,23 +16,25 @@ from substanced.util import renamer, get_oid
 from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import SharedMultipleProperty, SharedUniqueProperty
 from dace.util import get_obj
-from pontus.schema import Schema, omit
+from pontus.schema import Schema, omit, select
 from pontus.core import VisualisableElement, VisualisableElementSchema
 from pontus.widget import (
     Select2Widget,
     SimpleMappingWidget,
-    AjaxSelect2Widget)
+    AjaxSelect2Widget,
+    SequenceWidget)
 from deform_treepy.widget import (
     DictSchemaType)
 
 from .interface import ISmartFolder
 from novaideo import _, VIEW_TYPES, log
-from novaideo.content.person import locale_widget, _LOCALES
+from novaideo.content.person import _LOCALES, _LOCALES_TITLES
 from novaideo.views.widget import (
     CssWidget,
     TextInputWidget,
     BootstrapIconInputWidget
     )
+from novaideo.views.filter import FilterSchema
 
 
 DEFAULT_FOLDER_COLORS = {'usual_color': 'white, #2d6ca2',
@@ -104,6 +104,14 @@ def relatedcontents_choice(node, kw):
         page_limit=50,)
 
 
+@colander.deferred
+def locale_widget(node, kw):
+    locales = [(l, _LOCALES_TITLES.get(l, l)) for l in _LOCALES]
+    sorted_locales = sorted(locales)
+    sorted_locales.insert(0, ('', _('- Select -')))
+    return Select2Widget(values=sorted_locales)
+
+
 class SmartFolderSchema(VisualisableElementSchema):
     """Schema for keyword"""
 
@@ -126,9 +134,28 @@ class SmartFolderSchema(VisualisableElementSchema):
     locale = colander.SchemaNode(
         colander.String(),
         title=_('Locale'),
+        description=_('The language for which the folder will be displayed'),
         widget=locale_widget,
-        validator=colander.OneOf(_LOCALES),
+        missing=''
     )
+
+    filters = colander.SchemaNode(
+        colander.Sequence(),
+        omit(select(FilterSchema(
+                    name='filter',
+                    title=_('Filter'),
+                    widget=SimpleMappingWidget(
+                        css_class='object-well default-well')),
+             ['metadata_filter',
+              'temporal_filter', 'contribution_filter',
+              'text_filter', 'other_filter']),
+             ["_csrf_token_"]),
+        widget=SequenceWidget(
+            add_subitem_text_template=_('Add a new filter')),
+        title=_('Filters'),
+        description=_('Applied filters'),
+        missing=[]
+        )
 
     contents = colander.SchemaNode(
         colander.Set(),
@@ -143,6 +170,7 @@ class SmartFolderSchema(VisualisableElementSchema):
         colander.String(),
         widget=view_type_widget,
         title=_("View type"),
+        description=_('How to display contents'),
         default='default'
         )
 
@@ -153,10 +181,17 @@ class SmartFolderSchema(VisualisableElementSchema):
         default={'icon': 'glyphicon-folder-open',
                  'icon_class': 'glyphicon'},
         description=_('Select an icon.')
-        # description="Sélectionner une icône."
         )
 
     style = omit(CssSchema(widget=SimpleMappingWidget()), ["_csrf_token_"])
+
+    @invariant
+    def contact_invariant(self, appstruct):
+        contents = appstruct.get('contents', [])
+        filters = appstruct.get('filters', [])
+        if not contents and not filters:
+            raise colander.Invalid(
+                self, _('Filters or associated contents must be specified.'))
 
 
 @content(
@@ -167,7 +202,7 @@ class SmartFolderSchema(VisualisableElementSchema):
 class SmartFolder(VisualisableElement, Entity):
     """SmartFolder class"""
 
-    default_icon = 'glyphicon glyphicon-folder-open'
+    default_icon = 'glyphicon glyphicon-briefcase'
     templates = {
         'default': 'novaideo:views/templates/folder_result.pt',
         'bloc': 'novaideo:views/templates/folder_result.pt',
