@@ -1557,11 +1557,11 @@ def home_ideas_counter(action, request, context, api, **kwargs):
 
 
 METADATA_GETTERS = {
-    'adminprocess.edit_smart_folder': get_edit_folder_metadata,
-    'adminprocess.remove_smart_folder': get_remove_folder_metadata,
-    'adminprocess.publish_smart_folder': get_publish_folder_metadata,
-    'adminprocess.withdraw_smart_folder': get_archive_folder_metadata,
-    'adminprocess.addsub_smart_folder': get_add_subfolder_metadata,
+    'smartfoldermanagement.edit_smart_folder': get_edit_folder_metadata,
+    'smartfoldermanagement.remove_smart_folder': get_remove_folder_metadata,
+    'smartfoldermanagement.publish_smart_folder': get_publish_folder_metadata,
+    'smartfoldermanagement.withdraw_smart_folder': get_archive_folder_metadata,
+    'smartfoldermanagement.addsub_smart_folder': get_add_subfolder_metadata,
 
     'novaideoabstractprocess.select': get_selection_metadata,
     'novaideoabstractprocess.deselect': get_selection_metadata,

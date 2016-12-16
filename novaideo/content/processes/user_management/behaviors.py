@@ -333,6 +333,31 @@ class SeePerson(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+def seenotation_roles_validation(process, context):
+    return has_role(role=('SiteAdmin',))
+
+
+def seenotation_processsecurity_validation(process, context):
+    return global_user_processsecurity()
+
+
+class SeeNotations(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'plus-action'
+    style_picto = 'glyphicon glyphicon-signal'
+    style_order = 100
+    title = _('See notations')
+    context = IPerson
+    roles_validation = seenotation_roles_validation
+    processsecurity_validation = seenotation_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
 def reg_roles_validation(process, context):
     return has_role(role=('Anonymous',))
 

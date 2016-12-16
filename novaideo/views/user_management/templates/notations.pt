@@ -1,0 +1,39 @@
+<div tal:omit-tag="" i18n:domain="novaideo">
+	<h4><span i18n:translate="">The final score</span> <span class="badge">${score}</span></h4>
+	<table tal:condition="notes" class="table table-hover" >
+		<thead>
+			<tr> 
+				<th i18n:translate="">Date</th> 
+				<th i18n:translate="">Member</th> 
+				<th i18n:translate="">Content</th> 
+				<th i18n:translate="" i18n:context="notation">Note</th> 
+			</tr> 
+		</thead> 
+		<tbody> 
+			<tr tal:repeat="note notes"> 
+				<th scope="row">${note['date']}</th> 
+				<td tal:define="member note['user']">
+	              <a tal:attributes="href request.resource_url(member, '@@index')"
+		            data-oid="${getattr(member, '__oid__', '')}"
+		            class="alert-link toggle-popover"
+		            tal:define="
+		                picture getattr(member, 'picture', None);
+		                profil_picture getattr(picture, 'profil', None)">
+		            <img class="author-img img-circle" 
+		              tal:condition="profil_picture is not None"
+		               tal:attributes="src profil_picture.url"  width="25"/>
+		            <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+		            ${getattr(member, 'title', member.name)}
+	              </a>
+				</td> 
+				<td tal:define="subject note['content']">
+	                <a href="${request.resource_url(subject, '@@index')}" data-oid="${getattr(subject, '__oid__', '')}"
+			            class="alert-link toggle-popover">
+			            <span class="${getattr(subject, 'icon')}"></span> ${subject.title}
+			        </a>
+				</td> 
+				<td>${note['note']}</td> 
+			</tr>
+		</tbody> 
+	</table>
+</div>

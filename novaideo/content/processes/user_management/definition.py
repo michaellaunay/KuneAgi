@@ -34,7 +34,8 @@ from .behaviors import (
     SeeRegistration,
     SeeRegistrations,
     RemoveRegistration,
-    ModerationVote)
+    ModerationVote,
+    SeeNotations)
 from novaideo import _
 from novaideo.content.person import Preregistration
 from novaideo.content.processes.content_ballot_management import (
@@ -84,6 +85,10 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Details"),
                                        title=_("Details"),
                                        groups=[]),
+                see_notations = ActivityDefinition(contexts=[SeeNotations],
+                                       description=_("Notations"),
+                                       title=_("Notations"),
+                                       groups=[]),
                 discuss = ActivityDefinition(contexts=[Discuss],
                                        description=_("Discuss"),
                                        title=_("Discuss"),
@@ -113,6 +118,8 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('activate', 'eg'),
                 TransitionDefinition('pg', 'assign_roles'),
                 TransitionDefinition('assign_roles', 'eg'),
+                TransitionDefinition('pg', 'see_notations'),
+                TransitionDefinition('see_notations', 'eg'),
                 TransitionDefinition('pg', 'see'),
                 TransitionDefinition('see', 'eg'),
                 TransitionDefinition('eg', 'end'),
