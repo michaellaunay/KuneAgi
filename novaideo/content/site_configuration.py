@@ -321,15 +321,6 @@ def keywords_validator(node, kw):
             node, _('Minimum one keyword required. You can specify a second keyword level for each keyword chosen.'))
 
 
-@colander.deferred
-def keywords_choice(node, kw):
-    context = node.bindings['context']
-    values = [(i, i) for i in sorted(getattr(context, 'keywords', []))]
-    return Select2Widget(values=values,
-                         create=True,
-                         multiple=True)
-
-
 class KeywordsConfSchema(Schema):
 
     tree = colander.SchemaNode(
