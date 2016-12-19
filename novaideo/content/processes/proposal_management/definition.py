@@ -182,7 +182,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
 
         subjects = [proposal]
         ballot = Ballot('Referendum', electors, subjects, VP_DEFAULT_DURATION,
-                        true_val=_("Submit the proposal"),
+                        true_val=_("Submit the proposal as is"),
                         false_val=_("Continue to improve the proposal"))
         working_group.addtoproperty('ballots', ballot)
         ballot.report.description = VOTE_PUBLISHING_MESSAGE
@@ -220,7 +220,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
                             subjects, VP_DEFAULT_DURATION)
             working_group.addtoproperty('ballots', ballot)
             ballot.report.description = VOTE_REOPENING_MESSAGE
-            ballot.title = _('Reopening working group')
+            ballot.title = _('Reopen the working group')
             processes.extend(ballot.run_ballot(context=proposal))
             subprocess.ballots.append(ballot)
             working_group.reopening_configuration_ballot = ballot
@@ -230,10 +230,10 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             group = sorted(durations,
                            key=lambda e: AMENDMENTS_CYCLE_DEFAULT_DURATION[e])
             ballot = Ballot('FPTP', electors, group, VP_DEFAULT_DURATION,
-                            group_title=_('Amendment duration'),
+                            group_title=_('Duration of the amendment cycle'),
                             group_default='One week')
             working_group.addtoproperty('ballots', ballot)
-            ballot.title = _('Amendment duration')
+            ballot.title = _('Duration of the amendment cycle')
             ballot.report.description = VOTE_DURATION_MESSAGE
             processes.extend(ballot.run_ballot(context=proposal))
             subprocess.ballots.append(ballot)
@@ -307,7 +307,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        title=_("Delete"),
                                        groups=[]),
                 publishasproposal = ActivityDefinition(contexts=[PublishAsProposal],
-                                       description=_("Transform the idea as a proposal"),
+                                       description=_("Transform the idea into a proposal"),
                                        title=_('Create a working group'),
                                        groups=[]),
                 duplicate = ActivityDefinition(contexts=[DuplicateProposal],
@@ -320,8 +320,8 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        groups=[]),
 
                 submit = ActivityDefinition(contexts=[SubmitProposalModeration],
-                                       description=_("Submit the proposal"),
-                                       title=_("Submit for publishing"),
+                                       description=_("Submit the proposal as is"),
+                                       title=_("Submit the proposal as is"),
                                        groups=[]),
                 edit = ActivityDefinition(contexts=[EditProposal],
                                        description=_("Edit the proposal"),
@@ -332,8 +332,8 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        title=_("Participate"),
                                        groups=[]),
                 resign = ActivityDefinition(contexts=[Resign],
-                                       description=_("Resign"),
-                                       title=_("Resign"),
+                                       description=_("Quit"),
+                                       title=_("Quit"),
                                        groups=[]),
                 exclude_participant = ActivityDefinition(contexts=[ExcludeParticipant],
                                        description=_("Exclude a participant"),
@@ -348,11 +348,11 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        title=_("Support"),
                                        groups=[]),
                 makeitsopinion = ActivityDefinition(contexts=[MakeOpinion],
-                                       description=_("Make its opinion"),
-                                       title=_("Make its opinion"),
+                                       description=_("Give one's opinion"),
+                                       title=_("Give one's opinion"),
                                        groups=[]),
                 oppose = ActivityDefinition(contexts=[OpposeProposal],
-                                       description=_("To oppose a proposal"),
+                                       description=_("Oppose the proposal"),
                                        title=_("Oppose"),
                                        groups=[]),
                 withdraw_token = ActivityDefinition(contexts=[WithdrawToken],
@@ -360,7 +360,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        title=_("Withdraw my token"),
                                        groups=[]),
                 present = ActivityDefinition(contexts=[PresentProposal],
-                                       description=_("Share the proposal to others"),
+                                       description=_("Share the proposal with others"),
                                        title=_("Share"),
                                        groups=[]),
                 comment = ActivityDefinition(contexts=[CommentProposal],
@@ -483,7 +483,7 @@ class ProposalImprovementCycle(ProcessDefinition, VisualisableElement):
                                        title=_("Start work"),
                                        groups=[]),
                 submit = ActivityDefinition(contexts=[SubmitProposal],
-                                       description=_("Submit the proposal"),
+                                       description=_("Submit the proposal as is"),
                                        title=_("Submit"),
                                        groups=[]),
                 end = EndEventDefinition(),
@@ -524,8 +524,8 @@ class WorkspaceManagement(ProcessDefinition, VisualisableElement):
                                        title=_("Workspace"),
                                        groups=[]),
                 remove_file = ActivityDefinition(contexts=[RemoveFile],
-                                       description=_("Remove a file"),
-                                       title=_("Remove a file"),
+                                       description=_("Remove the file"),
+                                       title=_("Remove the file"),
                                        groups=[]),
                 add_files = ActivityDefinition(contexts=[AddFiles],
                                        description=_("Add files"),

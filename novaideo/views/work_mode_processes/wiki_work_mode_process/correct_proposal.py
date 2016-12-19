@@ -57,7 +57,7 @@ class AddIdeaSchema(Schema):
     idea = colander.SchemaNode(
         ObjectType(),
         widget=idea_choice,
-        title=_('Use an idea'),
+        title=_('Re-use one or more existing idea(s)'),
         missing=None,
         #description=_('Choose an idea')
         )
@@ -85,7 +85,7 @@ class AddIdea(Behavior):
 
     behavior_id = "addidea"
     title = _("Validate")
-    description = _("Use an idea")
+    description = _("Re-use one or more existing idea(s)")
 
     def start(self, context, request, appstruct, **kw):
         return {}
@@ -165,7 +165,7 @@ class RelatedIdeasView(BasicView):
 
 
 class IdeaManagementView(MultipleView):
-    title = _('Used ideas')
+    title = _('Ideas being used')
     name = 'ideasmanagementproposal'
     template = 'daceui:templates/simple_mergedmultipleview.pt'
     views = (RelatedIdeasView, AddIdeaFormView)
