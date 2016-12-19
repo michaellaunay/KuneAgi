@@ -35,7 +35,8 @@ from deform_treepy.utilities.tree_utility import (
 
 from novaideo.content.keyword import ROOT_TREE, DEFAULT_TREE
 from novaideo import _, DEFAULT_FILES
-from novaideo.core import FileEntity, Channel, CorrelableEntity
+from novaideo.content.file import FileEntity
+from novaideo.core import Channel, CorrelableEntity
 from .organization import OrganizationSchema, Organization
 from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation
