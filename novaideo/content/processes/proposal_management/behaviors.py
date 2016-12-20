@@ -67,10 +67,7 @@ from novaideo.views.filter import (
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from . import (
-    FIRST_VOTE_PUBLISHING_MESSAGE,
-    VP_DEFAULT_DURATION,
     AMENDMENTS_CYCLE_DEFAULT_DURATION,
-    FIRST_VOTE_DURATION_MESSAGE,
     init_proposal_ballots,
     add_files_to_workspace,
     add_attached_files)
@@ -83,7 +80,6 @@ from novaideo.content.processes.content_ballot_management.behaviors import (
     StartBallot)
 from novaideo.content.processes.member_notation_management import (
     run_notation_process)
-
 
 
 VOTE_PUBLISHING_MESSAGE = _("Each participant votes for or against continuing the improvement of the proposal. "
@@ -1498,10 +1494,9 @@ class VotingPublication(ElementaryAction):
         context.state.insert(0, 'votes for publishing')
         context.reindex()
         working_group = context.working_group
-        duration = calculate_improvement_cycle_duration(
-            self.process)
+        duration = getattr(working_group, 'work_duration', None)
         working_group.inc_iteration()
-        if duration >= datetime.timedelta(weeks=1):
+        if duration and duration >= datetime.timedelta(weeks=1):
             working_group.inc_nonproductive_cycle()
 
         if not getattr(working_group, 'first_vote', True):
@@ -1530,24 +1525,27 @@ class VotingPublication(ElementaryAction):
         return {}
 
     def after_execution(self, context, request, **kw):
+        process = self.process
         proposal = self.process.execution_context.created_entity(
             'proposal')
         if self.sub_process:
             exec_ctx = self.sub_process.execution_context
             vote_processes = exec_ctx.get_involved_collection('vote_processes')
-            opened_vote_processes = [process for process in vote_processes
-                                     if not process._finished]
+            opened_vote_processes = [proc for proc in vote_processes
+                                     if not proc._finished]
             if opened_vote_processes:
                 close_votes(proposal, request, opened_vote_processes)
 
-        setattr(self.process, 'new_cycle_date', datetime.datetime.now())
-        setattr(self.process, 'previous_alert', -1)
+        setattr(process, 'new_cycle_date', datetime.datetime.now())
+        setattr(process, 'previous_alert', -1)
         super(VotingPublication, self).after_execution(proposal, request, **kw)
-        is_published = publish_condition(self.process)
+        is_published = publish_condition(process)
+        proposal.working_group.work_duration = calculate_improvement_cycle_duration(
+            process)
         if is_published:
-            self.process.execute_action(proposal, request, 'submit', {})
+            process.execute_action(proposal, request, 'submit', {})
         else:
-            self.process.execute_action(proposal, request, 'work', {})
+            process.execute_action(proposal, request, 'work', {})
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
