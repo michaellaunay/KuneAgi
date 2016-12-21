@@ -486,7 +486,7 @@ Vous avez été choisi par la plateforme {novaideo_title} afin de confirmer l'id
 À chaque nouvelle inscription à la plateforme {novaideo_title} le système tire aléatoirement trois membres afin de vérifier et statuer sur l'identité de la personne inscrite. Pour cela il vous suffit de suivre les étapes suivantes:
 
 - Contacter la personne par email afin de vérifier son identité,
-- Connectez-vous à la plateforme à l'adresse suivante {url} et donnez votre avis.
+- Connectez-vous à la plateforme à l'adresse suivante {subject_url} et donnez votre avis.
 
 Les données de l'identité de la personne inscrite sont:
   Nom: {subject_last_name}

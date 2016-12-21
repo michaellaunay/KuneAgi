@@ -315,8 +315,8 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        groups=[]),
 
                 submit = ActivityDefinition(contexts=[SubmitProposalModeration],
-                                       description=_("Submit the proposal as is"),
-                                       title=_("Submit the proposal as is"),
+                                       description=_("Submit the proposal to the moderation"),
+                                       title=_("Submit"),
                                        groups=[]),
                 edit = ActivityDefinition(contexts=[EditProposal],
                                        description=_("Edit the proposal"),

@@ -1204,6 +1204,8 @@ class ModerationVote(StartBallot):
             datetime.timedelta(days=duration)
         date_end_vote = to_localized_time(
             date_end, request, translate=True)
+        subject_data['url_terms_of_use'] = request.resource_url(
+            root.terms_of_use, '@@index')
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
