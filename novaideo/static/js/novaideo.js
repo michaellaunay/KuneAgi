@@ -678,12 +678,16 @@ $(document).on('click', '.sidebar-right-background.toggled', function(){
 })
 
 
-$(document).mouseup(function (e)
+$(document).mouseup(function (event)
 {
     var container = $(".home-add-idea, .select2-results");
-    if (!container.is(e.target) // if the target of the click isn't the container...
-        && container.has(e.target).length === 0
-        && $(e.target).parents('body').length != 0) // ... nor a descendant of the container
+    var target = $(event.target)
+    var is_select = target.parents('.select2-container--open').length > 0
+    var is_tree = target.find(".vakata-contextmenu-sep").length > 0
+    if (!container.is(target) // if the target of the click isn't the container...
+        && container.has(target).length === 0
+        && $(target).parents('body').length != 0 // ... nor a descendant of the container
+        && !is_tree && !is_select)
     {
         if(!$(".home-add-idea .form-group.idea-text textarea").val()){
            close_add_idea_form()

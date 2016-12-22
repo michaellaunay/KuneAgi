@@ -342,6 +342,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 
     @invariant
     def user_invariant(self, appstruct):
+        context = self.bindings['context']
         first_name = appstruct.get('first_name', None)
         last_name = appstruct.get('last_name', None)
         birth_date = appstruct.get('birth_date', None)
@@ -358,6 +359,9 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
             identifier_index = novaideo_catalog['identifier']
             query = identifier_index.any([key])
             users = list(query.execute().all())
+            if context in users:
+                users.remove(context)
+
             if users:
                 raise colander.Invalid(
                     self,

@@ -361,17 +361,12 @@ class DuplicableEntity(Entity):
 def keyword_widget(node, kw):
     request = node.bindings['request']
     root = request.root
-    can_create = 0
-    if has_role(role=('Member', )):
-        can_create = 1
-    if has_any_roles(roles=('Admin', 'SiteAdmin')):
-        can_create = 0
-
     levels = root.get_tree_nodes_by_level()
     return KeywordsTreeWidget(
+        can_rename=False,
         min_len=2,
         max_len=DEFAULT_TREE_LEN,
-        can_create=can_create,
+        can_create=1000,
         levels=levels)
 
 
