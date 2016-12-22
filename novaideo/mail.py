@@ -481,20 +481,21 @@ ADMIN_PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {
 ADMIN_PREREGISTRATION_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Vous avez été choisi par la plateforme {novaideo_title} afin de confirmer l'identité d'une nouvelle inscription.
+Vous avez été choisi(e) par la plateforme {novaideo_title} comme Vérificateur, afin de vérifier l'identité d'une personne qui vient de s'inscrire.
 
-À chaque nouvelle inscription à la plateforme {novaideo_title} le système tire aléatoirement trois membres afin de vérifier et statuer sur l'identité de la personne inscrite. Pour cela il vous suffit de suivre les étapes suivantes:
+À chaque nouvelle inscription à la plateforme {novaideo_title} le système sélectionne aléatoirement trois membres existants afin de vérifier l'identité de la personne inscrite. En effet, il faut vérifier que chaque membre de la plate-forme correspond à une personne physique et une seule, et ainsi éviter qu'une même personne ne puisse voter plusieurs fois sous plusieurs identités différentes.
 
-- Contacter la personne par email afin de vérifier son identité,
-- Connectez-vous à la plateforme à l'adresse suivante {subject_url} et donnez votre avis.
+Pour procéder à cette vérification de l'identité de cette personne, il vous suffit de suivre les étapes suivantes:
 
-Les données de l'identité de la personne inscrite sont:
-  Nom: {subject_last_name}
-  Prénom: {subject_first_name}
+- Vous recevrez avant le {date_end_vote} de la part de la personne qui vient de s'inscrire, et dont l'adresse de courriel est {subject_email}, un courriel comprenant une copie de document d'identité officiel
+- Lorsque vous aurez reçu ce courriel, ou, si vous ne l'avez pas reçu le {date_end_vote}, connectez-vous à la plateforme à l'adresse suivante {subject_url}. Sur cette page, vous devrez décider si les informations reçues ci-dessous de cette personne lors de son inscription correspondent à celles présentes sur le document d'identité officiel dont vous aurez reçu une copie par courriel. Soyez très attentif(ve) ! Pour que vous approuviez l'inscription, TOUS les éléments doivent être strictement IDENTIQUES entre les informations reçues lors de l'inscription et celles du document d'identité officiel. Dans tous les autres cas, même avec une seule petite différence, ou si vous n'avez pas reçu la copie des documents d'identité à la date du {date_end_vote}, vous devez refuser l'inscription.
+
+Les informations reçues de la personne lors de son inscription sont:
+  Nom(s): {subject_last_name}
+  Prénom(s): {subject_first_name}
   Date de naissance: {birth_date}
-  Email: {subject_email}
 
-La durée de la vérification est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la vérification sera clôturée.
+La durée de la vérification est de {duration} jour(s), soit jusqu'au {date_end_vote}. Au-delà de cette durée, la vérification sera clôturée, et votre avis ne sera pas pris en compte. Si aucun Vérificateur n'a voté à cette date, l'inscription sera refusée. 
 
 """+ PORTAL_SIGNATURE
 
@@ -557,7 +558,6 @@ Bonjour {recipient_first_name},
 
 Votre inscription a été refusée par la plateforme {novaideo_title}. Les modérateurs n'ont pas pu confirmer votre identité.
 
-
 """+ PORTAL_SIGNATURE
 
 ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
@@ -566,17 +566,16 @@ ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""Inscription à la plateforme participati
 ADMIN_PREREGISTRATION_SUB_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Votre inscription a été soumise à modération. 
+Votre inscription a été soumise à vérification de votre identité.
 
-À chaque nouvelle inscription à la plateforme {novaideo_title} le système tire aléatoirement trois membres afin de vérifier et statuer sur l'identité de la personne inscrite.
+À chaque nouvelle inscription à la plateforme {novaideo_title} le système sélectionne aléatoirement trois membres existants afin de vérifier l'identité de la personne inscrite. En effet, il faut vérifier que chaque membre de la plate-forme correspond à une personne physique et une seule, et ainsi éviter qu'une même personne ne puisse voter plusieurs fois sous plusieurs identités différentes.
 
-Afin de pouvoir vérifier votre inscription, veuillez adresser autant de courriels séparés la copie de documents officiels aux modérateurs choisis.
-Ces documents permettront de vérifier la concordance entre vos informations d'identité données à l'inscription et celles de documents officiels.
+Afin que votre identité puisse être ainsi vérifiée, nous vous demandons d'adresser à chacune des personnes suivantes, dans trois courriels séparés, avant le {date_end_vote}, la copie scannée d'un document d'identité officiel. Cette copie devra faire apparaître clairement votre(vos) prénom(s), votre(vos) nom(s) de famille, votre date de naissance et votre lieu de naissance. Au-delà du {date_end_vote}, si les Vérificateurs n'ont pas reçu de copie de votre document d'identité officiel, ils ont instruction de refuser votre inscription.
 
 Les modérateurs assignés à la vérification de votre inscription sont:
 {moderators}
 
-La durée de la vérification est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la vérification sera clôturée. Veuillez donc envoyer une copie de vos documents officiels avant la fin de cette durée.
+Vous recevrez le résultat de cette procédure de vérification d'identité à la fin de la période laissée aux Vérificateurs pour travailler, soit le {date_end_vote} au plus tard.
 
 """+ PORTAL_SIGNATURE
 
@@ -598,7 +597,6 @@ La durée de la vérification est de {duration} jour(s). Au-delà de la date du 
 
 MODERATOR_DATA = u"""
 Modérateur {index}:
-  Nom prénom: {subject_last_name} {subject_first_name}
   Email: {subject_email}
 """
 

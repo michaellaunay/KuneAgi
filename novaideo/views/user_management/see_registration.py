@@ -41,7 +41,7 @@ class SeeRegistrationView(BasicView):
         vote_actions = get_vote_actions_body(
             self.context, self.request)
         try:
-            text_action = [{'title': _('Confirm identity'),
+            text_action = [{'title': _('Vote to confirm or not the identity of the member'),
                             'class_css': 'vote-action',
                             'style_picto': 'glyphicon glyphicon-stats'}] \
                 if vote_actions['actions'] else []

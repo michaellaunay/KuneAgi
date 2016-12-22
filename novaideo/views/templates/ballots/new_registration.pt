@@ -1,0 +1,16 @@
+<div tal:condition="process" i18n:domain="novaideo">
+	<p i18n:translate="">
+		Vous êtes invité à vérifier et confirmer l'identité de l'utilisateur enregistré. Cela afin de garantir l'unicité de ce compte. Si la majorité confirme l'identité de ce compte, le compte sera validé, sinon le compte sera supprimé.
+	</p>
+	<p tal:define="registration process.registration">
+		<span i18n:translate="">Les données de l'utilisateur enregistré sont:</span>
+		<dl class="dl-horizontal">
+	        <dt i18n:translate="">First name</dt>
+	        <dd><span tal:replace="registration.first_name"/></dd>
+	        <dt i18n:translate="">Last name</dt>
+	        <dd><span tal:replace="registration.last_name"/></dd>
+	        <dt i18n:translate="">Birth date</dt>
+	        <dd><span tal:replace="layout.to_localized_time(registration.birth_date)"/></dd>
+      </dl>
+    </p>
+</div>

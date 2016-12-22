@@ -216,8 +216,8 @@ def idea_title(process, context):
 BALLOT_DATA[Idea.__name__+'-ideamoderation'] = {
     'ballot_description': MODERATION_DESCRIPTION,
     'ballot_title': idea_title,
-    'true_value': _("Accept the idea"),
-    'false_value': _("Refuse the idea"),
+    'true_value': _("The idea complies with the moderation charter"),
+    'false_value': _("The idea does not comply with the moderation charter"),
     'process_id': 'ideamoderation'
 }
 

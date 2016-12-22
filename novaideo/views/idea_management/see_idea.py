@@ -60,9 +60,9 @@ class DetailIdeaView(BasicView):
         vote_actions = get_vote_actions_body(
             self.context, self.request)
         try:
-            text_action = [{'title': _('Moderate'),
+            text_action = [{'title': _('Moderate the idea'),
                             'class_css': 'vote-action',
-                            'style_picto': 'glyphicon glyphicon-stats'}] \
+                            'style_picto': 'octicon octicon-check'}] \
                 if vote_actions['actions'] else []
             navbars = generate_navbars(
                 self.request, self.context,

@@ -68,9 +68,11 @@ class SubProcessDefinition(OriginSubProcessDefinition):
                         false_val=ballot_data.get(
                             'false_value'))
         content.addtoproperty('ballots', ballot)
-        ballot.report.description = ballot_data.get(
+        report = ballot.report
+        report.secret_ballot = ballot_data.get('secret_ballot', True)
+        report.description = ballot_data.get(
             'ballot_description', '')
-        ballot.report.description_template = ballot_data.get(
+        report.description_template = ballot_data.get(
             'ballot_description_template', None)
         title = ballot_data.get('ballot_title')
         if hasattr(title, '__call__'):

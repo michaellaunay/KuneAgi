@@ -617,6 +617,11 @@ def evolve_files(root, registry):
     log.info('Files evolved')
 
 
+def evolve_root_files(root, registry):
+    root.init_files()
+    log.info('Root files evolved')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -658,6 +663,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_nonproductive_cycle)
     config.add_evolution_step(evolve_confidence_index)
     config.add_evolution_step(evolve_files)
+    config.add_evolution_step(evolve_root_files)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')
@@ -692,5 +698,10 @@ DEFAULT_FILES = [
      'title': _('Terms of use'),
      'description': _('The terms of use'),
      'content': '',
-     'content_file': 'terms_of_use.html'}
+     'content_file': 'terms_of_use.html'},
+    {'name': 'moderation_rules',
+     'title': _('Moderation rules'),
+     'description': _('Moderation rules'),
+     'content': '',
+     'content_file': 'moderation_rules.html'}   
 ]

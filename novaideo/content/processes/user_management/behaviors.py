@@ -418,10 +418,14 @@ class Registration(InfiniteCardinality):
                 preregistration.reindex()
                 accept()
             else:
+                def before_start(b_proc):
+                    b_proc.registration = preregistration
+
                 start_ballot(
                     preregistration, preregistration, request, root,
                     moderators, 'registrationmoderation',
-                    'preregistration_submit')
+                    'preregistration_submit',
+                    before_start=before_start)
 
         request.registry.notify(ActivityExecuted(self, [preregistration], None))
         return {'preregistration': preregistration}
@@ -894,14 +898,16 @@ class ModerationVote(StartBallot):
             datetime.timedelta(days=duration)
         date_end_vote = to_localized_time(
             date_end, request, translate=True)
+        subject_data['subject_last_name'] = getattr(context, 'last_name', '')
+        subject_data['subject_first_name'] = getattr(context, 'first_name', '')
+        birth_date = getattr(context, 'birth_date', '')
+        if birth_date:
+            birth_date = to_localized_time(
+                birth_date, request, translate=True)
+
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
-            birth_date = getattr(context, 'birth_date', '')
-            if birth_date:
-                birth_date = to_localized_time(
-                    birth_date, request, translate=True)
-
             message = mail_template['template'].format(
                 novaideo_title=root.title,
                 subject_email=getattr(context, 'email', ''),

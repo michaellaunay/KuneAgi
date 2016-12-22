@@ -191,6 +191,7 @@ MODERATION_DESCRIPTION = _("Vous êtes invité à vérifier et confirmer l'ident
 
 BALLOT_DATA[Preregistration.__name__+'-registrationmoderation'] = {
     'ballot_description': MODERATION_DESCRIPTION,
+    'ballot_description_template': 'novaideo:views/templates/ballots/new_registration.pt',
     'ballot_title': _("Confirm the user identity"),
     'true_value': _("Confirmed identity"),
     'false_value': _("Not confirmed identity"),

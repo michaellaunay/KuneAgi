@@ -554,8 +554,8 @@ def proposal_title(process, context):
 BALLOT_DATA[Proposal.__name__+'-proposalmoderation'] = {
     'ballot_description': MODERATION_DESCRIPTION,
     'ballot_title': proposal_title,
-    'true_value': _("Accept the proposal"),
-    'false_value': _("Refuse the proposal"),
+    'true_value': _("The proposal complies with the moderation charter"),
+    'false_value': _("The proposal does not comply with the moderation charter"),
     'process_id': 'proposalmoderation'
 }
 
@@ -580,6 +580,7 @@ BALLOT_DATA[Proposal.__name__+'-proposalparticipation'] = {
     'ballot_title': participation_title,
     'true_value': _("Accept the participation"),
     'false_value': _("Refuse the participation"),
+    'secret_ballot': False,
     'process_id': 'proposalparticipation'
 }
 
@@ -604,6 +605,7 @@ BALLOT_DATA[Proposal.__name__+'-exclusionparticipant'] = {
     'ballot_title': exclusion_title,
     'true_value': _("Accept the exclusion"),
     'false_value': _("Refuse the exclusion"),
+    'secret_ballot': False,
     'process_id': 'exclusionparticipant'
 }
 
