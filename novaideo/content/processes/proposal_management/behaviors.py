@@ -376,6 +376,11 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign'):
               subjects=[context], alert_kind=kind+'_to_wg_open')
 
     if getattr(user, 'email', ''):
+        alert(
+            'internal', [root], [user],
+            internal_kind=InternalAlertKind.working_group_alert,
+            subjects=[context], alert_kind='wg_'+kind,
+            **subject_data)
         mail_template = root.get_mail_template('wg_'+kind)
         subject = mail_template['subject'].format(
             subject_title=context.title)
@@ -390,6 +395,28 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign'):
 
     run_notation_process(
         context, request, user, members, 'member_notation')
+
+    if members:
+        alert(
+            'internal', [root], [user],
+            internal_kind=InternalAlertKind.working_group_alert,
+            subjects=[context], alert_kind='member_notation_excluded',
+            **subject_data)
+        mail_template = root.get_mail_template('member_notation_excluded')
+        subject = mail_template['subject'].format(
+            novaideo_title=root.title,
+            **subject_data)
+        email_data = get_user_data(user, 'recipient', request)
+        email_data.update(subject_data)
+        message = mail_template['template'].format(
+            novaideo_title=root.title,
+            **email_data)
+        alert('email', [root.get_site_sender()], [user.email],
+              subject=subject, body=message)
+
+        for member in members:
+            run_notation_process(
+                context, request, member, [user])
 
 
 def calculate_improvement_cycle_date(process):
@@ -1137,10 +1164,10 @@ class Resign(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'wg-action'
     style_interaction = 'ajax-action'
-    style_interaction_type = 'direct'
     style_order = 2
     style_picto = 'typcn typcn-user-delete'
     style_css_class = 'btn-danger'
+    submission_title = _('Continue')
     isSequential = False
     context = IProposal
     roles_validation = resign_roles_validation
@@ -1170,11 +1197,12 @@ def participate_processsecurity_validation(process, context):
     working_group = context.working_group
     user = get_current()
     root = getSite()
+    participations = getattr(user, 'participations', [])
     wgs = getattr(user, 'active_working_groups', [])
     return working_group and \
        user not in working_group.wating_list and \
        user not in working_group.wating_list_participation and \
-       len(wgs) < root.participations_maxi and \
+       len(wgs) + len(participations) < root.participations_maxi and \
        global_user_processsecurity()
 
 
@@ -1942,8 +1970,8 @@ class ModerationVote(StartBallot):
             datetime.timedelta(days=duration)
         date_end_vote = to_localized_time(
             date_end, request, translate=True)
-        subject_data['moderation_rules'] = request.resource_url(
-            root.terms_of_use, '@@index')
+        subject_data['url_moderation_rules'] = request.resource_url(
+            root.moderation_rules, '@@index')
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)

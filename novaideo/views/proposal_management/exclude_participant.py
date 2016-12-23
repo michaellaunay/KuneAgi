@@ -46,6 +46,7 @@ def participant_choice(node, kw):
                   if p.id == 'exclusionparticipant']
     values = [(get_oid(m), m.title) for m in context.working_group.members
               if m not in in_process]
+    values.insert(0, ('', _('- Select -')))
     return Select2Widget(
         values=values,
         multiple=False

@@ -1,6 +1,6 @@
 <div class="alert alert-info"  i18n:domain="novaideo">
 	<p i18n:translate="">
-	 Informations d'identité. Ces informations sont destinées à vérifier qu'une même personne physique ne peut s'inscrire qu'une fois et une seule, et qu'ainsi la plate-forme maintienne le principe de "1 personne = 1 voix" lors des votes. Ces Informations d'identité seront conservées strictement confidentielles, et ne seront révélées qu'à {nombre} membres existants de la plate-forme, tirés au sort lors de votre inscription, et qui auront pour fonction de vérifier la conformité entre les Informations d'identité que vous allez saisir ci-dessous et celles de vos documents officiels d'identité.
+	 Informations d'identité. Ces informations sont destinées à vérifier qu'une même personne physique ne peut s'inscrire qu'une fois et une seule, et qu'ainsi la plate-forme maintienne le principe de "1 personne = 1 voix" lors des votes. Ces Informations d'identité seront conservées strictement confidentielles, et ne seront révélées qu'à trois membres existants de la plate-forme, tirés au sort lors de votre inscription, et qui auront pour fonction de vérifier la conformité entre les Informations d'identité que vous allez saisir ci-dessous et celles de vos documents officiels d'identité.
     </p>
     <p i18n:translate="">
         <span i18n:translate="">

@@ -1,7 +1,7 @@
 <div tal:condition="process">
 	<p>
 		Une nouvelle demande de participation a été enregistrée par
-	     <a tal:attributes="href request.resource_url(participant, '@@index')"
+	     <a target="_blank" tal:attributes="href request.resource_url(participant, '@@index')"
 	        data-oid="${getattr(participant, '__oid__', '')}"
 	        class="alert-link toggle-popover"
 	        tal:define="

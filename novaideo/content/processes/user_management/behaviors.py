@@ -60,11 +60,11 @@ from novaideo.content.processes.content_ballot_management.behaviors import (
     StartBallot)
 
 
-def accept_preregistration(request, preregistration, root):
+def accept_preregistration(request, preregistration, root, alert_id='preregistration'):
     if getattr(preregistration, 'email', ''):
         deadline_date = preregistration.get_deadline_date()
         url = request.resource_url(preregistration, "")
-        mail_template = root.get_mail_template('preregistration')
+        mail_template = root.get_mail_template(alert_id)
         recipientdata = get_user_data(preregistration, 'recipient', request)
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
@@ -344,7 +344,7 @@ class SeePerson(InfiniteCardinality):
 
 
 def seenotation_roles_validation(process, context):
-    return has_role(role=('SiteAdmin',))
+    return has_role(role=('Member',))
 
 
 def seenotation_processsecurity_validation(process, context):
@@ -939,7 +939,9 @@ class ModerationVote(StartBallot):
             root = getSite()
             if accepted:
                 preregistration.state = PersistentList(['accepted'])
-                accept_preregistration(request, preregistration, root)
+                accept_preregistration(
+                    request, preregistration, root,
+                    'preregistration_moderation')
                 preregistration.reindex()
                 deadline = DEADLINE_PREREGISTRATION * 1000
                 call_id = 'persistent_' + str(get_oid(preregistration))

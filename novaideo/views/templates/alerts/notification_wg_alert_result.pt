@@ -88,4 +88,14 @@
 
   <span tal:condition="alert_kind == 'members_notation'">
     Vous êtes invité à juger les membres sur la qualité de leur comportement coopératif dans le cadre du groupe de travail lié à la proposition ${subject.title}.</span>
+
+  <span tal:condition="alert_kind == 'member_notation_excluded'">
+         Vous êtes invité à juger les membres sur la qualité de leur comportement coopératif dans le cadre du groupe de travail lié à cette proposition.</span>
+
+  <span tal:condition="alert_kind == 'wg_exclude'">
+    Le groupe de travail a décidé de vous exclure du groupe lié à cette proposition.</span>
+
+  <span tal:condition="alert_kind == 'wg_resign'">
+     Vous ne faites plus partie du groupe de travail de cette proposition.</span>
+
 </div>

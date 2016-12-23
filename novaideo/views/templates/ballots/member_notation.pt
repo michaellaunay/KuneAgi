@@ -6,7 +6,7 @@
             'subject');
         subject_icon getattr(subject, 'icon', '');">
         Vous êtes invité à noter
-         <a tal:attributes="href request.resource_url(member, '@@index')"
+         <a target="_blank" tal:attributes="href request.resource_url(member, '@@index')"
             data-oid="${getattr(member, '__oid__', '')}"
             class="alert-link toggle-popover"
             tal:define="
@@ -19,7 +19,7 @@
             ${getattr(member, 'title', member.name)}
         </a>
         sur la qualité de son comportement coopératif dans le cadre du groupe lié à la proposition 
-        <a href="${request.resource_url(subject, '@@index')}" data-oid="${getattr(subject, '__oid__', '')}"
+        <a target="_blank" href="${request.resource_url(subject, '@@index')}" data-oid="${getattr(subject, '__oid__', '')}"
             class="alert-link toggle-popover">
             <span class="${getattr(subject, 'icon')}"></span> ${subject.title}
         </a>.

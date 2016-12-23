@@ -278,6 +278,21 @@ Pour attribuer votre note au comportement coopératif de {user_title}, il vous s
 
 """ + PORTAL_SIGNATURE
 
+NOTING_PARTICIPANT_SUBJECT = u"""Vous êtes invité(e) à noter le comportement coopératif des participants du groupe de travail « {subject_title} »"""
+
+NOTING_PARTICIPANT_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Vous venez de quitter le Groupe de Travail, par votre démission ou parce que vous en avez été exclu(e). À chaque fois qu'un membre quitte un groupe de travail, le système demande au membre démissionnaire ou exclu du groupe de travail de juger la qualité du comportement coopératif du reste des participants du groupe de travail, tel que ce membre a pu le percevoir dans le cadre du travail de ce groupe.
+
+C'est pourquoi vous êtes invité(e) à attribuer une note à la qualité du comportement coopératif de chaque participant dans le cadre du groupe lié à la proposition {subject_title}. Les notes possibles sont:
+-1 = comportement coopératif inférieur à ce que j'attends dans le cadre d'un groupe de travail
+0 = comportement coopératif conforme à ce que j'attends dans le cadre d'un groupe de travail
++1 = comportement coopératif meilleur que ce que j'attends dans le cadre d'un groupe de travail
+
+Pour attribuer votre note au comportement coopératif des participants du groupe, il vous suffit d'accéder à cette URL {subject_url} et de donner une note parmi celles proposées.
+
+""" + PORTAL_SIGNATURE
 
 NOTING_MEMBERS_SUBJECT = u"""Vous êtes invité(e) à noter le comportement coopératif des autres membres du groupe lié à la proposition « {subject_title} »"""
 
@@ -470,6 +485,18 @@ PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {novaid
 PREREGISTRATION_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
+Vous devez à présent cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant le {deadline_date}.
+Nous nous réjouissons de vous compter parmi nos membres, et espérons que votre participation sera pour vous une expérience positive et enrichissante, dans un cadre pleinement démocratique. Bienvenue !
+
+"""+ PORTAL_SIGNATURE
+
+
+PREREGISTRATION_MOD_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
+
+
+PREREGISTRATION_MOD_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
 Les Vérificateurs tirés au sort lors de votre inscription ont validé la concordance entre les Informations d'Identité que vous avez saisies sur la plate-forme et celles des documents officiels d'identité dont vous leur avez transmis la copie en direct.
 Nous sommes à présents sûrs que vous êtes la seule personne inscrite sous ces Informations d'Identité sur la plateforme participative {novaideo_title}, et donc que, comme tou(te)s les autres participant(e)s, vous n'avez qu'un seul compte, et contribuerez donc à respecter le principe démocratique "1 personne = 1 voix".
 Vous devez à présent cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant le {deadline_date}.
@@ -511,7 +538,7 @@ Bonjour {recipient_first_name},
 
 Vous avez été choisi par la plateforme {novaideo_title} afin de modérer un nouveau contenu ajouté à la plateforme.
 
-À chaque nouvel ajout à la plateforme {novaideo_title} d'un contenu (idée ou proposition), le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération {url_terms_of_use}.
+À chaque nouvel ajout à la plateforme {novaideo_title} d'un contenu (idée ou proposition), le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération {url_moderation_rules}.
 
 Pour exercer votre rôle de Modérateur sur ce nouveau contenu, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et d'y donner votre avis sur la conformité de ce contenu avec la Charte de Modération.
 
@@ -526,7 +553,7 @@ ADMIN_REPORT_SUBJECT = u"""Nouvelle signalisation sur la plateforme participativ
 ADMIN_REPORT_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Vous avez été choisi par la plateforme {novaideo_title} afin de modérer un contenu signalé sur la plateforme comme étant potentiellement non conforme à la Charte de Modération {url_terms_of_use}.
+Vous avez été choisi par la plateforme {novaideo_title} afin de modérer un contenu signalé sur la plateforme comme étant potentiellement non conforme à la Charte de Modération {url_moderation_rules}.
 
 À chaque signalement d'un contenu sur la plateforme {novaideo_title} d'un contenu comme étant potentiellement non conforme à la Charte de Modération, le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération.
 
@@ -544,7 +571,7 @@ AUTHOR_REPORT_MESSAGE = u"""
 
 Bonjour {recipient_first_name},
 
-Votre contenu {subject_url} a été signalé par un Membre comme potentiellement contraire à la Charte de Modération {url_terms_of_use}.
+Votre contenu {subject_url} a été signalé par un Membre comme potentiellement contraire à la Charte de Modération {url_moderation_rules}.
 
 À chaque nouvel fois qu'un contenu est signalé comme potentiellement contraire à la Charte de Modération, le système tire au sort trois membres afin que ceux-ci statuent sur la conformité de ce contenu avec la Charte de Modération .
 
@@ -593,7 +620,7 @@ Bonjour {recipient_first_name},
 
 Votre contenu a été soumis à Modération.
 
-À chaque nouvel ajout à la plateforme {novaideo_title} d'un contenu, le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération {url_terms_of_use}.
+À chaque nouvel ajout à la plateforme {novaideo_title} d'un contenu, le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération {url_moderation_rules}.
 
 La durée de la vérification est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la vérification sera clôturée, et vous serez informé(e) de son résultat.
 
@@ -695,6 +722,11 @@ DEFAULT_SITE_MAILS = {
               'title': _("Users preregistration"),
               'subject': PREREGISTRATION_SUBJECT,
               'template': PREREGISTRATION_MESSAGE
+    },
+    'preregistration_moderation': {
+              'title': _("Users preregistration with moderation"),
+              'subject': PREREGISTRATION_MOD_SUBJECT,
+              'template': PREREGISTRATION_MOD_MESSAGE
     },
 
     'presentation_idea': {
@@ -912,6 +944,11 @@ DEFAULT_SITE_MAILS = {
               'title': _("Give a note to a member"),
               'subject': NOTING_MEMBER_SUBJECT,
               'template': NOTING_MEMBER_MESSAGE
+    },
+    'member_notation_excluded': {
+              'title': _("Give a note to a participant"),
+              'subject': NOTING_PARTICIPANT_SUBJECT,
+              'template': NOTING_PARTICIPANT_MESSAGE
     },
     'members_notation': {
               'title': _("Give a note to members"),

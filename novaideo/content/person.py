@@ -324,7 +324,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
                       " ci-dessus), ou (2) avec un pseudonyme que vous choisissez."
                       " Pour l'option 2, cochez la case ci-après « rester anonyme », "
                       "qui vous donne accès au formulaire de choix de votre pseudonyme."
-                      "Attention ! Votre choix entre les deux options est irréversible. "
+                      " Attention ! Votre choix entre les deux options est irréversible. "
                       "Vous ne pourrez plus le changer après."),
         missing=False
     )
@@ -337,7 +337,12 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
             pseudonym_validator,
             ),
         title=_('Pseudonym'),
-        description=_('You will be identified by this pseudonym. This pseudonym is not editable.'),
+        description=_("Veuillez choisir le pseudonyme qui vous identifiera tout au "
+                       "long de votre activité sur la plate-forme. "
+                       "Ce pseudonyme peut correspondre à votre identité réelle, "
+                       "ou en être totalement différent, à votre choix. "
+                       "Faites attention ! Une fois choisi, vous ne pourrez plus jamais "
+                       "changer ce pseudonyme. Choisissez-le avec soin !"),
         missing=''
     )
 
@@ -399,6 +404,8 @@ class Person(User, SearchableEntity, CorrelableEntity):
     ideas = SharedMultipleProperty('ideas', 'author')
     selections = SharedMultipleProperty('selections')
     working_groups = SharedMultipleProperty('working_groups', 'members')
+    participations = SharedMultipleProperty(
+        'participations', 'wating_list_participation')
     old_alerts = SharedMultipleProperty('old_alerts')
     following_channels = SharedMultipleProperty('following_channels', 'members')
     folders = SharedMultipleProperty('folders', 'author')
@@ -603,11 +610,8 @@ class Person(User, SearchableEntity, CorrelableEntity):
         dates = np.array([int(t.timestamp()) for t in self._notes.keys()])
         time_c = time_constant * 86400
         confidence_index = np.sum(
-            np.dot(notes, np.exp(-(now-dates)/time_c)))
-        if confidence_index < 0:
-            self.confidence_index = floor(confidence_index)
-        else:
-            self.confidence_index = ceil(confidence_index)
+            np.dot(notes, np.exp(- np.log(2) * (now-dates)/time_c)))
+        self.confidence_index = round(confidence_index, 1)
 
 
 @content(

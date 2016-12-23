@@ -11,7 +11,7 @@ from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 from pyramid import renderers
 
-from dace.util import find_catalog
+from dace.util import find_catalog, getSite
 from dace.objectofcollaboration.principal.util import (
     has_role, get_current)
 from dace.processinstance.activity import (
@@ -76,6 +76,27 @@ class DeactivateUsers(ElementaryAction):
 
         # request.registry.notify(ActivityExecuted(
         #     self, all_deactivated, get_current()))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
+
+
+class ManageContents(ElementaryAction):
+    context = INovaIdeoApplication
+    actionType = ActionType.system
+    roles_validation = system_roles_validation
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        users = find_entities(
+            interfaces=[IPerson],
+            metadata_filter={
+                'states': ['active']})
+        time_constant = getattr(root, 'time_constant', 6)
+        for user in users:
+            user.calculate_confidence_index(time_constant)
+
         return {}
 
     def redirect(self, context, request, **kw):

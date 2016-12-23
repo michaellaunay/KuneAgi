@@ -91,6 +91,13 @@
 
       <span tal:condition="alert_kind == 'members_notation'">
          Vous êtes invité à juger les membres sur la qualité de leur comportement coopératif dans le cadre du groupe de travail lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+      <span tal:condition="alert_kind == 'member_notation_excluded'">
+         Vous êtes invité à juger les membres sur la qualité de leur comportement coopératif dans le cadre du groupe de travail lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
 
+      <span tal:condition="alert_kind == 'wg_exclude'">
+        Le groupe de travail a décidé de vous exclure du groupe lié à la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+
+      <span tal:condition="alert_kind == 'wg_resign'">
+         Vous ne faites plus partie du groupe de travail de la proposition <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
   </div>
 </div>

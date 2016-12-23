@@ -571,7 +571,7 @@ class ProposalModeration(ContentBallot):
 
 
 def participation_title(process, context):
-    return _("New participation of ${participant}",
+    return _("Candidacy of ${participant}",
              mapping={'participant': process.participant.title})
 
 
