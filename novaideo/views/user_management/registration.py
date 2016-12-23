@@ -11,6 +11,7 @@ from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.view import BasicView
 from pontus.schema import select
+from pontus.view_operation import MultipleView
 
 from novaideo.content.processes.user_management.behaviors import (
     Registration)
@@ -20,13 +21,21 @@ from novaideo.content.novaideo_application import (
 from novaideo import _
 
 
-@view_config(
-    name='registration',
-    context=NovaIdeoApplication,
-    renderer='pontus:templates/views_templates/grid.pt',
-    )
-class RegistrationView(FormView):
+class RegistrationViewStudyReport(BasicView):
+    title = 'Alert: registration'
+    name = 'alertforregistration'
+    template = 'novaideo:views/user_management/templates/alert_registration.pt'
 
+    def update(self):
+        result = {}
+        values = {'context': self.context}
+        body = self.content(args=values, template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates: [item]}
+        return result
+
+
+class RegistrationForm(FormView):
     title = _('Your registration')
     schema = select(PersonSchema(factory=Preregistration,
                                  editable=True),
@@ -40,9 +49,23 @@ class RegistrationView(FormView):
                      'accept_conditions'])
     behaviors = [Registration, Cancel]
     formid = 'formregistration'
-    name = 'registration'
+    name = 'formregistration'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/user_management.js']}
+
+
+@view_config(
+    name='registration',
+    context=NovaIdeoApplication,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class RegistrationView(MultipleView):
+    title = _('Your registration')
+    name = 'registration'
+    viewid = 'registration'
+    template = 'daceui:templates/mergedmultipleview.pt'
+    views = (RegistrationViewStudyReport, RegistrationForm)
+    validators = [Registration.get_validator()]
 
 
 @view_config(

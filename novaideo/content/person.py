@@ -1,9 +1,9 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# -*- coding: utf8 -*-
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
-# -*- coding: utf8 -*-
 import os
 import datetime
 import pytz
@@ -317,6 +317,15 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
             item_css_class='Keep-me-anonymous-input'),
         label=_('Keep me anonymous'),
         title='',
+        description=_("Vous pouvez choisir maintenant comment "
+                      "faire apparaître votre identité sur le site,"
+                      " entre : (1) avec votre identité complète réelle"
+                      " (tous vos prénoms et tous vos noms, tels que renseignés"
+                      " ci-dessus), ou (2) avec un pseudonyme que vous choisissez."
+                      " Pour l'option 2, cochez la case ci-après « rester anonyme », "
+                      "qui vous donne accès au formulaire de choix de votre pseudonyme."
+                      "Attention ! Votre choix entre les deux options est irréversible. "
+                      "Vous ne pourrez plus le changer après."),
         missing=False
     )
 

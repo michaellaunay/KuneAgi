@@ -1,9 +1,15 @@
 <div tal:condition="process" i18n:domain="novaideo">
 	<p i18n:translate="">
-		Vous êtes invité à vérifier et confirmer l'identité de l'utilisateur enregistré. Cela afin de garantir l'unicité de ce compte. Si la majorité confirme l'identité de ce compte, le compte sera validé, sinon le compte sera supprimé.
+		Vous êtes invité(e), avec deux autres Vérificateurs tirés au sort, à vérifier la conformité entre : (1) les Informations d'Identité que la personne a enregistrées lors de son inscription sur la plateforme ${request.root.title}, et (2) celles du document d'identité dont cette personne vous a transmis la copie par courriel. Ainsi, vous garantirez que la personne ne s'est inscrite qu'une seule fois, et que nous respectons le principe démocratique "1 personne = 1 voix".
+	</p>
+	<p i18n:translate="">
+        Si la majorité des Vérificateurs confirme l'identité de ce compte, le compte de la personne qui vient de s'inscrire sera validé, sinon le compte sera supprimé.
+	</p>
+	<p i18n:translate="" tal:define="finish  ballot_report.ballot.finished_at">
+        Soyez très attentif(ve) ! Pour que vous validiez l'inscription, TOUS les éléments doivent être strictement IDENTIQUES entre les Informations d'Identité reçues de la personne lors de son inscription et celles du document d'identité officiel dont vous avez reçu la copie. Dans tous les autres cas, même avec une différence portant sur un seul caractère, ou si vous n'avez pas reçu la copie des documents d'identité à la date du <span tal:replace="layout.to_localized_time(finish)"/>, vous DEVEZ refuser l'inscription.
 	</p>
 	<p tal:define="registration process.registration">
-		<span i18n:translate="">Les données de l'utilisateur enregistré sont:</span>
+		<span i18n:translate="">Les Informations d'Identité reçues de la personne lors de son inscription sont:</span>
 		<dl class="dl-horizontal">
 	        <dt i18n:translate="">First name</dt>
 	        <dd><span tal:replace="registration.first_name"/></dd>

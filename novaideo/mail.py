@@ -470,7 +470,10 @@ PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {novaid
 PREREGISTRATION_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Vous avez été inscrit à la plateforme participative {novaideo_title}. Vous devez cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant le {deadline_date}.
+Les Vérificateurs tirés au sort lors de votre inscription ont validé la concordance entre les Informations d'Identité que vous avez saisies sur la plate-forme et celles des documents officiels d'identité dont vous leur avez transmis la copie en direct.
+Nous sommes à présents sûrs que vous êtes la seule personne inscrite sous ces Informations d'Identité sur la plateforme participative {novaideo_title}, et donc que, comme tou(te)s les autres participant(e)s, vous n'avez qu'un seul compte, et contribuerez donc à respecter le principe démocratique "1 personne = 1 voix".
+Vous devez à présent cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant le {deadline_date}.
+Nous nous réjouissons de vous compter parmi nos membres, et espérons que votre participation sera pour vous une expérience positive et enrichissante, dans un cadre pleinement démocratique. Bienvenue !
 
 """+ PORTAL_SIGNATURE
 
@@ -556,7 +559,9 @@ ADMIN_PREREGISTRATION_REF_SUBJECT = u"""Inscription à la plateforme participati
 ADMIN_PREREGISTRATION_REF_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Votre inscription a été refusée par la plateforme {novaideo_title}. Les modérateurs n'ont pas pu confirmer votre identité.
+Les Vérificateurs tirés au sort lors de votre inscription N'ont PAS validé la concordance entre les Informations d'Identité que vous avez saisies sur la plate-forme et celles des documents officiels d'identité dont vous leur avez transmis la copie.
+
+Nous regrettons de devoir donc refuser votre inscription sur la plateforme {novaideo_title}, car une même personne physique pourrait s'inscrire plusieurs fois, à chaque fois avec de petites variations dans ses Informations d'Identité, et ainsi avoir plusieurs comptes, et voter plusieurs fois. Ce serait contraire au principe démocratique "1 personne = 1 voix". 
 
 """+ PORTAL_SIGNATURE
 
