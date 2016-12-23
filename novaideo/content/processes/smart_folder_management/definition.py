@@ -72,7 +72,7 @@ class SmartFolderProcess(ProcessDefinition, VisualisableElement):
                                        groups=[]),
                 withdraw_smart_folder = ActivityDefinition(contexts=[WithdrawSmartFolder],
                                        description=_("Withdraw the center of interest"),
-                                       title=_("Withdraw the center of interest"),
+                                       title=_("Withdraw"),
                                        groups=[]),
                 see_smart_folders = ActivityDefinition(contexts=[SeeSmartFolders],
                                        description=_("Registered interests"),
