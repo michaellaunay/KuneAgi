@@ -33,7 +33,7 @@
 		<p>
 		  <b i18n:translate="">Mathématiquement, la formule donnant la note globale N à la date t à partir des notes Nk attribuées aux instants Tk est : N = Sigma (k=1 à n) Nk.2^[-(t-Tk)/Tau] = Sigma (k=1 à n) Nk.exp[-ln(2).(t-Tk)/Tau], avec Tau la "période de demi-vie".</b>
 		</p>
-		<p i18n:translate="">
+		<p tal:condition="notes" i18n:translate="">
 		  Voici les notes reçues par <a target="_blank" tal:attributes="href request.resource_url(member, '@@index')"
             data-oid="${oid}"
             class="alert-link toggle-popover"
