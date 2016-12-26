@@ -7,7 +7,7 @@
 from pyramid.view import view_config
 
 
-from dace.util import get_obj
+from dace.util import get_obj, getSite
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
@@ -44,6 +44,7 @@ class SeeNotationsView(BasicView):
     def update(self):
         self.execute(None)
         user = self.context
+        root = getSite()
         notes = [
             {
                 'date': to_localized_time(
@@ -63,6 +64,8 @@ class SeeNotationsView(BasicView):
                        mapping={'nember': len_result})
         values = {
             'notes': notes,
+            'member': self.context,
+            'time_constant': getattr(root, 'time_constant', 6),
             'length': len_result,
             'score': getattr(user, 'confidence_index', 0)
         }

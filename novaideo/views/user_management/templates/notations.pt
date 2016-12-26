@@ -1,5 +1,51 @@
 <div tal:omit-tag="" i18n:domain="novaideo">
-	<h4><span i18n:translate="">The final score</span> <span class="badge">${score}</span></h4>
+	<div class="alert alert-info" tal:define="
+                picture getattr(member, 'picture', None);
+                profil_picture getattr(picture, 'profil', None);
+                oid getattr(member, '__oid__', '')">
+		<h3 i18n:translate="">Note sur le comportement coopératif de <a target="_blank" tal:attributes="href request.resource_url(member, '@@index')"
+            data-oid="${oid}"
+            class="alert-link toggle-popover"
+            >
+            <img class="author-img img-circle" 
+              tal:condition="profil_picture is not None"
+               tal:attributes="src profil_picture.url"  width="25"/>
+            <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+            ${getattr(member, 'title', member.name)}
+        </a> <span class="badge">${score}</span></h3>
+		<p>
+		 <span i18n:translate="">Lorsque deux Membres ont participé à un même Groupe de Travail, et que l'un ou l'autre quitte ce Groupe de Travail, quelle qu'en soit la raison, ils ont suffisamment d'expérience du travail en commun pour porter un jugement mutuel sur la qualité de leurs comportements coopératifs respectifs. Cet avis sur la qualité du comportement coopératif s'exprime selon une notation à trois niveaux:</span>
+	     <ul>
+			<li i18n:translate="">-1 = comportement coopératif inférieur à ce que j'attends dans le cadre d'un groupe de travail</li>
+			<li i18n:translate="">0 = comportement coopératif conforme à ce que j'attends dans le cadre d'un groupe de travail</li>
+			<li i18n:translate="">+1 = comportement coopératif meilleur que ce que j'attends dans le cadre d'un groupe de travail</li>
+	     </ul>
+	    </p>
+		<p i18n:translate="">
+		  Une fois attribuée, cette note s'ajoute à celle déjà établie du fait des notes déjà attribuées par d'autres Membres.
+		</p>
+		<p i18n:translate="">
+		  Le système comprend également un "droit à l'oubli". Le poids d'une note attribuée à une certaine date s'atténue au cours du temps. Il est divisé par deux toutes les "périodes de demi-vie": divisé par 2 au terme d'une demi-vie, par 4 au terme de deux demi-vies, par 8 au terme de trois, etc. Cette "période de demi-vie" qui fait partie des paramètres de la plate-forme, et elle est égale à ${time_constant}.
+		</p>
+		<p i18n:translate="">
+		  La note totale, résultant de l'accumulation de ces notes données au cours du temps, atténuées par cet "oubli" progressif, donne une indication de la confiance que l'on peut avoir pour coopérer à l'avenir avec ce Membre, par exemple pour l'admettre dans un Groupe de Travail.
+		</p>
+		<p>
+		  <b i18n:translate="">Mathématiquement, la formule donnant la note globale N à la date t à partir des notes Nk attribuées aux instants Tk est : N = Sigma (k=1 à n) Nk.2^[-(t-Tk)/Tau] = Sigma (k=1 à n) Nk.exp[-ln(2).(t-Tk)/Tau], avec Tau la "période de demi-vie".</b>
+		</p>
+		<p i18n:translate="">
+		  Voici les notes reçues par <a target="_blank" tal:attributes="href request.resource_url(member, '@@index')"
+            data-oid="${oid}"
+            class="alert-link toggle-popover"
+            >
+            <img class="author-img img-circle" 
+              tal:condition="profil_picture is not None"
+               tal:attributes="src profil_picture.url"  width="25"/>
+            <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+            ${getattr(member, 'title', member.name)}
+        </a>, et les dates d'attribution, à partir desquelles a été calculée sa note globale.
+		</p>
+	</div>
 	<table tal:condition="notes" class="table table-hover" >
 		<thead>
 			<tr> 

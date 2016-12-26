@@ -278,19 +278,19 @@ Pour attribuer votre note au comportement coopératif de {user_title}, il vous s
 
 """ + PORTAL_SIGNATURE
 
-NOTING_PARTICIPANT_SUBJECT = u"""Vous êtes invité(e) à noter le comportement coopératif des participants du groupe de travail « {subject_title} »"""
+NOTING_PARTICIPANT_SUBJECT = u"""Vous êtes invité(e) à noter le comportement coopératif des autres membres du groupe lié à la proposition « {subject_title} »"""
 
 NOTING_PARTICIPANT_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Vous venez de quitter le Groupe de Travail, par votre démission ou parce que vous en avez été exclu(e). À chaque fois qu'un membre quitte un groupe de travail, le système demande au membre démissionnaire ou exclu du groupe de travail de juger la qualité du comportement coopératif du reste des participants du groupe de travail, tel que ce membre a pu le percevoir dans le cadre du travail de ce groupe.
+Vous venez de quitter le Groupe de Travail lié à la proposition {subject_title}, par votre démission ou parce que vous en avez été exclu(e). À chaque fois qu'un membre quitte un Groupe de Travail, le système demande à ce membre de juger la qualité du comportement coopératif de chacun des Participant(e)s restant(e)s du groupe de travail, tel que ce membre partant a pu les percevoir dans le cadre du travail de ce groupe.
 
-C'est pourquoi vous êtes invité(e) à attribuer une note à la qualité du comportement coopératif de chaque participant dans le cadre du groupe lié à la proposition {subject_title}. Les notes possibles sont:
+C'est pourquoi vous êtes invité(e) à attribuer une note à la qualité du comportement coopératif des autres Participant(e)s du groupe lié à la proposition {subject_title}. Les notes possibles sont:
 -1 = comportement coopératif inférieur à ce que j'attends dans le cadre d'un groupe de travail
 0 = comportement coopératif conforme à ce que j'attends dans le cadre d'un groupe de travail
 +1 = comportement coopératif meilleur que ce que j'attends dans le cadre d'un groupe de travail
 
-Pour attribuer votre note au comportement coopératif des participants du groupe, il vous suffit d'accéder à cette URL {subject_url} et de donner une note parmi celles proposées.
+Pour attribuer votre note au comportement coopératif des autres Participant(e)s du Groupe de Travail lié à la proposition {subject_title}, il vous suffit d'accéder à cette URL {subject_url} et de donner une note parmi celles proposées, à chacun(e) des Participant(e)s restant(e)s de ce groupe.
 
 """ + PORTAL_SIGNATURE
 
