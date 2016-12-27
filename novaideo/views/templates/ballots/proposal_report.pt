@@ -1,6 +1,6 @@
 <div tal:condition="process" i18n:domain="novaideo">
 	<p i18n:translate="">
-      Vous êtes invité(e), avec deux autres Modérateurs tirés au sort, à vérifier la conformité entre cette proposition <a target="_blank" href="${request.resource_url(content, '@@index')}" class="alert-link"><span class="${icon}"></span> ${content.title}</a>, qui a été signalée comme potentiellement non conforme, et la Charte de Modération.
+      Vous êtes invité(e), avec deux autres Modérateurs tirés au sort, à vérifier la conformité entre cette proposition <a target="_blank" href="${request.resource_url(context, '@@index')}" class="alert-link"><span class="${getattr(context, 'icon', '')}"></span> ${context.title}</a>, qui a été signalée comme potentiellement non conforme, et la Charte de Modération.
     <p>
     <div class="terms-of-use-scroll">
       ${structure:getattr(request.virtual_root.moderation_rules, 'text', '')}

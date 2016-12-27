@@ -1997,8 +1997,6 @@ class ModerationVote(StartBallot):
             internal_kind=InternalAlertKind.moderation_alert,
             subjects=[context], alert_kind='moderate_content')
         mail_template = root.get_mail_template('moderate_content')
-        subject = mail_template['subject'].format(
-            novaideo_title=root.title)
         subject_data = get_entity_data(context, 'subject', request)
         subject_data.update(get_user_data(context, 'subject', request))
         duration = getattr(root, 'duration_moderation_vote', 7)
@@ -2008,6 +2006,9 @@ class ModerationVote(StartBallot):
             date_end, request, translate=True)
         subject_data['url_moderation_rules'] = request.resource_url(
             root.moderation_rules, '@@index')
+        subject = mail_template['subject'].format(
+            novaideo_title=root.title,
+            **subject_data)
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
@@ -2076,14 +2077,14 @@ class ParticipationVote(StartBallot):
         mail_template = root.get_mail_template('new_participant')
         subject_data = get_entity_data(context, 'subject', request)
         subject_data.update(get_user_data(participant, 'user', request))
-        subject = mail_template['subject'].format(
-            novaideo_title=root.title,
-            **subject_data)
         duration = getattr(root, 'duration_moderation_vote', 7)
         date_end = datetime.datetime.now() + \
             datetime.timedelta(days=duration)
         date_end_vote = to_localized_time(
             date_end, request, translate=True)
+        subject = mail_template['subject'].format(
+            novaideo_title=root.title,
+            **subject_data)
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
@@ -2173,15 +2174,15 @@ class ExclusionVote(StartBallot):
             **alert_data)
         mail_template = root.get_mail_template('exclude_participant')
         subject_data = get_entity_data(context, 'subject', request)
-        subject = mail_template['subject'].format(
-            novaideo_title=root.title,
-            **subject_data)
         subject_data.update(get_user_data(participant, 'user', request))
         duration = getattr(root, 'duration_moderation_vote', 7)
         date_end = datetime.datetime.now() + \
             datetime.timedelta(days=duration)
         date_end_vote = to_localized_time(
             date_end, request, translate=True)
+        subject = mail_template['subject'].format(
+            novaideo_title=root.title,
+            **subject_data)
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
