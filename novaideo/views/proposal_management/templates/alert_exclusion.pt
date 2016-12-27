@@ -1,4 +1,4 @@
 <div class="alert alert-danger" i18n:domain="novaideo">
     <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-   <p i18n:translate="">En cliquant sur « Continuer »...</p>
+   <p i18n:translate="">En cliquant sur "Continuer", vous déclenchez un vote des Participant(e)s du Groupe de Travail, qui tranchera entre deux actions : (1) exclure le(la) Participant(e) que vous choisissez dans la liste ci-dessous hors du Groupe de Travail, ou (2) maintenir ce(tte) Participant(e) dans le Groupe de Travail</p>
 </div>

@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # Copyright (c) 2014 by Ecreall under licence AGPL terms 
 # avalaible on http://www.gnu.org/licenses/agpl.html 
 
@@ -59,12 +60,12 @@ class ExclusionSchema(Schema):
         ObjectType(),
         widget=participant_choice,
         missing=[],
-        title=_("Participant to exclude")
+        title=_("Participant(e) dont vous demandez l'exclusion")
         )
 
 
 class ExcludeParticipantFormView(FormView):
-    title = _('Participant exclusion')
+    title = _("Demander l'exclusion d'un(e) Participant(e) hors du Groupe de Travail")
     schema = ExclusionSchema()
     behaviors = [ExcludeParticipant, Cancel]
     formid = 'formexcludeparticipant'
@@ -85,7 +86,7 @@ class ExcludeParticipantFormView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class ExcludeParticipantView(MultipleView):
-    title = _('Exclude participant from the working group')
+    title = _("Demander l'exclusion d'un(e) Participant(e) hors du Groupe de Travail")
     name = 'excludeparticipant'
     behaviors = [ExcludeParticipant]
     viewid = 'excludeparticipant'
