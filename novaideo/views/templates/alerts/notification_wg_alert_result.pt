@@ -1,6 +1,7 @@
 <div i18n:domain="novaideo"
      tal:condition="object.subjects"
-     tal:define="alert_kind getattr(object, 'alert_kind', '')">
+     tal:define="alert_kind getattr(object, 'alert_kind', '');
+     composition_control getattr(request.virtual_root, 'working_group_composition_control', False)">
   <div tal:define="subject object.subjects[0]">
     <span tal:condition="alert_kind == 'start_work'">
       Le groupe de travail a voté pour la poursuite de l'amélioration de cette proposition.
@@ -52,16 +53,17 @@
     </span>
 
     <span tal:condition="alert_kind == 'exclude'">
-      Le groupe de travail a exclu un participant du groupe de travail.</span>
+      La demande d'exclusion de ${object.participant_title} hors du Groupe de Travail lié à cette proposition a été acceptée au terme du vote des Participant(e)s.</span>
 
     <span tal:condition="alert_kind == 'exclude_to_wg_open'">
       Suite à une exclusion d'un participant, le groupe de travail est maintenant en dessous du nombre minimum des participants et ne peut plus améliorer la proposition tant qu'il n'a pas atteint de nouveau le nombre minimum des participants.</span>
 
     <span tal:condition="alert_kind == 'exclude_participant'">
-      Une demande d'exclusion d'un membre du groupe de travail lié à cette proposition a  été formulée. Vous êtes invité à voter pour ou contre l'exclusion.</span>
+      Le(la) Participant(e) ${object.participant_title} du Groupe de Travail lié à cette Proposition fait l'objet d'une demande d'exclusion hors de ce Groupe de Travail. Vous êtes invité(e) a voter pour déterminer si vous souhaitez l'exclure ou non.
+    </span>
 
     <span tal:condition="alert_kind == 'new_participant'">
-      Une demande de participation d'un membre au groupe de travail lié à cett proposition a été formulée. Vous êtes invité à voter pour ou contre la participation.</span>
+      Le Membre ${object.participant_title} a présenté sa candidature pour devenir membre du Groupe de Travail lié à cette Proposition. Vous êtes invité(e) a voter pour déterminer si vous souhaitez l'accepter ou non.</span>
 
   <span tal:condition="alert_kind == 'cancel_participation'">
     Votre demande de participation au groupe de travail lié à la proposition ${subject.title} a été annulée. Vous avez atteint la limite de nombre de participations aux groupes de travail qui est de ${getattr(request.virtual_root, 'participations_maxi', 5)} participations maximum.</span>
@@ -71,7 +73,7 @@
   </span>
 
   <span tal:condition="alert_kind == 'refuse_participant'">
-    Votre demande de participation au groupe de travail lié à la proposition ${subject.title} a été refusée par les membres du groupe.</span>
+    Votre candidature au Groupe de Travail lié à cette proposition a été refusée au terme du vote des Participant(e)s.</span>
 
   <span tal:condition="alert_kind == 'refuse_participant_members'">
      La demande de participation de ${object.participant_title} au groupe de travail lié à la proposition ${subject.title} a été refusée par les membres du groupe.</span>
@@ -80,7 +82,7 @@
     La demande d'exclusion de votre participation du groupe de travail lié à la proposition ${subject.title} a été refusée par les membres du groupe.</span>
 
   <span tal:condition="alert_kind == 'refuse_exclusion_members'">
-    La demande d'exclusion de ${object.participant_title} du groupe de travail lié à la proposition ${subject.title} a été refusée par les membres du groupe.</span>
+    La demande d'exclusion de ${object.participant_title} hors du Groupe de Travail lié à cette proposition a été refusée au terme du vote des Participant(e)s. ${object.participant_title} est maintenu(e) dans le Groupe de Travail.</span>
 
   <span tal:condition="alert_kind == 'member_notation'">
     Vous êtes invité à juger le membre ${object.user_title} sur la qualité de son comportement coopératif dans le cadre du groupe de travail lié à la proposition ${subject.title}.</span>
@@ -93,9 +95,24 @@
          Vous êtes invité à juger les membres sur la qualité de leur comportement coopératif dans le cadre du groupe de travail lié à cette proposition.</span>
 
   <span tal:condition="alert_kind == 'wg_exclude'">
-    Le groupe de travail a décidé de vous exclure du groupe lié à cette proposition.</span>
+    La demande de vous exclure hors du Groupe de Travail lié à cette proposition a été acceptée au terme du vote des Participant(e)s. Vous êtes exclu(e) hors de ce Groupe de Travail.</span>
 
   <span tal:condition="alert_kind == 'wg_resign'">
      Vous ne faites plus partie du groupe de travail de cette proposition.</span>
 
+  <span tal:condition="alert_kind == 'member_participation'">
+     Votre candidature au Groupe de Travail lié à cette proposition a été enregistrée. Les Participant(e)s existant(e)s de ce Groupe de Travail sont à présent appelé(e)s voter sur votre admission. Vous serez informé(e) du résultat de ce vote au plus tard le ${object.date_end_vote}, date de clôture du vote.
+  </span>
+
+  <span tal:condition="alert_kind == 'member_exclusion'">
+    Vous avez fait l'objet d'une demande d'exclusion hors du Groupe de Travail lié à cette proposition. Les Participant(e)s de ce Groupe de Travail sont à présent appelé(e)s voter sur votre exclusion. Vous serez informé(e) du résultat de ce vote au plus tard le ${object.date_end_vote}, date de clôture du vote.
+  </span>
+
+  <span tal:condition="alert_kind == 'accepted_participation' and composition_control">
+    Votre candidature au Groupe de Travail lié à cette proposition a été acceptée au terme du vote des Participant(e)s.
+  </span>
+
+  <span tal:condition="alert_kind == 'accepted_participation' and not composition_control">
+    Votre candidature au Groupe de Travail lié à cette proposition a été acceptée.
+  </span>
 </div>

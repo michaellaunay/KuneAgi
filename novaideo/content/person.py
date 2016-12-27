@@ -404,8 +404,8 @@ class Person(User, SearchableEntity, CorrelableEntity):
     ideas = SharedMultipleProperty('ideas', 'author')
     selections = SharedMultipleProperty('selections')
     working_groups = SharedMultipleProperty('working_groups', 'members')
-    participations = SharedMultipleProperty(
-        'participations', 'wating_list_participation')
+    wg_participations = SharedMultipleProperty(
+        'wg_participations', 'wating_list_participation')
     old_alerts = SharedMultipleProperty('old_alerts')
     following_channels = SharedMultipleProperty('following_channels', 'members')
     folders = SharedMultipleProperty('folders', 'author')

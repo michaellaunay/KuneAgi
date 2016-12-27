@@ -74,7 +74,7 @@
         data-title="${proposal.title}"
         data-icon="${icon}"
         data-img=""
-      ><span class="icon ${icon}"></span> <span class="correction-container correction-container-title">${structure:title}</span></h3>
+      ><span tal:omit-tag="" tal:condition="not (is_censored and to_hide)"><span class="icon ${icon}"></span> <span class="correction-container correction-container-title">${structure:title}</span></span></h3>
     <div class="object-description" 
       tal:define="author proposal.author;
                   original proposal.originalentity;

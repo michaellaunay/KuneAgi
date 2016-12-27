@@ -249,15 +249,16 @@ Vous pourrez à tout moment rejoindre un autre groupe de travail, si vous ne fai
 """ + PORTAL_SIGNATURE
 
 
-EXCLUDE_PARTICIPANT_SUBJECT = u"""Une nouvelle demande d'exclusion du groupe de travail de la proposition « {subject_title} »"""
+EXCLUDE_PARTICIPANT_SUBJECT = u"""Vous êtes invité(e) à voter sur la demande d'exclusion de {user_first_name} {user_last_name} hors du Groupe de Travail lié à la proposition « {subject_title} »"""
 
 EXCLUDE_PARTICIPANT_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Une nouvelle demande d'exclusion a été enregistrée contre le participant « {user_first_name} » du groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}.
-Étant membre du groupe vous êtes invité à voter pour ou contre l'exclusion de ce membre du groupe de travail. Si la majorité vote en faveur de l'exclusion, le membre sera exclu du groupe, sinon la demande d'exclusion sera ignorée.
+{user_first_name} {user_last_name} vient de faire l'objet d'une demande d'exclusion hors du Groupe de Travail lié à la proposition « {subject_title} ».
 
-La durée du vote est de {duration} jour(s). Au-delà de la date du {date_end_vote}, le vote sera clôturé.
+Vous êtes appelé(e) à voter sur cette demande d'exclusion. Pour le faire, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et d'y voter sur la demande d'exclusion de {user_first_name} {user_last_name} hors du Groupe de Travail lié à la proposition « {subject_title} ».
+
+La durée du vote est de {duration} jour(s). Au-delà de la date du {date_end_vote}, le scrutin sera clôturé, et votre vote ne sera plus pris en compte. Attention ! Par défaut, si aucun(e) Participant(e) n'a voté à cette date sur l'exclusion de {user_first_name} {user_last_name} hors du Groupe de Travail lié à la proposition « {subject_title} », {user_first_name} {user_last_name} sera maintenu(e) dans le Groupe de Travail.
 
 """ + PORTAL_SIGNATURE
 
@@ -313,15 +314,17 @@ Pour attribuer votre note au comportement coopératif des autres membres du grou
 """ + PORTAL_SIGNATURE
 
 
-NEW_PARTICIPANT_SUBJECT = u"""Une nouvelle demande de participation au groupe de travail de la proposition « {subject_title} »"""
+NEW_PARTICIPANT_SUBJECT = u"""Vous êtes invité(e) à voter sur la candidature de {user_first_name} {user_last_name} au Groupe de Travail lié à la proposition « {subject_title} »"""
 
 NEW_PARTICIPANT_MESSAGE = u"""
+
 Bonjour {recipient_first_name},
 
-Une nouvelle demande de participation a été enregistrée par {user_first_name} pour le groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}.
-Étant membre du groupe vous êtes invité à voter pour ou contre la participation de ce membre du groupe de travail. Si la majorité vote en faveur de la participation, le membre sera intégré au groupe, sinon la demande de participation sera ignorée.
+{user_first_name} {user_last_name} vient de présenter sa candidature pour participer au Groupe de Travail lié à la proposition « {subject_title} ».
 
-La durée du vote est de {duration} jour(s). Au-delà de la date du {date_end_vote}, le vote sera clôturé.
+Vous êtes appelé(e) à voter sur cette candidature. Pour le faire, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et d'y voter sur la candidature de {user_first_name} {user_last_name} au Groupe de Travail lié à la proposition « {subject_title} ».
+
+La durée du vote est de {duration} jour(s). Au-delà de la date du {date_end_vote}, le scrutin sera clôturé, et votre vote ne sera plus pris en compte. Attention ! Par défaut, si aucun(e) Participant(e) n'a voté à cette date sur la candidature de {user_first_name} {user_last_name} au Groupe de Travail lié à la proposition « {subject_title} », {user_first_name} {user_last_name} sera accepté(e) dans le Groupe de Travail.
 
 """ + PORTAL_SIGNATURE
 

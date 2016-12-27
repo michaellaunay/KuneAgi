@@ -75,7 +75,8 @@ from novaideo.content.processes.ballot_processes import close_votes
 from . import end_work, remove_participant_from_ballots
 from novaideo.content.processes.content_ballot_management import (
     ballot_result, close_ballot,
-    ELECTORS_NB, start_ballot, remove_ballot_processes)
+    ELECTORS_NB, start_ballot, remove_ballot_processes,
+    get_ballot_alert_data)
 from novaideo.content.processes.content_ballot_management.behaviors import (
     StartBallot)
 from novaideo.content.processes.member_notation_management import (
@@ -319,13 +320,17 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign'):
     members = working_group.members
     mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
     revoke_roles(user, (('Participant', context),))
+    subject_data = get_entity_data(context, 'subject', request)
     if members:
+        alert_data = get_user_data(user, 'participant', request)
+        alert_data.update(get_entity_data(user, 'participant', request))
+        alert_data.update(subject_data)
         alert(
             'internal', [root], members,
             internal_kind=InternalAlertKind.working_group_alert,
-            subjects=[context], alert_kind=kind)
+            subjects=[context], alert_kind=kind,
+            **alert_data)
 
-    subject_data = get_entity_data(context, 'subject', request)
     sender = root.get_site_sender()
     if working_group.wating_list:
         def _get_next_user(users):
@@ -631,8 +636,19 @@ class SubmitProposalModeration(InfiniteCardinality):
             author = context.author
             start_ballot(
                 context, author, request, root,
-                moderators, 'proposalmoderation',
-                'content_submit')
+                moderators, 'proposalmoderation')
+            alert_data = get_ballot_alert_data(
+                context, request, root, moderators)
+            alert_data.update(get_user_data(author, 'recipient', request))
+            mail_template = root.get_mail_template('content_submit')
+            if mail_template:
+                subject = mail_template['subject'].format(
+                    **alert_data)
+                message = mail_template['template'].format(
+                    **alert_data)
+                alert('email', [root.get_site_sender()], [author.email],
+                      subject=subject, body=message)
+
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1197,7 +1213,7 @@ def participate_processsecurity_validation(process, context):
     working_group = context.working_group
     user = get_current()
     root = getSite()
-    participations = getattr(user, 'participations', [])
+    participations = getattr(user, 'wg_participations', [])
     wgs = getattr(user, 'active_working_groups', [])
     return working_group and \
        user not in working_group.wating_list and \
@@ -1280,6 +1296,11 @@ def accept_participation(context, request, user, root):
             _send_mail_to_user(
                 mail_template['subject'], mail_template['template'],
                 user, context, request)
+
+        alert('internal', [root], [user],
+              internal_kind=InternalAlertKind.working_group_alert,
+              subjects=[context], alert_kind='accepted_participation')
+
     else:
         working_group.addtoproperty('wating_list', user)
         working_group.reindex()
@@ -1330,8 +1351,13 @@ class Participate(InfiniteCardinality):
                 start_ballot(
                     context, user, request, root,
                     moderators, 'proposalparticipation',
-                    'participation_submission',
                     before_start=before_start)
+                alert_data = get_ballot_alert_data(
+                    context, request, root, moderators)
+                alert('internal', [root], [user],
+                      internal_kind=InternalAlertKind.working_group_alert,
+                      alert_kind='member_participation',
+                      subjects=[context], **alert_data)
 
         request.registry.notify(ActivityExecuted(
             self, [context, working_group], user))
@@ -1346,6 +1372,10 @@ def exclude_roles_validation(process, context):
 
 
 def exclude_processsecurity_validation(process, context):
+    working_group = context.working_group
+    if not working_group:
+        return False
+
     root = getSite()
     in_process = [p.participant for p in context.ballot_processes
                   if p.id == 'exclusionparticipant']
@@ -1389,6 +1419,12 @@ class ExcludeParticipant(InfiniteCardinality):
             context, user_to_exclure, request, root,
             moderators, 'exclusionparticipant',
             before_start=before_start)
+        alert_data = get_ballot_alert_data(
+            context, request, root, moderators)
+        alert('internal', [root], [user_to_exclure],
+              internal_kind=InternalAlertKind.working_group_alert,
+              alert_kind='member_exclusion',
+              subjects=[context], **alert_data)
 
         request.registry.notify(ActivityExecuted(
             self, [context, working_group], user))
@@ -2031,10 +2067,12 @@ class ParticipationVote(StartBallot):
         participant = self.process.participant
         moderators = self.process.execution_context.get_involved_collection(
             'electors')
+        alert_data = get_entity_data(participant, 'participant', request)
         alert(
             'internal', [root], moderators,
             internal_kind=InternalAlertKind.working_group_alert,
-            subjects=[context], alert_kind='new_participant')
+            subjects=[context], alert_kind='new_participant',
+            **alert_data)
         mail_template = root.get_mail_template('new_participant')
         subject_data = get_entity_data(context, 'subject', request)
         subject_data.update(get_user_data(participant, 'user', request))
@@ -2127,10 +2165,12 @@ class ExclusionVote(StartBallot):
         participant = self.process.participant
         moderators = self.process.execution_context.get_involved_collection(
             'electors')
+        alert_data = get_entity_data(participant, 'participant', request)
         alert(
             'internal', [root], moderators,
             internal_kind=InternalAlertKind.working_group_alert,
-            subjects=[context], alert_kind='exclude_participant')
+            subjects=[context], alert_kind='exclude_participant',
+            **alert_data)
         mail_template = root.get_mail_template('exclude_participant')
         subject_data = get_entity_data(context, 'subject', request)
         subject = mail_template['subject'].format(

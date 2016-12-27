@@ -1,0 +1,14 @@
+<div tal:condition="process" i18n:domain="novaideo">
+	<p i18n:translate="">
+      Vous êtes invité(e), avec deux autres Modérateurs tirés au sort, à vérifier la conformité entre ce <a target="_blank" href="${content.get_url(request)}" class="alert-link" i18n:translate=""><span class="${icon}"></span> commentaire</a>, qui a été signalé comme potentiellement non conforme, et la Charte de Modération.
+    <p>
+    <div class="terms-of-use-scroll">
+      ${structure:getattr(request.virtual_root.moderation_rules, 'text', '')}
+    </div>
+    <p i18n:translate="">
+      Ainsi, vous contribuez à assurer que le contenu affiché sur plate-forme ${request.virtual_root.title} reste conforme à la Charte de Modération, tout en évitant que ce pouvoir important qu'est la Modération ne soit concentré entre quelques mains !
+    <p>
+    <p i18n:translate="">
+    	Si la majorité des Modérateurs juge ce contenu non conforme à la Charte de Modération, ce contenu sera retiré du site, sinon il sera conservé.
+    </p>
+</div>

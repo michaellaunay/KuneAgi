@@ -540,22 +540,16 @@ class WorkspaceManagement(ProcessDefinition, VisualisableElement):
         )
 
 
-MODERATION_DESCRIPTION = _("Vous êtes invité à vérifier et modérer la proposition enregistrée. "
-                           "Cela afin de garantir le respect de la charte d'utilisation. "
-                           "Si la majorité vote en faveur de la publication de la proposition, "
-                           "la proposition sera validée, sinon la proposition sera archivée.")
-
-
 def proposal_title(process, context):
-    return _("Moderation of ${proposal}",
+    return _("Vote de Modération pour une nouvelle Proposition « ${proposal} »",
              mapping={'proposal': context.title})
 
 
 BALLOT_DATA[Proposal.__name__+'-proposalmoderation'] = {
-    'ballot_description': MODERATION_DESCRIPTION,
+    'ballot_description_template': 'novaideo:views/templates/ballots/moderate_proposal.pt',
     'ballot_title': proposal_title,
-    'true_value': _("The proposal complies with the moderation charter"),
-    'false_value': _("The proposal does not comply with the moderation charter"),
+    'true_value': _("Cette nouvelle Proposition est conforme à la Charte de Modération"),
+    'false_value': _("Cette nouvelle Proposition N'est PAS conforme à la Charte de Modération"),
     'process_id': 'proposalmoderation'
 }
 
@@ -578,8 +572,8 @@ def participation_title(process, context):
 BALLOT_DATA[Proposal.__name__+'-proposalparticipation'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/new_participation.pt',
     'ballot_title': participation_title,
-    'true_value': _("Accept the participation"),
-    'false_value': _("Refuse the participation"),
+    'true_value': _("Accepter ce Membre dans le Groupe de Travail"),
+    'false_value': _("Refuser ce Membre dans le Groupe de Travail"),
     'secret_ballot': False,
     'process_id': 'proposalparticipation'
 }

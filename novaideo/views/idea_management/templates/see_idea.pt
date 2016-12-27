@@ -20,7 +20,7 @@
         data-icon="${icon}"
         data-img=""
       >
-      <span class="icon ${icon}"></span> ${idea.title}
+      <span tal:omit-tag="" tal:condition="not (is_censored and to_hide)"><span class="icon ${icon}"></span> ${idea.title}</span>
     </h3>
     <div class="object-description"
       tal:define="author idea.author;

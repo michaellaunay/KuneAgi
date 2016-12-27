@@ -85,48 +85,13 @@ def ballot_result(vote_action):
 def start_ballot(
     context, author, request,
     root, electors, process_id,
-    mail_id=None, role='LocalModerator',
+    role='LocalModerator',
     before_start=None):
-    # send an email to user
     if role:
         for elector in electors:
             grant_roles(
                 user=elector,
                 roles=((role, context),))
-
-    if mail_id:
-        email_data = get_user_data(
-            author, 'recipient', request)
-        email_data.update(get_entity_data(context, 'subject', request))
-        moderators_str = ""
-        for index, elector in enumerate(electors):
-            elector_data = get_user_data(
-                elector, 'subject', request)
-            elector_data['subject_email'] = elector.email
-            elector_data['index'] = str(index+1)
-            moderator_str = MODERATOR_DATA.format(
-                **elector_data)
-            moderators_str += "\n" + moderator_str
-
-        email_data['moderators'] = moderators_str
-        email_data['url_terms_of_use'] = request.resource_url(
-            root.terms_of_use, '@@index')
-        duration = getattr(root, 'duration_moderation_vote', 7)
-        date_end = datetime.datetime.now() + \
-            datetime.timedelta(days=duration)
-        date_end_vote = to_localized_time(
-            date_end, request, translate=True)
-        mail_template = root.get_mail_template(mail_id)
-        subject = mail_template['subject'].format(
-            novaideo_title=root.title,
-            **email_data)
-        message = mail_template['template'].format(
-            date_end_vote=date_end_vote,
-            duration=duration,
-            novaideo_title=root.title,
-            **email_data)
-        alert('email', [root.get_site_sender()], [author.email],
-              subject=subject, body=message)
 
     # start a moderation process
     ballot_proc = start_ballot_proc(
@@ -186,3 +151,32 @@ def remove_elector_from_ballot_processes(content, user, exclude=[]):
         a_vote_actions = ballot_proc.get_actions('start_ballot')
         if a_vote_actions:
             remove_elector_vote_processes(a_vote_actions[0], user)
+
+
+def get_ballot_alert_data(
+    context, request,
+    root, electors):
+    alert_data = get_entity_data(context, 'subject', request)
+    moderators_str = ""
+    for index, elector in enumerate(electors):
+        elector_data = get_user_data(
+            elector, 'subject', request)
+        elector_data['subject_email'] = elector.email
+        elector_data['index'] = str(index+1)
+        moderator_str = MODERATOR_DATA.format(
+            **elector_data)
+        moderators_str += "\n" + moderator_str
+
+    alert_data['moderators'] = moderators_str
+    alert_data['url_terms_of_use'] = request.resource_url(
+        root.terms_of_use, '@@index')
+    alert_data['url_moderation_rules'] = request.resource_url(
+        root.moderation_rules, '@@index')
+    duration = getattr(root, 'duration_moderation_vote', 7)
+    date_end = datetime.datetime.now() + \
+        datetime.timedelta(days=duration)
+    alert_data['date_end_vote'] = to_localized_time(
+        date_end, request, translate=True)
+    alert_data['duration'] = getattr(root, 'duration_moderation_vote', 7)
+    alert_data['novaideo_title'] = root.title
+    return alert_data

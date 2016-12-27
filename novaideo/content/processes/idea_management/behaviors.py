@@ -59,7 +59,7 @@ from novaideo.content.processes.proposal_management import (
 from novaideo.content.comment import Comment
 from novaideo.content.processes.content_ballot_management import (
     ballot_result, close_ballot,
-    ELECTORS_NB, start_ballot, remove_ballot_processes)
+    ELECTORS_NB, start_ballot, remove_ballot_processes, get_ballot_alert_data)
 from novaideo.content.processes.content_ballot_management.behaviors import (
     StartBallot)
 
@@ -509,8 +509,18 @@ class SubmitIdea(InfiniteCardinality):
             author = context.author
             start_ballot(
                 context, author, request, root,
-                moderators, 'ideamoderation',
-                'content_submit')
+                moderators, 'ideamoderation')
+            alert_data = get_ballot_alert_data(
+                context, request, root, moderators)
+            alert_data.update(get_user_data(author, 'recipient', request))
+            mail_template = root.get_mail_template('content_submit')
+            if mail_template:
+                subject = mail_template['subject'].format(
+                    **alert_data)
+                message = mail_template['template'].format(
+                    **alert_data)
+                alert('email', [root.get_site_sender()], [author.email],
+                      subject=subject, body=message)
 
         return {}
 

@@ -35,7 +35,8 @@ from novaideo.utilities.util import to_localized_time
 from novaideo.content.alert import InternalAlertKind
 from novaideo.content.processes.content_ballot_management import (
     ballot_result, close_ballot,
-    ELECTORS_NB, start_ballot)
+    ELECTORS_NB, start_ballot,
+    get_ballot_alert_data)
 from novaideo.content.processes.content_ballot_management.behaviors import (
     StartBallot)
 
@@ -135,7 +136,19 @@ class Report(InfiniteCardinality):
                 start_ballot(
                     context, author, request, root,
                     moderators, 'contentreportdecision',
-                    'alert_report', before_start=before_start)
+                    before_start=before_start)
+                alert_data = get_ballot_alert_data(
+                    context, request, root, moderators)
+                alert_data.update(get_user_data(author, 'recipient', request))
+                mail_template = root.get_mail_template('alert_report')
+                if mail_template:
+                    subject = mail_template['subject'].format(
+                        **alert_data)
+                    message = mail_template['template'].format(
+                        **alert_data)
+                    alert('email', [root.get_site_sender()], [author.email],
+                          subject=subject, body=message)
+
 
         return {}
 

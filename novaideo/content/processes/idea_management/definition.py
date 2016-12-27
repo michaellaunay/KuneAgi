@@ -203,21 +203,16 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
         )
 
 
-MODERATION_DESCRIPTION = _("Vous êtes invité à vérifier et modérer l'idée enregistrée. "
-                           "Cela afin de garantir le respect de la charte d'utilisation. "
-                           "Si la majorité vote en faveur de la publication de l'idée, "
-                           "l'idée sera validée, sinon l'idée sera archivée.")
-
 def idea_title(process, context):
-    return _("Moderation of ${content}",
-             mapping={'content': context.title})
+    return _("Vote de Modération pour une nouvelle Idée « ${proposal} »",
+             mapping={'proposal': context.title})
 
 
 BALLOT_DATA[Idea.__name__+'-ideamoderation'] = {
-    'ballot_description': MODERATION_DESCRIPTION,
+    'ballot_description_template': 'novaideo:views/templates/ballots/moderate_idea.pt',
     'ballot_title': idea_title,
-    'true_value': _("The idea complies with the moderation charter"),
-    'false_value': _("The idea does not comply with the moderation charter"),
+    'true_value': _("Cette nouvelle Idée est conforme à la Charte de Modération"),
+    'false_value': _("Cette nouvelle Idée N'est PAS conforme à la Charte de Modération"),
     'process_id': 'ideamoderation'
 }
 

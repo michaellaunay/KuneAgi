@@ -1,5 +1,6 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# -*- coding: utf8 -*-
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -73,32 +74,38 @@ class ReportsManagementProcess(ProcessDefinition, VisualisableElement):
         )
 
 
-def content_title(process, context):
-    return _("Moderation of ${content}",
+def idea_title(process, context):
+    return _("Vote de Modération sur l'idée signalée « ${content} »",
              mapping={'content': context.title})
 
 
 BALLOT_DATA[Idea.__name__+'-contentreportdecision'] = {
-    'ballot_description_template': 'novaideo:views/templates/ballots/content_report.pt',
-    'ballot_title': content_title,
-    'true_value': _("Ignore"),
-    'false_value': _("Censor"),
+    'ballot_description_template': 'novaideo:views/templates/ballots/idea_report.pt',
+    'ballot_title': idea_title,
+    'true_value': _("Cette idée est conforme à la Charte de Modération"),
+    'false_value': _("Cette idée n'est pas conforme à la Charte de Modération"),
     'process_id': 'contentreportdecision'
 }
 
+
+def proposal_title(process, context):
+    return _("Vote de Modération sur la proposition signalée « ${content} »",
+             mapping={'content': context.title})
+
+
 BALLOT_DATA[Proposal.__name__+'-contentreportdecision'] = {
-    'ballot_description_template': 'novaideo:views/templates/ballots/content_report.pt',
-    'ballot_title': content_title,
-    'true_value': _("Ignore"),
-    'false_value': _("Censor"),
+    'ballot_description_template': 'novaideo:views/templates/ballots/proposal_report.pt',
+    'ballot_title': proposal_title,
+    'true_value': _("Cette proposition est conforme à la Charte de Modération"),
+    'false_value': _("Cette proposition n'est pas conforme à la Charte de Modération"),
     'process_id': 'contentreportdecision'
 }
 
 BALLOT_DATA[Comment.__name__+'-contentreportdecision'] = {
-    'ballot_description_template': 'novaideo:views/templates/ballots/content_report.pt',
-    'ballot_title': _("Moderation of a comment"),
-    'true_value': _("Ignore"),
-    'false_value': _("Censor"),
+    'ballot_description_template': 'novaideo:views/templates/ballots/comment_report.pt',
+    'ballot_title': _("Vote de Modération sur un commentaire signalé"),
+    'true_value': _("Ce commentaire est conforme à la Charte de Modération"),
+    'false_value': _("Ce commentaire n'est pas conforme à la Charte de Modération"),
     'process_id': 'contentreportdecision'
 }
 
