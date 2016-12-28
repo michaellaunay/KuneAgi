@@ -20,9 +20,9 @@ from novaideo import _
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""No notation found"""),
-    '1': _(u"""One notation found"""),
-    '*': _(u"""${nember} notations found""")
+    '0': _(u"""No mark found"""),
+    '1': _(u"""One mark found"""),
+    '*': _(u"""${nember} marks found""")
     }
 
 
@@ -32,7 +32,7 @@ CONTENTS_MESSAGES = {
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeNotationsView(BasicView):
-    title = _('Notations')
+    title = _('Marks')
     name = 'seenotations'
     behaviors = [SeeNotations]
     template = 'novaideo:views/user_management/templates/notations.pt'

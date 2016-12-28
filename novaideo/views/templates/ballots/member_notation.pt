@@ -1,11 +1,11 @@
-<div tal:condition="process">
+<div tal:condition="process" i18n:domain="novaideo">
 	<p tal:define="
 		member process.execution_context.involved_entity(
             'member');
 		subject process.execution_context.involved_entity(
             'subject');
         subject_icon getattr(subject, 'icon', '');">
-        Vous êtes invité à noter
+        <span i18n:translate="">Vous êtes invité à noter</span>
          <a target="_blank" tal:attributes="href request.resource_url(member, '@@index')"
             data-oid="${getattr(member, '__oid__', '')}"
             class="alert-link toggle-popover"
@@ -18,18 +18,18 @@
             <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
             ${getattr(member, 'title', member.name)}
         </a>
-        sur la qualité de son comportement coopératif dans le cadre du groupe lié à la proposition 
+        <span i18n:translate="">sur la qualité de son comportement coopératif dans le cadre du groupe lié à la proposition</span> 
         <a target="_blank" href="${request.resource_url(subject, '@@index')}" data-oid="${getattr(subject, '__oid__', '')}"
             class="alert-link toggle-popover">
             <span class="${getattr(subject, 'icon')}"></span> ${subject.title}
         </a>.
     </p>
     <p>
-    	Pour cela il vous suffit de donner une note parmi celles proposées.
+    	<span i18n:translate="">Pour cela il vous suffit de donner une note parmi celles proposées.</span>
         <ul>
-            <li>-1 = comportement coopératif inférieur à ce que j'attends dans le cadre d'un groupe de travail</li>
-            <li>0 = comportement coopératif conforme à ce que j'attends dans le cadre d'un groupe de travail</li>
-            <li>+1 = comportement coopératif meilleur que ce que j'attends dans le cadre d'un groupe de travail</li>
+            <li i18n:translate="">-1 = comportement coopératif inférieur à ce que j'attends dans le cadre d'un groupe de travail</li>
+            <li i18n:translate="">0 = comportement coopératif conforme à ce que j'attends dans le cadre d'un groupe de travail</li>
+            <li i18n:translate="">+1 = comportement coopératif meilleur que ce que j'attends dans le cadre d'un groupe de travail</li>
         </ul>
     </p>
 </div>

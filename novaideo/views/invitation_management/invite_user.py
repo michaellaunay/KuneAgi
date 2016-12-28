@@ -32,7 +32,7 @@ class InviteUsersSchema(Schema):
                        ['user_title', 'roles', 'first_name',
                        'last_name', 'birth_date', 'email']),
                 widget=SequenceWidget(min_len=1),
-                title=_('Invitations')
+                title=_('The invitations')
                 )
 
 

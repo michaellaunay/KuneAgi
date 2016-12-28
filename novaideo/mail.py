@@ -717,12 +717,12 @@ DEFAULT_SITE_MAILS = {
               'template': RESETPW_MESSAGE
     },
     'registration_confiramtion': {
-              'title': _("Registration confiramtion"),
+              'title': _("Registration confirmation"),
               'subject': CONFIRMATION_SUBJECT,
               'template': CONFIRMATION_MESSAGE
     },
     'preregistration': {
-              'title': _("Users preregistration"),
+              'title': _("Pre-registration of users"),
               'subject': PREREGISTRATION_SUBJECT,
               'template': PREREGISTRATION_MESSAGE
     },
@@ -779,12 +779,12 @@ DEFAULT_SITE_MAILS = {
               'template': PUBLISHPROPOSAL_MESSAGE
     },
     'start_vote_publishing': {
-              'title': _("Start ballot (publication of the proposal)"),
+              'title': _("Start of the ballot (publication of the proposal)"),
               'subject': VOTINGPUBLICATION_SUBJECT,
               'template': VOTINGPUBLICATION_MESSAGE
     },
     'start_vote_amendments': {
-              'title': _("Start ballot (amendments)"),
+              'title': _("Start of the ballot (amendments)"),
               'subject': VOTINGAMENDMENTS_SUBJECT,
               'template': VOTINGAMENDMENTS_MESSAGE
     },
@@ -869,22 +869,22 @@ DEFAULT_SITE_MAILS = {
               'template': ALERTCOMMENT_MESSAGE
     },
     'alert_discuss': {
-              'title': _("Warning: new discuss"),
+              'title': _("Warning: new discussion"),
               'subject': ALERTDISCUSS_SUBJECT,
               'template': ALERTDISCUSS_MESSAGE
     },
     'alert_respons': {
-              'title': _("Alert respons"),
+              'title': _("Alert: answer"),
               'subject': ALERTRESPONS_SUBJECT,
               'template': ALERTRESPONS_MESSAGE
     },
     'newsletter_subscription': {
-              'title': _("Newsletter subscription"),
+              'title': _("Subscription to the newsletter"),
               'subject': NEWSLETTER_SUBSCRIPTION_SUBJECT,
               'template': NEWSLETTER_SUBSCRIPTION_MESSAGE
     },
     'newsletter_unsubscription': {
-              'title': _("Newsletter unsubscription"),
+              'title': _("Unsubscription from the newsletter"),
               'subject': NEWSLETTER_UNSUBSCRIPTION_SUBJECT,
               'template': NEWSLETTER_UNSUBSCRIPTION_MESSAGE
     },
@@ -904,7 +904,7 @@ DEFAULT_SITE_MAILS = {
               'template': ADMIN_PREREGISTRATION_SUB_MESSAGE
     },
     'close_proposal': {
-              'title': _("Close proposal"),
+              'title': _("Close the proposal"),
               'subject': SYSTEM_CLOSE_PROPOSAL_SUBJECT,
               'template': SYSTEM_CLOSE_PROPOSAL_MESSAGE
     },
@@ -914,12 +914,12 @@ DEFAULT_SITE_MAILS = {
               'template': ADMIN_CONTENT_MESSAGE
     },
     'content_submit': {
-              'title': _("Content submission"),
+              'title': _("Submission of a content"),
               'subject': ADMIN_CONTENT_SUB_SUBJECT,
               'template': ADMIN_CONTENT_SUB_MESSAGE
     },
     'moderate_report': {
-              'title': _("Content reporting"),
+              'title': _("Report a content as potentially contrary to the Moderation rules"),
               'subject': ADMIN_REPORT_SUBJECT,
               'template': ADMIN_REPORT_MESSAGE
     },
@@ -944,17 +944,17 @@ DEFAULT_SITE_MAILS = {
               'template': PARTICIPATE_SUB_MESSAGE
     },
     'member_notation': {
-              'title': _("Give a note to a member"),
+              'title': _("Give a mark to a member's cooperative behaviour"),
               'subject': NOTING_MEMBER_SUBJECT,
               'template': NOTING_MEMBER_MESSAGE
     },
     'member_notation_excluded': {
-              'title': _("Give a note to a participant"),
+              'title': _("Give a mark to a participant's cooperative behaviour"),
               'subject': NOTING_PARTICIPANT_SUBJECT,
               'template': NOTING_PARTICIPANT_MESSAGE
     },
     'members_notation': {
-              'title': _("Give a note to members"),
+              'title': _("Give a mark to the cooperative behaviour of members"),
               'subject': NOTING_MEMBERS_SUBJECT,
               'template': NOTING_MEMBERS_MESSAGE
     }
