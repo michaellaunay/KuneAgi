@@ -1766,6 +1766,8 @@ class SubmitProposal(ElementaryAction):
             context.state = PersistentList(['published', 'submitted_support'])
 
         working_group.state = PersistentList(['archived'])
+        working_group.setproperty('wating_list', [])
+        working_group.setproperty('wating_list_participation', [])
         members = working_group.members
         for member in members:
             token = Token(title='Token_'+context.title)

@@ -81,6 +81,7 @@ class WorkingGroup(VisualisableElement, Entity):
         author = self.proposal.author
         self.state = PersistentList(['deactivated'])
         self.setproperty('wating_list', [])
+        self.setproperty('wating_list_participation', [])
         if hasattr(self, 'first_improvement_cycle'):
             del self.first_improvement_cycle
 
