@@ -949,6 +949,7 @@ def get_remove_registration_metadata(action, request, context, api, **kwargs):
     result['view_title'] = view_title
     return result
 
+
 # Smart folders
 
 
@@ -991,6 +992,7 @@ def get_add_subfolder_metadata(action, request, context, api, **kwargs):
         context, api,
         _("The sub-center of interest has been added."),
         **kwargs)
+
 
 #Ideas
 

@@ -158,6 +158,7 @@ function object_view_component(data){
 				        rebuild_scrolls(new_comp.find(".malihu-scroll"))
 				        initscroll(new_comp.find(".result-scroll"))
 				        init_emoji($(new_comp.find('.emoji-container:not(.emojified)')));
+             
 			        }
 		       }
 	 	    }

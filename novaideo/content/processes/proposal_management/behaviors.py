@@ -1590,7 +1590,7 @@ class VotingPublication(ElementaryAction):
 
     def after_execution(self, context, request, **kw):
         process = self.process
-        proposal = self.process.execution_context.created_entity(
+        proposal = process.execution_context.created_entity(
             'proposal')
         if self.sub_process:
             exec_ctx = self.sub_process.execution_context

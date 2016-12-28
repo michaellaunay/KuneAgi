@@ -61,6 +61,7 @@ LEVEL_MENU = 3
 DEFAULT_FOLDER_COLORS = {'usual_color': 'white, #2d6ca2',
                          'hover_color': 'white, #2d6ca2'}
 
+
 MORE_NB = 20
 
 
