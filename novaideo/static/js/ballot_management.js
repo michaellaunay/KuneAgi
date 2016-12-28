@@ -27,6 +27,5 @@ function show_votes_modal(id){
 }
 
 $(document).on('click', '.vote-action', function(){
-    var id = $(this).parents('.content-view').first().find('.vote-actions-container').attr('id')
-    show_votes_modal(id)
+    show_votes_modal($(this).data('action_id'))
 });

@@ -121,19 +121,14 @@ class DetailSubjectView(BasicView):
         self.execute(None)
         vote_actions = get_vote_actions_body(
             self.context, self.request,
-            activator_ids=['content_vote_contentreportdecision'],
-            activate=False)
+            ballot_ids=['vote_moderation'])
         try:
-            text_action = [{'title': _('Moderate'),
-                            'class_css': 'vote-action',
-                            'style_picto': 'octicon octicon-check'}] \
-                if vote_actions['actions'] else []
             navbars = generate_navbars(
                 self.request, self.context,
                 process_id='reportsmanagement',
                 descriminators=['plus-action'],
                 flatten=True,
-                text_action=text_action)
+                text_action=vote_actions['activators'])
         except ObjectRemovedException:
             return HTTPFound(self.request.resource_url(getSite(), ''))
 

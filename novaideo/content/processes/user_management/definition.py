@@ -184,18 +184,23 @@ class RegistrationManagement(ProcessDefinition, VisualisableElement):
         )
 
 
-MODERATION_DESCRIPTION = _("Vous êtes invité à vérifier et confirmer l'identité de "
-                           "l'utilisateur enregistré. Cela afin de garantir l'unicité "
-                           "de ce compte. Si la majorité confirme l'identité de ce compte, "
-                           "le compte sera validé, sinon le compte sera supprimé.")
+REGISTRATION_GROUP = {
+    'group_id': 'vote_new_registration',
+    'group_title': _('Vote to confirm or not the identity of the member'),
+    'group_activate': False,
+    'group_activator_title': _('Vote to confirm or not the identity of the member'),
+    'group_activator_class_css': 'vote-action',
+    'group_activator_style_picto': 'octicon octicon-check',
+    'group_activator_order': 100
+}
 
 BALLOT_DATA[Preregistration.__name__+'-registrationmoderation'] = {
-    'ballot_description': MODERATION_DESCRIPTION,
     'ballot_description_template': 'novaideo:views/templates/ballots/new_registration.pt',
     'ballot_title': _("Confirm the user identity"),
     'true_value': _("Confirmed identity"),
     'false_value': _("Not confirmed identity"),
-    'process_id': 'registrationmoderation'
+    'process_id': 'registrationmoderation',
+    'group': REGISTRATION_GROUP
 }
 
 

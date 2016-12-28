@@ -28,6 +28,17 @@ DEFAULT_NOTATION = 0
 DURATION = datetime.timedelta(days=1000)
 
 
+NOTATION_GROUP = {
+    'group_id': 'vote_notation',
+    'group_title': _('Noter les membres'),
+    'group_activate': False,
+    'group_activator_title': _('Noter les membres'),
+    'group_activator_class_css': 'vote-action',
+    'group_activator_style_picto': 'fa fa-gavel',
+    'group_activator_order': 100
+}
+
+
 def run_notation_process(context, request, user, members, alert_id=None):
     if members:
         subjects = [context]
@@ -36,7 +47,8 @@ def run_notation_process(context, request, user, members, alert_id=None):
         ballot = Ballot('FPTP', members, subjects, DURATION,
                         vote_process_id='membernotationmanagement',
                         group_values=NOTATIONS,
-                        group_default=DEFAULT_NOTATION)
+                        group_default=DEFAULT_NOTATION,
+                        group=NOTATION_GROUP)
         context.addtoproperty('ballots', ballot)
         ballot.title = title
         ballot.report.description_template = 'novaideo:views/templates/ballots/member_notation.pt'

@@ -41,13 +41,9 @@ class SeeRegistrationView(BasicView):
         vote_actions = get_vote_actions_body(
             self.context, self.request)
         try:
-            text_action = [{'title': _('Vote to confirm or not the identity of the member'),
-                            'class_css': 'vote-action',
-                            'style_picto': 'glyphicon glyphicon-stats'}] \
-                if vote_actions['actions'] else []
             navbars = generate_navbars(
                 self.request, self.context,
-                text_action=text_action)
+                text_action=vote_actions['activators'])
         except ObjectRemovedException:
             return HTTPFound(self.request.resource_url(getSite(), ''))
 

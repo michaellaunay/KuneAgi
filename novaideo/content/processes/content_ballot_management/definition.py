@@ -24,7 +24,7 @@ from .behaviors import (
 )
 from novaideo import _
 from novaideo.content.processes.ballot_processes import close_votes
-from novaideo.content.ballot import Ballot
+from novaideo.content.ballot import Ballot, DEFAULT_BALLOT_GROUP
 from . import get_ballot_data_by_type
 
 
@@ -66,7 +66,9 @@ class SubProcessDefinition(OriginSubProcessDefinition):
                         true_val=ballot_data.get(
                             'true_value'),
                         false_val=ballot_data.get(
-                            'false_value'))
+                            'false_value'),
+                        group=ballot_data.get(
+                            'group', DEFAULT_BALLOT_GROUP))
         content.addtoproperty('ballots', ballot)
         report = ballot.report
         report.secret_ballot = ballot_data.get('secret_ballot', True)
@@ -80,7 +82,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
 
         ballot.title = title
         proc_id = 'content_vote_'+process.id
-        processes = ballot.run_ballot(id_=proc_id)
+        processes = ballot.run_ballot()
         subprocess.ballots = PersistentList()
         subprocess.ballots.append(ballot)
         subprocess.execution_context.add_involved_collection(

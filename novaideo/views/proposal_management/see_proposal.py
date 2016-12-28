@@ -75,27 +75,11 @@ class DetailProposalView(BasicView):
         self.execute(None)
         vote_actions = get_vote_actions_body(
             self.context, self.request)
-        note_actions = get_vote_actions_body(
-            self.context, self.request,
-            process_discriminator='Member notation process',
-            activate=False,
-            title=_('Note members'))
         try:
-            text_action = [{'title': _('Vote'),
-                            'class_css': 'vote-action',
-                            'style_picto': 'glyphicon glyphicon-stats'}] \
-                if vote_actions['actions'] else []
-
-            if note_actions['actions']:
-                text_action.append(
-                    {'title': _('Members notation'),
-                     'class_css': 'vote-action',
-                     'style_picto': 'ion-android-checkmark'}
-                    )
 
             navbars = generate_navbars(
                 self.request, self.context,
-                text_action=text_action)
+                text_action=vote_actions['activators'])
         except ObjectRemovedException:
             return HTTPFound(self.request.resource_url(getSite(), ''))
 
@@ -171,7 +155,6 @@ class DetailProposalView(BasicView):
             'current_user': user,
             'is_participant': is_participant,
             'vote_actions_body': vote_actions['body'],
-            'note_actions_body': note_actions['body'],
             'filigrane': add_filigrane,
             'cant_publish': self._cant_publish(navbars['all_actions']),
             'idea_to_examine': idea_to_examine,

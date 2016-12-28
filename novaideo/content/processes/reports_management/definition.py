@@ -79,12 +79,24 @@ def idea_title(process, context):
              mapping={'content': context.title})
 
 
+IDEA_MODERATION_GROUP = {
+    'group_id': 'vote_moderation',
+    'group_title': _('Moderate the idea'),
+    'group_activate': False,
+    'group_activator_title': _('Moderate the idea'),
+    'group_activator_class_css': 'vote-action',
+    'group_activator_style_picto': 'octicon octicon-check',
+    'group_activator_order': 100
+}
+
+
 BALLOT_DATA[Idea.__name__+'-contentreportdecision'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/idea_report.pt',
     'ballot_title': idea_title,
     'true_value': _("Cette idée est conforme à la Charte de Modération"),
     'false_value': _("Cette idée n'est pas conforme à la Charte de Modération"),
-    'process_id': 'contentreportdecision'
+    'process_id': 'contentreportdecision',
+    'group': IDEA_MODERATION_GROUP
 }
 
 
@@ -93,20 +105,45 @@ def proposal_title(process, context):
              mapping={'content': context.title})
 
 
+PROPOSAL_MODERATION_GROUP = {
+    'group_id': 'vote_moderation',
+    'group_title': _('Moderate the proposal'),
+    'group_activate': False,
+    'group_activator_title': _('Moderate the proposal'),
+    'group_activator_class_css': 'vote-action',
+    'group_activator_style_picto': 'octicon octicon-check',
+    'group_activator_order': 100
+}
+
+
 BALLOT_DATA[Proposal.__name__+'-contentreportdecision'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/proposal_report.pt',
     'ballot_title': proposal_title,
     'true_value': _("Cette proposition est conforme à la Charte de Modération"),
     'false_value': _("Cette proposition n'est pas conforme à la Charte de Modération"),
-    'process_id': 'contentreportdecision'
+    'process_id': 'contentreportdecision',
+    'group': PROPOSAL_MODERATION_GROUP
 }
+
+
+COMMENT_MODERATION_GROUP = {
+    'group_id': 'vote_moderation',
+    'group_title': _('Moderate the comment'),
+    'group_activate': False,
+    'group_activator_title': _('Moderate the comment'),
+    'group_activator_class_css': 'vote-action',
+    'group_activator_style_picto': 'octicon octicon-check',
+    'group_activator_order': 100
+}
+
 
 BALLOT_DATA[Comment.__name__+'-contentreportdecision'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/comment_report.pt',
     'ballot_title': _("Vote de Modération sur un commentaire signalé"),
     'true_value': _("Ce commentaire est conforme à la Charte de Modération"),
     'false_value': _("Ce commentaire n'est pas conforme à la Charte de Modération"),
-    'process_id': 'contentreportdecision'
+    'process_id': 'contentreportdecision',
+    'group': COMMENT_MODERATION_GROUP
 }
 
 

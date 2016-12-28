@@ -52,6 +52,8 @@ from novaideo.content.processes.content_ballot_management import (
     BALLOT_DATA)
 from novaideo.content.processes.content_ballot_management.definition import (
     ContentBallot)
+from novaideo.content.processes.reports_management.definition import (
+    IDEA_MODERATION_GROUP)
 
 
 @process_definition(name='ideamanagement', id='ideamanagement')
@@ -213,7 +215,8 @@ BALLOT_DATA[Idea.__name__+'-ideamoderation'] = {
     'ballot_title': idea_title,
     'true_value': _("Cette nouvelle Idée est conforme à la Charte de Modération"),
     'false_value': _("Cette nouvelle Idée N'est PAS conforme à la Charte de Modération"),
-    'process_id': 'ideamoderation'
+    'process_id': 'ideamoderation',
+    'group': IDEA_MODERATION_GROUP
 }
 
 

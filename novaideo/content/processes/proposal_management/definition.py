@@ -85,6 +85,19 @@ from novaideo.content.processes.content_ballot_management import (
     BALLOT_DATA)
 from novaideo.content.processes.content_ballot_management.definition import (
     ContentBallot)
+from novaideo.content.processes.reports_management.definition import (
+    PROPOSAL_MODERATION_GROUP)
+
+
+VOTE_PUBLISHING_GROUP = {
+    'group_id': 'vote_submission',
+    'group_title': _('Vote for continuing to improve the proposal or not'),
+    'group_activate': True,
+    'group_activator_title': _('Vote for submission'),
+    'group_activator_class_css': 'vote-action',
+    'group_activator_style_picto': 'glyphicon glyphicon-stats',
+    'group_activator_order': 80
+}
 
 
 def firs_alert(process, date):
@@ -178,7 +191,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         subjects = [proposal]
         ballot = Ballot('Referendum', electors, subjects, VP_DEFAULT_DURATION,
                         true_val=_("Submit the proposal as is"),
-                        false_val=_("Continue to improve the proposal"))
+                        false_val=_("Continue to improve the proposal"),
+                        group=VOTE_PUBLISHING_GROUP)
         working_group.addtoproperty('ballots', ballot)
         ballot.report.description = VOTE_PUBLISHING_MESSAGE
         ballot.title = _("Continue to improve the proposal or not")
@@ -200,7 +214,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             ballot = Ballot('FPTP', electors, group, VP_DEFAULT_DURATION,
                             group_title=_('Work mode'),
                             group_values=modes,
-                            group_default=default_mode)
+                            group_default=default_mode,
+                            group=VOTE_PUBLISHING_GROUP)
             working_group.addtoproperty('ballots', ballot)
             ballot.title = _('Work modes')
             ballot.report.description = VOTE_MODEWORK_MESSAGE
@@ -212,7 +227,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
            'closed' in working_group.state:
             subjects = [working_group]
             ballot = Ballot('Referendum', electors,
-                            subjects, VP_DEFAULT_DURATION)
+                            subjects, VP_DEFAULT_DURATION,
+                            group=VOTE_PUBLISHING_GROUP)
             working_group.addtoproperty('ballots', ballot)
             ballot.report.description = VOTE_REOPENING_MESSAGE
             ballot.title = _('Reopen the working group')
@@ -226,7 +242,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
                            key=lambda e: AMENDMENTS_CYCLE_DEFAULT_DURATION[e])
             ballot = Ballot('FPTP', electors, group, VP_DEFAULT_DURATION,
                             group_title=_('Duration of the amendment cycle'),
-                            group_default='One week')
+                            group_default='One week',
+                            group=VOTE_PUBLISHING_GROUP)
             working_group.addtoproperty('ballots', ballot)
             ballot.title = _('Duration of the amendment cycle')
             ballot.report.description = VOTE_DURATION_MESSAGE
@@ -550,7 +567,8 @@ BALLOT_DATA[Proposal.__name__+'-proposalmoderation'] = {
     'ballot_title': proposal_title,
     'true_value': _("Cette nouvelle Proposition est conforme à la Charte de Modération"),
     'false_value': _("Cette nouvelle Proposition N'est PAS conforme à la Charte de Modération"),
-    'process_id': 'proposalmoderation'
+    'process_id': 'proposalmoderation',
+    'group': PROPOSAL_MODERATION_GROUP
 }
 
 
@@ -569,13 +587,25 @@ def participation_title(process, context):
              mapping={'participant': process.participant.title})
 
 
+PARTICIPATION_GROUP = {
+    'group_id': 'vote_participation',
+    'group_title': _('Voter pour ou contre les candidatures'),
+    'group_activate': False,
+    'group_activator_title': _('Les candidatures'),
+    'group_activator_class_css': 'vote-action',
+    'group_activator_style_picto': 'glyphicon glyphicon-stats',
+    'group_activator_order': 100
+}
+
+
 BALLOT_DATA[Proposal.__name__+'-proposalparticipation'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/new_participation.pt',
     'ballot_title': participation_title,
     'true_value': _("Accepter ce Membre dans le Groupe de Travail"),
     'false_value': _("Refuser ce Membre dans le Groupe de Travail"),
     'secret_ballot': False,
-    'process_id': 'proposalparticipation'
+    'process_id': 'proposalparticipation',
+    'group': PARTICIPATION_GROUP
 }
 
 
@@ -594,13 +624,25 @@ def exclusion_title(process, context):
              mapping={'participant': process.participant.title})
 
 
+EXCLUSION_GROUP = {
+    'group_id': 'vote_exclusion',
+    'group_title': _('Voter pour ou contre les exclusions'),
+    'group_activate': False,
+    'group_activator_title': _('Les exclusions'),
+    'group_activator_class_css': 'vote-action',
+    'group_activator_style_picto': 'glyphicon glyphicon-stats',
+    'group_activator_order': 100
+}
+
+
 BALLOT_DATA[Proposal.__name__+'-exclusionparticipant'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/new_exclusion.pt',
     'ballot_title': exclusion_title,
     'true_value': _("Accept the exclusion"),
     'false_value': _("Refuse the exclusion"),
     'secret_ballot': False,
-    'process_id': 'exclusionparticipant'
+    'process_id': 'exclusionparticipant',
+    'group': EXCLUSION_GROUP
 }
 
 
