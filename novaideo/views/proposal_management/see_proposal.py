@@ -75,11 +75,16 @@ class DetailProposalView(BasicView):
         self.execute(None)
         vote_actions = get_vote_actions_body(
             self.context, self.request)
+        note_actions = get_vote_actions_body(
+            self.context, self.request,
+            process_discriminator='Member notation process')
+        activators = vote_actions['activators']
+        activators.extend(note_actions['activators'])
         try:
 
             navbars = generate_navbars(
                 self.request, self.context,
-                text_action=vote_actions['activators'])
+                text_action=activators)
         except ObjectRemovedException:
             return HTTPFound(self.request.resource_url(getSite(), ''))
 
@@ -95,9 +100,12 @@ class DetailProposalView(BasicView):
                       if a.node_id != "seemembers"]
         resources = merge_dicts(navbars['resources'], vote_actions['resources'],
                                 ('js_links', 'css_links'))
+        resources = merge_dicts(navbars['resources'], note_actions['resources'],
+                                ('js_links', 'css_links'))
         resources['js_links'] = list(set(resources['js_links']))
         resources['css_links'] = list(set(resources['css_links']))
         messages = vote_actions['messages']
+        messages.update(note_actions['messages'])
         if not messages:
             messages = navbars['messages']
 
@@ -155,6 +163,7 @@ class DetailProposalView(BasicView):
             'current_user': user,
             'is_participant': is_participant,
             'vote_actions_body': vote_actions['body'],
+            'note_actions_body': note_actions['body'],
             'filigrane': add_filigrane,
             'cant_publish': self._cant_publish(navbars['all_actions']),
             'idea_to_examine': idea_to_examine,
@@ -172,7 +181,8 @@ class DetailProposalView(BasicView):
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages
-        item['isactive'] = vote_actions['isactive'] or navbars['isactive']
+        item['isactive'] = vote_actions['isactive'] or \
+            note_actions['isactive'] or navbars['isactive']
         result.update(resources)
         result['coordinates'] = {self.coordinates: [item]}
         return result
