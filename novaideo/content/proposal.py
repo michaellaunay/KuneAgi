@@ -40,6 +40,7 @@ from novaideo.core import (
     DuplicableEntity,
     VersionableEntity,
     PresentableEntity,
+    ExaminableEntity,
     Node,
     Emojiable,
     SignalableEntity)
@@ -178,6 +179,7 @@ class Proposal(VersionableEntity,
                DuplicableEntity,
                CorrelableEntity,
                PresentableEntity,
+               ExaminableEntity,
                Node,
                Emojiable,
                SignalableEntity):
@@ -192,6 +194,7 @@ class Proposal(VersionableEntity,
     template = 'novaideo:views/templates/proposal_list_element.pt'
     name = renamer()
     author = SharedUniqueProperty('author')
+    organization = SharedUniqueProperty('organization')
     working_group = SharedUniqueProperty('working_group', 'proposal')
     tokens_opposition = CompositeMultipleProperty('tokens_opposition')
     tokens_support = CompositeMultipleProperty('tokens_support')
@@ -200,6 +203,7 @@ class Proposal(VersionableEntity,
     attached_files = SharedMultipleProperty('attached_files')
     ballots = CompositeMultipleProperty('ballots')
     ballot_processes = SharedMultipleProperty('ballot_processes')
+    opinions_base = OPINIONS
 
     def __init__(self, **kwargs):
         super(Proposal, self).__init__(**kwargs)
@@ -226,11 +230,6 @@ class Proposal(VersionableEntity,
         return result
 
     @property
-    def opinion_value(self):
-        return OPINIONS.get(
-            getattr(self, 'opinion', {}).get('opinion', ''), None)
-
-    @property
     def is_published(self):
         return 'published' in self.state
 
@@ -248,6 +247,17 @@ class Proposal(VersionableEntity,
             return getattr(self.current_version, 'workspace', None)
 
         return None
+
+    def __setattr__(self, name, value):
+        super(Proposal, self).__setattr__(name, value)
+        if name == 'author':
+            self.init_organization()
+
+    def init_organization(self):
+        if not self.organization:
+            organization = getattr(self.author, 'organization', None)
+            if organization:
+                self.setproperty('organization', organization)
 
     def init_published_at(self):
         setattr(self, 'published_at', datetime.datetime.now(tz=pytz.UTC))

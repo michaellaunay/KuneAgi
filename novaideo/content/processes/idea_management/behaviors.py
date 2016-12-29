@@ -142,7 +142,7 @@ class CreateIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current()
+        user = get_current(request)
         idea = appstruct['_object_data']
         if getattr(idea, '_tree', None):
             tree = getattr(idea, '_tree')
@@ -419,7 +419,7 @@ class EditIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current()
+        user = get_current(request)
         last_version = context.version
         copy_of_idea = copy(
             context,
@@ -561,7 +561,7 @@ class ArchiveIdea(InfiniteCardinality):
         archive_idea(context, request, root, appstruct)
         remove_ballot_processes(context, request.root['runtime'])
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current()))
+            self, [context], get_current(request)))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -613,7 +613,7 @@ class PublishIdea(InfiniteCardinality):
         context.reindex()
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current()))
+            self, [context], get_current(request)))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -649,7 +649,7 @@ class AbandonIdea(InfiniteCardinality):
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current()))
+            self, [context], get_current(request)))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -686,7 +686,7 @@ class RecuperateIdea(InfiniteCardinality):
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current()))
+            self, [context], get_current(request)))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -844,7 +844,7 @@ class PresentIdea(InfiniteCardinality):
         send_to_me = appstruct['send_to_me']
         members = list(appstruct['members'])
         root = request.root
-        user = get_current()
+        user = get_current(request)
         if send_to_me:
             members.append(user)
 
@@ -893,7 +893,7 @@ class Associate(InfiniteCardinality):
     processsecurity_validation = associate_processsecurity_validation
 
     def start(self, context, request, appstruct, **kw):
-        user = get_current()
+        user = get_current(request)
         correlation = appstruct['_object_data']
         correlation.setproperty('source', context)
         correlation.setproperty('author', user)
@@ -1029,7 +1029,7 @@ class MakeOpinion(InfiniteCardinality):
                   subject=subject, body=message)
 
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current()))
+            self, [context], get_current(request)))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1067,7 +1067,7 @@ class SupportIdea(InfiniteCardinality):
     state_validation = support_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        user = get_current()
+        user = get_current(request)
         token = context.get_token(user)
         context.addtoproperty('tokens_support', token)
         context.init_support_history()
@@ -1077,8 +1077,8 @@ class SupportIdea(InfiniteCardinality):
         request.registry.notify(ActivityExecuted(self, [context], user))
         if user is not context.author:
             alert('internal', [request.root], [context.author],
-              internal_kind=InternalAlertKind.support_alert,
-              subjects=[context], support_kind='support')
+                  internal_kind=InternalAlertKind.support_alert,
+                  subjects=[context], support_kind='support')
 
         return {}
 
@@ -1133,7 +1133,7 @@ class WithdrawToken(InfiniteCardinality):
     state_validation = support_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        user = get_current()
+        user = get_current(request)
         user_tokens = [t for t in context.tokens
                        if t.owner is user]
         token = user_tokens[-1]

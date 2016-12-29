@@ -37,6 +37,7 @@ from novaideo.core import (
     SearchableEntitySchema,
     CorrelableEntity,
     PresentableEntity,
+    ExaminableEntity,
     Channel,
     Node,
     Emojiable,
@@ -109,7 +110,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 @implementer(Iidea)
 class Idea(VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity, PresentableEntity,
-           Node, Emojiable, SignalableEntity):
+           ExaminableEntity, Node, Emojiable, SignalableEntity):
     """Idea class"""
 
     type_title = _('Idea')
@@ -121,12 +122,14 @@ class Idea(VersionableEntity, DuplicableEntity,
     template = 'novaideo:views/templates/idea_list_element.pt'
     name = renamer()
     author = SharedUniqueProperty('author', 'ideas')
+    organization = SharedUniqueProperty('organization')
     attached_files = CompositeMultipleProperty('attached_files')
     url_files = CompositeMultipleProperty('url_files')
     tokens_opposition = CompositeMultipleProperty('tokens_opposition')
     tokens_support = CompositeMultipleProperty('tokens_support')
     ballots = CompositeMultipleProperty('ballots')
     ballot_processes = SharedMultipleProperty('ballot_processes')
+    opinions_base = OPINIONS
 
     def __init__(self, **kwargs):
         super(Idea, self).__init__(**kwargs)
@@ -142,11 +145,6 @@ class Idea(VersionableEntity, DuplicableEntity,
             return True if 'favorable' in self.state else False
 
         return True
-
-    @property
-    def opinion_value(self):
-        return OPINIONS.get(
-            getattr(self, 'opinion', {}).get('opinion', ''), None)
 
     @property
     def related_proposals(self):
@@ -178,6 +176,17 @@ class Idea(VersionableEntity, DuplicableEntity,
         return [getattr(self, 'title', ''),
                 getattr(self, 'text', ''),
                 ', '.join(self.branches)]
+
+    def __setattr__(self, name, value):
+        super(Idea, self).__setattr__(name, value)
+        if name == 'author':
+            self.init_organization()
+
+    def init_organization(self):
+        if not self.organization:
+            organization = getattr(self.author, 'organization', None)
+            if organization:
+                self.setproperty('organization', organization)
 
     def init_published_at(self):
         setattr(self, 'published_at', datetime.datetime.now(tz=pytz.UTC))

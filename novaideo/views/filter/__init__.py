@@ -388,7 +388,8 @@ def contribution_filter_query(node, **args):
 def geographic_filter_query(node, **args):
     filter_ = args.get('geographic_filter', {})
     if filter_.get('negation', False):
-        return Not(get_node_query(node, **args))
+        query = get_node_query(node, **args)
+        return query if not query else Not(query)
 
     return get_node_query(node, **args)
 

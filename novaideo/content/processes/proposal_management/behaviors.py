@@ -455,7 +455,7 @@ class CreateProposal(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current()
+        user = get_current(request)
         related_ideas = appstruct.pop('related_ideas')
         proposal = appstruct['_object_data']
         root.merge_tree(proposal.tree)
@@ -683,7 +683,7 @@ class PublishProposal(InfiniteCardinality):
     state_validation = publish_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        user = get_current()
+        user = get_current(request)
         root = getSite()
         context.state.remove('draft')
         not_published_ideas = confirm_proposal(
@@ -786,7 +786,7 @@ class EditProposal(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current()
+        user = get_current(request)
         if 'related_ideas' in appstruct:
             context.set_related_ideas(
                 appstruct['related_ideas'], user)
@@ -943,7 +943,7 @@ class MakeOpinion(InfiniteCardinality):
                       subject=subject, body=message)
 
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current()))
+            self, [context], get_current(request)))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -967,7 +967,7 @@ class WithdrawToken(InfiniteCardinality):
     state_validation = support_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        user = get_current()
+        user = get_current(request)
         user_tokens = [t for t in context.tokens
                        if t.owner is user]
         token = user_tokens[-1]
@@ -1136,7 +1136,7 @@ class Withdraw(InfiniteCardinality):
     state_validation = withdraw_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        user = get_current()
+        user = get_current(request)
         working_group = context.working_group
         working_group.delfromproperty('wating_list', user)
         if getattr(user, 'email', ''):
@@ -1334,7 +1334,7 @@ class Participate(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current()
+        user = get_current(request)
         working_group = context.working_group
         if not getattr(root, 'working_group_composition_control', True):
             accept_participation(context, request, user, root)
@@ -1483,7 +1483,7 @@ class AttachFiles(InfiniteCardinality):
         add_attached_files({'add_files': appstruct}, context)
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current()))
+            self, [context], get_current(request)))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1585,7 +1585,7 @@ class VotingPublication(ElementaryAction):
                           subject=subject, body=message)
 
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current()))
+            self, [context], get_current(request)))
         return {}
 
     def after_execution(self, context, request, **kw):
@@ -1693,7 +1693,7 @@ class Work(ElementaryAction):
         context.reindex()
         working_group.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context, working_group], get_current()))
+            self, [context, working_group], get_current(request)))
         return {}
 
     def after_execution(self, context, request, **kw):
@@ -1830,7 +1830,7 @@ class SubmitProposal(ElementaryAction):
         working_group.reindex()
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context, working_group], get_current()))
+            self, [context, working_group], get_current(request)))
         return {}
 
     def redirect(self, context, request, **kw):
