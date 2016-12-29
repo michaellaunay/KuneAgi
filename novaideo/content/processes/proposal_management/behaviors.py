@@ -2040,7 +2040,7 @@ class ModerationVote(StartBallot):
                     user=moderator,
                     roles=(('LocalModerator', proposal),))
 
-            accepted = ballot_result(self)
+            accepted = ballot_result(self, True)
             root = getSite()
             user = get_current()
             if accepted:

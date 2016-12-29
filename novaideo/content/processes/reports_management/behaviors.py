@@ -291,7 +291,7 @@ class ModerationVote(StartBallot):
                     user=moderator,
                     roles=(('LocalModerator', content),))
 
-            accepted = ballot_result(self)
+            accepted = ballot_result(self, True)
             root = getSite()
             if accepted:
                 ignore(content, request, root)

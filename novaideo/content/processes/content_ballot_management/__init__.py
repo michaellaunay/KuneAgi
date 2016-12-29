@@ -65,13 +65,13 @@ def start_ballot_proc(context, process_id):
     return proc
 
 
-def ballot_result(vote_action):
+def ballot_result(vote_action, default_value=False):
     ballots = getattr(vote_action.sub_process, 'ballots', [])
     if ballots:
         report = ballots[0].report
         report.calculate_votes()
         if not report.voters:
-            return False
+            return default_value
 
         electeds = report.get_electeds()
         if electeds is None:
@@ -79,7 +79,7 @@ def ballot_result(vote_action):
         else:
             return True
 
-    return False
+    return default_value
 
 
 def start_ballot(

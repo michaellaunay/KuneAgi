@@ -1245,7 +1245,7 @@ class ModerationVote(StartBallot):
                     user=moderator,
                     roles=(('LocalModerator', idea),))
 
-            accepted = ballot_result(self)
+            accepted = ballot_result(self, True)
             root = getSite()
             if accepted:
                 publish_idea_moderation(idea, request, root)
