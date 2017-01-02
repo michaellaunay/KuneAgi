@@ -386,17 +386,17 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign'):
             internal_kind=InternalAlertKind.working_group_alert,
             subjects=[context], alert_kind='wg_'+kind,
             **subject_data)
-        mail_template = root.get_mail_template('wg_'+kind)
-        subject = mail_template['subject'].format(
-            subject_title=context.title)
-        email_data = get_user_data(user, 'recipient', request)
-        email_data.update(subject_data)
-        message = mail_template['template'].format(
-            novaideo_title=root.title,
-            **email_data
-        )
-        alert('email', [sender], [user.email],
-              subject=subject, body=message)
+        # mail_template = root.get_mail_template('wg_'+kind)
+        # subject = mail_template['subject'].format(
+        #     subject_title=context.title)
+        # email_data = get_user_data(user, 'recipient', request)
+        # email_data.update(subject_data)
+        # message = mail_template['template'].format(
+        #     novaideo_title=root.title,
+        #     **email_data
+        # )
+        # alert('email', [sender], [user.email],
+        #       subject=subject, body=message)
 
     run_notation_process(
         context, request, user, members, 'member_notation')

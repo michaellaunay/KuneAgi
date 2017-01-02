@@ -591,7 +591,7 @@ PARTICIPATION_GROUP = {
     'group_id': 'vote_participation',
     'group_title': _('Voter pour ou contre les candidatures'),
     'group_activate': False,
-    'group_activator_title': _('Les candidatures'),
+    'group_activator_title': _('Votes sur les candidatures'),
     'group_activator_class_css': 'vote-action',
     'group_activator_style_picto': 'glyphicon glyphicon-stats',
     'group_activator_order': 100
@@ -628,7 +628,7 @@ EXCLUSION_GROUP = {
     'group_id': 'vote_exclusion',
     'group_title': _('Voter pour ou contre les exclusions'),
     'group_activate': False,
-    'group_activator_title': _('Les exclusions'),
+    'group_activator_title': _('Votes sur les exclusions'),
     'group_activator_class_css': 'vote-action',
     'group_activator_style_picto': 'glyphicon glyphicon-stats',
     'group_activator_order': 100
@@ -638,8 +638,8 @@ EXCLUSION_GROUP = {
 BALLOT_DATA[Proposal.__name__+'-exclusionparticipant'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/new_exclusion.pt',
     'ballot_title': exclusion_title,
-    'true_value': _("Accept the exclusion"),
-    'false_value': _("Refuse the exclusion"),
+    'true_value': _("Exclure ce(tte) Participant(e) du Groupe de Travail"),
+    'false_value': _("Maintenir ce(tte) Participant(e) dans le Groupe de Travail"),
     'secret_ballot': False,
     'process_id': 'exclusionparticipant',
     'group': EXCLUSION_GROUP
