@@ -1396,7 +1396,7 @@ class ExcludeParticipant(InfiniteCardinality):
     style_descriminator = 'wg-action'
     style_interaction = 'ajax-action'
     style_order = 2
-    style_picto = 'typcn typcn-user-add'
+    style_picto = 'octicon octicon-sign-out'
     style_css_class = 'btn-success'
     submission_title = _('Continue')
     isSequential = False
@@ -1679,13 +1679,13 @@ class Work(ElementaryAction):
         context.state.insert(0, 'amendable')
         #The first improvement cycle is started
         if working_group.first_improvement_cycle:
-            mail_template = root.get_mail_template('start_work')
+            mail_template = root.get_mail_template('first_start_work')
             self._send_mails(
                 context, request,
                 mail_template['subject'], mail_template['template'])
             working_group.first_improvement_cycle = False
         else:
-            mail_template = root.get_mail_template('first_start_work')
+            mail_template = root.get_mail_template('start_work')
             self._send_mails(
                 context, request,
                 mail_template['subject'], mail_template['template'])
