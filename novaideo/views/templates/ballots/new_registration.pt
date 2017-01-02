@@ -11,9 +11,9 @@
 	<p tal:define="registration process.registration">
 		<span i18n:translate="">Les Informations d'Identité reçues de la personne lors de son inscription sont:</span>
 		<dl class="dl-horizontal">
-	        <dt i18n:translate="">First name</dt>
+	        <dt i18n:translate="">First names</dt>
 	        <dd><span tal:replace="registration.first_name"/></dd>
-	        <dt i18n:translate="">Last name</dt>
+	        <dt i18n:translate="">Last names</dt>
 	        <dd><span tal:replace="registration.last_name"/></dd>
 	        <dt i18n:translate="">Birth date</dt>
 	        <dd><span tal:replace="layout.to_localized_time(registration.birth_date)"/></dd>

@@ -269,12 +269,14 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 
     first_name = colander.SchemaNode(
         colander.String(),
-        title=_('First name'),
+        title=_('First names'),
+        description=_("Prénoms, dans l'ordre de l'état-civil, séparés par des virgules")
         )
 
     last_name = colander.SchemaNode(
         colander.String(),
-        title=_('Last name'),
+        title=_('Last names'),
+        description=_("Noms, dans l'ordre de l'état-civil")
         )
 
     birth_date = colander.SchemaNode(

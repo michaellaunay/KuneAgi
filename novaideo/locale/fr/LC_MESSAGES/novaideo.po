@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-12-29 17:02+0100\n"
+"POT-Creation-Date: 2017-01-02 19:06+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -1142,16 +1142,10 @@ msgid "Please choose one or more newsletters."
 msgstr "Veuillez choisir une ou plusieurs infolettres."
 
 #: novaideo/views/newsletter_management/subscribe_newsletter.py:56
-#: novaideo/views/user_management/templates/see_registration.pt:18
-#: novaideo/views/templates/ballots/new_registration.pt:14
-#: novaideo/content/person.py:272
 msgid "First name"
 msgstr "Prénom"
 
 #: novaideo/views/newsletter_management/subscribe_newsletter.py:61
-#: novaideo/views/user_management/templates/see_registration.pt:20
-#: novaideo/views/templates/ballots/new_registration.pt:16
-#: novaideo/content/person.py:277
 msgid "Last name"
 msgstr "Nom"
 
@@ -1880,7 +1874,7 @@ msgstr "Veuillez choisir un mot de passe pour valider votre inscription"
 #: novaideo/views/invitation_management/accept_invitation.py:37
 #: novaideo/views/user_management/confirmregistration.py:35
 #: novaideo/views/user_management/templates/login.pt:16
-#: novaideo/content/person.py:305
+#: novaideo/content/person.py:307
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -1905,7 +1899,7 @@ msgstr "${nember} invitations trouvées"
 #: novaideo/views/invitation_management/templates/see_invitation.pt:26
 #: novaideo/views/templates/invitation_result.pt:23
 #: novaideo/views/templates/person_bloc.pt:38
-#: novaideo/views/templates/person_result.pt:39 novaideo/content/person.py:312
+#: novaideo/views/templates/person_result.pt:39 novaideo/content/person.py:314
 #: novaideo/adapters/__init__.py:28
 msgid "Organization"
 msgstr "Organisation"
@@ -2365,9 +2359,21 @@ msgstr ""
 msgid "Expired"
 msgstr "Expiré"
 
+#: novaideo/views/user_management/templates/see_registration.pt:18
+#: novaideo/views/templates/ballots/new_registration.pt:14
+#: novaideo/content/person.py:272
+msgid "First names"
+msgstr "Prénoms"
+
+#: novaideo/views/user_management/templates/see_registration.pt:20
+#: novaideo/views/templates/ballots/new_registration.pt:16
+#: novaideo/content/person.py:278
+msgid "Last names"
+msgstr "Noms"
+
 #: novaideo/views/user_management/templates/see_registration.pt:22
 #: novaideo/views/templates/ballots/new_registration.pt:18
-#: novaideo/content/person.py:282
+#: novaideo/content/person.py:284
 msgid "Birth date"
 msgstr "Date de naissance"
 
@@ -7234,7 +7240,7 @@ msgstr "Titre"
 msgid "Description"
 msgstr "Description"
 
-#: novaideo/content/smart_folder.py:136 novaideo/content/person.py:295
+#: novaideo/content/smart_folder.py:136 novaideo/content/person.py:297
 msgid "Locale"
 msgstr "Langue"
 
@@ -7685,7 +7691,7 @@ msgstr "Joindre des fichiers à votre commentaire"
 msgid "Candidacy"
 msgstr "Candidature"
 
-#: novaideo/content/person.py:394
+#: novaideo/content/person.py:396
 msgid "Person"
 msgstr "Personne"
 
@@ -7717,12 +7723,20 @@ msgstr ""
 "déterminer une zone d'intérêt. Plusieurs images seront générés à partir de "
 "cette zone."
 
-#: novaideo/content/person.py:288
+#: novaideo/content/person.py:273
+msgid "Prénoms, dans l'ordre de l'état-civil, séparés par des virgules"
+msgstr ""
+
+#: novaideo/content/person.py:279
+msgid "Noms, dans l'ordre de l'état-civil"
+msgstr ""
+
+#: novaideo/content/person.py:290
 msgctxt "user"
 msgid "Title"
 msgstr "Civilité"
 
-#: novaideo/content/person.py:289
+#: novaideo/content/person.py:291
 msgid ""
 "Please do not select anything if you do not want to communicate this "
 "information."
@@ -7730,11 +7744,11 @@ msgstr ""
 "Veuillez ne rien sélectionner si vous ne souhaitez pas communiquer cette "
 "information."
 
-#: novaideo/content/person.py:319
+#: novaideo/content/person.py:321
 msgid "Keep me anonymous"
 msgstr "Rester anonyme"
 
-#: novaideo/content/person.py:321
+#: novaideo/content/person.py:323
 msgid ""
 "Vous pouvez choisir maintenant comment faire apparaître votre identité sur "
 "le site, entre : (1) avec votre identité complète réelle (tous vos prénoms "
@@ -7745,11 +7759,11 @@ msgid ""
 "pourrez plus le changer après."
 msgstr ""
 
-#: novaideo/content/person.py:340
+#: novaideo/content/person.py:342
 msgid "Pseudonym"
 msgstr "Pseudonyme"
 
-#: novaideo/content/person.py:341
+#: novaideo/content/person.py:343
 msgid ""
 "Veuillez choisir le pseudonyme qui vous identifiera tout au long de votre "
 "activité sur la plate-forme. Ce pseudonyme peut correspondre à votre "
@@ -7758,7 +7772,7 @@ msgid ""
 "pseudonyme. Choisissez-le avec soin !"
 msgstr ""
 
-#: novaideo/content/person.py:353
+#: novaideo/content/person.py:355
 msgid "I have read and accept the terms and conditions"
 msgstr "J'ai lu et accepte les termes et conditions d'utilisation"
 
@@ -7771,7 +7785,7 @@ msgstr "Le pseudonyme doit être défini"
 msgid "${pseudonym} pseudonym already in use"
 msgstr "Pseudonyme ${pseudonym} déjà utilisé"
 
-#: novaideo/content/person.py:383
+#: novaideo/content/person.py:385
 msgid "User already exists"
 msgstr "L'utilisateur existe déjà"
 
@@ -8612,7 +8626,7 @@ msgid "Voter pour ou contre les candidatures"
 msgstr ""
 
 #: novaideo/content/processes/proposal_management/definition.py:594
-msgid "Les candidatures"
+msgid "Votes sur les candidatures"
 msgstr ""
 
 #: novaideo/content/processes/proposal_management/definition.py:604
@@ -8633,16 +8647,16 @@ msgid "Voter pour ou contre les exclusions"
 msgstr ""
 
 #: novaideo/content/processes/proposal_management/definition.py:631
-msgid "Les exclusions"
+msgid "Votes sur les exclusions"
 msgstr ""
 
 #: novaideo/content/processes/proposal_management/definition.py:641
-msgid "Accept the exclusion"
-msgstr "Accepter l'exclusion"
+msgid "Exclure ce(tte) Participant(e) du Groupe de Travail"
+msgstr ""
 
 #: novaideo/content/processes/proposal_management/definition.py:642
-msgid "Refuse the exclusion"
-msgstr "Refuser l'exclusion"
+msgid "Maintenir ce(tte) Participant(e) dans le Groupe de Travail"
+msgstr ""
 
 #: novaideo/content/processes/proposal_management/definition.py:198
 msgid "Continue to improve the proposal or not"
@@ -9072,6 +9086,9 @@ msgstr "Trouver des entités"
 #: novaideo/web_services/export_entities.py:157
 msgid "Content type"
 msgstr "Type de contenu"
+
+#~ msgid "Accept the exclusion"
+#~ msgstr "Accepter l'exclusion"
 
 #~ msgid "The maximum number of participants has been reached"
 #~ msgstr "Nombre maximum de participants pour un groupe de travail"
