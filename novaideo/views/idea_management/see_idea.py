@@ -26,19 +26,16 @@ from .compare_idea import CompareIdeaView
 from .see_workinggroups import SeeRelatedWorkingGroupsView
 
 
-_marker = object()
-
-
 class IdeaHeaderView(BasicView):
-    title = _('Idea header')
     name = 'ideaheader'
+    viewid = 'ideaheader'
     behaviors = [SeeIdea]
+    validate_behaviors = False
     template = 'novaideo:views/idea_management/templates/header_idea.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
-    viewid = 'ideaheader'
-    validate_behaviors = False
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/ballot_management.js']}
+    title = _('Idea header')
 
     def _cant_publish_alert(self, actions, user):
         if not self.request.moderate_ideas and \
@@ -99,14 +96,14 @@ class IdeaHeaderView(BasicView):
 
 
 class DetailIdeaView(BasicView):
-    title = _('Details')
     name = 'seeIdea'
+    viewid = 'seeidea'
     behaviors = [SeeIdea]
+    validate_behaviors = False
+    view_icon = 'glyphicon glyphicon-eye-open'
     template = 'novaideo:views/idea_management/templates/see_idea.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
-    view_icon = 'glyphicon glyphicon-eye-open'
-    viewid = 'seeidea'
-    validate_behaviors = False
+    title = _('Details')
 
     def update(self):
         self.execute(None)
@@ -141,11 +138,11 @@ class DetailIdeaView(BasicView):
 
 
 class SeeIdeaActionsView(MultipleView):
-    title = ''
     name = 'seeiactionsdea'
     template = 'novaideo:views/templates/multipleview.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     css_class = 'integreted-tab-content'
+    title = ''
     views = (DetailIdeaView, SeeRelatedWorkingGroupsView, CompareIdeaView,)
 
     def _activate(self, items):
@@ -158,9 +155,9 @@ class SeeIdeaActionsView(MultipleView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeIdeaView(MultipleView):
-    title = ''
     name = 'seeidea'
     template = 'novaideo:views/templates/entity_multipleview.pt'
+    title = ''
     views = (IdeaHeaderView, SeeIdeaActionsView)
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/compare_idea.js',
