@@ -23,18 +23,19 @@ from novaideo.utilities.util import (
     get_vote_actions_body)
 from novaideo import _
 from .compare_idea import CompareIdeaView
+from .see_workinggroups import SeeRelatedWorkingGroupsView
 
 
 _marker = object()
 
 
-class DetailIdeaView(BasicView):
-    title = _('Details')
-    name = 'seeIdea'
+class IdeaHeaderView(BasicView):
+    title = _('Idea header')
+    name = 'ideaheader'
     behaviors = [SeeIdea]
-    template = 'novaideo:views/idea_management/templates/see_idea.pt'
-    wrapper_template = 'daceui:templates/simple_view_wrapper.pt'
-    viewid = 'seeidea'
+    template = 'novaideo:views/idea_management/templates/header_idea.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    viewid = 'ideaheader'
     validate_behaviors = False
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/ballot_management.js']}
@@ -56,15 +57,11 @@ class DetailIdeaView(BasicView):
         return False
 
     def update(self):
-        self.execute(None)
-        vote_actions = get_vote_actions_body(
-            self.context, self.request)
-        try:
-            navbars = generate_navbars(
-                self.request, self.context,
-                text_action=vote_actions['activators'])
-        except ObjectRemovedException:
-            return HTTPFound(self.request.resource_url(getSite(), ''))
+        vote_actions = self.get_binding('vote_actions')
+        navbars = self.get_binding('navbars')
+        root = self.get_binding('root')
+        if navbars is None:
+            return HTTPFound(self.request.resource_url(root, ''))
 
         resources = merge_dicts(navbars['resources'], vote_actions['resources'],
                                 ('js_links', 'css_links'))
@@ -74,34 +71,22 @@ class DetailIdeaView(BasicView):
         if not messages:
             messages = navbars['messages']
 
-        user = get_current()
-        files = getattr(self.context, 'attached_files', [])
-        files_urls = []
-        for file_ in files:
-            files_urls.append({'title': file_.title,
-                               'url': file_.url})
-
-        is_censored = 'censored' in self.context.state
-        to_hide = is_censored and not has_any_roles(
-            user=user, roles=(('Owner', self.context), 'Moderator'))
+        user = self.get_binding('user')
+        is_censored = self.get_binding('is_censored')
+        to_hide = self.get_binding('to_hide')
         result = {}
         values = {
             'idea': self.context,
             'is_censored': is_censored,
             'to_hide': to_hide,
-            'text': self.context.text.replace('\n', '<br/>'),
             'state': get_states_mapping(
                 user, self.context, self.context.state[0]),
             'current_user': user,
-            'files': files_urls,
             'cant_publish': self._cant_publish_alert(
                 navbars['all_actions'], user),
             'cant_submit': self._cant_submit_alert(
                 navbars['all_actions'], user),
             'navbar_body': navbars['navbar_body'],
-            'footer_actions_body': navbars['footer_actions_body'],
-            'actions_bodies': navbars['body_actions'],
-            'footer_body': navbars['footer_body'],
             'vote_actions_body': vote_actions['body']
         }
         body = self.content(args=values, template=self.template)['body']
@@ -110,15 +95,58 @@ class DetailIdeaView(BasicView):
         item['isactive'] = vote_actions['isactive'] or navbars['isactive']
         result.update(resources)
         result['coordinates'] = {self.coordinates: [item]}
+        return result
+
+
+class DetailIdeaView(BasicView):
+    title = _('Details')
+    name = 'seeIdea'
+    behaviors = [SeeIdea]
+    template = 'novaideo:views/idea_management/templates/see_idea.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    view_icon = 'glyphicon glyphicon-eye-open'
+    viewid = 'seeidea'
+    validate_behaviors = False
+
+    def update(self):
+        self.execute(None)
+        navbars = self.get_binding('navbars')
+        root = self.get_binding('root')
+        if navbars is None:
+            return HTTPFound(self.request.resource_url(root, ''))
+
+        user = self.get_binding('user')
+        to_hide = self.get_binding('to_hide')
+        files = getattr(self.context, 'attached_files', [])
+        files_urls = []
+        for file_ in files:
+            files_urls.append({'title': file_.title,
+                               'url': file_.url})
+
+        result = {}
+        values = {
+            'idea': self.context,
+            'to_hide': to_hide,
+            'text': self.context.text.replace('\n', '<br/>'),
+            'current_user': user,
+            'files': files_urls,
+            'footer_body': navbars['footer_body']
+        }
+        body = self.content(args=values, template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        item['isactive'] = True
+        result['coordinates'] = {self.coordinates: [item]}
         result = merge_dicts(self.requirements_copy, result)
         return result
 
 
 class SeeIdeaActionsView(MultipleView):
-    title = _('actions')
+    title = ''
     name = 'seeiactionsdea'
-    template = 'novaideo:views/idea_management/templates/panel_group.pt'
-    views = (CompareIdeaView,)
+    template = 'novaideo:views/templates/multipleview.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
+    css_class = 'integreted-tab-content'
+    views = (DetailIdeaView, SeeRelatedWorkingGroupsView, CompareIdeaView,)
 
     def _activate(self, items):
         pass
@@ -132,12 +160,35 @@ class SeeIdeaActionsView(MultipleView):
 class SeeIdeaView(MultipleView):
     title = ''
     name = 'seeidea'
-    template = 'novaideo:views/templates/simple_mergedmultipleview.pt'
-    views = (DetailIdeaView, SeeIdeaActionsView)
+    template = 'novaideo:views/templates/entity_multipleview.pt'
+    views = (IdeaHeaderView, SeeIdeaActionsView)
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/compare_idea.js',
                                  'novaideo:static/js/comment.js']}
     validators = [SeeIdea.get_validator()]
+
+    def bind(self):
+        bindings = {}
+        bindings['navbars'] = None
+        bindings['vote_actions'] = None
+        vote_actions = get_vote_actions_body(
+            self.context, self.request)
+        try:
+            navbars = generate_navbars(
+                self.request, self.context,
+                text_action=vote_actions['activators'])
+            bindings['navbars'] = navbars
+            bindings['vote_actions'] = vote_actions
+        except ObjectRemovedException:
+            return
+
+        bindings['user'] = get_current()
+        bindings['root'] = getSite()
+        bindings['is_censored'] = 'censored' in self.context.state
+        bindings['to_hide'] = bindings['is_censored'] and not has_any_roles(
+            user=bindings['user'],
+            roles=(('Owner', self.context), 'Moderator'))
+        setattr(self, '_bindings', bindings)
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
