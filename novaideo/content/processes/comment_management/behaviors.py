@@ -38,7 +38,7 @@ from novaideo.content.processes.content_ballot_management import (
 
 
 def respond_relation_validation(process, context):
-    subject = context.subject
+    subject = context.channel.get_subject(get_current())
     comment_action = VALIDATOR_BY_CONTEXT.get(
         subject.__class__, {}).get('action', None)
     relation_validation = getattr(comment_action, 'relation_validation', None)
@@ -49,7 +49,7 @@ def respond_relation_validation(process, context):
 
 
 def respond_roles_validation(process, context):
-    subject = context.subject
+    subject = context.channel.get_subject(get_current())
     comment_action = VALIDATOR_BY_CONTEXT.get(
         subject.__class__, {}).get('action', None)
     roles_validation = getattr(comment_action, 'roles_validation', None)
@@ -60,7 +60,7 @@ def respond_roles_validation(process, context):
 
 
 def respond_processsecurity_validation(process, context):
-    subject = context.subject
+    subject = context.channel.get_subject(get_current())
     comment_action = VALIDATOR_BY_CONTEXT.get(
         subject.__class__, {}).get('action', None)
     processsecurity_validation = getattr(
@@ -76,7 +76,7 @@ def respond_state_validation(process, context):
     if 'published' not in context.state:
         return False
 
-    subject = context.subject
+    subject = context.channel.get_subject(get_current())
     comment_action = VALIDATOR_BY_CONTEXT.get(
         subject.__class__, {}).get('action', None)
     state_validation_ = getattr(
