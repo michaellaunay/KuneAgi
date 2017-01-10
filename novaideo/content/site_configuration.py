@@ -10,7 +10,8 @@ import deform
 from pontus.schema import omit, select, Schema
 from pontus.widget import (
     SequenceWidget, SimpleMappingWidget,
-    CheckboxChoiceWidget, Select2Widget)
+    CheckboxChoiceWidget, Select2Widget,
+    RichTextWidget)
 from pontus.file import ObjectData, File
 from deform_treepy.widget import (
     DictSchemaType, KeywordsTreeWidget)
@@ -233,6 +234,24 @@ class UserInterfaceConfigurationSchema(Schema):
         label=_('Activate the social share'),
         title='',
         missing=False
+        )
+
+
+class HomepageConfigurationSchema(Schema):
+
+    homepage_picture = colander.SchemaNode(
+        ObjectData(File),
+        widget=get_file_widget(file_extensions=['png', 'jpg', 'svg']),
+        title=_('Picture of the homepage'),
+        missing=None,
+        description=_("Only PNG and SVG files are supported."),
+        )
+
+    homepage_text = colander.SchemaNode(
+        colander.String(),
+        widget=RichTextWidget(),
+        title=_("Text"),
+        missing=''
         )
 
 
