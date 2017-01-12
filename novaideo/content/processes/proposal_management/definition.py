@@ -231,7 +231,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
                             group=VOTE_PUBLISHING_GROUP)
             working_group.addtoproperty('ballots', ballot)
             ballot.report.description = VOTE_REOPENING_MESSAGE
-            ballot.title = _('Reopen the working group')
+            ballot.title = _('Reopen the Working Group')
             processes.extend(ballot.run_ballot(context=proposal))
             subprocess.ballots.append(ballot)
             working_group.reopening_configuration_ballot = ballot
@@ -320,7 +320,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        groups=[]),
                 publishasproposal = ActivityDefinition(contexts=[PublishAsProposal],
                                        description=_("Transform the idea into a proposal"),
-                                       title=_('Create a working group'),
+                                       title=_('Create a Working Group'),
                                        groups=[]),
                 duplicate = ActivityDefinition(contexts=[DuplicateProposal],
                                        description=_("Duplicate this proposal"),
@@ -332,7 +332,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        groups=[]),
 
                 submit = ActivityDefinition(contexts=[SubmitProposalModeration],
-                                       description=_("Submit the proposal to the moderation"),
+                                       description=_("Submit the Proposal to the Moderation"),
                                        title=_("Submit"),
                                        groups=[]),
                 edit = ActivityDefinition(contexts=[EditProposal],
@@ -368,7 +368,7 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        title=_("Oppose"),
                                        groups=[]),
                 withdraw_token = ActivityDefinition(contexts=[WithdrawToken],
-                                       description=_("Withdraw token from proposal"),
+                                       description=_("Withdraw token from the proposal"),
                                        title=_("Withdraw my token"),
                                        groups=[]),
                 present = ActivityDefinition(contexts=[PresentProposal],
@@ -380,8 +380,8 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        title=_("Comment"),
                                        groups=[]),
                 seeamendments = ActivityDefinition(contexts=[SeeAmendments],
-                                       description=_("Amendments"),
-                                       title=_("Amendments"),
+                                       description=_("The amendments"),
+                                       title=_("The amendments"),
                                        groups=[]),
                 seemembers= ActivityDefinition(contexts=[SeeMembers],
                                        description=_("Members"),
@@ -404,8 +404,8 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        title=_("Details"),
                                        groups=[]),
                 attach_files = ActivityDefinition(contexts=[AttachFiles],
-                                       description=_("Attache files"),
-                                       title=_("Attache files"),
+                                       description=_("Attach files"),
+                                       title=_("Attach files"),
                                        groups=[]),
                 end = EndEventDefinition(),
         )
@@ -487,8 +487,8 @@ class ProposalImprovementCycle(ProcessDefinition, VisualisableElement):
                                        groups=[]),
                 timer_alert = IntermediateCatchEventDefinition(TimerEventDefinition(time_date=alert_end_cycle_duration)),
                 alert_end = ActivityDefinition(contexts=[AlertEnd],
-                                       description=_("Alert the end of cycle"),
-                                       title=_("Alert the end of cycle"),
+                                       description=_("Alert for the end of an improvement cycle"),
+                                       title=_("Alert for the end of an improvement cycle"),
                                        groups=[]),
                 work = WorkSubProcessDefinition(pd='None', contexts=[Work],
                                        description=_("Start work"),

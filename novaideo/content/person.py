@@ -242,7 +242,7 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         widget=keyword_widget,
         default=DEFAULT_TREE,
         missing=DEFAULT_TREE,
-        title=_('Preferences'),
+        title=_('Topics of interest'),
         description=_('Indicate keywords. You can specify a second keyword level for each keyword chosen.')
         )
 

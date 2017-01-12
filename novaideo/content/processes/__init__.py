@@ -18,7 +18,7 @@ MODERATORS_NB = 3
 
 STATES_PARTICIPANT_MAPPING = {
     'default': {
-        'draft': _('Draft'),
+        'draft': _('Private'),
         'published': _('Published'),
         'archived': _('Archived')
     },
@@ -33,9 +33,9 @@ STATES_PARTICIPANT_MAPPING = {
 	    'processed': _('Processed'),
     },
     'proposal': {
-        'draft': _('Draft'),
+        'draft': _('Private'),
         'censored': _('Censored'),
-        'submitted_support': _('Submitted for support'),
+        'submitted_support': _('Submitted for evaluation'),
         'submitted': _('Submitted for moderation'),
         'published': _('Published'),
 	    'open to a working group': _('Open to a working group'),
@@ -44,21 +44,21 @@ STATES_PARTICIPANT_MAPPING = {
 	    'amendable': _('Being improved'),
 	    'archived': _('Archived'),
 	    'examined': _('Examined'),
-	    'favorable': _('Favorable'),
-	    'to_study': _('To study'),
-	    'unfavorable': _('Unfavorable'),
+	    'favorable': _('Positive'),
+	    'to_study': _('To be re-worked upon'),
+	    'unfavorable': _('Negative'),
 
     },
     'idea': {
 	    'to work': _('To be worked upon'),
         'censored': _('Censored'),
-        'submitted_support': _('Submitted for support'),
+        'submitted_support': _('Submitted for evaluation'),
 	    'submitted': _('Submitted for moderation'),
 	    'archived': _('Archived'),
 	    'examined': _('Examined'),
-	    'favorable': _('Favorable'),
-	    'to_study': _('To study'),
-	    'unfavorable': _('Unfavorable'),
+	    'favorable': _('Positive'),
+	    'to_study': _('To be re-worked upon'),
+	    'unfavorable': _('Negative'),
 	    'published': _('Published')
     },
     'invitation': {
@@ -85,7 +85,7 @@ STATES_PARTICIPANT_MAPPING = {
 
 STATES_MEMBER_MAPPING = {
     'default': {
-        'draft': _('Draft'),
+        'draft': _('Private'),
         'published': _('Published'),
         'archived': _('Archived')
     },
@@ -100,9 +100,9 @@ STATES_MEMBER_MAPPING = {
 	    'processed': _('Processed'),
     },
     'proposal': {
-        'draft': _('Draft'),
+        'draft': _('Private'),
         'censored': _('Censored'),
-        'submitted_support': _('Submitted for support'),
+        'submitted_support': _('Submitted for evaluation'),
         'submitted': _('Submitted for moderation'),
         'published': _('Published'),
 	    'open to a working group': _('Open to a working group'),
@@ -111,21 +111,21 @@ STATES_MEMBER_MAPPING = {
 	    'amendable': _('Being improved'),
 	    'archived': _('Archived'),
 	    'examined': _('Examined'),
-	    'favorable': _('Favorable'),
-	    'to_study': _('To study'),
-	    'unfavorable': _('Unfavorable'),
+	    'favorable': _('Positive'),
+	    'to_study': _('To be re-worked upon'),
+	    'unfavorable': _('Negative'),
 
     },
     'idea': {
 	    'to work': _('To be worked upon'),
         'censored': _('Censored'),
-        'submitted_support': _('Submitted for support'),
+        'submitted_support': _('Submitted for evaluation'),
 	    'submitted': _('Submitted for moderation'),
 	    'archived': _('Archived'),
 	    'examined': _('Examined'),
-	    'favorable': _('Favorable'),
-	    'to_study': _('To study'),
-	    'unfavorable': _('Unfavorable'),
+	    'favorable': _('Positive'),
+	    'to_study': _('To be re-worked upon'),
+	    'unfavorable': _('Negative'),
 	    'published': _('Published')
     },
     'invitation': {
