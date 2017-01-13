@@ -86,7 +86,6 @@
 
   <span i18n:translate="" tal:condition="alert_kind == 'member_notation'">
     You are invited to evaluate the quality of the cooperative behaviour of <span i18n:name="dynamic">${object.user_title}</span> in the framework of the Working Group related to the Proposal <span i18n:name="subject">${subject.title}</span>.</span>
-  </div>
 
   <span i18n:translate="" tal:condition="alert_kind == 'members_notation'">
     You are invited to evaluate the quality of the cooperative behaviour of the Participants in the Working Group related to the Proposal <span i18n:name="dynamic">${subject.title}</span>, according to what you perceived in the framework of this Working Group.</span>
@@ -115,4 +114,5 @@
   <span i18n:translate="" tal:condition="alert_kind == 'accepted_participation' and not composition_control">
     Your application to the Working Group related to this Proposal has been accepted.
   </span>
+  </div>
 </div>
