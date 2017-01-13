@@ -25,7 +25,7 @@ BALLOT_DATA = {
     'default': {
         'ballot_description': _("Moderation"),
         'ballot_title': _("Moderation"),
-        'true_value': _("Favor"),
+        'true_value': _("In favour"),
         'false_value': _("Against"),
         'process_id': None
     }

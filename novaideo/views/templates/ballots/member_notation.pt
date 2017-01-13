@@ -5,7 +5,7 @@
 		subject process.execution_context.involved_entity(
             'subject');
         subject_icon getattr(subject, 'icon', '');">
-        <span i18n:translate="">Vous êtes invité à noter</span>
+        <span i18n:translate="">You are invited to mark</span>
          <a target="_blank" tal:attributes="href request.resource_url(member, '@@index')"
             data-oid="${getattr(member, '__oid__', '')}"
             class="alert-link toggle-popover"
@@ -18,18 +18,18 @@
             <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
             ${getattr(member, 'title', member.name)}
         </a>
-        <span i18n:translate="">sur la qualité de son comportement coopératif dans le cadre du groupe lié à la proposition</span> 
+        <span i18n:translate="">the quality of his/her cooperative behaviour in the framework of the Working Group related to the proposal</span> 
         <a target="_blank" href="${request.resource_url(subject, '@@index')}" data-oid="${getattr(subject, '__oid__', '')}"
             class="alert-link toggle-popover">
             <span class="${getattr(subject, 'icon')}"></span> ${subject.title}
         </a>.
     </p>
     <p>
-    	<span i18n:translate="">Pour cela il vous suffit de donner une note parmi celles proposées.</span>
+    	<span i18n:translate="">In order to do so, you just need to give a mark among those proposed.</span>
         <ul>
-            <li i18n:translate="">-1 = comportement coopératif inférieur à ce que j'attends dans le cadre d'un groupe de travail</li>
-            <li i18n:translate="">0 = comportement coopératif conforme à ce que j'attends dans le cadre d'un groupe de travail</li>
-            <li i18n:translate="">+1 = comportement coopératif meilleur que ce que j'attends dans le cadre d'un groupe de travail</li>
+            <li i18n:translate="">-1 = cooperative behaviour below what I expect in a Working Group</li>
+            <li i18n:translate="">0 = cooperative behaviour in line with what I expect in a Working Group</li>
+            <li i18n:translate="">+1 = cooperative behaviour better than what I expect in a Working Group</li>
         </ul>
     </p>
 </div>

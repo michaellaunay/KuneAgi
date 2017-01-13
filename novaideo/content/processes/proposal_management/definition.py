@@ -558,15 +558,15 @@ class WorkspaceManagement(ProcessDefinition, VisualisableElement):
 
 
 def proposal_title(process, context):
-    return _("Vote de Modération pour une nouvelle Proposition « ${proposal} »",
+    return _("Vote to Moderate the new Proposal « ${proposal} »",
              mapping={'proposal': context.title})
 
 
 BALLOT_DATA[Proposal.__name__+'-proposalmoderation'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/moderate_proposal.pt',
     'ballot_title': proposal_title,
-    'true_value': _("Cette nouvelle Proposition est conforme à la Charte de Modération"),
-    'false_value': _("Cette nouvelle Proposition N'est PAS conforme à la Charte de Modération"),
+    'true_value': _("This new Proposal complies with the Moderation Charter"),
+    'false_value': _("This new Proposal DOES NOT comply with the Moderation Charter"),
     'process_id': 'proposalmoderation',
     'group': PROPOSAL_MODERATION_GROUP
 }
@@ -583,15 +583,15 @@ class ProposalModeration(ContentBallot):
 
 
 def participation_title(process, context):
-    return _("Candidacy of ${participant}",
+    return _("Application of ${participant}",
              mapping={'participant': process.participant.title})
 
 
 PARTICIPATION_GROUP = {
     'group_id': 'vote_participation',
-    'group_title': _('Voter pour ou contre les candidatures'),
+    'group_title': _('Vote for or against the applications'),
     'group_activate': False,
-    'group_activator_title': _('Votes sur les candidatures'),
+    'group_activator_title': _('The applications'),
     'group_activator_class_css': 'vote-action',
     'group_activator_style_picto': 'glyphicon glyphicon-stats',
     'group_activator_order': 100
@@ -601,8 +601,8 @@ PARTICIPATION_GROUP = {
 BALLOT_DATA[Proposal.__name__+'-proposalparticipation'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/new_participation.pt',
     'ballot_title': participation_title,
-    'true_value': _("Accepter ce Membre dans le Groupe de Travail"),
-    'false_value': _("Refuser ce Membre dans le Groupe de Travail"),
+    'true_value': _("Accept this Member in the Working Group"),
+    'false_value': _("Refuse this Member in the Working Group"),
     'secret_ballot': False,
     'process_id': 'proposalparticipation',
     'group': PARTICIPATION_GROUP
@@ -626,9 +626,9 @@ def exclusion_title(process, context):
 
 EXCLUSION_GROUP = {
     'group_id': 'vote_exclusion',
-    'group_title': _('Voter pour ou contre les exclusions'),
+    'group_title': _('Vote for or against the exclusions'),
     'group_activate': False,
-    'group_activator_title': _('Votes sur les exclusions'),
+    'group_activator_title': _('The exclusion requests'),
     'group_activator_class_css': 'vote-action',
     'group_activator_style_picto': 'glyphicon glyphicon-stats',
     'group_activator_order': 100
@@ -638,8 +638,8 @@ EXCLUSION_GROUP = {
 BALLOT_DATA[Proposal.__name__+'-exclusionparticipant'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/new_exclusion.pt',
     'ballot_title': exclusion_title,
-    'true_value': _("Exclure ce(tte) Participant(e) du Groupe de Travail"),
-    'false_value': _("Maintenir ce(tte) Participant(e) dans le Groupe de Travail"),
+    'true_value': _("Exclude this Participant from the Working Group"),
+    'false_value': _("Maintaining this Participant in the Working Group"),
     'secret_ballot': False,
     'process_id': 'exclusionparticipant',
     'group': EXCLUSION_GROUP

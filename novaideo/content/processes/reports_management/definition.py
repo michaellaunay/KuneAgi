@@ -39,8 +39,8 @@ class ReportsManagementProcess(ProcessDefinition, VisualisableElement):
 
     def __init__(self, **kwargs):
         super(ReportsManagementProcess, self).__init__(**kwargs)
-        self.title = _('Reports management')
-        self.description = _('Reports management')
+        self.title = _('Reported content management')
+        self.description = _('Reported content management')
 
     def _init_definition(self):
         self.defineNodes(
@@ -51,8 +51,8 @@ class ReportsManagementProcess(ProcessDefinition, VisualisableElement):
                                        title=_("Report"),
                                        groups=[]),
                 see_reports = ActivityDefinition(contexts=[SeeReports],
-                                       description=_("See reports"),
-                                       title=_("Reports"),
+                                       description=_("See reported contents"),
+                                       title=_("Reported contents"),
                                        groups=[]),
                 restor = ActivityDefinition(contexts=[Restor],
                                        description=_("Restore the content"),
@@ -75,7 +75,7 @@ class ReportsManagementProcess(ProcessDefinition, VisualisableElement):
 
 
 def idea_title(process, context):
-    return _("Vote de Modération sur l'idée signalée « ${content} »",
+    return _("Vote to Moderate the reported idea « ${content} »",
              mapping={'content': context.title})
 
 
@@ -93,15 +93,15 @@ IDEA_MODERATION_GROUP = {
 BALLOT_DATA[Idea.__name__+'-contentreportdecision'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/idea_report.pt',
     'ballot_title': idea_title,
-    'true_value': _("Cette idée est conforme à la Charte de Modération"),
-    'false_value': _("Cette idée n'est pas conforme à la Charte de Modération"),
+    'true_value': _("This idea complies with the Moderation Charter"),
+    'false_value': _("This idea DOES NOT comply with the Moderation Charter"),
     'process_id': 'contentreportdecision',
     'group': IDEA_MODERATION_GROUP
 }
 
 
 def proposal_title(process, context):
-    return _("Vote de Modération sur la proposition signalée « ${content} »",
+    return _("Vote to Moderate the reported Proposal « ${content} »",
              mapping={'content': context.title})
 
 
@@ -119,8 +119,8 @@ PROPOSAL_MODERATION_GROUP = {
 BALLOT_DATA[Proposal.__name__+'-contentreportdecision'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/proposal_report.pt',
     'ballot_title': proposal_title,
-    'true_value': _("Cette proposition est conforme à la Charte de Modération"),
-    'false_value': _("Cette proposition n'est pas conforme à la Charte de Modération"),
+    'true_value': _("This Proposal complies with the Moderation Charter"),
+    'false_value': _("This Proposal DOES NOT comply with the Moderation Charter"),
     'process_id': 'contentreportdecision',
     'group': PROPOSAL_MODERATION_GROUP
 }
@@ -139,9 +139,9 @@ COMMENT_MODERATION_GROUP = {
 
 BALLOT_DATA[Comment.__name__+'-contentreportdecision'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/comment_report.pt',
-    'ballot_title': _("Vote de Modération sur un commentaire signalé"),
-    'true_value': _("Ce commentaire est conforme à la Charte de Modération"),
-    'false_value': _("Ce commentaire n'est pas conforme à la Charte de Modération"),
+    'ballot_title': _("Vote to Moderate the reported comment"),
+    'true_value': _("This comment complies with the Moderation Charter"),
+    'false_value': _("This comment DOES NOT comply with the Moderation Charter"),
     'process_id': 'contentreportdecision',
     'group': COMMENT_MODERATION_GROUP
 }

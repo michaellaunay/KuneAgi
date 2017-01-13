@@ -60,12 +60,12 @@ class ExclusionSchema(Schema):
         ObjectType(),
         widget=participant_choice,
         missing=[],
-        title=_("Participant(e) dont vous demandez l'exclusion")
+        title=_("Participant that you request to exclude")
         )
 
 
 class ExcludeParticipantFormView(FormView):
-    title = _("Demander l'exclusion d'un(e) Participant(e) hors du Groupe de Travail")
+    title = _("Request the exclusion of a Participant out of the Working Group")
     schema = ExclusionSchema()
     behaviors = [ExcludeParticipant, Cancel]
     formid = 'formexcludeparticipant'
@@ -86,7 +86,7 @@ class ExcludeParticipantFormView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class ExcludeParticipantView(MultipleView):
-    title = _("Demander l'exclusion d'un(e) Participant(e) hors du Groupe de Travail")
+    title = _("Request the exclusion of a Participant out of the Working Group")
     name = 'excludeparticipant'
     behaviors = [ExcludeParticipant]
     viewid = 'excludeparticipant'

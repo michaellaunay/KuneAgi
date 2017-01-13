@@ -104,8 +104,8 @@ class ContentBallot(ProcessDefinition, VisualisableElement):
         self.defineNodes(
                 start = StartEventDefinition(),
                 start_ballot = SubProcessDefinition(pd='ballotprocess', contexts=[self.ballot_action],
-                                       description=_("Start voting for ballot"),
-                                       title=_("Start voting for ballot"),
+                                       description=_("Start the ballot"),
+                                       title=_("Start the ballot"),
                                        groups=[]),
                 end = EndEventDefinition(),
         )

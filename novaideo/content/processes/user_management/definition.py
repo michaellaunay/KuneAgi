@@ -186,9 +186,9 @@ class RegistrationManagement(ProcessDefinition, VisualisableElement):
 
 REGISTRATION_GROUP = {
     'group_id': 'vote_new_registration',
-    'group_title': _('Vote to confirm or not the identity of the member'),
+    'group_title': _('Vote to confirm or not the identity of the user'),
     'group_activate': False,
-    'group_activator_title': _('Vote to confirm or not the identity of the member'),
+    'group_activator_title': _('Vote to confirm or not the identity of the user'),
     'group_activator_class_css': 'vote-action',
     'group_activator_style_picto': 'octicon octicon-check',
     'group_activator_order': 100
@@ -197,8 +197,8 @@ REGISTRATION_GROUP = {
 BALLOT_DATA[Preregistration.__name__+'-registrationmoderation'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/new_registration.pt',
     'ballot_title': _("Confirm the user identity"),
-    'true_value': _("Confirmed identity"),
-    'false_value': _("Not confirmed identity"),
+    'true_value': _("Identity confirmed"),
+    'false_value': _("Identity NOT confirmed"),
     'process_id': 'registrationmoderation',
     'group': REGISTRATION_GROUP
 }

@@ -185,7 +185,7 @@ def pseudonym_validator(node, kw):
     if defined:
         if kw is _default_pseudonym:
             raise colander.Invalid(node,
-                _('Pseudonym must be defined'))
+                _('A pseudonym must be defined'))
 
         context = node.bindings['context']
         novaideo_catalog = find_catalog('novaideo')
@@ -320,15 +320,13 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
             item_css_class='Keep-me-anonymous-input'),
         label=_('Keep me anonymous'),
         title='',
-        description=_("Vous pouvez choisir maintenant comment "
-                      "faire apparaître votre identité sur le site,"
-                      " entre : (1) avec votre identité complète réelle"
-                      " (tous vos prénoms et tous vos noms, tels que renseignés"
-                      " ci-dessus), ou (2) avec un pseudonyme que vous choisissez."
-                      " Pour l'option 2, cochez la case ci-après « rester anonyme », "
-                      "qui vous donne accès au formulaire de choix de votre pseudonyme."
-                      " Attention ! Votre choix entre les deux options est irréversible. "
-                      "Vous ne pourrez plus le changer après."),
+        description=_("You may now choose how to have you identity to appear on the site, between: "
+                      "(1) with your complete real identity (all your given names and all your family "
+                      "names, as you just filled in above), or (2) with a pseudonym that you choose. "
+                      "For the option 2, please tick the box below \"Remain anonymous\". You will "
+                      "be given access to the form where you will be able to choose your pseudonym. "
+                      "Take great care! Your choice between both options is irrevertible. You will "
+                      "NEVER be able to change it any more afterwards."),
         missing=False
     )
 
@@ -340,19 +338,17 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
             pseudonym_validator,
             ),
         title=_('Pseudonym'),
-        description=_("Veuillez choisir le pseudonyme qui vous identifiera tout au "
-                       "long de votre activité sur la plate-forme. "
-                       "Ce pseudonyme peut correspondre à votre identité réelle, "
-                       "ou en être totalement différent, à votre choix. "
-                       "Faites attention ! Une fois choisi, vous ne pourrez plus jamais "
-                       "changer ce pseudonyme. Choisissez-le avec soin !"),
+        description=_("Please choose the pseudonym that will identify you for the whole duration of your "
+                      "activity on the platform. This pseudonym can match your real identity, or be "
+                      "completely different, as you choose. Be very careful! Once you have chosen it, "
+                      "you will NEVER be able to change this pseudonym afterwards. Choose it with care!"),
         missing=''
     )
 
     accept_conditions = colander.SchemaNode(
         colander.Boolean(),
         widget=conditions_widget,
-        label=_('I have read and accept the terms and conditions'),
+        label=_('I have read and accept the terms and conditions of use'),
         title='',
         missing=False
     )

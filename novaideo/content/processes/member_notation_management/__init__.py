@@ -17,9 +17,9 @@ from novaideo.utilities.alerts_utility import (
 
 
 NOTATIONS = [
-    (-1, _("-1 (inférieur à ce que j'attends)")),
-    (0, _("0 (conforme à ce que j'attends)")),
-    (1, _("1 (meilleur que ce que j'attends)"))]
+    (-1, _("-1 (below my expectations)")),
+    (0, _("0 (in line with my expectations)")),
+    (1, _("+1 (above my expectations)"))]
 
 
 DEFAULT_NOTATION = 0
@@ -30,9 +30,9 @@ DURATION = datetime.timedelta(days=1000)
 
 NOTATION_GROUP = {
     'group_id': 'vote_notation',
-    'group_title': _('Noter les membres'),
+    'group_title': _('Mark the cooperative behaviour of Members'),
     'group_activate': False,
-    'group_activator_title': _('Noter les membres'),
+    'group_activator_title': _('Mark the cooperative behaviour of Members'),
     'group_activator_class_css': 'vote-action',
     'group_activator_style_picto': 'fa fa-gavel',
     'group_activator_order': 100
@@ -42,7 +42,7 @@ NOTATION_GROUP = {
 def run_notation_process(context, request, user, members, alert_id=None):
     if members:
         subjects = [context]
-        title = _('Notation of ${member}',
+        title = _('Mark of the cooperative behaviour of ${member}',
                   mapping={'member': user.title})
         ballot = Ballot('FPTP', members, subjects, DURATION,
                         vote_process_id='membernotationmanagement',

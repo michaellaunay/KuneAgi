@@ -73,12 +73,12 @@ class NotesSchema(Schema):
     note = colander.SchemaNode(
         colander.Int(),
         default=0,
-        title=_('Notes'),
+        title=_('Marks'),
     )
 
 
 class NoteFormView(FormView):
-    title = _('Note the member')
+    title = _('Give a mark to the member')
     name = 'noteform'
     formid = 'formnote'
     behaviors = [Note]

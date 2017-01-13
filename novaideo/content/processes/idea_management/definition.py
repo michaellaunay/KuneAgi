@@ -206,15 +206,15 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
 
 
 def idea_title(process, context):
-    return _("Vote de Modération pour une nouvelle Idée « ${proposal} »",
-             mapping={'proposal': context.title})
+    return _("Vote to Moderate a new Idea « ${idea} »",
+             mapping={'idea': context.title})
 
 
 BALLOT_DATA[Idea.__name__+'-ideamoderation'] = {
     'ballot_description_template': 'novaideo:views/templates/ballots/moderate_idea.pt',
     'ballot_title': idea_title,
-    'true_value': _("Cette nouvelle Idée est conforme à la Charte de Modération"),
-    'false_value': _("Cette nouvelle Idée N'est PAS conforme à la Charte de Modération"),
+    'true_value': _("This new Idea complies with the Moderation Charter"),
+    'false_value': _("This new Idea DOES NOT comply with the Moderation Charter"),
     'process_id': 'ideamoderation',
     'group': IDEA_MODERATION_GROUP
 }

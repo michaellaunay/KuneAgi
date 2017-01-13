@@ -164,7 +164,7 @@ class UserParamsConfigurationSchema(Schema):
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
         label=_('Control the composition of the working group'),
-        description=_('The composition of the working group can be controlled by her members.'),
+        description=_('The composition of the Working Group can be controlled by its members.'),
         title='',
         missing=False
     )

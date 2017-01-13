@@ -67,7 +67,7 @@ class ProposalHeaderView(BasicView):
                     return _("You are on the waiting list.")
 
                 if in_wl_participation:
-                    return _("Your candidacy is being validated.")
+                    return _("Your application is being validated")
 
                 if max_participation:
                     return _("You have reached the limit of the number "

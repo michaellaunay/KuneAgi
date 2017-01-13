@@ -3,7 +3,7 @@
                 picture getattr(member, 'picture', None);
                 profil_picture getattr(picture, 'profil', None);
                 oid getattr(member, '__oid__', '')">
-		<h3 i18n:translate="">Note sur le comportement coopératif de <a target="_blank" tal:attributes="href request.resource_url(member, '@@index')"
+		<h3><span i18n:translate="">Mark on the cooperative behaviour of</span> <a target="_blank" tal:attributes="href request.resource_url(member, '@@index')"
             data-oid="${oid}"
             class="alert-link toggle-popover"
             >
@@ -14,27 +14,27 @@
             ${getattr(member, 'title', member.name)}
         </a> <span class="badge">${score}</span></h3>
 		<p>
-		 <span i18n:translate="">Lorsque deux Membres ont participé à un même Groupe de Travail, et que l'un ou l'autre quitte ce Groupe de Travail, quelle qu'en soit la raison, ils ont suffisamment d'expérience du travail en commun pour porter un jugement mutuel sur la qualité de leurs comportements coopératifs respectifs. Cet avis sur la qualité du comportement coopératif s'exprime selon une notation à trois niveaux:</span>
+		 <span i18n:translate="">When two Members have participated in the same Working Group, and when one or the other leaves this Working Group, whatever the reason, they have enough experience of work in common to mutually appreciate their respective cooperative behaviours. This opinion on the quality of the cooperative behaviour is expressed along a marking system with three steps:</span>
 	     <ul>
-			<li i18n:translate="">-1 = comportement coopératif inférieur à ce que j'attends dans le cadre d'un groupe de travail</li>
-			<li i18n:translate="">0 = comportement coopératif conforme à ce que j'attends dans le cadre d'un groupe de travail</li>
-			<li i18n:translate="">+1 = comportement coopératif meilleur que ce que j'attends dans le cadre d'un groupe de travail</li>
+			<li i18n:translate="">-1 = cooperative behaviour below what I expect in a Working Group</li>
+			<li i18n:translate="">0 = cooperative behaviour in line with what I expect in a Working Group</li>
+			<li i18n:translate="">+1 = cooperative behaviour better than what I expect in a Working Group</li>
 	     </ul>
 	    </p>
 		<p i18n:translate="">
-		  Une fois attribuée, cette note s'ajoute à celle déjà établie du fait des notes déjà attribuées par d'autres Membres.
+		  Once attributed, this mark is added to the one already established because of the marks given earlier by other Members.
 		</p>
 		<p i18n:translate="">
-		  Le système comprend également un "droit à l'oubli". Le poids d'une note attribuée à une certaine date s'atténue au cours du temps. Il est divisé par deux toutes les "périodes de demi-vie": divisé par 2 au terme d'une demi-vie, par 4 au terme de deux demi-vies, par 8 au terme de trois, etc. Cette "période de demi-vie" qui fait partie des paramètres de la plate-forme, et elle est égale à ${time_constant}.
+		  The system includes a "right to be forgotten". The weight of a mark given at a given date fades over time. It is divided by two at every "mid-life period": divided by 2 after one mid-life, by 4 after two mid-lives, by 8 after three, etc.This "mid-life period" belongs to the numeric parameters of the platform, and is equal to ${time_constant} days.
 		</p>
 		<p i18n:translate="">
-		  La note totale, résultant de l'accumulation de ces notes données au cours du temps, atténuées par cet "oubli" progressif, donne une indication de la confiance que l'on peut avoir pour coopérer à l'avenir avec ce Membre, par exemple pour l'admettre dans un Groupe de Travail.
+		  The total mark, resulting from the accumulation of marks attributed over time, and fading away because of this "forgetfulness", indicates the trust that one can have in the future, when considering cooperating with this Member, e.g. when considering admitting him/her in a Working Group.
 		</p>
 		<p>
-		  <b i18n:translate="">Mathématiquement, la formule donnant la note globale N à la date t à partir des notes Nk attribuées aux instants Tk est : N = Sigma (k=1 à n) Nk.2^[-(t-Tk)/Tau] = Sigma (k=1 à n) Nk.exp[-ln(2).(t-Tk)/Tau], avec Tau la "période de demi-vie".</b>
+		  <b i18n:translate="">Expressed in a mathematical form, the formula giving the global mark M at date t, based on marks Mk attributed at the dates Tk, is: M = Sigma (k=1 to n) Nk.2^[-(t-Tk)/Tau] = Sigma (k=1 to n) Nk.exp[-ln(2).(t-Tk)/Tau], with Tau the "half-life period".</b>
 		</p>
 		<p tal:condition="notes" i18n:translate="">
-		  Voici les notes reçues par <a target="_blank" tal:attributes="href request.resource_url(member, '@@index')"
+		  Here are the marks received by <a i18n:name="dynamic" target="_blank" tal:attributes="href request.resource_url(member, '@@index')"
             data-oid="${oid}"
             class="alert-link toggle-popover"
             >
@@ -43,7 +43,7 @@
                tal:attributes="src profil_picture.url"  width="25"/>
             <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
             ${getattr(member, 'title', member.name)}
-        </a>, et les dates d'attribution, à partir desquelles a été calculée sa note globale.
+        </a>, and the dates at which they were attributed, from which his/her global mark was computed.
 		</p>
 	</div>
 	<table tal:condition="notes" class="table table-hover" >
@@ -51,7 +51,7 @@
 			<tr> 
 				<th i18n:translate="">Date</th> 
 				<th i18n:translate="">Content</th> 
-				<th i18n:translate="" i18n:context="notation">Note</th> 
+				<th i18n:translate="" i18n:context="notation">Mark</th> 
 			</tr> 
 		</thead> 
 		<tbody> 

@@ -727,7 +727,7 @@ DEFAULT_SITE_MAILS = {
               'template': PREREGISTRATION_MESSAGE
     },
     'preregistration_moderation': {
-              'title': _("Users preregistration with moderation"),
+              'title': _("Pre-registration of users with moderation"),
               'subject': PREREGISTRATION_MOD_SUBJECT,
               'template': PREREGISTRATION_MOD_MESSAGE
     },
