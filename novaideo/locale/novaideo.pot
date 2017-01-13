@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-01-13 14:41+0100\n"
+"POT-Creation-Date: 2017-01-13 17:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4371,6 +4371,10 @@ msgid ""
 "whether the proposal should be further improved or not,"
 msgstr ""
 
+#: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:20
+msgid "or submitted for evaluation"
+msgstr ""
+
 #: ./novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:25
 msgid ""
 "As a member connected to the platform, you can access your content, your "
@@ -5046,33 +5050,33 @@ msgid ""
 "${subject}."
 msgstr ""
 
-#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:91
+#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:90
 msgid ""
 "You are invited to evaluate the quality of the cooperative behaviour of the "
 "Participants in the Working Group related to the Proposal ${dynamic}, "
 "according to what you perceived in the framework of this Working Group."
 msgstr ""
 
-#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:94
+#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:93
 msgid ""
 "You are invited to evaluate the quality of the cooperative behaviour of the "
 "other Participants in the Working Group related to this Proposal, according "
 "to what you perceived in the framework of this Working Group."
 msgstr ""
 
-#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:97
+#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:96
 msgid ""
 "The request to exclude you out of the Working Group related to this Proposal "
 "has been accepted following the vote by the Participants in the Group. You "
 "are therefore excluded out of the Working Group."
 msgstr ""
 
-#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:100
+#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:99
 msgid ""
 "You do not belong any more to the Working Group related to this Proposal."
 msgstr ""
 
-#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:103
+#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:102
 msgid ""
 "Your application to the Working Group related to this Proposal has been "
 "registered. The current Participants in this Working Group are now requested "
@@ -5080,7 +5084,7 @@ msgid ""
 " ${dynamic}latest, date when the ballot closes."
 msgstr ""
 
-#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:107
+#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:106
 msgid ""
 "A request to exclude you out of the Working Group related to this Proposal "
 "has been filed. The Participants in this Working Group are now requested to "
@@ -5088,13 +5092,13 @@ msgid ""
 "${dynamic} latest, date when the ballot closes."
 msgstr ""
 
-#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:111
+#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:110
 msgid ""
 "Your application to the Working Group related to this Proposal has been "
 "accepted, following the vote of the Participants."
 msgstr ""
 
-#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:115
+#: ./novaideo/views/templates/alerts/notification_wg_alert_result.pt:114
 msgid ""
 "Your application to the Working Group related to this Proposal has been "
 "accepted."

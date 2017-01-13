@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-01-13 14:41+0100\n"
+"POT-Creation-Date: 2017-01-13 17:05+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -4799,6 +4799,10 @@ msgstr ""
 "travail, soit en cours d'amélioration, soit faire l'objet d'un vote pour "
 "améliorer ou non la proposition,"
 
+#: novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:20
+msgid "or submitted for evaluation"
+msgstr "Soumise pour appréciation"
+
 # # Cette formulation d'attente de quorum me semble plus claire
 #: novaideo/views/templates/panels/contextual_help_messages/homepage_connected_message.pt:25
 msgid ""
@@ -5727,7 +5731,7 @@ msgstr ""
 "${dynamic} dans le cadre du groupe de travail lié à la proposition "
 "${subject}."
 
-#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:91
+#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:90
 msgid ""
 "You are invited to evaluate the quality of the cooperative behaviour of the "
 "Participants in the Working Group related to the Proposal ${dynamic}, "
@@ -5737,7 +5741,7 @@ msgstr ""
 "Participant(e)s au Groupe de Travail lié à la Proposition ${subject.title}, "
 "tel que vous l'avez perçue dans le cadre de ce groupe de travail."
 
-#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:94
+#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:93
 msgid ""
 "You are invited to evaluate the quality of the cooperative behaviour of the "
 "other Participants in the Working Group related to this Proposal, according "
@@ -5747,7 +5751,7 @@ msgstr ""
 "autres Participant(e)s du groupe de travail lié à cette proposition, tel que "
 "vous l'avez perçue dans le cadre de ce groupe de travail."
 
-#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:97
+#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:96
 msgid ""
 "The request to exclude you out of the Working Group related to this Proposal "
 "has been accepted following the vote by the Participants in the Group. You "
@@ -5757,13 +5761,13 @@ msgstr ""
 "a été acceptée au terme du vote des Participant(e)s. Vous êtes donc exclu(e) "
 "hors de ce Groupe de Travail."
 
-#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:100
+#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:99
 msgid ""
 "You do not belong any more to the Working Group related to this Proposal."
 msgstr ""
 "Vous ne faites plus partie du Groupe de Travail lié à cette Proposition."
 
-#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:103
+#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:102
 msgid ""
 "Your application to the Working Group related to this Proposal has been "
 "registered. The current Participants in this Working Group are now requested "
@@ -5775,7 +5779,7 @@ msgstr ""
 "présent appelé(e)s voter sur votre admission. Vous serez informé(e) du "
 "résultat de ce vote au plus tard le ${dynamic}, date de clôture du vote."
 
-#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:107
+#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:106
 msgid ""
 "A request to exclude you out of the Working Group related to this Proposal "
 "has been filed. The Participants in this Working Group are now requested to "
@@ -5787,7 +5791,7 @@ msgstr ""
 "présent appelé(e)s voter sur votre exclusion. Vous serez informé(e) du "
 "résultat de ce vote au plus tard le ${dynamic}, date de clôture du vote."
 
-#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:111
+#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:110
 msgid ""
 "Your application to the Working Group related to this Proposal has been "
 "accepted, following the vote of the Participants."
@@ -5795,7 +5799,7 @@ msgstr ""
 "Votre candidature au Groupe de Travail lié à cette proposition a été "
 "acceptée au terme du vote des Participant(e)s."
 
-#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:115
+#: novaideo/views/templates/alerts/notification_wg_alert_result.pt:114
 msgid ""
 "Your application to the Working Group related to this Proposal has been "
 "accepted."
