@@ -161,7 +161,8 @@ class SeeIdeaView(MultipleView):
     views = (IdeaHeaderView, SeeIdeaActionsView)
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/compare_idea.js',
-                                 'novaideo:static/js/comment.js']}
+                                 'novaideo:static/js/comment.js',
+                                 'novaideo:static/js/ballot_management.js']}
     validators = [SeeIdea.get_validator()]
 
     def bind(self):

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-01-13 17:05+0100\n"
+"POT-Creation-Date: 2017-01-14 23:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -198,7 +198,7 @@ msgstr ""
 msgid "Channel"
 msgstr ""
 
-#: ./novaideo/core.py:377 ./novaideo/content/site_configuration.py:340
+#: ./novaideo/core.py:377 ./novaideo/content/site_configuration.py:341
 msgid ""
 "Minimum one keyword required. You can specify a second keyword level for each"
 " keyword chosen."
@@ -211,7 +211,7 @@ msgstr ""
 #: ./novaideo/views/proposal_management/templates/header_proposal.pt:117
 #: ./novaideo/views/proposal_management/templates/diff_result.pt:8
 #: ./novaideo/views/novaideo_view_manager/analytics.py:233
-#: ./novaideo/content/site_configuration.py:350
+#: ./novaideo/content/site_configuration.py:351
 #: ./novaideo/adapters/__init__.py:26
 msgid "Keywords"
 msgstr ""
@@ -4760,6 +4760,25 @@ msgstr ""
 msgid "In order to do so, you just need to give a mark among those proposed."
 msgstr ""
 
+#: ./novaideo/views/templates/ballots/moderate_idea.pt:2
+msgid ""
+"You are invited, with two other randomly chosen Moderators, to check the "
+"compliance of this new Idea ${dynamic}, which its author has just requested "
+"to be published, with the Moderation Charter."
+msgstr ""
+
+#: ./novaideo/views/templates/ballots/moderate_idea.pt:8
+#: ./novaideo/views/templates/ballots/idea_report.pt:9
+#: ./novaideo/views/templates/ballots/moderate_proposal.pt:8
+#: ./novaideo/views/templates/ballots/comment_report.pt:9
+#: ./novaideo/views/templates/ballots/proposal_report.pt:9
+msgid ""
+"Thereby, you contribute to ensuring that the content displayed on the "
+"platform ${novaideo_title} remains compliant with the Moderation Charter, "
+"while avoiding that the important power of Moderation be concentrated in just"
+" a few hands!"
+msgstr ""
+
 #: ./novaideo/views/templates/ballots/moderate_idea.pt:11
 msgid ""
 "If a majority of Moderators considers that this new Idea does not comply with"
@@ -4772,17 +4791,6 @@ msgid ""
 "You are invited, with two other randomly chosen Verifiers, to verify the "
 "adequacy between this Idea ${dynamic}, qui a été signalée comme "
 "potentiellement non conforme, et la Charte de Modération."
-msgstr ""
-
-#: ./novaideo/views/templates/ballots/idea_report.pt:9
-#: ./novaideo/views/templates/ballots/moderate_proposal.pt:8
-#: ./novaideo/views/templates/ballots/comment_report.pt:9
-#: ./novaideo/views/templates/ballots/proposal_report.pt:9
-msgid ""
-"Thereby, you contribute to ensuring that the content displayed on the "
-"platform ${novaideo_title} remains compliant with the Moderation Charter, "
-"while avoiding that the important power of Moderation be concentrated in just"
-" a few hands!"
 msgstr ""
 
 #: ./novaideo/views/templates/ballots/idea_report.pt:12
@@ -6141,7 +6149,7 @@ msgid "Contents by dates"
 msgstr ""
 
 #: ./novaideo/views/novaideo_view_manager/analytics.py:508
-#: ./novaideo/content/site_configuration.py:388
+#: ./novaideo/content/site_configuration.py:389
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:117
 msgid "Analytics"
 msgstr ""
@@ -6691,7 +6699,7 @@ msgid "Logo"
 msgstr ""
 
 #: ./novaideo/content/organization.py:148
-#: ./novaideo/content/site_configuration.py:380
+#: ./novaideo/content/site_configuration.py:381
 msgid "Add a new contact"
 msgstr ""
 
@@ -6849,7 +6857,7 @@ msgstr ""
 
 #: ./novaideo/content/smart_folder.py:125
 #: ./novaideo/content/site_configuration.py:269
-#: ./novaideo/content/site_configuration.py:367
+#: ./novaideo/content/site_configuration.py:368
 #: ./novaideo/adapters/__init__.py:22
 msgid "Title"
 msgstr ""
@@ -7110,19 +7118,19 @@ msgstr ""
 msgid "E-mail templates"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:356
+#: ./novaideo/content/site_configuration.py:357
 msgid "Authorize the addition of keywords"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:399
+#: ./novaideo/content/site_configuration.py:400
 msgid "Activate the push notifications on the browser"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:406
+#: ./novaideo/content/site_configuration.py:407
 msgid "Application id"
 msgstr ""
 
-#: ./novaideo/content/site_configuration.py:412
+#: ./novaideo/content/site_configuration.py:413
 msgid "REST API Key"
 msgstr ""
 

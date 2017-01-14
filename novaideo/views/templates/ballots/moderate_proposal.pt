@@ -1,4 +1,5 @@
-<div tal:condition="process" i18n:domain="novaideo">
+<div tal:condition="process" i18n:domain="novaideo" 
+     tal:define="novaideo_title request.virtual_root.title">
 	<p i18n:translate="">
       You are invited, with two other randomly chosen Moderators, to check the compliance of this new Proposal <a i18n:name="dynamic" target="_blank" href="${request.resource_url(context, '@@index')}" class="alert-link"><span class="${getattr(context, 'icon', '')}"></span> ${context.title}</a>, which its author has just requested to be published, with the Moderation Charter.
     </p>
