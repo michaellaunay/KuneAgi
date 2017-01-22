@@ -83,11 +83,7 @@ class EditView(FormView):
     schema = select(EditPersonSchema(factory=Person,
                                      editable=True,
                                      omit=('change_password', )),
-                    ['user_title',
-                     'first_name',
-                     'last_name',
-                     'birth_date',
-                     'organization',
+                    ['organization',
                      'function',
                      'description',
                      'tree',
@@ -107,10 +103,7 @@ class EditView(FormView):
            getattr(self.context, 'Keep_me_anonymous', False):
             self.schema = omit(
                 self.schema,
-                ['user_title',
-                 'first_name',
-                 'last_name',
-                 'email'])
+                ['email'])
 
     def default_data(self):
         return self.context
