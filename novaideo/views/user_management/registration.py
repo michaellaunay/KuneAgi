@@ -4,6 +4,8 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import colander
+from zope.interface import invariant
 from pyramid.view import view_config
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -13,12 +15,31 @@ from pontus.view import BasicView
 from pontus.schema import select
 from pontus.view_operation import MultipleView
 
+from novaideo.views.widget import ReCAPTCHAWidget
 from novaideo.content.processes.user_management.behaviors import (
     Registration)
 from novaideo.content.person import PersonSchema, Preregistration
 from novaideo.content.novaideo_application import (
     NovaIdeoApplication)
 from novaideo import _
+
+
+class RegistrationSchema(PersonSchema):
+
+    captcha = colander.SchemaNode(
+        colander.String(),
+        widget=ReCAPTCHAWidget(),
+        label=_('I have read and accept the terms and conditions.'),
+        title='',
+        missing=''
+    )
+
+    @invariant
+    def captcha_invariant(self, appstruct):
+        captcha = appstruct.get('captcha', '')
+        if not captcha:
+            raise colander.Invalid(
+                self, _('Invalid captcha'))
 
 
 class RegistrationViewStudyReport(BasicView):
@@ -37,8 +58,10 @@ class RegistrationViewStudyReport(BasicView):
 
 class RegistrationForm(FormView):
     title = _('Your registration')
-    schema = select(PersonSchema(factory=Preregistration,
-                                 editable=True),
+    schema = select(RegistrationSchema(
+                        factory=Preregistration,
+                        editable=True,            
+                        omit=['captcha']),
                     ['user_title',
                      'first_name',
                      'last_name',
@@ -46,7 +69,8 @@ class RegistrationForm(FormView):
                      'email',
                      'Keep_me_anonymous',
                      'pseudonym',
-                     'accept_conditions'])
+                     'accept_conditions',
+                     'captcha'])
     behaviors = [Registration, Cancel]
     formid = 'formregistration'
     name = 'formregistration'
