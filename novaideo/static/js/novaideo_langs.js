@@ -28,7 +28,8 @@ novaideoI18n = {
   "assciations": "assciations",
   "Save": "Save",
   "Cancel": "Cancel",
-  "Your vote has been validated": "Your vote has been validated"
+  "Your vote has been validated": "Your vote has been validated",
+  "Please, validate the captcha.": "Please, validate the captcha."
 },
 
 'fr':{
@@ -59,7 +60,8 @@ novaideoI18n = {
   "assciations": "assciations",
   "Save": "Enregistrer",
   "Cancel": "Annuler",
-  "Your vote has been validated": "Votre vote a été validé"
+  "Your vote has been validated": "Votre vote a été validé",
+  "Please, validate the captcha.": "Veuillez valider le captcha."
 }
 }
 
