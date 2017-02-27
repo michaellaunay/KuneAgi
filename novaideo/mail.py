@@ -527,6 +527,7 @@ Les informations reçues de la personne lors de son inscription sont:
   Nom(s): {subject_last_name}
   Prénom(s): {subject_first_name}
   Date de naissance: {birth_date}
+  Lieu de naissance: {birthplace}
 
 La durée de la vérification est de {duration} jour(s), soit jusqu'au {date_end_vote}. Au-delà de cette durée, la vérification sera clôturée, et votre avis ne sera pas pris en compte. Si aucun Vérificateur n'a voté à cette date, l'inscription sera refusée. 
 

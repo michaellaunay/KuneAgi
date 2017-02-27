@@ -827,7 +827,8 @@ class InvitationSearch(SearchableObject):
         if birth_date:
             first_name = getattr(self.context, 'first_name', '')
             last_name = getattr(self.context, 'last_name', '')
-            key = first_name + last_name + birth_date.strftime("%d/%m/%Y")
+            birthplace = getattr(self.context, 'birthplace', '')
+            key = first_name + last_name + birthplace + birth_date.strftime("%d/%m/%Y")
             key = normalize_title(key).replace(' ', '')
             result.append(key)
 

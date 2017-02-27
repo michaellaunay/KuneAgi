@@ -66,6 +66,7 @@ class RegistrationForm(FormView):
                      'first_name',
                      'last_name',
                      'birth_date',
+                     'birthplace',
                      'email',
                      'Keep_me_anonymous',
                      'pseudonym',

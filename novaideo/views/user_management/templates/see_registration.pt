@@ -21,6 +21,8 @@
         <dd><span tal:replace="registration.last_name"/></dd>
         <dt i18n:translate="">Birth date</dt>
         <dd><span tal:replace="layout.to_localized_time(registration.birth_date)"/></dd>
+        <dt i18n:translate="">Birthplace</dt>
+        <dd><span tal:replace="registration.birthplace"/></dd>
         <dt i18n:translate="">Email</dt>
         <dd tal:define="mail getattr(registration, 'email', '')">
           <a href="mailto:${mail}">${mail}</a>

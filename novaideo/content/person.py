@@ -284,6 +284,11 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         title=_('Birth date')
         )
 
+    birthplace = colander.SchemaNode(
+        colander.String(),
+        title=_('Birthplace')
+        )
+
     user_title = colander.SchemaNode(
         colander.String(),
         widget=titles_choice,
@@ -359,14 +364,15 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         first_name = appstruct.get('first_name', None)
         last_name = appstruct.get('last_name', None)
         birth_date = appstruct.get('birth_date', None)
-        if first_name and last_name and birth_date:
+        birthplace = appstruct.get('birthplace', None)
+        if first_name and last_name and birth_date and birthplace:
             try:
                 birth_date = colander.iso8601.parse_date(birth_date)
                 birth_date = birth_date.date()
             except colander.iso8601.ParseError as e:
                 return
 
-            key = first_name + last_name + birth_date.strftime("%d/%m/%Y")
+            key = first_name + last_name + birthplace + birth_date.strftime("%d/%m/%Y")
             key = normalize_title(key).replace(' ', '')
             novaideo_catalog = find_catalog('novaideo')
             identifier_index = novaideo_catalog['identifier']

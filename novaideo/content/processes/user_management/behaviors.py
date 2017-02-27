@@ -919,6 +919,7 @@ class ModerationVote(StartBallot):
         subject_data['subject_last_name'] = getattr(context, 'last_name', '')
         subject_data['subject_first_name'] = getattr(context, 'first_name', '')
         birth_date = getattr(context, 'birth_date', '')
+        birthplace = getattr(context, 'birthplace', '')
         if birth_date:
             birth_date = to_localized_time(
                 birth_date, request, translate=True)
@@ -930,6 +931,7 @@ class ModerationVote(StartBallot):
                 novaideo_title=root.title,
                 subject_email=getattr(context, 'email', ''),
                 birth_date=birth_date,
+                birthplace=birthplace,
                 date_end_vote=date_end_vote,
                 duration=duration,
                 **email_data)
