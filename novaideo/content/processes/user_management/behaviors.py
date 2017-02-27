@@ -955,6 +955,10 @@ class ModerationVote(StartBallot):
                     user=moderator,
                     roles=(('LocalModerator', preregistration),))
 
+            ballots = getattr(self.sub_process, 'ballots', [])
+            for ballot in ballots:
+                ballot.finish_ballot()
+
             accepted = ballot_result(self)
             root = getSite()
             if accepted:

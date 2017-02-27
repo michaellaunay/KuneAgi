@@ -132,9 +132,6 @@ class StepsPanel(object):
         elif 'open to a working group' in context.state:
             participants_mini = getSite().participants_mini
             work_mode = getattr(working_group, 'work_mode', None)
-            if work_mode:
-                participants_mini = work_mode.participants_mini
-
             return renderers.render(
                 self.step3_0_template,
                 {'context': context,

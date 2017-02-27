@@ -89,7 +89,13 @@ def select_roles_validation(process, context):
 
 
 def select_processsecurity_validation(process, context):
-    return global_user_processsecurity()
+    report_ballots = [b for b in context.ballots
+                      if b.group_id == 'vote_moderation'
+                      and context in b.subjects
+                      and b.is_finished
+                      and b.report.get_electeds() is not None
+                      and b.decision_is_valide]
+    return not report_ballots and global_user_processsecurity()
 
 
 def select_state_validation(process, context):
@@ -136,7 +142,9 @@ class Report(InfiniteCardinality):
                 start_ballot(
                     context, author, request, root,
                     moderators, 'contentreportdecision',
-                    before_start=before_start)
+                    before_start=before_start,
+                    initiator=user,
+                    subjects=[context])
                 alert_data = get_ballot_alert_data(
                     context, request, root, moderators)
                 alert_data.update(get_user_data(author, 'recipient', request))
@@ -290,6 +298,10 @@ class ModerationVote(StartBallot):
                 revoke_roles(
                     user=moderator,
                     roles=(('LocalModerator', content),))
+
+            ballots = getattr(self.sub_process, 'ballots', [])
+            for ballot in ballots:
+                ballot.finish_ballot()
 
             accepted = ballot_result(self, True)
             root = getSite()

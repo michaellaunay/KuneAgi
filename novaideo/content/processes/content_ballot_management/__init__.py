@@ -86,7 +86,9 @@ def start_ballot(
     context, author, request,
     root, electors, process_id,
     role='LocalModerator',
-    before_start=None):
+    before_start=None,
+    initiator=None,
+    subjects=[]):
     if role:
         for elector in electors:
             grant_roles(
@@ -103,6 +105,8 @@ def start_ballot(
         if before_start:
             before_start(ballot_proc)
 
+        ballot_proc.initiator = initiator
+        ballot_proc.subjects = subjects
         ballot_proc.execute_action(
             context, request, 'start_ballot', {})
 

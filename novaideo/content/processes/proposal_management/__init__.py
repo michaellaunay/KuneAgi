@@ -87,7 +87,7 @@ class WikiWorkMode(WorkMode):
 
     work_mode_process_id = 'wikiworkmodeprocess'
     participants_mini = 1
-    title = _('Change without validation (At least one member)')
+    title = _('Change without validation')
     work_id = 'wiki'
     order = 0
 
@@ -97,7 +97,7 @@ class CorrectionWorkMode(WorkMode):
 
     work_mode_process_id = 'correctionworkmodeprocess'
     participants_mini = 2
-    title = _('Change with validation (At least two members)')
+    title = _('Change with validation')
     work_id = 'correction'
     order = 1
 
@@ -107,7 +107,7 @@ class AmendmentWorkMode(WorkMode):
 
     work_mode_process_id = 'amendmentworkmodeprocess'
     participants_mini = 3
-    title = _('Change with amendments (At least three members)')
+    title = _('Change with amendments')
     work_id = 'amendment'
     order = 2
 

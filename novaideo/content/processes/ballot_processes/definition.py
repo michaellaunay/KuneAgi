@@ -49,7 +49,7 @@ def event_condition(process):
             return False
 
     for ballot in process.ballots:
-        ballot.finished_at = datetime.now(tz=pytz.UTC)
+        ballot.finish_ballot()
 
     return True
 
@@ -84,5 +84,4 @@ class BallotProcess(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('conditional', 'eg'),
                 TransitionDefinition('timer', 'eg'),
                 TransitionDefinition('eg', 'end'),
-
         )

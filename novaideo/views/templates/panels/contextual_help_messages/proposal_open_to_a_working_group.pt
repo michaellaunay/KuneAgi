@@ -1,6 +1,6 @@
 
 <div class="contextual-help-item principal-help"
-	 tal:define="participants_mini getattr(getattr(context.working_group, 'work_mode', None), 'participants_mini', 3)"
+	 tal:define="participants_mini getattr(request.root, 'participants_mini', 3)"
 	 i18n:domain="novaideo">
 	<p i18n:translate="">This proposal is published and open to a working group. It is visible to all users. The associated working group is inactive, waiting for the quorum to be reached.</p>
 

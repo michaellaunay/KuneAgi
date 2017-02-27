@@ -168,6 +168,10 @@ class SubProcessFirstVote(OriginSubProcess):
             if vote_processes:
                 close_votes(None, request, vote_processes)
 
+            ballots = getattr(process, 'ballots', [])
+            for ballot in ballots:
+                ballot.finish_ballot()
+
         super(SubProcessFirstVote, self).stop()
 
 
@@ -181,9 +185,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         root = getSite()
         proposal = process.execution_context.created_entity('proposal')
         working_group = proposal.working_group
-        work_mode = getattr(working_group, 'work_mode', None)
-        participants_mini = work_mode.participants_mini if work_mode else root.participants_mini
-        participants_maxi = work_mode.participants_maxi if work_mode else root.participants_maxi
+        participants_mini = root.participants_mini
+        participants_maxi = root.participants_maxi
         electors = working_group.members[:participants_mini]
         if not getattr(working_group, 'first_improvement_cycle', True):
             electors = working_group.members
@@ -202,7 +205,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         working_group.vp_ballot = ballot #vp for voting for publishing
         root_modes = root.get_work_modes()
         modes = [(m, root_modes[m].title) for m in root_modes
-                 if root_modes[m].participants_mini <= len(working_group.members)]
+                 if participants_mini <= len(working_group.members)]
         if len(modes) > 1:
             modes = sorted(modes,
                            key=lambda e: root_modes[e[0]].order)

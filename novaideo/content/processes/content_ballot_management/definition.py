@@ -43,6 +43,10 @@ class SubProcess(OriginSubProcess):
             if vote_processes:
                 close_votes(None, request, vote_processes)
 
+            ballots = getattr(process, 'ballots', [])
+            for ballot in ballots:
+                ballot.finish_ballot()
+
         super(SubProcess, self).stop()
 
 
@@ -53,6 +57,10 @@ class SubProcessDefinition(OriginSubProcessDefinition):
 
     def _init_subprocess(self, process, subprocess):
         root = getSite()
+        initiator = getattr(process, 'initiator', None)
+        ballot_subjects = getattr(process, 'subjects', [])
+        pvd = getattr(root, 'period_validity_decision', 3)
+        pvd = datetime.timedelta(days=pvd)
         duration = datetime.timedelta(
             days=getattr(root, 'duration_moderation_vote', 7))
         execution_context = process.execution_context
@@ -68,7 +76,14 @@ class SubProcessDefinition(OriginSubProcessDefinition):
                         false_val=ballot_data.get(
                             'false_value'),
                         group=ballot_data.get(
-                            'group', DEFAULT_BALLOT_GROUP))
+                            'group', DEFAULT_BALLOT_GROUP),
+                        period_validity=pvd)
+        if initiator:
+            ballot.setproperty('initiator', initiator)
+
+        if ballot_subjects:
+            ballot.setproperty('subjects', ballot_subjects)
+
         content.addtoproperty('ballots', ballot)
         report = ballot.report
         report.secret_ballot = ballot_data.get('secret_ballot', True)
@@ -81,7 +96,7 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             title = title(process, content)
 
         ballot.title = title
-        proc_id = 'content_vote_'+process.id
+        proc_id = 'content_vote_' + process.id
         processes = ballot.run_ballot()
         subprocess.ballots = PersistentList()
         subprocess.ballots.append(ballot)

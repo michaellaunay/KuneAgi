@@ -43,10 +43,12 @@ class ExcludeParticipantViewStudyReport(BasicView):
 @colander.deferred
 def participant_choice(node, kw):
     context = node.bindings['context']
-    in_process = [p.participant for p in context.ballot_processes
-                  if p.id == 'exclusionparticipant']
+    exclusion_ballots = [b for b in context.ballots
+                         if b.group_id == 'vote_exclusion']
+    member_exclusion = [b.subjects[0] for b in exclusion_ballots
+                        if b.subjects and (not b.is_finished or b.decision_is_valide)]
     values = [(get_oid(m), m.title) for m in context.working_group.members
-              if m not in in_process]
+              if m not in member_exclusion]
     values.insert(0, ('', _('- Select -')))
     return Select2Widget(
         values=values,

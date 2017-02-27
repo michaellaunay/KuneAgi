@@ -117,7 +117,7 @@ def confirm_proposal(
             alert_kind='duplicated',
             duplication=context
             )
-    
+
     proposal_state = 'amendable'
     if submitted_appstruct.get('vote', False):
         proposal_state = 'published'
@@ -147,7 +147,6 @@ def confirm_proposal(
             'work_mode', default_mode.work_id)
         if mode_id:
             working_group.work_mode_id = mode_id
-            participants_mini = WORK_MODES[mode_id].participants_mini
 
         #Only the vote of the author is considered
         first_vote_registration(
@@ -274,7 +273,7 @@ def first_vote_registration(user, working_group, appstruct):
     ballot = working_group.vp_ballot
     report = ballot.report
     if user not in report.voters:
-        vote = appstruct['vote']
+        vote = appstruct.get('vote', False)
         votefactory = report.ballottype.vote_factory
         vote = votefactory(vote)
         vote.user_id = get_oid(user)
@@ -366,7 +365,7 @@ def archive_proposal_moderation(context, request, root, appstruct):
               subject=subject, body=message)
 
 
-def exclude_participant_from_wg(context, request,  user, root, kind='resign'):
+def exclude_participant_from_wg(context, request,  user, root, kind='resign', **kw):
     working_group = context.working_group
     working_group.delfromproperty('members', user)
     remove_participant_from_ballots(context, request, user)
@@ -422,7 +421,8 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign'):
 
     participants = working_group.members
     len_participants = len(participants)
-    if len_participants < mode.participants_mini and \
+    participants_mini = getattr(root, 'participants_mini', 3)
+    if len_participants < participants_mini and \
        'open to a working group' not in context.state:
         context.state = PersistentList(
             ['open to a working group', 'published'])
@@ -446,6 +446,7 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign'):
             'internal', [root], [user],
             internal_kind=InternalAlertKind.working_group_alert,
             subjects=[context], alert_kind='wg_'+kind,
+            period_date=kw.get('period_date', None),
             **subject_data)
         # mail_template = root.get_mail_template('wg_'+kind)
         # subject = mail_template['subject'].format(
@@ -698,7 +699,9 @@ class SubmitProposalModeration(InfiniteCardinality):
             author = context.author
             start_ballot(
                 context, author, request, root,
-                moderators, 'proposalmoderation')
+                moderators, 'proposalmoderation',
+                initiator=get_current(),
+                subjects=[context])
             alert_data = get_ballot_alert_data(
                 context, request, root, moderators)
             alert_data.update(get_user_data(author, 'recipient', request))
@@ -1279,16 +1282,30 @@ def participate_roles_validation(process, context):
 
 
 def participate_processsecurity_validation(process, context):
-    working_group = context.working_group
-    user = get_current()
     root = getSite()
+    user = get_current()
+    working_group = context.working_group
     participations = getattr(user, 'wg_participations', [])
     wgs = getattr(user, 'active_working_groups', [])
-    return working_group and \
-       user not in working_group.wating_list and \
-       user not in working_group.wating_list_participation and \
-       len(wgs) + len(participations) < root.participations_maxi and \
-       global_user_processsecurity()
+    if not working_group or user in working_group.wating_list or \
+        user in working_group.wating_list_participation or \
+        len(wgs) + len(participations) >= root.participations_maxi or \
+        not global_user_processsecurity():
+        return False
+
+    exclusion_ballots = [b for b in context.ballots
+                         if b.group_id == 'vote_exclusion']
+    is_excluded = any(user in b.subjects for b in exclusion_ballots
+                      if b.is_finished and b.decision_is_valide)
+    if is_excluded:
+        return False
+
+    participation_ballots = [b for b in context.ballots
+                             if b.group_id == 'vote_participation'
+                             and b.is_finished and user in b.subjects
+                             and b.report.get_electeds() is None
+                             and b.decision_is_valide]
+    return len(participation_ballots) <= 0
 
 
 def participate_state_validation(process, context):
@@ -1315,6 +1332,7 @@ def accept_participation(context, request, user, root):
 
     working_group = context.working_group
     participants = working_group.members
+    participants_mini = getattr(root, 'participants_mini', 3)
     mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
     len_participants = len(participants)
     if user in working_group.wating_list_participation:
@@ -1336,7 +1354,7 @@ def accept_participation(context, request, user, root):
                   internal_kind=InternalAlertKind.working_group_alert,
                   subjects=[user], alert_kind='participations_maxi')
 
-        if (len_participants+1) == mode.participants_mini:
+        if (len_participants+1) == participants_mini:
             working_group.state = PersistentList(['active'])
             context.state = PersistentList(['amendable', 'published'])
             working_group.reindex()
@@ -1420,7 +1438,9 @@ class Participate(InfiniteCardinality):
                 start_ballot(
                     context, user, request, root,
                     moderators, 'proposalparticipation',
-                    before_start=before_start)
+                    before_start=before_start,
+                    initiator=user,
+                    subjects=[user])
                 alert_data = get_ballot_alert_data(
                     context, request, root, moderators)
                 alert('internal', [root], [user],
@@ -1441,15 +1461,26 @@ def exclude_roles_validation(process, context):
 
 def exclude_processsecurity_validation(process, context):
     working_group = context.working_group
-    if not working_group:
+    root = getSite()
+    if not working_group or not getattr(
+       root, 'working_group_composition_control', False):
         return False
 
-    root = getSite()
-    in_process = [p.participant for p in context.ballot_processes
-                  if p.id == 'exclusionparticipant']
+    user = get_current()
+    exclusion_ballots = [b for b in context.ballots
+                         if b.group_id == 'vote_exclusion']
+    start_process = any(b.initiator is user
+                        for b in exclusion_ballots
+                        if not b.is_finished)
+    if start_process:
+        return False
+
+    member_exclusion = [b.subjects[0] for b in exclusion_ballots
+                        if b.subjects and
+                        (not b.is_finished or b.decision_is_valide)]
     members = [m for m in context.working_group.members
-               if m not in in_process]
-    return len(members) > 1 and getattr(root, 'working_group_composition_control', False) and \
+               if m not in member_exclusion]
+    return len(members) > 1 and \
         global_user_processsecurity()
 
 
@@ -1486,7 +1517,9 @@ class ExcludeParticipant(InfiniteCardinality):
         start_ballot(
             context, user_to_exclure, request, root,
             moderators, 'exclusionparticipant',
-            before_start=before_start)
+            before_start=before_start,
+            initiator=user,
+            subjects=[user_to_exclure])
         alert_data = get_ballot_alert_data(
             context, request, root, moderators)
         alert('internal', [root], [user_to_exclure],
@@ -2116,6 +2149,10 @@ class ModerationVote(StartBallot):
                     user=moderator,
                     roles=(('LocalModerator', proposal),))
 
+            ballots = getattr(self.sub_process, 'ballots', [])
+            for ballot in ballots:
+                ballot.finish_ballot()
+
             accepted = ballot_result(self, True)
             root = getSite()
             user = get_current()
@@ -2188,6 +2225,12 @@ class ParticipationVote(StartBallot):
             participant = self.process.participant
             participant_data = get_entity_data(
                 participant, 'participant', request)
+            ballots = getattr(self.sub_process, 'ballots', [])
+            period_date = None
+            for ballot in ballots:
+                ballot.finish_ballot()
+                period_date = ballot.finished_at + ballot.period_validity
+
             accepted = ballot_result(self)
             root = getSite()
             working_group = proposal.working_group
@@ -2218,12 +2261,14 @@ class ParticipationVote(StartBallot):
                 alert(
                     'internal', [root], [participant],
                     internal_kind=InternalAlertKind.working_group_alert,
-                    subjects=[proposal], alert_kind='refuse_participant')
+                    subjects=[proposal], alert_kind='refuse_participant',
+                    period_date=period_date)
                 alert(
                     'internal', [root], members,
                     internal_kind=InternalAlertKind.working_group_alert,
                     subjects=[proposal],
                     alert_kind='refuse_participant_members',
+                    period_date=period_date,
                     **participant_data)
 
         super(ParticipationVote, self).after_execution(
@@ -2284,11 +2329,18 @@ class ExclusionVote(StartBallot):
         # proposal not removed
         if proposal and proposal.__parent__:
             participant = self.process.participant
+            ballots = getattr(self.sub_process, 'ballots', [])
+            period_date = None
+            for ballot in ballots:
+                ballot.finish_ballot()
+                period_date = ballot.finished_at + ballot.period_validity
+
             accepted = ballot_result(self)
             root = getSite()
             if accepted:
                 exclude_participant_from_wg(
-                    proposal, request, participant, root, 'exclude')
+                    proposal, request, participant, root, 'exclude',
+                    period_date=period_date)
             else:
                 participant_data = get_entity_data(
                     participant, 'participant', request)
@@ -2296,12 +2348,14 @@ class ExclusionVote(StartBallot):
                 alert(
                     'internal', [root], [participant],
                     internal_kind=InternalAlertKind.working_group_alert,
-                    subjects=[proposal], alert_kind='refuse_exclusion')
+                    subjects=[proposal], alert_kind='refuse_exclusion',
+                    period_date=period_date)
                 alert(
                     'internal', [root], members,
                     internal_kind=InternalAlertKind.working_group_alert,
                     subjects=[proposal],
                     alert_kind='refuse_exclusion_members',
+                    period_date=period_date,
                     **participant_data)
 
         super(ExclusionVote, self).after_execution(

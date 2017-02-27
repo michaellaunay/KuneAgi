@@ -165,40 +165,19 @@ def picture_widget(node, kw):
 
 
 @colander.deferred
-def pseudonym_widget(node, kw):
-    request = node.bindings['request']
-    state = 'closed'
-    if request.POST and json.loads(
-       request.POST.get('Keep_me_anonymous', 'false')):
-        state = ''
-
-    return deform.widget.TextInputWidget(
-        item_css_class='pseudonym-input '+state)
-
-
-@colander.deferred
 def pseudonym_validator(node, kw):
-    request = node.bindings['request']
-    defined = json.loads(
-        request.POST.get('Keep_me_anonymous', 'false')) \
-        if request.POST else False
-    if defined:
-        if kw is _default_pseudonym:
-            raise colander.Invalid(node,
-                _('A pseudonym must be defined'))
+    context = node.bindings['context']
+    novaideo_catalog = find_catalog('novaideo')
+    identifier_index = novaideo_catalog['identifier']
+    query = identifier_index.any([kw])
+    users = list(query.execute().all())
+    if context in users:
+        users.remove(context)
 
-        context = node.bindings['context']
-        novaideo_catalog = find_catalog('novaideo')
-        identifier_index = novaideo_catalog['identifier']
-        query = identifier_index.any([kw])
-        users = list(query.execute().all())
-        if context in users:
-            users.remove(context)
-
-        if users:
-            raise colander.Invalid(node,
-                    _('${pseudonym} pseudonym already in use',
-                      mapping={'pseudonym': kw}))
+    if users:
+        raise colander.Invalid(node,
+                _('${pseudonym} pseudonym already in use',
+                  mapping={'pseudonym': kw}))
 
 
 def default_pseudonym(appstruct):
@@ -319,25 +298,10 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         title=_('Organization'),
         )
 
-    Keep_me_anonymous = colander.SchemaNode(
-        colander.Boolean(),
-        widget=deform.widget.CheckboxWidget(
-            item_css_class='Keep-me-anonymous-input'),
-        label=_('Keep me anonymous'),
-        title='',
-        description=_("You may now choose how to have you identity to appear on the site, between: "
-                      "(1) with your complete real identity (all your given names and all your family "
-                      "names, as you just filled in above), or (2) with a pseudonym that you choose. "
-                      "For the option 2, please tick the box below \"Remain anonymous\". You will "
-                      "be given access to the form where you will be able to choose your pseudonym. "
-                      "Take great care! Your choice between both options is irrevertible. You will "
-                      "NEVER be able to change it any more afterwards."),
-        missing=False
-    )
-
     pseudonym = colander.SchemaNode(
         colander.String(),
-        widget=pseudonym_widget,
+        widget=deform.widget.TextInputWidget(
+            item_css_class='pseudonym-input'),
         preparer=default_pseudonym,
         validator=colander.All(
             pseudonym_validator,
@@ -347,7 +311,6 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
                       "activity on the platform. This pseudonym can match your real identity, or be "
                       "completely different, as you choose. Be very careful! Once you have chosen it, "
                       "you will NEVER be able to change this pseudonym afterwards. Choose it with care!"),
-        missing=''
     )
 
     accept_conditions = colander.SchemaNode(

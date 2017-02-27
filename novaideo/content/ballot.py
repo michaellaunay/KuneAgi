@@ -472,6 +472,8 @@ class Ballot(VisualisableElement, Entity):
     name = renamer()
     ballot_box = CompositeUniqueProperty('ballot_box')
     report = CompositeUniqueProperty('report', 'ballot')
+    initiator = SharedUniqueProperty('initiator')
+    subjects = SharedMultipleProperty('subjects')
 
     def __init__(self, ballot_type, electors, subjects, duration, **kwargs):
         super(Ballot, self).__init__(**kwargs)
@@ -483,8 +485,47 @@ class Ballot(VisualisableElement, Entity):
         self.run_at = None
         self.duration = duration
         self.finished_at = None
+        self.period_validity = kwargs.get(
+            'period_validity', None)
         self.group = kwargs.get(
             'group', DEFAULT_BALLOT_GROUP)
+
+    @property
+    def group_id(self):
+        return self.group.get('group_id', None)
+
+    @property
+    def is_finished(self):
+        if 'finished' in self.state:
+            return True
+
+        now = datetime.datetime.now(tz=pytz.UTC)
+        if now > self.finished_at:
+            self.state.append('finished')
+            return True
+
+        return False
+
+    @property
+    def decision_is_valide(self):
+        if 'expired' in self.state:
+            return False
+
+        if self.period_validity is None:
+            return True
+
+        now = datetime.datetime.now(tz=pytz.UTC)
+        end_decision = self.finished_at + self.period_validity
+        if now > end_decision:
+            self.state.append('expired')
+            return False
+
+        return True
+
+    def finish_ballot(self):
+        if 'finished' not in self.state:
+            self.finished_at = datetime.datetime.now(tz=pytz.UTC)
+            self.state = PersistentList(['finished'])
 
     def run_ballot(self, context=None):
         """Run the ballot"""
