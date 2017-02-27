@@ -2227,9 +2227,10 @@ class ParticipationVote(StartBallot):
                 participant, 'participant', request)
             ballots = getattr(self.sub_process, 'ballots', [])
             period_date = None
-            for ballot in ballots:
-                ballot.finish_ballot()
-                period_date = ballot.finished_at + ballot.period_validity
+            if ballots:
+                ballot = ballots[0]
+                period_date = datetime.datetime.now(tz=pytz.UTC) + \
+                    ballot.period_validity
 
             accepted = ballot_result(self)
             root = getSite()
@@ -2331,9 +2332,10 @@ class ExclusionVote(StartBallot):
             participant = self.process.participant
             ballots = getattr(self.sub_process, 'ballots', [])
             period_date = None
-            for ballot in ballots:
-                ballot.finish_ballot()
-                period_date = ballot.finished_at + ballot.period_validity
+            if ballots:
+                ballot = ballots[0]
+                period_date = datetime.datetime.now(tz=pytz.UTC) + \
+                    ballot.period_validity
 
             accepted = ballot_result(self)
             root = getSite()
