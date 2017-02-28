@@ -106,11 +106,14 @@ class VoteFormView(FormView):
         vote_widget = vote_choice(ballot_report)
         self.schema.get('vote').widget = vote_widget
         self.schema.view = self
-        formwidget = deform.widget.FormWidget(css_class='vote-form')
+
         self.action = self.request.resource_url(
-            self.context, 'referendumvote',
-            query={'action_uid': getattr(vote_actions[0], '__oid__', '')})
-        self.schema.widget = formwidget
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': Vote.node_definition.id,
+                   'action_uid': getattr(vote_actions[0], '__oid__', '')})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform vote-form')
 
 
 @view_config(

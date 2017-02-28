@@ -104,52 +104,6 @@ function update_notification_id(id, url){
    });
 }
 
-function send_vote(event){
-  var $this = $(this)
-  var panel = $($this.parents('.panel').first())
-  var modal = $(panel.parents('.modal').first())
-  var group = $($this.parents('.panel-group'))
-  var button = $($this.find('button').first())
-  var formData = new FormData($this[0]);
-  formData.append(button.val(), button.val())
-  var url = $this.attr('action')
-  button.addClass('disabled');
-  loading_progress()
-  $.ajax({
-      url: url,
-      type: 'POST',
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function(data) {
-        var has_error = $(data).find('.amendment-body .has-error').length > 0
-        if(!has_error){
-          var panel_to_remove = panel.find('.panel-collapse').first().attr('id')
-          var source_body = $('<div>'+jQuery.parseJSON($('#'+modal.data('source')).data('body'))+'</div>')
-          source_body.find('#'+panel_to_remove).parents('.panel').remove()
-          panel.remove()
-          $('#'+modal.data('source')).data('body', JSON.stringify(source_body.html()))
-          var votes = $(group.find('.panel-title.collapsed'))
-          alert_component({
-            alert_msg: novaideo_translate("Your vote has been validated"),
-            alert_type: 'success'
-          })
-          if(votes.length>0){
-            $(votes.first()).click()
-            finish_progress()
-          }else{
-             modal.modal('hide')
-             location.reload();
-          }
-        }else{
-          button.removeClass('disabled');
-          //TODO display errors
-          finish_progress()
-        }
-       }
-  });
-  event.preventDefault();
-}
 
 function collapse_current_collpsein(){
   var current_btn = $(this);
@@ -756,8 +710,6 @@ $(document).ready(function(){
        event.preventDefault();
    });
 
-  $(document).on('submit','form.vote-form', send_vote)
-  
   $(document).on('submit','.home-add-idea form', function( event ) {
         var $this = $(this)
         if($this.hasClass('pending')){

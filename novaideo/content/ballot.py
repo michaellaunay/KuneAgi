@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import uuid
 import pytz
 import datetime
 from persistent.list import PersistentList
@@ -35,14 +36,29 @@ DEFAULT_BALLOT_GROUP = {
 }
 
 
+class Vote(VisualisableElement, Entity):
+
+    def __init__(self, value=None, **kwargs):
+        super(Vote, self).__init__(**kwargs)
+        self.uid = uuid.uuid4().hex
+
+    @property
+    def report(self):
+        return self.__parent__.__parent__.report
+
+
 @content(
     'referendumvote',
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IVote)
-class ReferendumVote(VisualisableElement, Entity):
+class ReferendumVote(Vote):
     """Referendum vote"""
     name = renamer()
+    templates = {'default': 'novaideo:views/templates/vote/referendum_vote_result.pt',
+                 'bloc': 'novaideo:views/templates/vote/referendum_vote_result.pt',
+                 'small': 'novaideo:views/templates/vote/referendum_vote_result.pt',
+                 'popover': 'novaideo:views/templates/vote/referendum_vote_result.pt'}
 
     def __init__(self, value=None, **kwargs):
         super(ReferendumVote, self).__init__(**kwargs)
@@ -129,9 +145,13 @@ _JUDGMENTS_TRANSLATION = [_('Excellent'),
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IVote)
-class MajorityJudgmentVote(VisualisableElement, Entity):
+class MajorityJudgmentVote(Vote):
     """Majority judgment vote"""
     name = renamer()
+    templates = {'default': 'novaideo:views/templates/vote/mj_vote_result.pt',
+                 'bloc': 'novaideo:views/templates/vote/mj_vote_result.pt',
+                 'small': 'novaideo:views/templates/vote/mj_vote_result.pt',
+                 'popover': 'novaideo:views/templates/vote/mj_vote_result.pt'}
 
     def __init__(self, value=None, **kwargs):
         super(MajorityJudgmentVote, self).__init__(**kwargs)
@@ -224,9 +244,13 @@ class MajorityJudgment(object):
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IVote)
-class FPTPVote(VisualisableElement, Entity):
+class FPTPVote(Vote):
     """FPTP vote class"""
     name = renamer()
+    templates = {'default': 'novaideo:views/templates/vote/fptp_vote_result.pt',
+                 'bloc': 'novaideo:views/templates/vote/fptp_vote_result.pt',
+                 'small': 'novaideo:views/templates/vote/fptp_vote_result.pt',
+                 'popover': 'novaideo:views/templates/vote/fptp_vote_result.pt'}
 
     def __init__(self, value=None, **kwargs):
         super(FPTPVote, self).__init__(**kwargs)
@@ -345,9 +369,13 @@ SUBJECT_TYPES_MANAGER = {'datemedian': DateSubjectMedian}
     icon='glyphicon glyphicon-align-left',
     )
 @implementer(IVote)
-class RangeVote(VisualisableElement, Entity):
+class RangeVote(Vote):
     """Range vote class"""
     name = renamer()
+    templates = {'default': 'novaideo:views/templates/vote/range_vote_result.pt',
+                 'bloc': 'novaideo:views/templates/vote/range_vote_result.pt',
+                 'small': 'novaideo:views/templates/vote/range_vote_result.pt',
+                 'popover': 'novaideo:views/templates/vote/range_vote_result.pt'}
 
     def __init__(self, value=None, **kwargs):
         super(RangeVote, self).__init__(**kwargs)
@@ -489,6 +517,7 @@ class Ballot(VisualisableElement, Entity):
             'period_validity', None)
         self.group = kwargs.get(
             'group', DEFAULT_BALLOT_GROUP)
+        self.uid = uuid.uuid4().hex
 
     @property
     def group_id(self):

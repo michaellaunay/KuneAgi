@@ -18,7 +18,7 @@ from dace.processinstance.core import PROCESS_HISTORY_KEY
 
 from novaideo.content.interface import (
     INovaIdeoApplication,
-    INode)
+    INode, IBallot)
 from novaideo.content.proposal import Proposal
 from novaideo import _, nothing
 from ..user_management.behaviors import (
@@ -448,6 +448,23 @@ class SeeGraph(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         return {}
 
+
+def seeballot_roles_validation(process, context):
+    return has_role(role=('Member',))
+
+
+def seeballot_processsecurity_validation(process, context):
+    return global_user_processsecurity()
+
+
+class SeeBallot(InfiniteCardinality):
+    isSequential = False
+    context = IBallot
+    processsecurity_validation = seeballot_processsecurity_validation
+    roles_validation = seeballot_roles_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 
 #TODO behaviors

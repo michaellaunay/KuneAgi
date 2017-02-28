@@ -195,7 +195,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
         ballot = Ballot('Referendum', electors, subjects, VP_DEFAULT_DURATION,
                         true_val=_("Submit the proposal as is"),
                         false_val=_("Continue to improve the proposal"),
-                        group=VOTE_PUBLISHING_GROUP)
+                        group=VOTE_PUBLISHING_GROUP,
+                        subjects=[proposal])
         working_group.addtoproperty('ballots', ballot)
         ballot.report.description = VOTE_PUBLISHING_MESSAGE
         ballot.title = _("Continue to improve the proposal or not")
@@ -218,7 +219,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
                             group_title=_('Work mode'),
                             group_values=modes,
                             group_default=default_mode,
-                            group=VOTE_PUBLISHING_GROUP)
+                            group=VOTE_PUBLISHING_GROUP,
+                            subjects=[proposal])
             working_group.addtoproperty('ballots', ballot)
             ballot.title = _('Work modes')
             ballot.report.description = VOTE_MODEWORK_MESSAGE
@@ -231,7 +233,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             subjects = [working_group]
             ballot = Ballot('Referendum', electors,
                             subjects, VP_DEFAULT_DURATION,
-                            group=VOTE_PUBLISHING_GROUP)
+                            group=VOTE_PUBLISHING_GROUP,
+                            subjects=[proposal])
             working_group.addtoproperty('ballots', ballot)
             ballot.report.description = VOTE_REOPENING_MESSAGE
             ballot.title = _('Reopen the Working Group')
@@ -246,7 +249,8 @@ class SubProcessDefinition(OriginSubProcessDefinition):
             ballot = Ballot('FPTP', electors, group, VP_DEFAULT_DURATION,
                             group_title=_('Duration of the amendment cycle'),
                             group_default='One week',
-                            group=VOTE_PUBLISHING_GROUP)
+                            group=VOTE_PUBLISHING_GROUP,
+                            subjects=[proposal])
             working_group.addtoproperty('ballots', ballot)
             ballot.title = _('Duration of the amendment cycle')
             ballot.report.description = VOTE_DURATION_MESSAGE

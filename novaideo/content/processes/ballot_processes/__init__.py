@@ -15,6 +15,10 @@ from ..user_management.behaviors import global_user_processsecurity
 from novaideo import _
 
 
+class Nothing(object):
+    pass
+
+
 def close_votes(context, request, vote_processes):
     vote_actions = [process.get_actions('vote')
                     for process in vote_processes]
@@ -59,4 +63,12 @@ class VoteBase(InfiniteCardinality):
         self.workitem.node.finish_behavior(self.workitem)
 
     def redirect(self, context, request, **kw):
+        vote_uid = kw.get('vote_uid', None)
+        if vote_uid:
+            nothing = Nothing()
+            nothing.is_nothing = True
+            nothing.vote_uid = vote_uid
+            nothing.ballot = kw.get('ballot', None)
+            return nothing
+
         return HTTPFound(request.resource_url(context, '@@index'))

@@ -1,0 +1,5 @@
+<tr>
+	<th scope="row">${getattr(object, 'uid', '')}</th>
+	<td><span tal:replace="layout.to_localized_time(object.created_at)"/></td>
+	<td>${getattr(object, 'value', '')}</td>
+</tr>
