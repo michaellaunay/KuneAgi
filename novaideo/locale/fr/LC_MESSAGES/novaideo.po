@@ -8331,7 +8331,7 @@ msgstr "Le pseudonyme doit être défini"
 #: novaideo/content/person.py:200
 #, python-format
 msgid "${pseudonym} pseudonym already in use"
-msgstr "Adresse de courriel ${email} déjà utilisée"
+msgstr "Pseudonyme ${pseudonym} déjà utilisé"
 
 #: novaideo/content/person.py:381
 msgid "User already exists"
