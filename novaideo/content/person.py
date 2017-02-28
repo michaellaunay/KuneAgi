@@ -444,7 +444,7 @@ class Person(User, SearchableEntity, CorrelableEntity):
                 value.len_selections -= 1
 
     def set_title(self):
-        if getattr(self, 'Keep_me_anonymous', False):
+        if getattr(self, 'pseudonym', ''):
             self.title = self.pseudonym
         else:
             self.title = getattr(self, 'first_name', '') + ' ' + \

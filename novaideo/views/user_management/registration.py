@@ -68,7 +68,6 @@ class RegistrationForm(FormView):
                      'birth_date',
                      'birthplace',
                      'email',
-                     'Keep_me_anonymous',
                      'pseudonym',
                      'accept_conditions',
                      'captcha'])

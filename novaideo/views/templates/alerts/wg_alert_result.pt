@@ -10,6 +10,8 @@
      <span i18n:translate="" tal:condition="alert_kind == 'start_work'">
       The Working Group has voted to pursue the improvement of the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
     </span>
+
+    <span i18n:translate="" tal:condition="alert_kind == 'first_start_work'">The Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has reached the quorum, i.e. the minimum number of Participants required to be considered as active. It can now improve the Proposal.</span>
     
     <span i18n:translate="" tal:condition="alert_kind == 'submit_proposal'">
       The Working Group has voted to submit the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> as is to the Members of the platform.

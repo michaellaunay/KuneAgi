@@ -303,8 +303,6 @@ class AcceptInvitation(InfiniteCardinality):
                                          'birth_date',
                                          'email',
                                          'organization']))
-        datas['Keep_me_anonymous'] = appstruct.get(
-            'Keep_me_anonymous', False)
         datas['pseudonym'] = appstruct.get('pseudonym', None)
         roles = datas.pop('roles')
         password = appstruct['password']
@@ -313,7 +311,7 @@ class AcceptInvitation(InfiniteCardinality):
         principals = find_service(root, 'principals')
         users = principals['users']
         name = person.first_name + ' ' + person.last_name \
-            if not getattr(person, 'Keep_me_anonymous', False) else \
+            if not datas['pseudonym'] else \
             person.pseudonym
         name = name_chooser(users, name=name)
         users[name] = person

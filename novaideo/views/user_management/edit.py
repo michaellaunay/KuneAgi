@@ -100,7 +100,7 @@ class EditView(FormView):
     def before_update(self):
         user = get_current(self.request)
         if self.context is not user and \
-           getattr(self.context, 'Keep_me_anonymous', False):
+           getattr(self.context, 'pseudonym', ''):
             self.schema = omit(
                 self.schema,
                 ['email'])

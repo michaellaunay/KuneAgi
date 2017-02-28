@@ -62,12 +62,12 @@ def get_user_data(user, id, request=None, ignore_anonymity=False):
         if not request:
             request = get_current_request()
 
-        is_anonymous = getattr(user, 'Keep_me_anonymous', False)
-        if is_anonymous and not ignore_anonymity:
+        pseudonym = getattr(user, 'pseudonym', '')
+        if pseudonym and not ignore_anonymity:
             return {
                 id+'_title': '',
                 id+'_last_name': '',
-                id+'_first_name': getattr(user, 'pseudonym', ''),
+                id+'_first_name': pseudonym,
             }
 
         localizer = request.localizer

@@ -470,7 +470,6 @@ class ConfirmRegistration(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         data = context.get_data(PersonSchema())
-        data['Keep_me_anonymous'] = getattr(context, 'Keep_me_anonymous', False)
         data['pseudonym'] = getattr(context, 'pseudonym', None)
         annotations = getattr(context, 'annotations', {}).get(
             PROCESS_HISTORY_KEY, [])
@@ -482,7 +481,7 @@ class ConfirmRegistration(InfiniteCardinality):
         person = Person(**data)
         principals = find_service(root, 'principals')
         name = person.first_name + ' ' + person.last_name \
-            if not getattr(person, 'Keep_me_anonymous', False) else \
+            if not data['pseudonym'] else \
             person.pseudonym
         users = principals['users']
         name = name_chooser(users, name=name)

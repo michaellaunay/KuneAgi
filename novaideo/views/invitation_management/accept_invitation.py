@@ -48,7 +48,6 @@ class AcceptInvitationView(FormView):
     schema = select(AcceptInvitationSchema(),
                     ['email',
                      'password',
-                     'Keep_me_anonymous',
                      'pseudonym',
                      'accept_conditions'])
     behaviors = [AcceptInvitation]
