@@ -85,6 +85,10 @@ class SubProcess(OriginSubProcess):
             if vote_processes:
                 close_votes(None, request, vote_processes)
 
+        ballots = getattr(process, 'ballots', [])
+        for ballot in ballots:
+            ballot.finish_ballot()
+
         super(SubProcess, self).stop()
 
 

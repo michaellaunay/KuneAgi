@@ -994,9 +994,9 @@ class ModerationVote(StartBallot):
                     [preregistration.email],
                     subject=subject, body=message)
                 alert(
-                    'internal', [ballot], moderators,
+                    'internal', [root], moderators,
                     internal_kind=InternalAlertKind.moderation_alert,
-                    subjects=[root],
+                    subjects=[ballot],
                     alert_kind='registration_refused',
                     ballot=ballot_url,
                     **preregistration_data)
