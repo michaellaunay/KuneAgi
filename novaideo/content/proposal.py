@@ -8,7 +8,6 @@ import datetime
 import pytz
 import colander
 from collections import OrderedDict
-from webob.multidict import MultiDict
 from persistent.list import PersistentList
 from zope.interface import implementer
 
@@ -24,7 +23,7 @@ from dace.descriptors import (
 from pontus.widget import (
     RichTextWidget, AjaxSelect2Widget,
     Length, SequenceWidget, Select2Widget)
-from pontus.file import ObjectData, File
+from pontus.file import ObjectData, File, Object as ObjectType
 from pontus.core import VisualisableElementSchema
 from pontus.schema import omit, Schema
 
@@ -43,11 +42,13 @@ from novaideo.core import (
     ExaminableEntity,
     Node,
     Emojiable,
-    SignalableEntity)
+    SignalableEntity,
+    Debatable,
+    Tokenable)
 from novaideo.views.widget import SimpleMappingtWidget
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
-    connect, disconnect)
+    connect, disconnect, get_files_data)
 
 
 OPINIONS = OrderedDict([
@@ -55,6 +56,37 @@ OPINIONS = OrderedDict([
     ('to_study', _('To be re-worked upon')),
     ('unfavorable', _('Negative'))
 ])
+
+
+@colander.deferred
+def challenge_choice(node, kw):
+    request = node.bindings['request']
+    root = getSite()
+    values = [('', _('- Select -'))]
+
+    def title_getter(id):
+        try:
+            obj = get_obj(int(id), None)
+            if obj:
+                return obj.title
+            else:
+                return id
+        except Exception as e:
+            log.warning(e)
+            return id
+
+    ajax_url = request.resource_url(
+        root, '@@novaideoapi',
+        query={'op': 'find_challenges'})
+    return AjaxSelect2Widget(
+        values=values,
+        ajax_url=ajax_url,
+        ajax_item_template="related_item_template",
+        title_getter=title_getter,
+        multiple=False,
+        page_limit=20,
+        add_clear=True,
+        item_css_class='challenge-input')
 
 
 @colander.deferred
@@ -81,6 +113,7 @@ def ideas_choice(node, kw):
         values=values,
         ajax_url=ajax_url,
         multiple=True,
+        add_clear=True,
         title_getter=title_getter,
         )
 
@@ -136,6 +169,15 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
         editing=context_is_a_proposal,
         )
 
+    challenge = colander.SchemaNode(
+        ObjectType(),
+        widget=challenge_choice,
+        missing=None,
+        title=_("Challenge (optional)"),
+        description=_("You can select and/or modify the challenge associated to this proposal. "
+                      "For an open proposal, do not select anything in the « Challenge » field.")
+    )
+
     description = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=600),
@@ -182,7 +224,9 @@ class Proposal(VersionableEntity,
                ExaminableEntity,
                Node,
                Emojiable,
-               SignalableEntity):
+               SignalableEntity,
+               Debatable,
+               Tokenable):
     """Proposal class"""
 
     type_title = _('Proposal')
@@ -196,11 +240,10 @@ class Proposal(VersionableEntity,
     author = SharedUniqueProperty('author')
     organization = SharedUniqueProperty('organization')
     working_group = SharedUniqueProperty('working_group', 'proposal')
-    tokens_opposition = CompositeMultipleProperty('tokens_opposition')
-    tokens_support = CompositeMultipleProperty('tokens_support')
     amendments = CompositeMultipleProperty('amendments', 'proposal')
     corrections = CompositeMultipleProperty('corrections', 'proposal')
     attached_files = SharedMultipleProperty('attached_files')
+    challenge = SharedUniqueProperty('challenge', 'proposals')
     ballots = CompositeMultipleProperty('ballots')
     ballot_processes = SharedMultipleProperty('ballot_processes')
     opinions_base = OPINIONS
@@ -213,21 +256,12 @@ class Proposal(VersionableEntity,
 
     @property
     def related_ideas(self):
-        return MultiDict([(item, c) for (item, c) in self.all_source_related_contents.items()
-                if c.type == CorrelationType.solid and
-                'related_ideas' in c.tags])
+        return [idea[0] for idea in self.get_related_contents(
+            CorrelationType.solid, ['related_ideas'])]
 
     @property
     def related_contents(self):
-        return MultiDict([(item, c) for (item, c) in
-                          self.all_source_related_contents.items()
-                          if c.type == CorrelationType.weak])
-
-    @property
-    def tokens(self):
-        result = list(self.tokens_opposition)
-        result.extend(list(self.tokens_support))
-        return result
+        return [content[0] for content in self.all_related_contents]
 
     @property
     def is_published(self):
@@ -280,34 +314,10 @@ class Proposal(VersionableEntity,
         }
 
     def get_attached_files_data(self):
-        result = []
-        for picture in self.attached_files:
-            if picture:
-                if picture.mimetype.startswith('image'):
-                    result.append({
-                        'content': picture.url,
-                        'type': 'img'})
-
-                if picture.mimetype.startswith(
-                        'application/x-shockwave-flash'):
-                    result.append({
-                        'content': picture.url,
-                        'type': 'flash'})
-
-                if picture.mimetype.startswith('text/html'):
-                    blob = picture.blob.open()
-                    blob.seek(0)
-                    content = blob.read().decode("utf-8")
-                    blob.seek(0)
-                    blob.close()
-                    result.append({
-                        'content': content,
-                        'type': 'html'})
-
-        return result
+        return get_files_data(self.attached_files)
 
     def set_related_ideas(self, relatedideas, user):
-        current_related_ideas = list(self.related_ideas.keys())
+        current_related_ideas = self.related_ideas
         related_ideas_to_add = [i for i in relatedideas
                                 if i not in current_related_ideas]
         related_ideas_to_del = [i for i in current_related_ideas
@@ -349,7 +359,7 @@ class Proposal(VersionableEntity,
             copy_of_proposal.addtoproperty('attached_files', file_)
 
         copy_of_proposal.set_related_ideas(
-            list(self.related_ideas.keys()), user)
+            self.related_ideas, user)
         copy_of_proposal.reindex()
         return copy_of_proposal
 

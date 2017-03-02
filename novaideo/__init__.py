@@ -24,6 +24,9 @@ from pontus.file import File
 
 from novaideo.content.bot import Bot
 
+from zope.processlifetime import IDatabaseOpenedWithRoot
+# from .twitter import start_ioloop
+
 
 nothing = object()
 
@@ -62,11 +65,11 @@ REPORTING_REASONS = {
 }
 
 
-ACCESS_ACTIONS = {}
-
-
 VIEW_TYPES = {'default': _('Default view'),
               'bloc': _('Block view')}
+
+
+ACCESS_ACTIONS = {}
 
 
 def get_access_keys(context):
@@ -651,6 +654,78 @@ def evolve_add_nia_bot(root, registry):
     add_nia_bot(root)
 
 
+def add_guide_tour_data(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IPerson
+    from persistent.dict import PersistentDict
+
+    contents = find_entities(
+        interfaces=[IPerson]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        if not hasattr(node, 'guide_tour_data'):
+            node.guide_tour_data = PersistentDict({})
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Guide tour data evolved.')
+
+
+def init_guide_tour_data(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IPerson
+    from persistent.dict import PersistentDict
+
+    contents = find_entities(
+        interfaces=[IPerson]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        node.guide_tour_data = PersistentDict({})
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Guide tour data evolved.')
+
+
+def evolve_related_correlation(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IComment, IAnswer
+
+    contents = find_entities(
+        interfaces=[IComment, IAnswer]
+        )
+    root = getSite()
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        if node.related_correlation:
+            targets = node.related_correlation.targets
+            if node in targets:
+                targets.remove(node)
+
+            node.set_associated_contents(
+                targets, node.related_correlation.author)
+            root.delfromproperty('correlations', node.related_correlation)
+
+        node.reindex()
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('Related correlations evolved')
+
+
+def publish_organizations(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IOrganization
+
+    contents = find_entities(interfaces=[IOrganization])
+    for org in contents:
+        org.state = PersistentList(['published'])
+        org.reindex()
+
+    log.info('Orgnaizations evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -694,6 +769,10 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_files)
     config.add_evolution_step(evolve_root_files)
     config.add_evolution_step(evolve_add_nia_bot)
+    config.add_evolution_step(add_guide_tour_data)
+    config.add_evolution_step(init_guide_tour_data)
+    config.add_evolution_step(evolve_related_correlation)
+    config.add_evolution_step(publish_organizations)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

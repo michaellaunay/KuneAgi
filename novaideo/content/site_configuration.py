@@ -6,6 +6,7 @@
 
 import colander
 import deform
+from zope.interface import invariant
 
 from pontus.schema import omit, select, Schema
 from pontus.widget import (
@@ -375,12 +376,22 @@ class KeywordsConfSchema(Schema):
         missing=True
     )
 
+    @invariant
+    def contact_invariant(self, appstruct):
+        can_add_keywords = appstruct.get('can_add_keywords', 'false')
+        can_add_keywords = False if can_add_keywords == 'false' else True
+        keywords = appstruct.get('keywords', colander.null)
+        if not can_add_keywords and keywords is colander.null:
+            raise colander.Invalid(
+                self, _('You must enter at least one keyword.'))
+
 
 class OtherSchema(Schema):
 
     title = colander.SchemaNode(
         colander.String(),
         title=_('Title'),
+        description=_("The title of the application"),
         missing=""
         )
 
@@ -392,7 +403,6 @@ class OtherSchema(Schema):
                     ['title', 'address', 'phone', 'surtax', 'email', 'website', 'fax']),
             ['_csrf_token_']),
         widget=SequenceWidget(
-            min_len=1,
             add_subitem_text_template=_('Add a new contact')),
         title='Contacts',
         oid='contacts'

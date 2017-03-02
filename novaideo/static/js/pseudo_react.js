@@ -156,7 +156,8 @@ function object_view_component(data){
 				        var new_comp = parent.find('#'+component_id).first()
 				        init_content_text_scroll(new_comp.find(".content-text-scroll"))
 				        rebuild_scrolls(new_comp.find(".malihu-scroll"))
-				        initscroll(new_comp.find(".result-scroll"))
+				        var result_scroll = new_comp.find(".result-scroll")
+			            initscroll(result_scroll)
 				        init_emoji($(new_comp.find('.emoji-container:not(.emojified)')));
              
 			        }
@@ -180,7 +181,8 @@ function contextual_help_component(data){
 			var original_component = $(original_components[0])
 			original_component.html(data[component_id+'.body'])
 			rebuild_scrolls(original_component.find('.malihu-scroll'))
-			initscroll(original_component.find(".result-scroll"))
+			var result_scroll = original_component.find(".result-scroll")
+            initscroll(result_scroll)
 			init_emoji($(original_component.find('.emoji-container:not(.emojified)')));
 			init_contextual_help()
 		}
@@ -384,6 +386,28 @@ function alert_component(data){
 }
 
 
+function loading_component(data){
+	var components = $('[data-component_type="on-load-view"]')
+	var components_to_update = components.map(function(){
+		if($.inArray($(this).attr('id'), data['loaded_views']) >= 0){
+			return $(this)
+		}
+	})
+	$.each(components_to_update, function(index){
+		var original_components = $(this);
+		var component_id = original_components.attr('id');
+		var container = original_components.parents('.async-component-container').first();
+		container = container.length>0?container: original_components;
+		container.replaceWith(data[component_id])
+		try {
+	        deform.processCallbacks();
+	    }catch(err) {};
+	    initscroll();
+	    $(document).trigger('component_loaded', [component_id])
+	})
+}
+
+
 var pseudo_react_components = {
 	'support_action': [nav_bar_component, view_title_component,
 	                   removed_items_component, object_view_component, alert_component,
@@ -402,7 +426,8 @@ var pseudo_react_components = {
 	                    process_steps_component],
 	'dropdown_action': [dropdown_action_component, list_channels_component,
 	                    alert_component, contextual_help_component,
-	                    process_steps_component]
+	                    process_steps_component],
+	'loading-action': [loading_component]
 }
 
 function update_components(data){

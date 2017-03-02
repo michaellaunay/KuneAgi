@@ -24,6 +24,7 @@ from novaideo.views.filter import (
     get_filter, FILTER_SOURCES, merge_with_filter_view, find_entities)
 from novaideo.views.filter.sort import (
     sort_view_objects)
+from novaideo.views.core import asyn_component_config
 
 
 CONTENTS_MESSAGES = {
@@ -33,6 +34,7 @@ CONTENTS_MESSAGES = {
     }
 
 
+@asyn_component_config(id='novaideoapp_seemycontent')
 @view_config(
     name='seemycontents',
     context=NovaIdeoApplication,
@@ -51,7 +53,7 @@ class SeeMyContentsView(BasicView):
     selected_filter = ['metadata_filter', ('temporal_filter', ['negation', 'created_date']),
                        'text_filter', 'other_filter']
     include_archived = True
-    content_types = ['idea', 'proposal']
+    content_types = ['idea', 'proposal', 'question']
 
     def _get_title(self, **args):
         return _(self.contents_messages[args.get('index')],

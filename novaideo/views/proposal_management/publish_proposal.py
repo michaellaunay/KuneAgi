@@ -36,7 +36,7 @@ class PublishProposalStudyReport(BasicView):
         modes = list(root.get_work_modes().keys())
         not_published_ideas = []
         if not self.request.moderate_ideas:
-            not_published_ideas = [i for i in self.context.related_ideas.keys()
+            not_published_ideas = [i for i in self.context.related_ideas
                                    if 'published' not in i.state]
         values = {'context': self.context,
                   'not_published_ideas': not_published_ideas,
@@ -93,7 +93,7 @@ class PublishProposalSchema(Schema):
     vote = colander.SchemaNode(
         colander.Boolean(false_val='False', true_val='True'),
         default=False,
-        title=_('Options')
+        title=_('Options'),
         )
 
     work_mode = colander.SchemaNode(

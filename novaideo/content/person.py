@@ -1,9 +1,9 @@
-# -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms
-# avalaible on http://www.gnu.org/licenses/agpl.html
+# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# avalaible on http://www.gnu.org/licenses/agpl.html 
 
 # licence: AGPL
 # author: Amen Souissi
+# -*- coding: utf8 -*-
 import os
 import datetime
 import pytz
@@ -14,6 +14,7 @@ from BTrees.OOBTree import OOBTree
 import colander
 import deform.widget
 from persistent.list import PersistentList
+from persistent.dict import PersistentDict
 from zope.interface import implementer, invariant
 
 from substanced.content import content
@@ -47,7 +48,8 @@ from novaideo.core import (
     keyword_widget,
     keywords_validator,
     CorrelableEntity,
-    generate_access_keys)
+    generate_access_keys,
+    Debatable)
 from .interface import (
     IPerson, IPreregistration, IAlert, IProposal, Iidea)
 from novaideo import _
@@ -355,11 +357,11 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
     icon='icon glyphicon glyphicon-user',
     )
 @implementer(IPerson)
-class Person(User, SearchableEntity, CorrelableEntity):
+class Person(User, SearchableEntity, CorrelableEntity, Debatable):
     """Person class"""
 
     type_title = _('Person')
-    icon = 'icon glyphicon glyphicon-user'
+    icon = 'icon glyphicon glyphicon-user' #'icon novaideo-icon icon-user'
     templates = {'default': 'novaideo:views/templates/person_result.pt',
                  'bloc': 'novaideo:views/templates/person_bloc.pt',
                  'small': 'novaideo:views/templates/small_person_result.pt',
@@ -377,7 +379,9 @@ class Person(User, SearchableEntity, CorrelableEntity):
     old_alerts = SharedMultipleProperty('old_alerts')
     following_channels = SharedMultipleProperty('following_channels', 'members')
     folders = SharedMultipleProperty('folders', 'author')
-    tree = synchronize_tree()
+    questions = SharedMultipleProperty('questions', 'author')
+    challenges = SharedMultipleProperty('challenges', 'author')
+    ballots = CompositeMultipleProperty('ballots')
 
     def __init__(self, **kwargs):
         if 'locale' not in kwargs:
@@ -391,6 +395,7 @@ class Person(User, SearchableEntity, CorrelableEntity):
         self.set_title()
         self.last_connection = datetime.datetime.now(tz=pytz.UTC)
         self._read_at = OOBTree()
+        self.guide_tour_data = PersistentDict({})
         self.confidence_index = 0
         self._notes = OOBTree()
 
@@ -476,6 +481,8 @@ class Person(User, SearchableEntity, CorrelableEntity):
     def contents(self):
         result = [i for i in list(self.ideas) if i is i.current_version]
         result.extend(self.proposals)
+        result.extend(self.questions)
+        result.extend(self.challenges)
         return result
 
     @property
@@ -600,6 +607,14 @@ class Person(User, SearchableEntity, CorrelableEntity):
         confidence_index = np.sum(
             np.dot(notes, np.exp(- np.log(2) * (now-dates)/time_c)))
         self.confidence_index = round(confidence_index, 1)
+
+    @property
+    def user_groups(self):
+        groups = list(self.groups)
+        if self.organization:
+            groups.append(self.organization)
+
+        return groups
 
 
 @content(

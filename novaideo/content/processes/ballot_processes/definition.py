@@ -41,16 +41,20 @@ def time_date(process):
 def event_condition(process):
     execution_context = process.execution_context
     processes = execution_context.get_involved_collection('vote_processes')
+
+    def finish_ballot():
+        for ballot in process.ballots:
+            ballot.finish_ballot()
+
     if not processes:
+        finish_ballot()
         return True
 
     for ballot_process in processes:
         if not ballot_process._finished:
             return False
 
-    for ballot in process.ballots:
-        ballot.finish_ballot()
-
+    finish_ballot()
     return True
 
 

@@ -41,6 +41,7 @@ class Vote(VisualisableElement, Entity):
     def __init__(self, value=None, **kwargs):
         super(Vote, self).__init__(**kwargs)
         self.uid = uuid.uuid4().hex
+        self.__name__ = self.uid
 
     @property
     def report(self):
@@ -69,6 +70,9 @@ class ReferendumVote(Vote):
 class Referendum(object):
     """Referendum election"""
     vote_factory = ReferendumVote
+    templates = {
+        'detail': 'novaideo:views/templates/vote/referendum_type_detail.pt',
+        'result': 'novaideo:views/templates/vote/referendum_type_result.pt',}
 
     def __init__(self, report, vote_process_id='referendumprocess', **kwargs):
         self.vote_process_id = vote_process_id
@@ -132,6 +136,15 @@ DEFAULT_JUDGMENTS = {'Excellent': 7,
                      'Insufficient': 2,
                      'To be rejected': 1}
 
+DEFAULT_JUDGMENTS_VALUES = {
+    7: 'Excellent',
+    6: 'Very good',
+    5: 'Good',
+    4: 'Fairly good',
+    3: 'Pass',
+    2: 'Insufficient',
+    1: 'To be rejected'}
+
 _JUDGMENTS_TRANSLATION = [_('Excellent'),
                           _('Very good'),
                           _('Good'),
@@ -163,6 +176,10 @@ class MajorityJudgmentVote(Vote):
 class MajorityJudgment(object):
     """Majority judgment election"""
     vote_factory = MajorityJudgmentVote
+    templates = {
+        'detail': 'novaideo:views/templates/vote/majorityjudgment_type_detail.pt',
+        'result': 'novaideo:views/templates/vote/majorityjudgment_type_result.pt'
+    }
 
     def __init__(self, report, vote_process_id='majorityjudgmentprocess', **kwargs):
         self.vote_process_id = vote_process_id
@@ -207,27 +224,30 @@ class MajorityJudgment(object):
 
         return result
 
-    def get_electeds(self, result):
-        """Return the elected subject"""
-
+    def get_median_notes(self, result):
         len_voters = len(self.report.voters)
         if len_voters == 0:
             return None
 
-        judgments = sorted(list(self.judgments.keys()), 
+        judgments = sorted(list(self.judgments.keys()),
                            key=lambda o: self.judgments[o])
         object_results = dict([(oid, 0) for oid in result.keys()])
         for oid in result.keys():
             object_result = 0
             for judgment in judgments:
                 object_result += float(result[oid][judgment]) / \
-                                       float(len_voters) * 100
+                    float(len_voters) * 100
                 if object_result >= 50:
                     object_results[oid] = self.judgments[judgment]
                     break
 
-        sorted_results = sorted(list(object_results.keys()), 
-                                key=lambda o: object_results[o], 
+        return object_results
+
+    def get_electeds(self, result):
+        """Return the elected subject"""
+        sorted_results = self.get_median_notes(result)
+        sorted_results = sorted(list(sorted_results.keys()),
+                                key=lambda o: sorted_results[o],
                                 reverse=True)
         if sorted_results:
             try:
@@ -237,6 +257,29 @@ class MajorityJudgment(object):
                 return None
 
         return None
+
+    def get_vote_values(self, vote):
+        return [(get_obj(oid), judgment) for
+                oid, judgment in vote.items()]
+
+    def get_vote_value(self, vote):
+        result = self.get_vote_values(vote)
+        return sorted(
+            result,
+            key=lambda e: DEFAULT_JUDGMENTS[e[1]],
+            reverse=True)
+
+    def get_options(self):
+        return sorted(
+            self.judgments,
+            key=lambda e: DEFAULT_JUDGMENTS[e],
+            reverse=True)
+
+    def get_judgment(self, value):
+        return DEFAULT_JUDGMENTS_VALUES.get(value, '')
+
+    def get_judgment_value(self, judgment):
+        return DEFAULT_JUDGMENTS.get(judgment, 0)
 
 
 @content(
@@ -262,6 +305,9 @@ class FPTPVote(Vote):
 class FPTP(object):
     """A first-past-the-post (abbreviated FPTP or FPP) election"""
     vote_factory = FPTPVote
+    templates = {
+        'detail': 'novaideo:views/templates/vote/fptp_type_detail.pt',
+        'result': 'novaideo:views/templates/vote/fptp_type_result.pt',}
 
     def __init__(self, report, vote_process_id='fptpprocess', **kwargs):
         self.vote_process_id = vote_process_id
@@ -308,21 +354,20 @@ class FPTP(object):
             if subject is None:
                 subject = vote.value
 
-            try:
-                subject_id = get_oid(vote.value)
-            except Exception:
-                subject_id = vote.value
-            
+            subject_id = self.get_option_id(vote.value)
             if subject in self.report.subjects:
                 result[subject_id] += 1
 
         return result
 
+    def get_option_id(self, option):
+        return get_oid(option, option)
+
     def get_electeds(self, result):
         """Return the elected subject"""
 
-        electeds_ids = sorted(list(result.keys()), 
-                              key=lambda o: result[o], 
+        electeds_ids = sorted(list(result.keys()),
+                              key=lambda o: result[o],
                               reverse=True)
         if electeds_ids:
             elected_id = electeds_ids[0]
@@ -333,6 +378,22 @@ class FPTP(object):
             return [elected]
 
         return None
+
+    def get_options(self):
+        values_mapping = self.group_values
+        if values_mapping is None:
+            return self.report.subjects
+        values_mapping = dict(values_mapping)
+        return [values_mapping.get(option) for option
+                in self.report.subjects]
+
+    def get_option(self, option):
+        values_mapping = self.group_values
+        if values_mapping is None:
+            return option
+
+        values_mapping = dict(values_mapping)
+        return values_mapping.get(option, option)
 
 
 class DateSubjectMedian(object):
@@ -387,6 +448,9 @@ class RangeVote(Vote):
 class RangeVoting(object):
     """Range voting class"""
     vote_factory = RangeVote
+    templates = {
+        'detail': 'novaideo:views/templates/vote/rangevoting_type_detail.pt',
+        'result': 'novaideo:views/templates/vote/rangevoting_type_result.pt',}
 
     def __init__(self, report, vote_process_id='rangevotingprocess', **kwargs):
         self.vote_process_id = vote_process_id
@@ -449,10 +513,10 @@ class Report(VisualisableElement, Entity):
     processes = SharedMultipleProperty('processes')
     ballot = SharedUniqueProperty('ballot', 'report')
 
-    def __init__(self, ballottype , electors, subjects, **kwargs):
+    def __init__(self, ballottype, electors, subjects, **kwargs):
+        kwargs['subjects'] = subjects
+        kwargs['electors'] = electors
         super(Report, self).__init__(**kwargs)
-        [self.addtoproperty('electors', elector) for elector in electors]
-        [self.addtoproperty('subjects', subject) for subject in subjects]
         self.ballottype = BALLOT_TYPES[ballottype](self, **kwargs)
         if 'vote_process_id' in kwargs:
             self.ballottype.vote_process_id = kwargs['vote_process_id']
@@ -489,6 +553,15 @@ class BallotBox(VisualisableElement, Entity):
     name = renamer()
     votes = CompositeMultipleProperty('votes')
 
+    def __init__(self, **kwargs):
+        super(BallotBox, self).__init__(**kwargs)
+        self.vote_len = 0
+
+    def addtoproperty(self, name, value, moving=None):
+        super(BallotBox, self).addtoproperty(name, value, moving)
+        if name == 'votes':
+            self.vote_len += 1
+
 
 @content(
     'ballot',
@@ -503,12 +576,13 @@ class Ballot(VisualisableElement, Entity):
     initiator = SharedUniqueProperty('initiator')
     subjects = SharedMultipleProperty('subjects')
 
-    def __init__(self, ballot_type, electors, subjects, duration, **kwargs):
+    def __init__(self, ballot_type, electors, contexts, duration, **kwargs):
         super(Ballot, self).__init__(**kwargs)
+        kwargs.pop('subjects', None)
         self.setproperty('ballot_box', BallotBox())
         self.setproperty('report', Report(ballot_type,
                                           electors,
-                                          subjects,
+                                          contexts,
                                           **kwargs))
         self.run_at = None
         self.duration = duration
@@ -518,6 +592,7 @@ class Ballot(VisualisableElement, Entity):
         self.group = kwargs.get(
             'group', DEFAULT_BALLOT_GROUP)
         self.uid = uuid.uuid4().hex
+        self.__name__ = self.uid
 
     @property
     def group_id(self):

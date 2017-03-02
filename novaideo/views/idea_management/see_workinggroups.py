@@ -49,7 +49,7 @@ class SeeRelatedWorkingGroupsView(BasicView):
         self.execute(None)
         user = get_current()
         objects = [proposal for proposal
-                   in dict(self.context.related_proposals).keys()
+                   in self.context.related_proposals
                    if proposal.working_group and
                    'archived' not in proposal.state and
                    'censored' not in proposal.state and
@@ -62,7 +62,7 @@ class SeeRelatedWorkingGroupsView(BasicView):
         batch = Batch(objects, self.request,
                       url=url,
                       default_size=BATCH_DEFAULT_SIZE)
-        batch.target = "#results_idea_working_groups"
+        batch.target = "#results_idea_working_groups" + str(self.context.__oid__)
         len_result = batch.seqlen
         index = str(len_result)
         if len_result > 1:

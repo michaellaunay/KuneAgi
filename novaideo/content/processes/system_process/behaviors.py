@@ -9,27 +9,24 @@ import datetime
 import pytz
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
-from pyramid import renderers
 
-from dace.util import find_catalog, getSite
+from dace.util import getSite
 from dace.objectofcollaboration.principal.util import (
-    has_role, get_current)
+    has_role)
 from dace.processinstance.activity import (
     ElementaryAction,
     ActionType)
-from dace.processinstance.core import ActivityExecuted
 
 from novaideo.content.processes.\
     newsletter_management.behaviors import send_newsletter_content
 from novaideo.content.interface import (
     INovaIdeoApplication,
-    IPerson)
+    IPerson,
+    IChallenge)
     # IProposal,
     # Iidea)
 from novaideo.views.filter import find_entities
 from novaideo import log
-# from novaideo.utilities.util import to_localized_time
-# from novaideo.utilities.alerts_utility import alert
 
 
 INACTIVITY_DURATION = 90
@@ -88,6 +85,15 @@ class ManageContents(ElementaryAction):
     roles_validation = system_roles_validation
 
     def start(self, context, request, appstruct, **kw):
+        challenges = find_entities(
+            interfaces=[IChallenge],
+            metadata_filter={
+                'states': ['pending']})
+        for challenge in challenges:
+            if challenge.is_expired:
+                challenge.state = PersistentList(['closed', 'published'])
+                challenge.reindex()
+
         root = getSite()
         users = find_entities(
             interfaces=[IPerson],

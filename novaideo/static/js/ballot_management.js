@@ -1,14 +1,3 @@
-// $(document).on('submit','.vote-form', function( event ) {
-//     var formid = $(this).attr('id');
-
-//     var button = $(event.originalEvent.explicitOriginalTarget);
-//     if (button.val() == 'Cancel'){
-//         var modal = $($(this).parents('#vote-actions-modal').first());
-//         modal.modal('hide');
-//     	event.preventDefault();
-//     }
-// });
-
 function send_vote(event){
     var $this = $(this)
     var panel = $($this.parents('.panel').first())
@@ -50,9 +39,17 @@ function send_vote(event){
           var votes = $(group.find('.panel-title.collapsed'))
           if(votes.length>0){
             $(votes.first()).click()
+          }
+        }else{
+          source_body.find('#'+panel_to_remove).parents('.panel').first().remove()
+          panel.remove()
+          $('#'+modal.data('source')).data('body', JSON.stringify(source_body.html()))
+          var votes = $(group.find('.panel-title.collapsed'))
+          if(votes.length>0){
+            $(votes.first()).click()
           }else{
-             // modal.modal('hide')
-             // location.reload();
+             modal.modal('hide')
+             location.reload();
           }
         }
         finish_progress()

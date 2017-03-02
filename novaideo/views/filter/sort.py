@@ -7,6 +7,7 @@ from pyramid.threadlocal import get_current_request
 from dace.objectofcollaboration.principal.util import has_role
 from dace.util import find_catalog
 
+from novaideo import core
 from novaideo import _, log
 
 
@@ -44,7 +45,8 @@ def get_adapted_sort(content_types, user, intersect=None, **kwargs):
 
 def sort_view_objects(
     view, objects, content_types,
-    user, default_sort='release_date', intersect=[]):
+    user, default_sort='release_date', intersect=[],
+    sort_url=None):
     current_sort = default_sort
     sort = view.params('sort')
     reverse = view.params('reverse_sort')
@@ -62,7 +64,8 @@ def sort_view_objects(
         view.request, content_types, user,
         sorts=adapted_sorts,
         current_sort=current_sort,
-        reverse=reverse)
+        reverse=reverse,
+        sort_url=sort_url)
 
     return objects, sort_body
 
@@ -70,7 +73,8 @@ def sort_view_objects(
 def render_adapted_sort(
     request, content_types, user,
     template=SORT_TEMPLATE, sorts=None,
-    current_sort=None, reverse=False):
+    current_sort=None, reverse=False,
+    sort_url=None):
     if not sorts:
         sorts = get_adapted_sort(content_types, user, request=request)
 
@@ -78,7 +82,8 @@ def render_adapted_sort(
         template,
         {'options': sorts,
          'current': current_sort,
-         'reverse': reverse},
+         'reverse': reverse,
+         'sort_url': sort_url},
         request)
 
 
@@ -108,15 +113,15 @@ class sort_config(object):
 
 
 def sort_by_tokens(objects, reverse=False, is_oppose=False):
-    tokens_source = 'tokens_support'
-    tokens_target = 'tokens_opposition'
+    tokens_source = 'len_support'
+    tokens_target = 'len_opposition'
     if is_oppose:
-        tokens_source = 'tokens_opposition'
-        tokens_target = 'tokens_support'
+        tokens_source = 'len_opposition'
+        tokens_target = 'len_support'
 
     ordered_objects = [(obj,
-                        (len(getattr(obj, tokens_source, [])) -
-                         len(getattr(obj, tokens_target, []))))
+                        (getattr(obj, tokens_source, []) -
+                         getattr(obj, tokens_target, [])))
                        for obj in objects]
     groups = {}
     for obj in ordered_objects:
@@ -129,7 +134,7 @@ def sort_by_tokens(objects, reverse=False, is_oppose=False):
         sub_objects = list(groups[group_key])
         groups[group_key] = sorted(
             sub_objects,
-            key=lambda obj: len(getattr(obj[0], tokens_source, [])),
+            key=lambda obj: getattr(obj[0], tokens_source, []),
             reverse=reverse)
     groups = sorted(
         groups.items(),
@@ -141,7 +146,7 @@ def sort_by_tokens(objects, reverse=False, is_oppose=False):
 @sort_config(
     name='nbsupport',
     title=_('Number of support tokens'),
-    contents=['proposal', 'idea'],
+    contents=['proposal', 'idea', 'question', 'answer'],
     order=3
 )
 class NumberSupport(object):
@@ -162,8 +167,8 @@ class NumberSupport(object):
         request = kwargs.get('request', None)
         if not request:
             request = get_current_request()
-
-        content_to_support = getattr(request, 'content_to_support', [])
+        content_to_support = list(getattr(request, 'content_to_support', []))
+        content_to_support.extend(list(core.SUSTAINABLE_CONTENTS.keys()))
         return ('all' in content_types and content_to_support) or\
             any(t in content_to_support for t in content_types)
 
@@ -171,7 +176,7 @@ class NumberSupport(object):
 @sort_config(
     name='nboppose',
     title=_('Number of opposition tokens'),
-    contents=['proposal', 'idea'],
+    contents=['proposal', 'idea', 'question', 'answer'],
     order=4
 )
 class NumberOppose(object):
@@ -193,7 +198,8 @@ class NumberOppose(object):
         if not request:
             request = get_current_request()
 
-        content_to_support = getattr(request, 'content_to_support', [])
+        content_to_support = list(getattr(request, 'content_to_support', []))
+        content_to_support.extend(list(core.SUSTAINABLE_CONTENTS.keys()))
         return ('all' in content_types and content_to_support) or\
             any(t in content_to_support for t in content_types)
 

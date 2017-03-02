@@ -62,7 +62,7 @@ def ignore(context, request, root):
     context.reindex()
 
 
-def censor(context, request, root):
+def censor(context, request, root, **kw):
     context_oid = get_oid(context)
     dace_index = find_catalog('dace')
     dace_container_oid = dace_index['container_oid']
@@ -81,7 +81,7 @@ def censor(context, request, root):
         context, ISignalableObject)
     if adapter is not None:
         context.state.remove('reported')
-        adapter.censor(request)
+        adapter.censor(request, ballo_url=kw.get('ballo_url', ''))
 
 
 def select_roles_validation(process, context):
@@ -292,6 +292,7 @@ class ModerationVote(StartBallot):
         close_ballot(self, content, request)
         # content not removed
         if content and content.__parent__:
+            root = getSite()
             moderators = self.process.execution_context.get_involved_collection(
                 'electors')
             for moderator in moderators:
@@ -299,12 +300,20 @@ class ModerationVote(StartBallot):
                     user=moderator,
                     roles=(('LocalModerator', content),))
 
+            ballots = getattr(self.sub_process, 'ballots', [])
+            ballot = None
+            for ballot_ in ballots:
+                ballot_.finish_ballot()
+                ballot = ballot_
+
+            ballot_oid = get_oid(ballot, '')
+            ballot_url = request.resource_url(
+                root, '@@seeballot', query={'id': ballot_oid})
             accepted = ballot_result(self, True)
-            root = getSite()
             if accepted:
                 ignore(content, request, root)
             else:
-                censor(content, request, root)
+                censor(content, request, root, ballot_url=ballot_url)
 
         super(ModerationVote, self).after_execution(
             content, request, **kw)

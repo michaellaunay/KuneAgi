@@ -36,7 +36,7 @@ from deform_treepy.utilities.tree_utility import (
 from novaideo.content.keyword import ROOT_TREE, DEFAULT_TREE
 from novaideo import _, DEFAULT_FILES
 from novaideo.content.file import FileEntity
-from novaideo.core import Channel, CorrelableEntity
+from novaideo.core import Channel, CorrelableEntity, Debatable
 from .organization import OrganizationSchema, Organization
 from .interface import INovaIdeoApplication
 from .invitation import InvitationSchema, Invitation
@@ -88,6 +88,10 @@ DEFAULT_COLORS = {
     'proposal': {
         'background': '#3f6da6',
         'hover': hover_color('#3f6da6')
+    },
+    'question': {
+        'background': '#e66a11',
+        'hover': hover_color('#e66a11')
     }
 }
 
@@ -302,16 +306,18 @@ class NovaIdeoApplicationPropertySheet(PropertySheet):
     after_create='after_create',
     )
 @implementer(INovaIdeoApplication)
-class NovaIdeoApplication(VisualisableElement, CorrelableEntity, Application):
+class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
     """Nova-Ideo class (Root)"""
 
     name = renamer()
     preregistrations = CompositeMultipleProperty('preregistrations')
+    challenges = CompositeMultipleProperty('challenges')
     working_groups = CompositeMultipleProperty('working_groups')
     proposals = CompositeMultipleProperty('proposals')
     organizations = CompositeMultipleProperty('organizations')
     invitations = CompositeMultipleProperty('invitations')
     ideas = CompositeMultipleProperty('ideas')
+    questions = CompositeMultipleProperty('questions')
     correlations = CompositeMultipleProperty('correlations')
     files = CompositeMultipleProperty('files')
     alerts = CompositeMultipleProperty('alerts')
@@ -322,7 +328,6 @@ class NovaIdeoApplication(VisualisableElement, CorrelableEntity, Application):
     proposal_template = CompositeUniqueProperty('proposal_template')
     advertisings = CompositeMultipleProperty('advertisings')
     news_letter_members = SharedMultipleProperty('news_letter_members')
-    channels = CompositeMultipleProperty('channels', 'subject')
     general_chanel = SharedUniqueProperty('general_chanel')
     newsletters = CompositeMultipleProperty('newsletters')
     smart_folders = CompositeMultipleProperty('smart_folders')
@@ -508,13 +513,9 @@ class NovaIdeoApplication(VisualisableElement, CorrelableEntity, Application):
 
         new_keywords = [k for k in keys
                         if k not in self.colors_mapping]
-        for keyword in new_keywords:
-            background = random_color()
-            hover = hover_color(background)
-            self.colors_mapping[keyword] = {'color': {
-                'background': background,
-                'hover': hover
-            }}
+        colors = random_color(len(new_keywords))
+        for index, keyword in enumerate(new_keywords):
+            self.colors_mapping[keyword] = {'color': colors[index]}
 
     def get_color(self, key):
         if key in getattr(self, 'colors_mapping', {}):

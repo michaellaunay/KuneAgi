@@ -41,7 +41,9 @@ from .behaviors import (
     PublishProposal,
     SubmitProposalModeration,
     CommentProposal,
+    CommentProposalAnonymous,
     PresentProposal,
+    PresentProposalAnonymous,
     Associate,
     Work,
     VotingPublication,
@@ -168,9 +170,9 @@ class SubProcessFirstVote(OriginSubProcess):
             if vote_processes:
                 close_votes(None, request, vote_processes)
 
-            ballots = getattr(process, 'ballots', [])
-            for ballot in ballots:
-                ballot.finish_ballot()
+        ballots = getattr(process, 'ballots', [])
+        for ballot in ballots:
+            ballot.finish_ballot()
 
         super(SubProcessFirstVote, self).stop()
 
@@ -378,11 +380,11 @@ class ProposalManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Withdraw token from the proposal"),
                                        title=_("Withdraw my token"),
                                        groups=[]),
-                present = ActivityDefinition(contexts=[PresentProposal],
+                present = ActivityDefinition(contexts=[PresentProposal, PresentProposalAnonymous],
                                        description=_("Share the proposal with others"),
                                        title=_("Share"),
                                        groups=[]),
-                comment = ActivityDefinition(contexts=[CommentProposal],
+                comment = ActivityDefinition(contexts=[CommentProposal, CommentProposalAnonymous],
                                        description=_("Comment the proposal"),
                                        title=_("Comment"),
                                        groups=[]),

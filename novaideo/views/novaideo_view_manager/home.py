@@ -25,7 +25,8 @@ from novaideo.views.filter import (
     merge_with_filter_view, find_entities)
 from novaideo.views.filter.sort import (
     sort_view_objects)
-from .search import get_default_searchable_content
+from novaideo.views.core import asyn_component_config
+# from .search import get_default_searchable_content
 
 
 CONTENTS_MESSAGES = {
@@ -40,6 +41,7 @@ class ContentView(BasicView):
     anonymous_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view.pt'
     wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
     content_type = 'idea'
+    isactive = False
 
     def _add_filter(self, user):
         def source(**args):
@@ -56,8 +58,9 @@ class ContentView(BasicView):
             return objects
 
         url = self.request.resource_url(
-            self.context, '@@novaideoapi')
-        select = [('metadata_filter', ['states', 'tree']), 'geographic_filter',
+            self.context, '@@novaideoapi',
+            query={'view_content_type': self.content_type})
+        select = [('metadata_filter', ['states', 'tree', 'challenges']), 'geographic_filter',
                   'contribution_filter',
                   ('temporal_filter', ['negation', 'created_date']),
                   'text_filter', 'other_filter']
@@ -123,8 +126,8 @@ class ContentView(BasicView):
 
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
+        item['isactive'] = self.isactive
         result['coordinates'] = {self.coordinates: [item]}
-
         return result
 
 
@@ -136,24 +139,30 @@ class IdeasView(ContentView):
     counter_id = 'home-ideas-counter'
     empty_message = _("No registered ideas")
     empty_icon = 'icon novaideo-icon icon-idea'
+    isactive = True
 
 
 class ProposalsView(ContentView):
     title = _('The Working Groups (${nb})')
     content_type = 'proposal'
     viewid = 'home-proposals'
-    view_icon = 'icon icon novaideo-icon icon-wg'
+    view_icon = 'icon novaideo-icon icon-wg'
     counter_id = 'home-proposals-counter'
     empty_message = _("No working group created")
-    empty_icon = 'icon icon novaideo-icon icon-wg'
+    empty_icon = 'icon novaideo-icon icon-wg'
 
 
-# class PersonsView(ContentView):
-#     title = _('Persons')
-#     content_type = 'person'
-#     viewid = 'home-person'
+class QuestionsView(ContentView):
+    title = _('Questions (${nb})')
+    content_type = 'question'
+    viewid = 'home-questions'
+    view_icon = 'md md-live-help'
+    counter_id = 'home-questions-counter'
+    empty_message = _("No question asked")
+    empty_icon = 'md md-live-help'
 
 
+@asyn_component_config(id='novaideoapp_home')
 @view_config(
     name='index',
     context=NovaIdeoApplication,
@@ -169,22 +178,27 @@ class HomeView(MultipleView):
     name = ''
     behaviors = [SeeHome]
     anonymous_template = 'novaideo:views/novaideo_view_manager/templates/anonymous_view.pt'
-    # wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
     template = 'novaideo:views/templates/multipleview.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     viewid = 'home'
     css_class = 'simple-bloc'
     container_css_class = 'home'
-    views = (IdeasView, ProposalsView)#, PersonsView)
+    center_tabs = True
+    views = (QuestionsView, IdeasView, ProposalsView)
 
     def _init_views(self, views, **kwargs):
-        if self.request.is_idea_box:
-            views = (IdeasView, )
+        if self.params('load_view'):
+            if self.request.is_idea_box:
+                views = (IdeasView, )
 
-        if self.params('view_content_type') == 'idea':
-            views = (IdeasView, )
+            if self.params('view_content_type') == 'idea':
+                views = (IdeasView, )
 
-        if self.params('view_content_type') == 'proposal':
-            views = (ProposalsView, )
+            if self.params('view_content_type') == 'proposal':
+                views = (ProposalsView, )
+
+            if self.params('view_content_type') == 'question':
+                views = (QuestionsView, )
 
         super(HomeView, self)._init_views(views, **kwargs)
 

@@ -117,7 +117,7 @@ def confirm_proposal(
             alert_kind='duplicated',
             duplication=context
             )
-
+    
     proposal_state = 'amendable'
     if submitted_appstruct.get('vote', False):
         proposal_state = 'published'
@@ -187,8 +187,7 @@ def confirm_proposal(
                 duplication=context
                 )
 
-    related_ideas = [idea for idea, correlation in
-                     context.related_ideas.items()]
+    related_ideas = context.related_ideas
     for idea in related_ideas:
         # Add Nia comment
         alert_comment_nia(
@@ -200,12 +199,16 @@ def confirm_proposal(
             proposal=context
             )
 
+    if getattr(context, '_tree', None):
+        tree = getattr(context, '_tree')
+        root.merge_tree(tree)
+
     context.modified_at = datetime.datetime.now(tz=pytz.UTC)
     context.init_published_at()
     not_published_ideas = []
     if not getattr(root, 'moderate_ideas', False) and\
        'idea' not in getattr(root, 'content_to_examine', []):
-        not_published_ideas = [i for i in context.related_ideas.keys()
+        not_published_ideas = [i for i in context.related_ideas
                                if 'published' not in i.state]
         publish_ideas(not_published_ideas, request)
 
@@ -315,7 +318,7 @@ def calculate_improvement_cycle_duration(process):
     return AMENDMENTS_CYCLE_DEFAULT_DURATION["One week"]
 
 
-def publish_proposal_moderation(context, request, root):
+def publish_proposal_moderation(context, request, root, **kw):
     user = context.author
     context.state.remove('submitted')
     submitted_appstruct = getattr(context, 'submitted_appstruct', {})
@@ -323,7 +326,8 @@ def publish_proposal_moderation(context, request, root):
         context, request, user, submitted_appstruct, root)
     alert('internal', [root], [user],
           internal_kind=InternalAlertKind.moderation_alert,
-          subjects=[context], alert_kind='moderation')
+          subjects=[context], alert_kind='moderation',
+          ballot=kw.get('ballot_url', ''))
     if getattr(user, 'email', ''):
         mail_template = root.get_mail_template('publish_proposal_decision')
         subject = mail_template['subject'].format(
@@ -341,14 +345,15 @@ def publish_proposal_moderation(context, request, root):
     return not_published_ideas
 
 
-def archive_proposal_moderation(context, request, root, appstruct):
+def archive_proposal_moderation(context, request, root, appstruct, **kw):
     explanation = appstruct['explanation']
     context.state = PersistentList(['archived'])
     context.reindex()
     user = context.author
     alert('internal', [root], [user],
           internal_kind=InternalAlertKind.moderation_alert,
-          subjects=[context], alert_kind='moderation')
+          subjects=[context], alert_kind='moderation',
+          ballot=kw.get('ballot_url', ''))
     if getattr(user, 'email', ''):
         mail_template = root.get_mail_template('archive_proposal_decision')
         subject = mail_template['subject'].format(
@@ -369,7 +374,6 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign', **
     working_group.delfromproperty('members', user)
     remove_participant_from_ballots(context, request, user)
     members = working_group.members
-    mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
     revoke_roles(user, (('Participant', context),))
     subject_data = get_entity_data(context, 'subject', request)
     if members:
@@ -380,6 +384,7 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign', **
             'internal', [root], members,
             internal_kind=InternalAlertKind.working_group_alert,
             subjects=[context], alert_kind=kind,
+            ballot=kw.get('ballot_url', ''),
             **alert_data)
 
     sender = root.get_site_sender()
@@ -519,7 +524,6 @@ class CreateProposal(InfiniteCardinality):
         user = get_current(request)
         related_ideas = appstruct.pop('related_ideas')
         proposal = appstruct['_object_data']
-        root.merge_tree(proposal.tree)
         proposal.text = html_diff_wrapper.normalize_text(proposal.text)
         root.addtoproperty('proposals', proposal)
         proposal.state.append('draft')
@@ -642,12 +646,12 @@ def pu_sub_processsecurity_validation(process, context):
     not_published_ideas = False
     if getattr(root, 'moderate_ideas', False):
         not_published_ideas = any('published' not in i.state
-                                  for i in context.related_ideas.keys())
+                                  for i in context.related_ideas)
 
     not_favorable_ideas = False
     if 'idea' in getattr(root, 'content_to_examine', []):
         not_favorable_ideas = any('favorable' not in i.state
-                                  for i in context.related_ideas.keys())
+                                  for i in context.related_ideas)
 
     return not (not_published_ideas or not_favorable_ideas) and \
            len(user.active_working_groups) < root.participations_maxi and \
@@ -779,7 +783,6 @@ class DuplicateProposal(InfiniteCardinality):
         root = getSite()
         user = get_current()
         related_ideas = appstruct.pop('related_ideas')
-        root.merge_tree(appstruct['tree'])
         copy_of_proposal = copy(
             context, (root, 'proposals'),
             omit=('created_at', 'modified_at',
@@ -858,7 +861,6 @@ class EditProposal(InfiniteCardinality):
         add_attached_files(appstruct, context)
         context.text = html_diff_wrapper.normalize_text(context.text)
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        root.merge_tree(context.tree)
         context.reindex()
         request.registry.notify(ActivityExecuted(self, [context], user))
         return {}
@@ -1077,11 +1079,28 @@ def comm_state_validation(process, context):
 
 
 class CommentProposal(CommentIdea):
-    isSequential = False
     context = IProposal
     roles_validation = comm_roles_validation
     processsecurity_validation = comm_processsecurity_validation
     state_validation = comm_state_validation
+
+
+def comma_roles_validation(process, context):
+    return has_role(role=('Anonymous',), ignore_superiors=True)
+
+
+def comma_processsecurity_validation(process, context):
+    return True
+
+
+class CommentProposalAnonymous(CommentProposal):
+    roles_validation = comma_roles_validation
+    processsecurity_validation = comma_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 
 def seea_roles_validation(process, context):
@@ -1113,6 +1132,7 @@ def seem_processsecurity_validation(process, context):
 class SeeMembers(InfiniteCardinality):
     style_descriminator = 'listing-wg-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'slider'
     style_picto = 'fa fa-users'
     isSequential = False
     context = IProposal
@@ -1145,6 +1165,24 @@ class PresentProposal(PresentIdea):
     state_validation = present_state_validation
 
 
+def presenta_roles_validation(process, context):
+    return has_role(role=('Anonymous',), ignore_superiors=True)
+
+
+def presenta_processsecurity_validation(process, context):
+    return True
+
+
+class PresentProposalAnonymous(PresentProposal):
+    roles_validation = presenta_roles_validation
+    processsecurity_validation = presenta_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+
 def associate_processsecurity_validation(process, context):
     return (has_role(role=('Owner', context)) or \
            (has_role(role=('Member',)) and \
@@ -1165,6 +1203,7 @@ def seeideas_state_validation(process, context):
 class SeeRelatedIdeas(InfiniteCardinality):
     style_descriminator = 'listing-primary-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'slider'
     # style_interaction_container = 'modal-l'
     style_picto = 'glyphicon glyphicon-link'
     context = IProposal
@@ -1315,7 +1354,7 @@ def participate_state_validation(process, context):
             ['amendable', 'open to a working group'])
 
 
-def accept_participation(context, request, user, root):
+def accept_participation(context, request, user, root, **kw):
     def _send_mail_to_user(
         subject_template, message_template,
         user, context, request):
@@ -1342,7 +1381,8 @@ def accept_participation(context, request, user, root):
         if participants:
             alert('internal', [root], participants,
                   internal_kind=InternalAlertKind.working_group_alert,
-                  subjects=[context], alert_kind='participate')
+                  subjects=[context], alert_kind='participate',
+                  ballot=kw.get('ballot_url', ''))
 
         working_group.addtoproperty('members', user)
         grant_roles(user, (('Participant', context),))
@@ -1592,6 +1632,13 @@ class AttachFiles(InfiniteCardinality):
 
 def get_access_key(obj):
     if 'draft' not in obj.state:
+        challenge = getattr(obj, 'challenge', None)
+        is_restricted = getattr(challenge, 'is_restricted', False)
+        if is_restricted:
+            return serialize_roles(
+                (('ChallengeParticipant', challenge),
+                 'SiteAdmin', 'Admin', 'Moderator'))
+
         return ['always']
     else:
         return serialize_roles(
@@ -1600,7 +1647,13 @@ def get_access_key(obj):
 
 
 def seeproposal_processsecurity_validation(process, context):
-    return access_user_processsecurity(process, context) and \
+    challenge = getattr(context, 'challenge', None)
+    is_restricted = getattr(challenge, 'is_restricted', False)
+    can_access = True
+    if is_restricted:
+        can_access = has_role(role=('ChallengeParticipant', challenge))
+
+    return can_access and access_user_processsecurity(process, context) and \
            ('draft' not in context.state or \
             has_any_roles(roles=(('Owner', context), ('LocalModerator', context),
                 'SiteAdmin', 'Moderator')))
@@ -1745,9 +1798,32 @@ class Work(ElementaryAction):
         subject = subject_template.format(subject_title=context.title)
         localizer = request.localizer
         root = request.root
+        #Get ballots
+        vp_ballot = getattr(working_group, 'vp_ballot', '')
+        wmc_ballot = getattr(working_group, 'work_mode_configuration_ballot', '')
+        rc_ballot = getattr(working_group, 'reopening_configuration_ballot', '')
+        dc_ballot = getattr(working_group, 'duration_configuration_ballot', '')
+        # Get ballot URLs
+        ballot_oid = get_oid(vp_ballot, '')
+        vp_ballot_url = request.resource_url(
+            root, '@@seeballot', query={'id': ballot_oid})
+        ballot_oid = get_oid(wmc_ballot, '')
+        wmc_ballot_url = request.resource_url(
+            root, '@@seeballot', query={'id': ballot_oid})
+        ballot_oid = get_oid(rc_ballot, '')
+        rc_ballot_url = request.resource_url(
+            root, '@@seeballot', query={'id': ballot_oid})
+        ballot_oid = get_oid(dc_ballot, '')
+        dc_ballot_url = request.resource_url(
+            root, '@@seeballot', query={'id': ballot_oid})
+
         alert('internal', [root], members,
               internal_kind=InternalAlertKind.working_group_alert,
-              subjects=[context], alert_kind=message_id)
+              subjects=[context], alert_kind=message_id,
+              vp_ballot=vp_ballot_url,
+              wmc_ballot=wmc_ballot_url,
+              rc_ballot=rc_ballot_url,
+              dc_ballot=dc_ballot_url)
         subject_data = get_entity_data(context, 'subject', request)
         for member in [m for m in members if getattr(m, 'email', '')]:
             email_data = get_user_data(member, 'recipient', request)
@@ -2142,6 +2218,7 @@ class ModerationVote(StartBallot):
         close_ballot(self, proposal, request)
         # proposal not removed
         if proposal and proposal.__parent__:
+            root = getSite()
             moderators = self.process.execution_context.get_involved_collection(
                 'electors')
             for moderator in moderators:
@@ -2150,20 +2227,26 @@ class ModerationVote(StartBallot):
                     roles=(('LocalModerator', proposal),))
 
             ballots = getattr(self.sub_process, 'ballots', [])
-            for ballot in ballots:
-                ballot.finish_ballot()
+            ballot = None
+            for ballot_ in ballots:
+                ballot_.finish_ballot()
+                ballot = ballot_
 
+            ballot_oid = get_oid(ballot, '')
+            ballot_url = request.resource_url(
+                root, '@@seeballot', query={'id': ballot_oid})
             accepted = ballot_result(self, True)
-            root = getSite()
             user = get_current()
             if accepted:
                 not_published_ideas = publish_proposal_moderation(
-                    proposal, request, root)
+                    proposal, request, root,
+                    ballot_url=ballot_url)
                 request.registry.notify(ActivityExecuted(
                     self, not_published_ideas, user))
             else:
                 archive_proposal_moderation(
-                    proposal, request, root, {'explanation': ''})
+                    proposal, request, root, {'explanation': ''},
+                    ballot_url=ballot_url)
 
         super(ModerationVote, self).after_execution(
             proposal, request, **kw)
@@ -2222,25 +2305,30 @@ class ParticipationVote(StartBallot):
         close_ballot(self, proposal, request)
         # proposal not removed
         if proposal and proposal.__parent__:
+            root = getSite()
             participant = self.process.participant
             participant_data = get_entity_data(
                 participant, 'participant', request)
             ballots = getattr(self.sub_process, 'ballots', [])
             period_date = None
+            ballot = None
             if ballots:
                 ballot = ballots[0]
                 period_date = datetime.datetime.now(tz=pytz.UTC) + \
                     ballot.period_validity
 
+            ballot_oid = get_oid(ballot, '')
+            ballot_url = request.resource_url(
+                root, '@@seeballot', query={'id': ballot_oid})
             accepted = ballot_result(self)
-            root = getSite()
             working_group = proposal.working_group
             members = working_group.members
             if accepted:
                 wgs = getattr(participant, 'active_working_groups', [])
                 if len(wgs) < root.participations_maxi:
                     accept_participation(
-                        proposal, request, participant, root)
+                        proposal, request, participant, root,
+                        ballot_url=ballot_url)
                     request.registry.notify(ActivityExecuted(
                         self, [proposal, proposal.working_group], participant))
                 else:
@@ -2263,13 +2351,15 @@ class ParticipationVote(StartBallot):
                     'internal', [root], [participant],
                     internal_kind=InternalAlertKind.working_group_alert,
                     subjects=[proposal], alert_kind='refuse_participant',
-                    period_date=period_date)
+                    period_date=period_date,
+                    ballot=ballot_url)
                 alert(
                     'internal', [root], members,
                     internal_kind=InternalAlertKind.working_group_alert,
                     subjects=[proposal],
                     alert_kind='refuse_participant_members',
                     period_date=period_date,
+                    ballot=ballot_url,
                     **participant_data)
 
         super(ParticipationVote, self).after_execution(
@@ -2329,20 +2419,25 @@ class ExclusionVote(StartBallot):
         close_ballot(self, proposal, request)
         # proposal not removed
         if proposal and proposal.__parent__:
+            root = getSite()
             participant = self.process.participant
             ballots = getattr(self.sub_process, 'ballots', [])
             period_date = None
+            ballot = None
             if ballots:
                 ballot = ballots[0]
                 period_date = datetime.datetime.now(tz=pytz.UTC) + \
                     ballot.period_validity
 
+            ballot_oid = get_oid(ballot, '')
+            ballot_url = request.resource_url(
+                root, '@@seeballot', query={'id': ballot_oid})
             accepted = ballot_result(self)
-            root = getSite()
             if accepted:
                 exclude_participant_from_wg(
                     proposal, request, participant, root, 'exclude',
-                    period_date=period_date)
+                    period_date=period_date,
+                    ballot_url=ballot_url)
             else:
                 participant_data = get_entity_data(
                     participant, 'participant', request)
@@ -2351,13 +2446,15 @@ class ExclusionVote(StartBallot):
                     'internal', [root], [participant],
                     internal_kind=InternalAlertKind.working_group_alert,
                     subjects=[proposal], alert_kind='refuse_exclusion',
-                    period_date=period_date)
+                    period_date=period_date,
+                    ballot=ballot_url)
                 alert(
                     'internal', [root], members,
                     internal_kind=InternalAlertKind.working_group_alert,
                     subjects=[proposal],
                     alert_kind='refuse_exclusion_members',
                     period_date=period_date,
+                    ballot=ballot_url,
                     **participant_data)
 
         super(ExclusionVote, self).after_execution(

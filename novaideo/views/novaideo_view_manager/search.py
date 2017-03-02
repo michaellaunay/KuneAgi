@@ -33,6 +33,7 @@ from novaideo.views.filter import (
 from novaideo.content.idea import Idea
 from novaideo.content.proposal import Proposal
 from novaideo.content.person import Person
+from novaideo.content.question import Question
 # from novaideo.views.filter.sort import (
 #     sort_view_objects)
 
@@ -43,7 +44,8 @@ CONTENTS_MESSAGES = {
     '*': _(u"""${nember} elements found""")
 }
 
-DEFAULT_SEARCHABLE_CONTENT = [('idea', Idea),
+DEFAULT_SEARCHABLE_CONTENT = [('question', Question),
+                              ('idea', Idea),
                               ('proposal', Proposal),
                               ('person', Person)
                             ]
@@ -169,6 +171,7 @@ class SearchView(FormView):
         posted_formid = None
         default_content = [key[0] for key in get_default_searchable_content(self.request)]
         default_content.remove("person")
+        default_content.remove("question")
         if '__formid__' in post:
             posted_formid = post['__formid__']
 
@@ -251,6 +254,7 @@ class SearchResultView(BasicView):
             default_content = [key[0] for key in
                                get_default_searchable_content(self.request)]
             default_content.remove("person")
+            default_content.remove("question")
             filter_ = {
                 'metadata_filter': {'content_types': default_content}
             }

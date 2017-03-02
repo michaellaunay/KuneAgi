@@ -449,19 +449,29 @@ class SeeGraph(InfiniteCardinality):
         return {}
 
 
-def seeballot_roles_validation(process, context):
-    return has_role(role=('Member',))
+class SeeDependencies(InfiniteCardinality):
+    style_descriminator = 'plus-action'
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'slider'
+    style_picto = 'glyphicon glyphicon-link'
+    style_order = 0
+    isSequential = False
+    context = INode
+    processsecurity_validation = seegraph_processsecurity_validation
+    roles_validation = seegraph_roles_validation
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 
 def seeballot_processsecurity_validation(process, context):
-    return global_user_processsecurity()
+    return has_role(role=('Member',)) and global_user_processsecurity()
 
 
 class SeeBallot(InfiniteCardinality):
     isSequential = False
-    context = IBallot
+    context = INovaIdeoApplication
     processsecurity_validation = seeballot_processsecurity_validation
-    roles_validation = seeballot_roles_validation
 
     def start(self, context, request, appstruct, **kw):
         return {}

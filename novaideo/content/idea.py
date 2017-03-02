@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -8,7 +8,6 @@
 import datetime
 import pytz
 import colander
-from webob.multidict import MultiDict
 from persistent.dict import PersistentDict
 from collections import OrderedDict
 from persistent.list import PersistentList
@@ -17,18 +16,20 @@ from pyramid.threadlocal import get_current_request
 
 from substanced.content import content
 from substanced.schema import NameSchemaNode
-from substanced.util import renamer
+from substanced.util import renamer, get_oid
 
+from dace.util import getSite, get_obj
 from dace.descriptors import (
     SharedUniqueProperty, CompositeMultipleProperty, SharedMultipleProperty)
 from pontus.core import VisualisableElementSchema
 from pontus.widget import (
-    SequenceWidget)
-from pontus.file import ObjectData, File
+    SequenceWidget,
+    AjaxSelect2Widget)
+from pontus.file import ObjectData, File, Object as ObjectType
 
 from .interface import Iidea
 from novaideo.content.correlation import CorrelationType
-from novaideo import _
+from novaideo import _, log
 from novaideo.views.widget import LimitedTextAreaWidget
 from novaideo.core import (
     VersionableEntity,
@@ -41,9 +42,12 @@ from novaideo.core import (
     Channel,
     Node,
     Emojiable,
-    SignalableEntity)
+    SignalableEntity,
+    Debatable,
+    Tokenable)
 from novaideo.content import get_file_widget
-from novaideo.utilities.util import text_urls_format, truncate_text
+from novaideo.utilities.util import (
+    text_urls_format, truncate_text, get_files_data)
 
 
 OPINIONS = OrderedDict([
@@ -51,6 +55,50 @@ OPINIONS = OrderedDict([
     ('to_study', _('To be re-worked upon')),
     ('unfavorable', _('Negative'))
 ])
+
+
+@colander.deferred
+def challenge_choice(node, kw):
+    request = node.bindings['request']
+    is_home_form = node.bindings.get('is_home_form', False)
+    request_context = request.context
+    challenge = getattr(request_context, 'challenge', None)
+    root = getSite()
+    values = [('', _('- Select -'))]
+    if challenge is not None and challenge.can_add_content:
+        values = [(get_oid(challenge), challenge.title)]
+
+    def title_getter(id):
+        try:
+            obj = get_obj(int(id), None)
+            if obj:
+                return obj.title
+            else:
+                return id
+        except Exception as e:
+            log.warning(e)
+            return id
+
+    ajax_url = request.resource_url(
+        root, '@@novaideoapi',
+        query={'op': 'find_challenges'})
+    item_css_class = 'challenge-input'
+    is_challenge_content = is_home_form and challenge
+    if is_challenge_content:
+        item_css_class += ' challenge-content'
+
+    return AjaxSelect2Widget(
+        template='novaideo:views/idea_management/templates/ajax_select2.pt',
+        values=values,
+        ajax_url=ajax_url,
+        ajax_item_template="related_item_template",
+        title_getter=title_getter,
+        challenge=challenge,
+        is_challenge_content=is_challenge_content,
+        multiple=False,
+        add_clear=True,
+        page_limit=20,
+        item_css_class=item_css_class)
 
 
 def context_is_a_idea(context, request):
@@ -64,6 +112,15 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
         editing=context_is_a_idea,
         )
 
+    challenge = colander.SchemaNode(
+        ObjectType(),
+        widget=challenge_choice,
+        missing=None,
+        title=_("Challenge (optional)"),
+        description=_("You can select and/or modify the challenge associated to this idea. "
+                      "For an open idea, do not select anything in the « Challenge » field.")
+    )
+
     text = colander.SchemaNode(
         colander.String(),
         widget=LimitedTextAreaWidget(
@@ -72,7 +129,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
             limit=2000,
             alert_template='novaideo:views/templates/idea_text_alert.pt',
             alert_values={'limit': 2000},
-            item_css_class='idea-text',
+            item_css_class='content-preview-form',
             placeholder=_('I have an idea!')),
         title=_("Text")
         )
@@ -110,7 +167,8 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 @implementer(Iidea)
 class Idea(VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity, PresentableEntity,
-           ExaminableEntity, Node, Emojiable, SignalableEntity):
+           ExaminableEntity, Node, Emojiable, SignalableEntity, Debatable,
+           Tokenable):
     """Idea class"""
 
     type_title = _('Idea')
@@ -125,8 +183,7 @@ class Idea(VersionableEntity, DuplicableEntity,
     organization = SharedUniqueProperty('organization')
     attached_files = CompositeMultipleProperty('attached_files')
     url_files = CompositeMultipleProperty('url_files')
-    tokens_opposition = CompositeMultipleProperty('tokens_opposition')
-    tokens_support = CompositeMultipleProperty('tokens_support')
+    challenge = SharedUniqueProperty('challenge', 'ideas')
     ballots = CompositeMultipleProperty('ballots')
     ballot_processes = SharedMultipleProperty('ballot_processes')
     opinions_base = OPINIONS
@@ -149,23 +206,22 @@ class Idea(VersionableEntity, DuplicableEntity,
     @property
     def related_proposals(self):
         """Return all proposals that uses this idea"""
-        return MultiDict([(item, c) for (item, c) in
-                          self.all_target_related_contents.items()
-                          if c.type == CorrelationType.solid and
-                          'related_proposals' in c.tags])
+        return [proposal[0] for proposal in self.get_related_contents(
+            CorrelationType.solid, ['related_proposals'])]
 
     @property
     def related_contents(self):
         """Return all related contents"""
-        return MultiDict([(item, c) for (item, c) in
-                          self.all_source_related_contents.items()
-                          if c.type == CorrelationType.weak])
+        return [content[0] for content in self.all_related_contents]
 
     @property
-    def tokens(self):
-        result = list(self.tokens_opposition)
-        result.extend(list(self.tokens_support))
-        return result
+    def transformed_from(self):
+        """Return all related contents"""
+        transformed_from = [correlation[1].context for correlation
+                            in self.get_related_contents(
+                                CorrelationType.solid, ['transformation'])
+                            if correlation[1].context]
+        return transformed_from[0] if transformed_from else None
 
     @property
     def authors(self):
@@ -211,36 +267,7 @@ class Idea(VersionableEntity, DuplicableEntity,
         }
 
     def get_attached_files_data(self):
-        result = []
-        for picture in self.attached_files:
-            if picture:
-                if picture.mimetype.startswith('image'):
-                    result.append({
-                        'content': picture.url,
-                        'type': 'img'})
-
-                if picture.mimetype.startswith(
-                        'application/x-shockwave-flash'):
-                    result.append({
-                        'content': picture.url,
-                        'type': 'flash'})
-
-                if picture.mimetype.startswith('text/html'):
-                    blob = picture.blob.open()
-                    blob.seek(0)
-                    content = blob.read().decode("utf-8")
-                    blob.seek(0)
-                    blob.close()
-                    result.append({
-                        'content': content,
-                        'type': 'html'})
-
-        return result
-
-    def get_token(self, user):
-        tokens = [t for t in getattr(user, 'tokens', []) if
-                  not t.proposal]
-        return tokens[-1] if tokens else None
+        return get_files_data(self.attached_files)
 
     def get_node_descriminator(self):
         return 'idea'

@@ -18,7 +18,7 @@ from dace.util import (
     find_catalog, getAllBusinessAction, getBusinessAction,
     getSite, get_obj, find_service)
 from dace.objectofcollaboration.principal.util import (
-    get_current)
+    get_current, get_users_with_role)
 from dace.objectofcollaboration.object import Object
 from pontus.view import BasicView
 
@@ -29,11 +29,14 @@ from novaideo.content.interface import (
     ICorrelableEntity,
     Iidea,
     ISearchableEntity,
-    IFile)
+    IFile,
+    IQuestion,
+    IChallenge,
+    IOrganization)
 from novaideo.utilities.util import (
     render_small_listing_objs, extract_keywords)
 from novaideo.utilities.pseudo_react import (
-    get_components_data, get_all_updated_data)
+    get_components_data, get_all_updated_data, load_components)
 from novaideo.views.filter import find_entities, FILTER_SOURCES
 from novaideo import _
 from novaideo.core import can_access
@@ -86,17 +89,12 @@ class NovaideoAPI(IndexManagementJsonView):
     alert_template = 'novaideo:views/templates/alerts/alerts.pt'
     search_template = 'novaideo:views/templates/live_search_result.pt'
     search_idea_template = 'novaideo:views/templates/live_search_idea_result.pt'
+    search_question_template = 'novaideo:views/templates/live_search_question_result.pt'
 
-    def find_user(self, organization=None):
+    def find_user(self, query=None):
         name = self.params('q')
         if name:
             page_limit, current_page, start, end = self._get_pagin_data()
-            query = None
-            if organization:
-                novaideo_index = find_catalog('novaideo')
-                organization_index = novaideo_index['organizations']
-                query = organization_index.any([get_oid(organization)])
-
             if is_all_values_key(name):
                 result = find_entities(interfaces=[IPerson],
                                        metadata_filter={'states': ['active']},
@@ -126,36 +124,10 @@ class NovaideoAPI(IndexManagementJsonView):
         return {'items': [], 'total_count': 0}
 
     def find_organization_user(self):
-        return self.find_user(self.context)
-
-    def find_base_review(self):
-        name = self.params('q')
-        if name:
-            user = get_current()
-            page_limit, current_page, start, end = self._get_pagin_data()
-            if is_all_values_key(name):
-                result = find_entities(
-                    user=user,
-                    interfaces=[IBaseReview])
-            else:
-                result = find_entities(
-                    user=user,
-                    interfaces=[IBaseReview],
-                    text_filter={'text_to_search': name})
-
-            total_count = len(result)
-            if total_count >= start:
-                result = list(result)[start:end]
-            else:
-                result = list(result)[:end]
-
-            entries = [{'id': str(get_oid(e)),
-                        'text': e.title,
-                        'icon': e.icon} for e in result]
-            result = {'items': entries, 'total_count': total_count}
-            return result
-
-        return {'items': [], 'total_count': 0}
+        novaideo_index = find_catalog('novaideo')
+        organization_index = novaideo_index['organizations']
+        query = organization_index.any([get_oid(self.context)])
+        return self.find_user(query)
 
     def find_entities(self):
         name = self.params('text_to_search')
@@ -240,7 +212,10 @@ class NovaideoAPI(IndexManagementJsonView):
         return {'items': [], 'total_count': 0}
 
     def find_correlable_entity(self):
-        return self.find_entity(interfaces=[ICorrelableEntity])
+        return self.find_entity(interfaces=[ISearchableEntity])
+
+    def find_groups(self):
+        return self.find_entity(interfaces=[IOrganization, IPerson], states=['published', 'active'])
 
     def find_smart_folder_contents(self):
         return self.find_entity(interfaces=[ISearchableEntity, IFile], states=[])
@@ -250,6 +225,12 @@ class NovaideoAPI(IndexManagementJsonView):
         is_workable_index = novaideo_index['is_workable']
         query = is_workable_index.eq(True)
         return self.find_entity(interfaces=[Iidea], states=[], query=query)
+
+    def find_challenges(self):
+        return self.find_entity(interfaces=[IChallenge], states=['pending'])
+
+    def find_all_challenges(self):
+        return self.find_entity(interfaces=[IChallenge])
 
     def filter_result(self):
         filter_source = self.params('filter_source')
@@ -342,6 +323,37 @@ class NovaideoAPI(IndexManagementJsonView):
         values = {'entities': result_body}
         body = self.content(args=values,
                             template=self.search_idea_template)['body']
+        return {'body': body}
+
+    def get_similar_questions(self):
+        user = get_current()
+        # text = self.params('text')
+        title = self.params('title')
+        keywords = self.params('keywords')
+        # text = text if text else ''
+        title = title if title else ''
+        keywords = keywords if keywords else []
+        if not isinstance(keywords, list):
+            keywords = [keywords]
+
+        if not keywords and not title:# and not text:
+            return {'body': ''}
+
+        title_keywords = extract_keywords(title)
+        # text_keywords = extract_keywords(text)
+        # keywords.extend(text_keywords[:5])
+        keywords.extend(title_keywords)
+        result = find_entities(
+            interfaces=[IQuestion],
+            user=user,
+            text_filter={'text_to_search': ', '.join(keywords)},
+            defined_search=True,
+            generate_text_search=True)
+        result_body = render_small_listing_objs(
+            self.request, list(result)[:30], user)
+        values = {'entities': result_body}
+        body = self.content(args=values,
+                            template=self.search_question_template)['body']
         return {'body': body}
 
     def _execute_action(self, process_id, node_id, appstruct):
@@ -566,6 +578,14 @@ class NovaideoAPI(IndexManagementJsonView):
 
         return {'body': ''}
 
+    def load_views(self):
+        result = {}
+        result.update(get_components_data(
+            **load_components(
+                self.request,
+                self.context, self)))
+        return result
+
     def _get_start_action(self):
         action = None
         pd_id = self.params('pd_id')
@@ -688,3 +708,26 @@ class NovaideoAPI(IndexManagementJsonView):
             action.after_execution(context, self.request)
 
         return {}#message erreur
+
+    def update_guide_tour_data(self):
+        user = get_current()
+        if self.request.user and hasattr(user, 'guide_tour_data'):
+            guide_state = self.params('guide_state')
+            if guide_state:
+                user.guide_tour_data['guide_state'] = guide_state
+
+            guide = self.params('guide')
+            page = self.params('page')
+            if guide is not None and page is not None:
+                page_state = self.params('page_state')
+                guide_value = self.params('guide_value')
+                page_value = self.params('page_value')
+                guide_value = guide_value if guide_value is not None else -1
+                page_value = page_value if page_value is not None else 0
+                page_state = page_state if page_state is not None else 'pending'
+                user.guide_tour_data[guide+'_'+page] = {
+                    'guide': guide_value,
+                    'page': page_value,
+                    'page_state': page_state
+                }
+                user.guide_tour_data['guide_state'] = 'pending'

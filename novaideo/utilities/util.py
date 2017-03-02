@@ -25,30 +25,31 @@ from pyramid import renderers
 from babel.core import Locale
 from bs4 import BeautifulSoup
 from pyramid.threadlocal import get_current_registry, get_current_request
-from pyramid.view import render_view
 
 from substanced.util import get_oid
 
 import html_diff_wrapper
+from pontus.util import update_resources
 from pontus.index import Index
 from pontus.file import OBJECT_OID
 from pontus.util import merge_dicts, get_view
-from dace.processinstance.activity import ActionType
 from dace.objectofcollaboration.principal.util import get_current
-from dace.util import getSite, getAllBusinessAction
+from dace.util import getSite, getAllBusinessAction, getBusinessAction
 from daceui.interfaces import IDaceUIAPI
+from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 
 from .attr_utility import deepcopy
 from .ical_date_utility import getDatesFromString, set_recurrence
+from novaideo.content.ballot import DEFAULT_BALLOT_GROUP
 from novaideo.utilities.url_extractor import extract_urls
 from novaideo.content.correlation import Correlation, CorrelationType
-from novaideo.content.ballot import DEFAULT_BALLOT_GROUP
 from novaideo.content.processes import get_states_mapping
 from novaideo.file import Image
 from novaideo import _, log
 from novaideo.fr_stopdict import _words
 from novaideo.core import Node
 from novaideo.emojis import DEFAULT_EMOJIS
+
 
 try:
     _LETTERS = string.letters
@@ -609,6 +610,34 @@ def disconnect(
                 graph, calculated = obj.init_graph(calculated)
 
 
+def get_files_data(files):
+    result = []
+    for picture in files:
+        if picture:
+            if picture.mimetype.startswith('image'):
+                result.append({
+                    'content': picture.url,
+                    'type': 'img'})
+
+            if picture.mimetype.startswith(
+                    'application/x-shockwave-flash'):
+                result.append({
+                    'content': picture.url,
+                    'type': 'flash'})
+
+            if picture.mimetype.startswith('text/html'):
+                blob = picture.blob.open()
+                blob.seek(0)
+                content = blob.read().decode("utf-8")
+                blob.seek(0)
+                blob.close()
+                result.append({
+                    'content': content,
+                    'type': 'html'})
+
+    return result
+
+
 def add_file_data(container, attr):
     file_ = container.get(attr, None)
     if file_ and hasattr(file_, 'get_data'):
@@ -763,7 +792,8 @@ ALL_DESCRIMINATORS = ['text-action',
                       'plus-action',
                       'body-action',
                       'communication-action',
-                      'communication-body-action']
+                      'communication-body-action',
+                      'support-action']
 
 DEFAUL_LISTING_FOOTER_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_footer_actions.pt'
 
@@ -786,6 +816,8 @@ DEFAUL_ACCESS_LISTING_ACTIONS_TEMPLATE = 'novaideo:views/templates/listing_acces
 FILE_TEMPLATE = 'novaideo:views/templates/up_file_result.pt'
 
 VOTE_TEMPLATE = 'novaideo:views/templates/vote_actions.pt'
+
+DEFAULT_SUPPORT_TEMPLATE = 'novaideo:views/templates/support_entity_actions.pt'
 
 
 def render_small_listing_objs(
@@ -829,6 +861,7 @@ def render_listing_obj(
         'footer_body': navbars['footer_body'],
         'wg_body': navbars['wg_body'],
         'footer_actions_body': navbars['footer_actions_body'],
+        'support_actions_body': navbars['support_actions_body'],
         'access_body': navbars['access_body'],
         'state': get_states_mapping(
             user, obj,
@@ -916,6 +949,7 @@ def render_listing_objs(
             'footer_body': navbars['footer_body'],
             'wg_body': navbars['wg_body'],
             'footer_actions_body': navbars['footer_actions_body'],
+            'support_actions_body': navbars['support_actions_body'],
             'access_body': navbars['access_body'],
             'state': get_states_mapping(user, obj,
                 getattr(obj, 'state_or_none', [None])[0])}
@@ -946,13 +980,13 @@ def update_ajax_action(
     context, request,
     process_id, node_id,
     include_resources=False):
-    seemembers_actions = getBusinessAction(
+    actions = getBusinessAction(
         context, request,
         process_id, node_id)
-    if seemembers_actions:
+    if actions:
         isactive, messages, \
             resources, ajax_actions = update_ajax_actions(
-                seemembers_actions, context, request,
+                actions, context, request,
                 include_resources)
         return ajax_actions, resources
 
@@ -963,14 +997,14 @@ def update_all_ajax_action(
     context, request,
     node_id, process_id=None,
     include_resources=False):
-    seemembers_actions = getAllBusinessAction(
+    actions = getAllBusinessAction(
         context, request, node_id=node_id,
         process_id=process_id,
         process_discriminator='Application')
-    if seemembers_actions:
+    if actions:
         isactive, messages, \
             resources, ajax_actions = update_ajax_actions(
-                seemembers_actions, context, request,
+                actions, context, request,
                 include_resources)
         return ajax_actions, resources
 
@@ -1004,6 +1038,7 @@ def get_actions_navbar(
     }
     actions = sorted(
         actions, key=lambda a: getattr(a, 'style_order', 0))
+    result['all_actions'] = actions
     result.update({descriminator: [] for descriminator in descriminators})
     for action in actions:
         descriminator = getattr(action, 'style_descriminator', 'None')
@@ -1060,7 +1095,7 @@ def generate_navbars(request, context, view_type='default', **args):
             args.get('global_action', []))
         actions_navbar['global-action'].extend(
             actions_navbar.pop('primary-action', []))
-    
+
     actions_navbar.setdefault('text-action', [])
     actions_navbar['text-action'].extend(
         args.get('text_action', []))
@@ -1115,6 +1150,7 @@ def generate_navbars(request, context, view_type='default', **args):
             'resources': resources,
             'all_actions': actions_navbar,
             'body_actions': actions_bodies,
+            'context_actions': actions_navbar['all_actions'],
             'footer_actions_body': communication_actions_bodies,
             'navbar_body': render_navbar_body(
                 request, context, actions_navbar, args.get('template', None),
@@ -1128,7 +1164,12 @@ def generate_navbars(request, context, view_type='default', **args):
                 request, context, actions_navbar,
                 args.get('wg_template', DEFAUL_WG_LISTING_ACTIONS_TEMPLATE),
                 ['wg-action'], view_type=view_type)
-            if 'wg-action' in actions_navbar else None
+            if 'wg-action' in actions_navbar else None,
+           'support_actions_body': render_navbar_body(
+                request, context, actions_navbar,
+                DEFAULT_SUPPORT_TEMPLATE,
+                ['support-action'], view_type=view_type)
+            if 'support-action' in actions_navbar else None,
             }
 
 
@@ -1164,7 +1205,7 @@ def generate_listing_menu(request, context, view_type='default', **args):
     tounmerge = [
         'communication-action', 'wg-action',
         'primary-action', 'communication-body-action',
-        'access-action']
+        'access-action', 'support-action']
     tounmerge = args.get('tounmerge', tounmerge)
     tomerge = [d for d in descriminators
                if d not in tounmerge and d in actions_navbar]
@@ -1187,6 +1228,8 @@ def generate_listing_menu(request, context, view_type='default', **args):
     return {'isactive': actions_navbar['ajax-action']['isactive'],
             'messages': actions_navbar['ajax-action']['messages'],
             'resources': actions_navbar['ajax-action']['resources'],
+            'all_actions': actions_navbar,
+            'context_actions': actions_navbar['all_actions'],
             'footer_actions_body': communication_actions_bodies,
             'menu_body': render_navbar_body(
                 request, context, actions_navbar,
@@ -1208,7 +1251,12 @@ def generate_listing_menu(request, context, view_type='default', **args):
                 request, context, actions_navbar,
                 args.get('wg_template', DEFAUL_WG_LISTING_ACTIONS_TEMPLATE),
                 ['wg-action'], view_type=view_type)
-            if 'wg-action' in actions_navbar else None
+            if 'wg-action' in actions_navbar else None,
+            'support_actions_body': render_navbar_body(
+                request, context, actions_navbar,
+                DEFAULT_SUPPORT_TEMPLATE,
+                ['support-action'], view_type=view_type)
+            if 'support-action' in actions_navbar else None,
             }
 
 
@@ -1354,6 +1402,52 @@ def diff_analytics(context, version, attrs):
         'ins': ins_,
         'del': del_
     }
+
+
+def get_action_view(process_id, action_id, request):
+    root = getSite()
+    actions = getBusinessAction(root, request, process_id, action_id)
+    action = None
+    action_view = None
+    if actions is not None:
+        action = actions[0]
+        if action.__class__ in DEFAULTMAPPING_ACTIONS_VIEWS:
+            action_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
+
+    return action, action_view
+
+
+def get_home_actions_bodies(process_id, action_id, form_id, request, context):
+    result = {
+        'form': None,
+        'action': None,
+        'css_links': [],
+        'js_links': []}
+
+    resources = deepcopy(getattr(
+        request, 'resources', {'js_links': [], 'css_links': []}))
+    add_content_action, add_content_view = get_action_view(
+        process_id, action_id, request)
+    if add_content_view:
+        add_content_view_instance = add_content_view(
+            context, request, behaviors=[add_content_action])
+        add_content_view_instance.viewid = form_id
+        add_content_view_instance.is_home_form = True
+        add_content_view_result = add_content_view_instance()
+        add_content_body = ''
+        if isinstance(add_content_view_result, dict) and \
+           'coordinates' in add_content_view_result:
+            add_content_body = add_content_view_result['coordinates'][add_content_view_instance.coordinates][0]['body']
+            result['css_links'] = [c for c in add_content_view_result.get('css_links', [])
+                                   if c not in resources['css_links']]
+            result['js_links'] = [c for c in add_content_view_result.get('js_links', [])
+                                  if c not in resources['js_links']]
+
+        update_resources(request, result)
+        result['form'] = add_content_body
+        result['action'] = add_content_action
+
+    return result
 
 #add unrecognized mimetype
 

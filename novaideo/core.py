@@ -9,7 +9,6 @@ import venusian
 from BTrees.OOBTree import OOBTree
 from persistent.list import PersistentList
 from persistent.dict import PersistentDict
-from webob.multidict import MultiDict
 from zope.interface import implementer
 
 from pyramid.threadlocal import get_current_request
@@ -19,8 +18,7 @@ from substanced.util import renamer
 from substanced.content import content
 
 from dace.objectofcollaboration.principal.role import DACE_ROLES
-from dace.objectofcollaboration.principal.util import (
-    get_access_keys, has_role, has_any_roles)
+from dace.objectofcollaboration.principal.util import get_access_keys
 from dace.objectofcollaboration.entity import Entity
 from dace.descriptors import (
     SharedUniqueProperty,
@@ -39,6 +37,7 @@ from deform_treepy.widget import (
 from novaideo.content.keyword import (
     DEFAULT_TREE, DEFAULT_TREE_LEN)
 from novaideo import _, ACCESS_ACTIONS
+from novaideo.utilities.attr_utility import synchronize_tree
 from novaideo.content.interface import (
     IVersionableEntity,
     IDuplicableEntity,
@@ -51,17 +50,23 @@ from novaideo.content.interface import (
     INode,
     IEmojiable,
     IPerson,
-    ISignalableEntity)
-from novaideo.utilities.attr_utility import synchronize_tree
+    ISignalableEntity,
+    ISustainable,
+    IDebatable,
+    ITokenable)
 
 
 BATCH_DEFAULT_SIZE = 8
 
 SEARCHABLE_CONTENTS = {}
 
+SUSTAINABLE_CONTENTS = {}
+
 NOVAIDO_ACCES_ACTIONS = {}
 
 ADVERTISING_CONTAINERS = {}
+
+ON_LOAD_VIEWS = {}
 
 
 def get_searchable_content(request=None):
@@ -215,6 +220,32 @@ class Commentable(VisualisableElement, Entity):
             channel.len_comments -= 1
             if self is not channel:
                 self.len_comments -= 1
+
+
+@implementer(IDebatable)
+class Debatable(VisualisableElement, Entity):
+    """ A Debatable entity is an entity that can be comment"""
+
+    channels = CompositeMultipleProperty('channels', 'subject')
+
+    def __init__(self, **kwargs):
+        super(Debatable, self).__init__(**kwargs)
+
+    @property
+    def channel(self):
+        channels = getattr(self, 'channels', [])
+        return channels[0] if channels else None
+
+    def get_title(self, user=None):
+        return getattr(self, 'title', '')
+
+    def subscribe_to_channel(self, user):
+        channel = getattr(self, 'channel', None)
+        if channel and (user not in channel.members):
+            channel.addtoproperty('members', user)
+
+    def add_new_channel(self):
+        self.addtoproperty('channels', Channel())
 
 
 @content(
@@ -395,7 +426,6 @@ class SearchableEntity(VisualisableElement, Entity):
 
     templates = {'default': 'novaideo:templates/views/default_result.pt',
                  'bloc': 'novaideo:templates/views/default_result.pt'}
-    channels = CompositeMultipleProperty('channels', 'subject')
     tree = synchronize_tree()
 
     def __init__(self, **kwargs):
@@ -417,24 +447,11 @@ class SearchableEntity(VisualisableElement, Entity):
                 getattr(self, 'description', ''),
                 ', '.join(getattr(self, 'branches', []))]
 
-    @property
-    def channel(self):
-        channels = getattr(self, 'channels', [])
-        return channels[0] if channels else None
-
     def get_title(self, user=None):
         return getattr(self, 'title', '')
 
-    def subscribe_to_channel(self, user):
-        channel = getattr(self, 'channel', None)
-        if channel and (user not in channel.members):
-            channel.addtoproperty('members', user)
-
     def _init_presentation_text(self):
         pass
-
-    def add_new_channel(self):
-        self.addtoproperty('channels', Channel())
 
     def get_release_date(self):
         return getattr(self, 'release_date', self.modified_at)
@@ -506,6 +523,40 @@ class CorrelableEntity(Entity):
         result.extend([c.source for c in self.target_correlations])
         return list(set(result))
 
+    @property
+    def all_source_related_contents(self):
+        lists_targets = [(c.targets, c) for c in self.source_correlations]
+        return [(target, c) for targets, c in lists_targets
+                for target in targets]
+
+    @property
+    def all_target_related_contents(self):
+        return [(c.source, c) for c in self.target_correlations]
+
+    @property
+    def all_related_contents(self):
+        related_contents = self.all_source_related_contents
+        related_contents.extend(self.all_target_related_contents)
+        return related_contents
+
+    @property
+    def contextualized_contents(self):
+        lists_contents = [(c.targets, c) for c in
+                          self.contextualized_correlations]
+        lists_contents = [(target, c) for targets, c in lists_contents
+                          for target in targets]
+        lists_contents.extend([(c.source, c) for c in
+                               self.contextualized_correlations])
+        return lists_contents
+
+    def get_related_contents(self, type_=None, tags=[]):
+        if type_ is None and not tags:
+            return self.all_related_contents
+
+        return [(content, c) for content, c in self.all_related_contents
+                if (type_ is None or c.type == type_) and
+                (not tags or any(t in tags for t in c.tags))]
+
 
 class ExaminableEntity(Entity):
     """
@@ -513,7 +564,6 @@ class ExaminableEntity(Entity):
     """
 
     opinions_base = {}
-
 
     @property
     def opinion_value(self):
@@ -527,16 +577,6 @@ class Node(Entity):
     def __init__(self, **kwargs):
         super(Node, self).__init__(**kwargs)
         self.graph = PersistentDict()
-
-    @property
-    def all_source_related_contents(self):
-        lists_targets = [(c.targets, c) for c in self.source_correlations]
-        return MultiDict([(target, c) for targets, c in lists_targets
-                          for target in targets])
-
-    @property
-    def all_target_related_contents(self):
-        return MultiDict([(c.source, c) for c in self.target_correlations])
 
     def get_node_id(self):
         return str(self.__oid__).replace('-', '_')
@@ -565,13 +605,13 @@ class Node(Entity):
         if oid in calculated:
             return {}, newcalculated
 
-        all_target_contents = [r for r in self.all_target_related_contents.items()
+        all_target_contents = [r for r in self.all_target_related_contents
                                if isinstance(r[0], Node)]
         targets = [{'id': t.get_node_id(),
                     'type': c.type_name,
                     'oid': getattr(t, '__oid__', 0)}
                    for (t, c) in all_target_contents]
-        all_source_contents = [r for r in self.all_source_related_contents.items()
+        all_source_contents = [r for r in self.all_source_related_contents
                                if r[0] not in all_target_contents
                                and isinstance(r[0], Node)]
         targets.extend([{'id': t.get_node_id(),
@@ -591,6 +631,16 @@ class Node(Entity):
             result.update(sub_result)
 
         return result, newcalculated
+
+    def get_all_sub_nodes(self):
+        oid = self.get_node_id()
+        return set([get_obj(self.graph[id_]['oid']) for id_ in self.graph
+                    if id_ != oid])
+
+    def get_sub_nodes(self):
+        oid = self.get_node_id()
+        return set([get_obj(node['oid']) for
+                    node in self.graph[oid]['targets']])
 
 
 @implementer(ISignalableEntity)
@@ -618,3 +668,85 @@ class SignalableEntity(Entity):
             self.len_reports = getattr(self, 'len_reports', 0)
             self.len_current_reports += 1
             self.len_reports += 1
+
+
+@implementer(ISustainable)
+class Sustainable(Entity):
+    """Question class"""
+
+    def __init__(self, **kwargs):
+        super(Sustainable, self).__init__(**kwargs)
+        self.set_data(kwargs)
+        self.votes_positive = OOBTree()
+        self.votes_negative = OOBTree()
+
+    @property
+    def len_support(self):
+        return len(self.votes_positive)
+
+    @property
+    def len_opposition(self):
+        return len(self.votes_negative)
+
+    def add_vote(self, user, date, kind='positive'):
+        oid = get_oid(user)
+        if kind == 'positive':
+            self.votes_positive[oid] = date
+        else:
+            self.votes_negative[oid] = date
+
+    def withdraw_vote(self, user):
+        oid = get_oid(user)
+        if oid in self.votes_positive:
+            self.votes_positive.pop(oid)
+        elif oid in self.votes_negative:
+            self.votes_negative.pop(oid)
+
+    def has_vote(self, user):
+        oid = get_oid(user)
+        return oid in self.votes_positive or \
+            oid in self.votes_negative
+
+    def has_negative_vote(self, user):
+        oid = get_oid(user)
+        return oid in self.votes_negative
+
+    def has_positive_vote(self, user):
+        oid = get_oid(user)
+        return oid in self.votes_positive
+
+
+@implementer(ITokenable)
+class Tokenable(Entity):
+    """Question class"""
+
+    tokens_opposition = CompositeMultipleProperty('tokens_opposition')
+    tokens_support = CompositeMultipleProperty('tokens_support')
+
+    def __init__(self, **kwargs):
+        super(Tokenable, self).__init__(**kwargs)
+        self.set_data(kwargs)
+
+    @property
+    def tokens(self):
+        result = list(self.tokens_opposition)
+        result.extend(list(self.tokens_support))
+        return result
+
+    @property
+    def len_support(self):
+        return len(self.tokens_support)
+
+    @property
+    def len_opposition(self):
+        return len(self.tokens_opposition)
+
+    def get_token(self, user):
+        tokens = [t for t in getattr(user, 'tokens', []) if
+                  not t.proposal]
+        return tokens[-1] if tokens else None
+
+    def remove_tokens(self):
+        tokens = [t for t in self.tokens]
+        for token in list(tokens):
+            token.owner.addtoproperty('tokens', token)

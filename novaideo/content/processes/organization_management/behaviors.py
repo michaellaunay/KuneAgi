@@ -85,7 +85,9 @@ class CreatOrganizations(InfiniteCardinality):
         new_organizations = appstruct['organizations']
         for organization_dict in new_organizations:
             organization = organization_dict['_object_data']
+            organization.state.append('published')
             root.addtoproperty('organizations', organization)
+            organization.reindex()
             #send mail
         request.registry.notify(ActivityExecuted(
             self, new_organizations, get_current()))
@@ -124,6 +126,7 @@ class EditOrganizations(InfiniteCardinality):
                     organization.addtoproperty('members', manager)
 
             organization.modified_at = datetime.datetime.now(tz=pytz.UTC)
+            organization.reindex()
 
         request.registry.notify(ActivityExecuted(
             self, appstruct['organizations'], get_current()))
@@ -213,6 +216,7 @@ class EditOrganization(InfiniteCardinality):
                 organization.addtoproperty('members', manager)
 
         organization.modified_at = datetime.datetime.now(tz=pytz.UTC)
+        organization.reindex()
         request.registry.notify(ActivityExecuted(
             self, [organization], get_current()))
         return {}
@@ -344,23 +348,25 @@ class UserEditOrganization(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         organization = appstruct['organization']
-        is_manager = appstruct['ismanager']
-        context.set_organization(organization)
-        if is_manager:
-            grant_roles(
-                user=context,
-                roles=(('OrganizationResponsible',
-                        organization),))
-        else:
-            revoke_roles(
-                user=context,
-                roles=(('OrganizationResponsible',
-                        organization),))
+        if organization:
+            is_manager = appstruct['ismanager']
+            context.set_organization(organization)
+            if is_manager:
+                grant_roles(
+                    user=context,
+                    roles=(('OrganizationResponsible',
+                            organization),))
+            else:
+                revoke_roles(
+                    user=context,
+                    roles=(('OrganizationResponsible',
+                            organization),))
 
-        context.reindex()
-        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        request.registry.notify(ActivityExecuted(
-            self, [context], get_current()))
+            context.reindex()
+            context.modified_at = datetime.datetime.now(tz=pytz.UTC)
+            request.registry.notify(ActivityExecuted(
+                self, [context], get_current()))
+
         return {}
 
     def redirect(self, context, request, **kw):

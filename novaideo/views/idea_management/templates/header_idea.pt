@@ -17,7 +17,7 @@
         data-icon="${icon}"
         data-img=""
       >
-      <span tal:omit-tag="" tal:condition="not (is_censored and to_hide)"><span class="icon ${icon}"></span> ${idea.title}</span>
+      <span tal:omit-tag="" tal:condition="not to_hide"><span class="icon ${icon}"></span> ${idea.title}</span>
     </h3>
     <div class="object-description"
       tal:define="author idea.author;
@@ -47,7 +47,7 @@
       <tal:loop repeat="k idea.keywords">
             <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
       </tal:loop>
-  </div>
+     </div>
     </div>
   </div>
   <div tal:condition="is_censored">

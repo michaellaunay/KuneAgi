@@ -10,7 +10,6 @@ This module represent all of behaviors used in the
 FPTP election process definition.
 """
 import datetime
-from pyramid.httpexceptions import HTTPFound
 
 from dace.util import getSite
 from dace.processinstance.activity import InfiniteCardinality
@@ -19,6 +18,7 @@ from dace.objectofcollaboration.principal.util import get_current
 from novaideo.content.interface import IProposal
 from ..user_management.behaviors import global_user_processsecurity
 from novaideo import _
+from ..ballot_processes import Nothing
 
 
 def note_relation_validation(process, context):
@@ -67,6 +67,8 @@ class Note(InfiniteCardinality):
             self.workitem.node.finish_behavior(self.workitem)
 
     def redirect(self, context, request, **kw):
-        return HTTPFound(request.resource_url(context, '@@index'))
+        nothing = Nothing()
+        nothing.is_nothing = True
+        return nothing
 
 #TODO behaviors

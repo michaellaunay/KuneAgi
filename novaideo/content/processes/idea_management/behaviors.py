@@ -64,7 +64,7 @@ from novaideo.content.processes.content_ballot_management.behaviors import (
     StartBallot)
 
 
-def publish_idea_moderation(context, request, root):
+def publish_idea_moderation(context, request, root, **kw):
     if root.support_ideas:
         context.state = PersistentList(['submitted_support', 'published'])
     else:
@@ -80,12 +80,16 @@ def publish_idea_moderation(context, request, root):
             alert_kind='duplicated',
             duplication=context
             )
+    if getattr(context, '_tree', None):
+        tree = getattr(context, '_tree')
+        root.merge_tree(tree)
 
     context.reindex()
     user = context.author
     alert('internal', [root], [user],
           internal_kind=InternalAlertKind.moderation_alert,
-          subjects=[context], alert_kind='moderation')
+          subjects=[context], alert_kind='moderation',
+          ballot=kw.get('ballot_url', ''))
     if getattr(user, 'email', ''):
         mail_template = root.get_mail_template('publish_idea_decision')
         subject = mail_template['subject'].format(
@@ -102,7 +106,7 @@ def publish_idea_moderation(context, request, root):
     request.registry.notify(ObjectPublished(object=context))
 
 
-def archive_idea(context, request, root, appstruct):
+def archive_idea(context, request, root, appstruct, **kw):
     explanation = appstruct['explanation']
     context.state = PersistentList(['archived'])
     context.reindex()
@@ -112,7 +116,8 @@ def archive_idea(context, request, root, appstruct):
     user = context.author
     alert('internal', [root], [user],
           internal_kind=InternalAlertKind.moderation_alert,
-          subjects=[context], alert_kind='moderation')
+          subjects=[context], alert_kind='moderation',
+          ballot=kw.get('ballot_url', ''))
 
     if getattr(user, 'email', ''):
         mail_template = root.get_mail_template('archive_idea_decision')
@@ -154,34 +159,34 @@ class CreateIdea(InfiniteCardinality):
         root = getSite()
         user = get_current(request)
         idea = appstruct['_object_data']
-        if getattr(idea, '_tree', None):
-            tree = getattr(idea, '_tree')
-            root.merge_tree(tree)
-        
         root.addtoproperty('ideas', idea)
         idea.state.append('to work')
         grant_roles(user=user, roles=(('Owner', idea), ))
         idea.setproperty('author', user)
         idea.subscribe_to_channel(user)
-        if isinstance(context, Comment):
-            current_correlation = context.related_correlation
-            related_contents = []
+        if isinstance(context, (Comment, Answer)):
             content = context.subject
-            if current_correlation:
-                related_contents = getattr(current_correlation, 'targets', [])
-                disconnect(content, related_contents)
-                related_contents.append(idea)
-            else:
-                related_contents = [idea]
-
-            correlation = connect(
+            correlations = connect(
                 content,
-                list(related_contents),
+                [idea],
                 {'comment': context.comment,
-                 'type': context.intention},
+                 'type': getattr(context, 'intention',
+                                 'Transformation from another content')},
                 user,
-                unique=True)
-            context.setproperty('related_correlation', correlation[0])
+                ['transformation'],
+                CorrelationType.solid)
+            for correlation in correlations:
+                correlation.setproperty('context', context)
+
+            context_type = context.__class__.__name__.lower()
+            # Add Nia comment
+            alert_comment_nia(
+                idea, request, root,
+                internal_kind=InternalAlertKind.content_alert,
+                subject_type='idea',
+                alert_kind='transformation_'+context_type,
+                content=context
+                )
 
         idea.format(request)
         idea.reindex()
@@ -279,6 +284,10 @@ class CrateAndPublishAsProposal(CrateAndPublish):
                 grant_roles(user=user, roles=(('Owner', proposal), ))
                 grant_roles(user=user, roles=(('Participant', proposal), ))
                 proposal.setproperty('author', user)
+                challenge = idea.challenge
+                if challenge:
+                    proposal.setproperty('challenge', challenge)
+
                 wg = WorkingGroup()
                 root.addtoproperty('working_groups', wg)
                 wg.init_workspace()
@@ -339,7 +348,6 @@ class DuplicateIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
-        root.merge_tree(appstruct['tree'])
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
         copy_of_idea = copy(
@@ -446,10 +454,6 @@ class EditIdea(InfiniteCardinality):
 
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
-        if getattr(context, '_tree', None):
-            tree = getattr(context, '_tree')
-            root.merge_tree(tree)
-
         copy_of_idea.state = PersistentList(['version', 'archived'])
         copy_of_idea.setproperty('author', user)
         note = appstruct.pop('note', '')
@@ -630,6 +634,22 @@ class PublishIdea(InfiniteCardinality):
                 duplication=context
                 )
 
+        transformed_from = context.transformed_from
+        if transformed_from:
+            context_type = transformed_from.__class__.__name__.lower()
+            # Add Nia comment
+            alert_comment_nia(
+                transformed_from, request, root,
+                internal_kind=InternalAlertKind.content_alert,
+                subject_type=context_type,
+                alert_kind='transformation_idea',
+                idea=context
+                )
+        
+        if getattr(context, '_tree', None):
+            tree = getattr(context, '_tree')
+            root.merge_tree(tree)
+
         context.reindex()
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
@@ -804,18 +824,13 @@ class CommentIdea(InfiniteCardinality):
             comment.reindex()
             user = get_current()
             grant_roles(user=user, roles=(('Owner', comment), ))
-            context.subscribe_to_channel(user)
+            if getattr(self, 'subscribe_to_channel', True):
+                context.subscribe_to_channel(user)
+
             comment.setproperty('author', user)
-            if appstruct['related_contents']:
-                related_contents = appstruct['related_contents']
-                correlation = connect(
-                    context,
-                    list(related_contents),
-                    {'comment': comment.comment,
-                     'type': comment.intention},
-                    user,
-                    unique=True)
-                comment.setproperty('related_correlation', correlation[0])
+            if appstruct.get('associated_contents', []):
+                comment.set_associated_contents(
+                    appstruct['associated_contents'], user)
 
             self._alert_users(context, request, user, comment)
             context.reindex()
@@ -825,6 +840,24 @@ class CommentIdea(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
+
+
+def comma_roles_validation(process, context):
+    return has_role(role=('Anonymous',), ignore_superiors=True)
+
+
+def comma_processsecurity_validation(process, context):
+    return True
+
+
+class CommentIdeaAnonymous(CommentIdea):
+    roles_validation = comma_roles_validation
+    processsecurity_validation = comma_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 
 def present_roles_validation(process, context):
@@ -902,6 +935,24 @@ class PresentIdea(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
+def presenta_roles_validation(process, context):
+    return has_role(role=('Anonymous',), ignore_superiors=True)
+
+
+def presenta_processsecurity_validation(process, context):
+    return True
+
+
+class PresentIdeaAnonymous(PresentIdea):
+    roles_validation = presenta_roles_validation
+    processsecurity_validation = presenta_processsecurity_validation
+    style_interaction = 'ajax-action'
+    style_interaction_type = 'popover'
+
+    def start(self, context, request, appstruct, **kw):
+        return {}
+
+
 def associate_processsecurity_validation(process, context):
     return (has_role(role=('Owner', context)) or \
            (has_role(role=('Member',)) and 'published' in context.state)) and \
@@ -930,6 +981,13 @@ class Associate(InfiniteCardinality):
 
 def get_access_key(obj):
     if 'published' in obj.state:
+        challenge = getattr(obj, 'challenge', None)
+        is_restricted = getattr(challenge, 'is_restricted', False)
+        if is_restricted:
+            return serialize_roles(
+                (('ChallengeParticipant', challenge),
+                 'SiteAdmin', 'Admin', 'Moderator'))
+
         return ['always']
     else:
         return serialize_roles(
@@ -938,7 +996,13 @@ def get_access_key(obj):
 
 
 def seeidea_processsecurity_validation(process, context):
-    return access_user_processsecurity(process, context) and \
+    challenge = getattr(context, 'challenge', None)
+    is_restricted = getattr(challenge, 'is_restricted', False)
+    can_access = True
+    if is_restricted:
+        can_access = has_role(role=('ChallengeParticipant', challenge))
+
+    return can_access and access_user_processsecurity(process, context) and \
            ('published' in context.state or 'censored' in context.state or\
             has_any_roles(
                 roles=(('Owner', context), ('LocalModerator', context),
@@ -1198,6 +1262,7 @@ def seewgs_state_validation(process, context):
 class SeeRelatedWorkingGroups(InfiniteCardinality):
     style_descriminator = 'listing-primary-action'
     style_interaction = 'ajax-action'
+    style_interaction_type = 'slider'
     style_picto = 'glyphicon glyphicon-link'
     style_order = 2
     context = Iidea
@@ -1264,6 +1329,7 @@ class ModerationVote(StartBallot):
         close_ballot(self, idea, request)
         # idea not removed
         if idea and idea.__parent__:
+            root = getSite()
             moderators = self.process.execution_context.get_involved_collection(
                 'electors')
             for moderator in moderators:
@@ -1271,12 +1337,24 @@ class ModerationVote(StartBallot):
                     user=moderator,
                     roles=(('LocalModerator', idea),))
 
+            ballots = getattr(self.sub_process, 'ballots', [])
+            ballot = None
+            for ballot_ in ballots:
+                ballot_.finish_ballot()
+                ballot = ballot_
+
+            ballot_oid = get_oid(ballot, '')
+            ballot_url = request.resource_url(
+                root, '@@seeballot', query={'id': ballot_oid})
             accepted = ballot_result(self, True)
-            root = getSite()
             if accepted:
-                publish_idea_moderation(idea, request, root)
+                publish_idea_moderation(
+                    idea, request, root,
+                    ballot_url=ballot_url)
             else:
-                archive_idea(idea, request, root, {'explanation': ''})
+                archive_idea(
+                    idea, request, root, {'explanation': ''},
+                    ballot_url=ballot_url)
 
         super(ModerationVote, self).after_execution(
             idea, request, **kw)

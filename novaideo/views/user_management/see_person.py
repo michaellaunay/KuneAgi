@@ -28,6 +28,7 @@ from novaideo.utilities.util import (
 from novaideo import _
 from novaideo.views.filter.sort import (
     sort_view_objects)
+from novaideo.views.core import asyn_component_config
 
 
 class ContentView(BasicView):
@@ -49,11 +50,14 @@ class ContentView(BasicView):
             objects = list(filter(lambda o: can_access(current_user, o) and
                                        'archived' not in o.state,
                              getattr(user, self.content_attr, [])))
-
+        sort_url = self.request.resource_url(
+            self.context, '@@index',
+            query={'view_content_attr': self.content_attr})
         objects, sort_body = sort_view_objects(
-            self, objects, [self.content_type], user)
+            self, objects, [self.content_type], user,
+            sort_url=sort_url)
         url = self.request.resource_url(
-            self.context, '@@seeperson',
+            self.context, '@@index',
             query={'view_content_attr': self.content_attr})
         batch = Batch(objects,
                       self.request,
@@ -70,8 +74,20 @@ class ContentView(BasicView):
                   'sort_body': sort_body}
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
+        item['isactive'] = getattr(self, 'isactive', False)
         result['coordinates'] = {self.coordinates: [item]}
         return result
+
+
+class QuestionsView(ContentView):
+    title = _('His/her questions (${nb})')
+    content_attr = 'questions'
+    content_type = 'question'
+    viewid = 'person-questions'
+    view_icon = 'icon md md-live-help'
+    counter_id = 'person-questions-counter'
+    empty_message = _("No asked questions")
+    empty_icon = 'icon md md-live-help'
 
 
 class IdeasView(ContentView):
@@ -83,6 +99,7 @@ class IdeasView(ContentView):
     counter_id = 'person-ideas-counter'
     empty_message = _("No registered ideas")
     empty_icon = 'icon novaideo-icon icon-idea'
+    isactive = True
 
 
 class ProposalsView(ContentView):
@@ -96,41 +113,42 @@ class ProposalsView(ContentView):
     empty_icon = 'icon icon novaideo-icon icon-wg'
 
 
+@asyn_component_config(id='person_see_person')
 class PersonContentsView(MultipleView):
-    title = 'person-contents'
+    title = ''
     name = 'see-person-contents'
     viewid = 'person-contents'
     css_class = 'simple-bloc'
     template = 'novaideo:views/templates/multipleview.pt'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     container_css_class = 'person-view'
-    views = (IdeasView, ProposalsView)
+    center_tabs = True
+    views = (QuestionsView, IdeasView, ProposalsView)
 
     def _init_views(self, views, **kwargs):
-        if self.request.is_idea_box:
-            views = (IdeasView, )
+        if self.params('load_view'):
+            if self.request.is_idea_box:
+                views = (IdeasView, )
 
-        if self.params('view_content_attr') == 'ideas':
-            views = (IdeasView, )
+            if self.params('view_content_attr') == 'ideas':
+                views = (IdeasView, )
 
-        if self.params('view_content_attr') == 'proposals':
-            views = (ProposalsView, )
+            if self.params('view_content_attr') == 'proposals':
+                views = (ProposalsView, )
+
+            if self.params('view_content_attr') == 'questions':
+                views = (QuestionsView, )
 
         super(PersonContentsView, self)._init_views(views, **kwargs)
 
 
-@view_config(
-    name='seeperson',
-    context=Person,
-    renderer='pontus:templates/views_templates/grid.pt',
-    )
-class SeePersonView(BasicView):
+class DetailsView(BasicView):
     title = ''
-    name = 'seeperson'
+    name = 'seepersondetails'
     behaviors = [SeePerson]
     template = 'novaideo:views/user_management/templates/see_person.pt'
-    viewid = 'seeperson'
-    wrapper_template = 'novaideo:views/templates/simple_wrapper.pt'
-    css_class = 'simple-bloc user-view-index'
+    viewid = 'seepersondetails'
+    wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
 
     def update(self):
         self.execute(None)
@@ -141,11 +159,8 @@ class SeePersonView(BasicView):
 
         user = self.context
         current_user = get_current()
-        contents = PersonContentsView(self.context, self.request).update()
-        contents_body = contents['coordinates'][PersonContentsView.coordinates][0]['body']
         values = {
             'user': user,
-            'contents': contents_body,
             'proposals': None,
             'state': get_states_mapping(
                 current_user, user,
@@ -156,7 +171,6 @@ class SeePersonView(BasicView):
             'is_portal_manager': has_role(role=('PortalManager',))
         }
         result = {}
-        result = merge_dicts(contents, result, ('css_links', 'js_links'))
         result = merge_dicts(navbars['resources'], result, ('css_links', 'js_links'))
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
@@ -164,6 +178,27 @@ class SeePersonView(BasicView):
         item['isactive'] = navbars['isactive']
         result['coordinates'] = {self.coordinates: [item]}
         return result
+
+
+@view_config(
+    name='index',
+    context=Person,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+@view_config(
+    name='',
+    context=Person,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class SeePersonView(MultipleView):
+    title = ''
+    name = 'seeperson'
+    template = 'novaideo:views/templates/entity_multipleview.pt'
+    viewid = 'seeperson'
+    css_class = 'simple-bloc'
+    container_css_class = 'home'
+    views = (DetailsView, PersonContentsView)
+    validators = [SeePerson.get_validator()]
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(

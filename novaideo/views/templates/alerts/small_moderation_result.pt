@@ -8,15 +8,25 @@
       class="alert-item ${new_alert and 'new-alert'}">
     <h5><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h5>
     <span i18n:translate="" tal:condition="alert_kind == 'moderation'">
-    	The moderators have decided on the contribution <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+    	The moderators have decided on the contribution <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
+      <span tal:condition="getattr(object, 'ballot', '')">
+        <span i18n:translate="">The results of the ballots are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
+      </span>
+    </span>
     <span i18n:translate="" tal:condition="alert_kind == 'new_report'">
       A new content has been reported as potentially offensive. The reported contents can be reached <a i18n:name="dynamic" href="${request.resource_url(request.root, '@@seereportedcontents')}">ici</a>.
+    </span>
+    <span i18n:translate="" tal:condition="alert_kind == 'object_archive'">
+      The contribution <a i18n:name="dynamic"  href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> has been archived.
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'object_restor'">
       The contribution  <a i18n:name="dynamic" href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> has been restored.
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'object_censor'">
-      The contribution  <a i18n:name="dynamic" href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> has been censored.
+      <span i18n:translate="">The contribution <a i18n:name="dynamic"  href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> has been censored.</span>
+      <span tal:condition="getattr(object, 'ballot', '')">
+        <span i18n:translate="">The results of the ballots are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
+      </span>
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'object_closed'">
       The Woking Group on the Proposal <a i18n:name="dynamic" href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> has been inactive for several cycles, each lasting more than one week. For this reason, the Group has been dissolved, and the Proposal is back to the state "Open to a working group".
@@ -26,6 +36,18 @@
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'moderate_report'">
       A content has just been reported as potentially offensive. The content is visible under <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>. You are invited to moderate it.
+    </span>
+    <span i18n:translate="" tal:condition="alert_kind == 'registration_refused'">
+      <span i18n:translate="">The registration of <strong i18n:name="dynamic">${object.user_first_name} ${object.user_last_name}</strong> has been refused</span>
+      <span tal:condition="getattr(object, 'ballot', '')">
+        <span i18n:translate="">The results of the ballots are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>.
+      </span>
+    </span>
+    <span i18n:translate="" tal:condition="alert_kind == 'registration_accepted'">
+      <span i18n:translate="">The registration of <strong i18n:name="dynamic">${object.user_first_name} ${object.user_last_name}</strong> has been accepted</span>
+      <span tal:condition="getattr(object, 'ballot', '')">
+        <span i18n:translate="">The results of the ballots are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>.
+      </span>
     </span>
   </div>
 </div>

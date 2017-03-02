@@ -39,7 +39,7 @@ from novaideo.views.filter import (
 from novaideo.content.keyword import DEFAULT_TREE, ROOT_TREE
 
 
-DEFAULT_CONTENT_TYPES = ['idea', 'proposal']
+DEFAULT_CONTENT_TYPES = ['idea', 'proposal', 'question']
 
 
 DATESOF = [

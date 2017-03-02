@@ -92,7 +92,7 @@ $(document).on('click','.add-idea-form button.ajax-button', function( event ) {
     var isnewidea = $(form.find('.new-idea-control'))[0].checked;
     var targetform =  $('#'+related_ideas.data('target'));
     var target = $(targetform.find('.controlled-items'));
-    var dict_post = {};
+    var formData = new FormData($(form)[0]);
     if (isnewidea)
      {
         newideaform = form.find('.new-idea-form');
@@ -126,10 +126,7 @@ $(document).on('click','.add-idea-form button.ajax-button', function( event ) {
            return
         }
 
-        dict_post = {'title': title,
-                     'text': text,
-                     'tree': tree,
-                     'op': 'creat_idea'};
+        formData.append('op', 'creat_idea');
      }else{
         oid = $($(form).find('select.search-idea-form')).select2('val');
         var new_items = related_ideas.find('span[data-id=\"'+oid+'\"]');
@@ -149,13 +146,20 @@ $(document).on('click','.add-idea-form button.ajax-button', function( event ) {
               })
            return
         }
-        dict_post = {'oid': oid,
-                     'op': 'get_idea'};
+        formData.append('op', 'get_idea');
+        formData.append('oid', oid);
      };
-     loading_progress()
      var url = $(form).data('url');
+     formData.append(button.val(), button.val())
      button.addClass('disabled');
-     $.get(url, dict_post, function(data) {
+     loading_progress()
+     $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(data) {
          if(data){
            button.removeClass('disabled'); 
            var event = jQuery.Event( "AddItem" );
@@ -193,7 +197,7 @@ $(document).on('click','.add-idea-form button.ajax-button', function( event ) {
               })
          }
          finish_progress()
-    });
+    }});
 });
 
 $(document).ready(function(){

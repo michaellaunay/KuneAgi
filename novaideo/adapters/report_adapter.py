@@ -10,12 +10,14 @@ from zope.interface import Interface, implementer
 
 from dace.util import Adapter, adapter
 from dace.objectofcollaboration.principal.util import (
-    revoke_roles, grant_roles)
+    grant_roles)
 
 from novaideo.content.interface import (
     IComment,
     Iidea,
-    IProposal)
+    IProposal,
+    IQuestion,
+    IAnswer)
 from novaideo.utilities.alerts_utility import alert
 from novaideo.content.alert import InternalAlertKind
 from novaideo.content.processes.proposal_management import end_work
@@ -23,7 +25,7 @@ from novaideo.content.processes.proposal_management import end_work
 
 class ISignalableObject(Interface):
 
-    def censor(request):
+    def censor(request, **kw):
         pass
 
     def restor(request):
@@ -35,13 +37,14 @@ class ISignalableObject(Interface):
 class CommentAdapter(Adapter):
     """Return all keywords.
     """
-    def censor(self, request):
+    def censor(self, request, **kw):
         self.context.state = PersistentList(['censored'])
         members = [self.context.author]
         alert(
             'internal', [request.root], members,
             internal_kind=InternalAlertKind.moderation_alert,
-            subjects=[self.context], alert_kind='object_censor')
+            subjects=[self.context], alert_kind='object_censor',
+            ballot=kw.get('ballot_url', ''))
         self.context.reindex()
 
     def restor(self, request):
@@ -59,7 +62,7 @@ class CommentAdapter(Adapter):
 class IdeaAdapter(Adapter):
     """Return all keywords.
     """
-    def censor(self, request):
+    def censor(self, request, **kw):
         self.context.state_befor_censor = PersistentList(
             list(self.context.state))
         self.context.state = PersistentList(['censored'])
@@ -70,7 +73,8 @@ class IdeaAdapter(Adapter):
         alert(
             'internal', [request.root], members,
             internal_kind=InternalAlertKind.moderation_alert,
-            subjects=[self.context], alert_kind='object_censor')
+            subjects=[self.context], alert_kind='object_censor',
+            ballot=kw.get('ballot_url', ''))
         self.context.reindex()
 
     def restor(self, request):
@@ -90,7 +94,7 @@ class IdeaAdapter(Adapter):
 class ProposalAdapter(Adapter):
     """Return all keywords.
     """
-    def censor(self, request):
+    def censor(self, request, **kw):
         self.context.state = PersistentList(['censored'])
         self.context.remove_tokens()
         end_work(self.context, request)
@@ -99,7 +103,8 @@ class ProposalAdapter(Adapter):
         alert(
             'internal', [request.root], members,
             internal_kind=InternalAlertKind.moderation_alert,
-            subjects=[self.context], alert_kind='object_censor')
+            subjects=[self.context], alert_kind='object_censor',
+            ballot=kw.get('ballot_url', ''))
         working_group.empty()
         self.context.reindex()
         working_group.reindex()
@@ -120,3 +125,61 @@ class ProposalAdapter(Adapter):
             subjects=[self.context], alert_kind='object_restor')
         self.context.reindex()
         working_group.reindex()
+
+
+@adapter(context=IQuestion)
+@implementer(ISignalableObject)
+class QuestionAdapter(Adapter):
+    """Return all keywords.
+    """
+    def censor(self, request, **kw):
+        self.context.state_befor_censor = PersistentList(
+            list(self.context.state))
+        self.context.state = PersistentList(['censored'])
+        members = [self.context.author]
+        alert(
+            'internal', [request.root], members,
+            internal_kind=InternalAlertKind.moderation_alert,
+            subjects=[self.context], alert_kind='object_censor',
+            ballot=kw.get('ballot_url', ''))
+        self.context.reindex()
+
+    def restor(self, request):
+        self.context.state = PersistentList(
+            list(self.context.state_befor_censor))
+        del self.context.state_befor_censor
+        members = [self.context.author]
+        alert(
+            'internal', [request.root], members,
+            internal_kind=InternalAlertKind.moderation_alert,
+            subjects=[self.context], alert_kind='object_restor')
+        self.context.reindex()
+
+
+@adapter(context=IAnswer)
+@implementer(ISignalableObject)
+class AnswerAdapter(Adapter):
+    """Return all keywords.
+    """
+    def censor(self, request, **kw):
+        self.context.state_befor_censor = PersistentList(
+            list(self.context.state))
+        self.context.state = PersistentList(['censored'])
+        members = [self.context.author]
+        alert(
+            'internal', [request.root], members,
+            internal_kind=InternalAlertKind.moderation_alert,
+            subjects=[self.context], alert_kind='object_censor',
+            ballot=kw.get('ballot_url', ''))
+        self.context.reindex()
+
+    def restor(self, request):
+        self.context.state = PersistentList(
+            list(self.context.state_befor_censor))
+        del self.context.state_befor_censor
+        members = [self.context.author]
+        alert(
+            'internal', [request.root], members,
+            internal_kind=InternalAlertKind.moderation_alert,
+            subjects=[self.context], alert_kind='object_restor')
+        self.context.reindex()

@@ -21,16 +21,17 @@ from dace.objectofcollaboration.principal.util import (
     has_role,
     has_any_roles)
 from dace.processinstance.activity import (
-    InfiniteCardinality)
+    InfiniteCardinality, ActionType)
 
 from novaideo.content.processes import global_user_processsecurity
 from novaideo.content.interface import IComment
 from novaideo import _, nothing
-from novaideo.utilities.util import connect, disconnect
+from novaideo.utilities.util import disconnect
 from novaideo.utilities.alerts_utility import (
     alert, get_user_data, get_entity_data)
 from novaideo.content.alert import InternalAlertKind
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
+from novaideo.content.processes.question_management.behaviors import AskQuestion
 from . import VALIDATOR_BY_CONTEXT
 from novaideo.core import access_action, serialize_roles
 from novaideo.content.processes.content_ballot_management import (
@@ -120,16 +121,9 @@ class Respond(InfiniteCardinality):
         if not is_discuss and content and content is not root:
             content.subscribe_to_channel(user)
 
-        if appstruct['related_contents']:
-            related_contents = appstruct['related_contents']
-            correlation = connect(
-                content,
-                list(related_contents),
-                {'comment': comment.comment,
-                 'type': comment.intention},
-                user,
-                unique=True)
-            comment.setproperty('related_correlation', correlation[0])
+        if appstruct.get('associated_contents', []):
+            comment.set_associated_contents(
+                appstruct['associated_contents'], user)
 
         author = getattr(content, 'author', None)
         authors = getattr(content, 'authors', [author] if author else [])
@@ -219,27 +213,10 @@ class Edit(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         context.edited = True
-        content = context.subject
         user = get_current()
-        current_correlation = context.related_correlation
-        if current_correlation and\
-           not appstruct['related_contents']:
-            targets = getattr(current_correlation, 'targets', [])
-            disconnect(content, targets)
-        elif appstruct['related_contents']:
-            if current_correlation:
-                targets = getattr(current_correlation, 'targets', [])
-                disconnect(content, targets)
-
-            related_contents = appstruct['related_contents']
-            correlation = connect(
-                content,
-                list(related_contents),
-                {'comment': context.comment,
-                 'type': context.intention},
-                user,
-                unique=True)
-            context.setproperty('related_correlation', correlation[0])
+        if appstruct.get('associated_contents', []):
+            context.set_associated_contents(
+                appstruct['associated_contents'], user)
 
         context.format(request)
         context.reindex()
@@ -260,7 +237,7 @@ class Remove(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_action_class = 'comment-ajax-action comment-remove-action'
     style_picto = 'glyphicon glyphicon-trash'
-    style_order = 4
+    style_order = 5
     submission_title = _('Continue')
     context = IComment
     roles_validation = edit_roles_validation
@@ -341,6 +318,17 @@ class TransformToIdea(CreateIdea):
     style_picto = 'icon novaideo-icon icon-idea'
     style_order = 3
     title = _('Transform into an idea')
+    context = IComment
+    state_validation = state_validation
+
+
+class TransformToQuestion(AskQuestion):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'icon md md-live-help'
+    style_order = 4
+    title = _('Transform into a question')
     context = IComment
     state_validation = state_validation
 

@@ -15,14 +15,15 @@ from pyramid.threadlocal import get_current_registry
 from substanced.util import get_oid
 
 from pontus.util import update_resources
+from dace.processinstance.core import ValidationError
 from dace.objectofcollaboration.entity import Entity
 from dace.util import (
-    getBusinessAction, getSite,
+    getSite,
     find_catalog, getAllBusinessAction,
     get_obj)
 from dace.objectofcollaboration.principal.util import get_current
-from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from daceui.interfaces import IDaceUIAPI
+from pontus.util import merge_dicts
 
 from novaideo.utilities.util import (
     generate_listing_menu, ObjectRemovedException)
@@ -32,11 +33,11 @@ from novaideo.content.processes.novaideo_view_manager.behaviors import(
     SeeMyParticipations,
     SeeMySupports)
 from novaideo.content.processes.idea_management.behaviors import CreateIdea
-from novaideo.content.person import Person
 from novaideo.content.interface import (
-    IPerson, Iidea, IProposal, ISmartFolder)
+    IPerson, Iidea, IProposal, ISmartFolder,
+    IQuestion)
 from novaideo.content.novaideo_application import NovaIdeoApplication
-from novaideo.core import _, SearchableEntity, can_access
+from novaideo.core import SearchableEntity, can_access
 from novaideo.content.processes.user_management.behaviors import (
     global_user_processsecurity)
 from novaideo.utilities.util import (
@@ -44,15 +45,23 @@ from novaideo.utilities.util import (
     render_navbar_body,
     deepcopy,
     FOOTER_NAVBAR_TEMPLATE,
-    update_all_ajax_action,
-    get_debatescore_data)
+    get_debatescore_data,
+    get_action_view)
 from novaideo.views.filter import find_entities, find_more_contents
 from novaideo.contextual_help_messages import render_contextual_help
+from novaideo.guide_tour import get_guide_tour_page
 from novaideo.steps import steps_panels
-from novaideo.content.smart_folder import SmartFolder
-from novaideo.fr_lexicon import normalize_title
 from novaideo.content.idea import Idea
 from novaideo.content.proposal import Proposal
+from novaideo.content.smart_folder import SmartFolder
+from novaideo.fr_lexicon import normalize_title
+from novaideo.content.processes.challenge_management.behaviors import (
+    SeeChallenge)
+from novaideo.views.challenge_management.see_challenges import (
+    SeeChallengesHomeView)
+from novaideo.views.channel_management.see_channels import SeeChannels
+from novaideo.views.challenge_management.see_challenge import get_contents_forms
+from novaideo import _, log
 
 
 LEVEL_MENU = 3
@@ -71,20 +80,7 @@ GROUPS_PICTO = {
     'Edit': (2, 'glyphicon glyphicon-pencil'),
     'Directory': (3, 'glyphicon glyphicon-book'),
     'More': (4, 'glyphicon glyphicon-cog'),
- }
-
-
-def _getaction(view, process_id, action_id):
-    root = getSite()
-    actions = getBusinessAction(root, view.request, process_id, action_id)
-    action = None
-    action_view = None
-    if actions is not None:
-        action = actions[0]
-        if action.__class__ in DEFAULTMAPPING_ACTIONS_VIEWS:
-            action_view = DEFAULTMAPPING_ACTIONS_VIEWS[action.__class__]
-
-    return action, action_view
+}
 
 
 @panel_config(
@@ -102,13 +98,13 @@ class Usermenu_panel(object):
         root = getSite()
         resources = deepcopy(getattr(
             self.request, 'resources', {'js_links': [], 'css_links': []}))
-        search_action, search_view = _getaction(self,
-                                                'novaideoviewmanager',
-                                                'search')
+        search_action, search_view = get_action_view('novaideoviewmanager',
+                                                'search',
+                                                self.request)
         search_view_instance = search_view(root, self.request,
                                            behaviors=[search_action])
         posted_formid = None
-        if self.request.POST :
+        if self.request.POST:
             if '__formid__' in self.request.POST:
                 posted_formid = self.request.POST['__formid__']
 
@@ -139,53 +135,18 @@ class Usermenu_panel(object):
 
 
 @panel_config(
-    name='addideaform',
+    name='addcontenthomeform',
     context=NovaIdeoApplication,
-    renderer='templates/panels/addideaform.pt'
+    renderer='templates/panels/addcontenthomeform.pt'
     )
-class AddIdea(object):
+class AddContent(object):
 
     def __init__(self, context, request):
         self.context = context
         self.request = request
 
     def __call__(self):
-        result = {
-            'form': None,
-            'css_links': [],
-            'js_links': []}
-        if(self.request.view_name not in ('', 'seemycontents')):
-            return {'form': None}
-
-        root = getSite()
-        resources = deepcopy(getattr(
-            self.request, 'resources', {'js_links': [], 'css_links': []}))
-        add_idea_action, add_idea_view = _getaction(
-            self, 'ideamanagement', 'creat')
-        if add_idea_view:
-            add_idea_view_instance = add_idea_view(
-                root, self.request, behaviors=[add_idea_action])
-            add_idea_view_instance.viewid = 'formcreateideahome'
-            add_idea_view_instance.is_home_form = True
-            add_idea_view_result = add_idea_view_instance()
-            add_idea_body = ''
-            if isinstance(add_idea_view_result, dict) and \
-               'coordinates' in add_idea_view_result:
-                add_idea_body = add_idea_view_result['coordinates'][add_idea_view_instance.coordinates][0]['body']
-                result['css_links'] = [c for c in add_idea_view_result.get('css_links', [])
-                                       if c not in resources['css_links']]
-                result['js_links'] = [c for c in add_idea_view_result.get('js_links', [])
-                                      if c not in resources['js_links']]
-
-            update_resources(self.request, result)
-            result['form'] = add_idea_body
-            result['view'] = self
-            result['action_url'] = self.request.resource_url(
-                root, '@@ideasmanagement', query={'op': 'creat_home_idea'})
-            result['search_url'] = self.request.resource_url(
-                root, '@@novaideoapi', query={'op': 'get_similar_ideas'})
-
-        return result
+        return get_contents_forms(self.request)
 
 
 @panel_config(
@@ -209,26 +170,29 @@ class UserNavBarPanel(object):
 
         actions_url = OrderedDict()
         for actionclass in self.navbar_actions:
-            process_id, action_id = tuple(actionclass.node_definition.id.split('.'))
-            action, view = _getaction(self, process_id, action_id)
+            process_id, action_id = tuple(
+                actionclass.node_definition.id.split('.'))
+            action, view = get_action_view(process_id, action_id, self.request)
             if None not in (action, view):
                 actions_url[action.title] = {
-                            'action': action,
-                            'action_id': action_id,
-                            'icon': action.style_picto,
-                            'url': action.url(root),
-                            'view_name': getattr(view,'name', None)}
+                    'action': action,
+                    'action_id': action_id,
+                    'icon': action.style_picto,
+                    'url': action.url(root),
+                    'view_name': getattr(view, 'name', None)}
             else:
                 actions_url[actionclass.node_definition.title] = {
-                            'action': None,
-                            'action_id': action_id,
-                            'icon': actionclass.style_picto,
-                            'url': None,
-                            'view_name': getattr(view,'name', None)}
+                    'action': None,
+                    'action_id': action_id,
+                    'icon': actionclass.style_picto,
+                    'url': None,
+                    'view_name': getattr(view, 'name', None)}
         result = {}
         result['actions'] = actions_url
         result['view'] = self
         result['has_contextual_help'] = has_contextual_help
+        result['is_root'] = root is self.context and \
+            self.request.view_name in ('', 'index', '@@index')
         return result
 
 
@@ -251,16 +215,19 @@ class NovaideoContents(object):
         dace_catalog = find_catalog('dace')
         states_index = dace_catalog['object_states']
         object_provides_index = dace_catalog['object_provides']
-        query = object_provides_index.any((IPerson.__identifier__ ,)) & \
-                states_index.notany(['deactivated'])
+        query = object_provides_index.any((IPerson.__identifier__,)) & \
+            states_index.notany(['deactivated'])
         result['nb_person'] = query.execute().__len__()
-        query = object_provides_index.any((Iidea.__identifier__ ,)) & \
-                states_index.any(['published'])
+        query = object_provides_index.any((Iidea.__identifier__,)) & \
+            states_index.any(['published'])
         result['nb_idea'] = query.execute().__len__()
+        query = object_provides_index.any((IQuestion.__identifier__,)) & \
+            states_index.any(['published'])
+        result['nb_question'] = query.execute().__len__()
         result['nb_proposal'] = 0
         if not getattr(self.request, 'is_idea_box', False):
-            query = object_provides_index.any((IProposal.__identifier__ ,)) & \
-                    states_index.notany(['archived', 'draft'])
+            query = object_provides_index.any((IProposal.__identifier__,)) & \
+                states_index.notany(['archived', 'draft'])
             result['nb_proposal'] = query.execute().__len__()
 
         result['condition'] = True
@@ -294,9 +261,10 @@ class NovaideoFooter(object):
 
     def __call__(self):
         root = getSite()
+
         def actions_getter():
             return [a for a in getAllBusinessAction(
-                      root, process_discriminator='Application')
+                    root, process_discriminator='Application')
                     if getattr(a, 'style', '') == 'button']
 
         actions_navbar = get_actions_navbar(
@@ -321,8 +289,6 @@ class LateralMenu(object):
 
     def __call__(self):
         root = getSite()
-        # resources = deepcopy(getattr(
-        #     self.request, 'resources', {'js_links': [], 'css_links': []}))
         try:
             navbars = generate_listing_menu(
                 self.request, root,
@@ -335,11 +301,6 @@ class LateralMenu(object):
             'css_links': [],
             'js_links': [],
             'menu_body': navbars['menu_body']}
-        # result['css_links'] = [c for c in navbars['resources'].get('css_links', [])
-        #                        if c not in resources['css_links']]
-        # result['js_links'] = [c for c in navbars['resources'].get('js_links', [])
-        #                       if c not in resources['js_links']]
-        # update_resources(self.request, result)
         return result
 
 
@@ -357,8 +318,8 @@ def group_actions(actions):
             groups[group_id] = [action]
 
     for group_id, group in groups.items():
-        groups[group_id] = sorted(group,
-            key=lambda e: getattr(e[1], 'style_order', 0))
+        groups[group_id] = sorted(
+            group, key=lambda e: getattr(e[1], 'style_order', 0))
     groups = sorted(list(groups.items()),
                     key=lambda g: GROUPS_PICTO.get(g[0], ("default", 0))[0])
     return groups
@@ -445,14 +406,10 @@ class ContextualHelp(object):
         self.request = request
 
     def __call__(self):
-        if not self.request.cookies.get('contextual_help', True):
-            return {'condition': False}
-
         user = get_current()
         messages = render_contextual_help(
             self.request, self.context, user, self.request.view_name)
-        return {'messages': messages,
-                'condition': True}
+        return {'messages': messages}
 
 
 @panel_config(
@@ -527,8 +484,8 @@ class MoreContents(object):
                 else:
                     more_result = find_entities(
                         user=get_current(),
-                        metadata_filter={'content_types': ['proposal', 'idea']},
-                        keywords=keywords,
+                        metadata_filter={'content_types': ['proposal', 'idea'],
+                                         'keywords': keywords},
                         sort_on='release_date')
 
                 is_root = True
@@ -566,51 +523,35 @@ class Channels(object):
         self.context = context
         self.request = request
 
-    def _get_channels_bodies(self, root, user, channels, action_id):
-        result_body = []
-        for channel in channels:
-            subject = channel.get_subject(user)
-            actions_call, action_resources = update_all_ajax_action(
-                subject, self.request, action_id)
-            if actions_call:
-                object_values = {
-                    'object': channel,
-                    'current_user': user,
-                    'action_call': actions_call[0]}
-                body = renderers.render(
-                    channel.templates.get('default'),
-                    object_values,
-                    self.request)
-                result_body.append(body)
-
-        return result_body
-
     def __call__(self):
-        user = get_current(self.request)
-        result = {}
-        users_result_body = []
-        others_result_body = []
-        general_result_body = []
+        result = {
+            'condition': False
+        }
         if self.request.user:
-            root = getSite()
-            general_channel = root.channel
-            channels = getattr(user, 'following_channels', [])
-            user_channel = [c for c in channels
-                            if isinstance(c.__parent__, Person)]
-            generals = [general_channel]
-            others = [c for c in channels if c not in user_channel]
-            users_result_body = self._get_channels_bodies(
-                root, user, user_channel, 'discuss')
-            others_result_body = self._get_channels_bodies(
-                root, user, others, 'comment')
-            general_result_body = self._get_channels_bodies(
-                root, user, generals, 'general_discuss')
-            general_result_body.extend(others_result_body)
+            channels_view = SeeChannels(self.context, self.request)
+            try:
+                channels_view_result = channels_view()
+            except Exception as error:
+                log.warning(error)
+                return {'condition': False}
 
-        result.update({
-            'users_channels': users_result_body,
-            'others_channels': general_result_body,
-        })
+            channels = ''
+            result = {'condition': True, 'css_links': [], 'js_links': []}
+            if isinstance(channels_view_result, dict) and \
+               'coordinates' in channels_view_result:
+                search_render = channels_view_result['coordinates'][channels_view.coordinates][0]
+                result['css_links'] = [c for c in channels_view_result['css_links']
+                                       if c not in resources['css_links']]
+                result['js_links'] = [c for c in channels_view_result['js_links']
+                                      if c not in resources['js_links']]
+                channels = channels_view.render_item(
+                    search_render,
+                    channels_view.coordinates,
+                    None)
+
+            result['channels'] = channels
+            update_resources(self.request, result)
+
         return result
 
 
@@ -638,7 +579,7 @@ class Debates_core(object):
 
 @panel_config(
     name='navigation_bar',
-    context=Entity,
+    context=NovaIdeoApplication,
     renderer='templates/panels/navigation_bar.pt'
     )
 class NavigationBar(object):
@@ -748,9 +689,163 @@ class Debates_core(object):
         self.request = request
 
     def __call__(self):
-        # import pdb; pdb.set_trace()
         return {
             'is_homepage': self.request.view_name in ('index', ''),
             'picture': getattr(self.context, 'homepage_picture', None),
             'text': getattr(self.context, 'homepage_text', None)
         }
+
+
+@panel_config(
+    name='guide_tour',
+    context=Entity,
+    renderer='templates/panels/guide_tour.pt'
+    )
+class GuideTour(object):
+
+    resources = {
+        'css_links': ['novaideo:static/guideline/css/guideline.css'],
+        'js_links': ['novaideo:static/guideline/js/guideline.js',
+                     'novaideo:static/guideline/js/novaideoguideline.js']
+    }
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        user = get_current()
+        guide_tour_data = getattr(user, 'guide_tour_data', {})
+        guide_state = guide_tour_data.get(
+            'guide_state', 'first_start')
+        if guide_state in ('pending', 'first_start'):
+            page_resources = get_guide_tour_page(
+                self.request, self.context, user, self.request.view_name)
+            if page_resources:
+                page_resources = merge_dicts(
+                    self.resources, page_resources)
+                page_resources['request'] = self.request
+                # if user is not an anonymous
+                if self.request.user:
+                    root = getSite()
+                    page_resources['update_url'] = self.request.resource_url(
+                        root,
+                        'novaideoapi', query={
+                            'op': 'update_guide_tour_data'
+                        })
+                    guide = page_resources.get('guide', None)
+                    page = page_resources.get('page', None)
+                    if guide is not None and page is not None:
+                        guide_data = guide_tour_data.get(
+                            guide+'_'+page, {})
+                        page_state = guide_data.get(
+                            'page_state', 'pending')
+                        if page_state == 'pending':
+                            page_resources['guide'] = guide
+                            page_resources['page'] = page
+                            page_resources['guide_value'] = guide_data.get(
+                                'guide', -1)
+                            page_resources['page_value'] = guide_data.get(
+                                'page', 0)
+                            page_resources['guide_state'] = guide_state
+                        else:
+                            return {}
+
+                return page_resources
+
+        return {}
+
+
+@panel_config(
+    name='challenge',
+    context=SearchableEntity,
+    renderer='templates/panels/challenge.pt'
+    )
+class ChallengePanel(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        # TODO Add communication actions
+        challenge = getattr(self.context, 'challenge', None)
+        if challenge is None:
+            return {}
+
+        try:
+            SeeChallenge.get_validator().validate(challenge, self.request)
+        except ValidationError as error:
+            return {}
+
+        result = {
+            'challenge': challenge,
+            'current_user': get_current()}
+
+        novaideo_index = find_catalog('novaideo')
+        dace_catalog = find_catalog('dace')
+        states_index = dace_catalog['object_states']
+        object_provides_index = dace_catalog['object_provides']
+        challenges = novaideo_index['challenges']
+        query = challenges.any([challenge.__oid__]) & \
+            object_provides_index.any((Iidea.__identifier__,)) & \
+            states_index.any(['published'])
+        result['nb_idea'] = query.execute().__len__()
+        query = challenges.any([challenge.__oid__]) & \
+            object_provides_index.any((IQuestion.__identifier__,)) & \
+            states_index.any(['published'])
+        result['nb_question'] = query.execute().__len__()
+        result['nb_proposal'] = 0
+        if not getattr(self.request, 'is_idea_box', False):
+            query = challenges.any([challenge.__oid__]) & \
+                object_provides_index.any((IProposal.__identifier__,)) & \
+                states_index.notany(['archived', 'draft'])
+            result['nb_proposal'] = query.execute().__len__()
+
+        return result
+
+
+@panel_config(
+    name='challenges',
+    context=NovaIdeoApplication,
+    renderer='templates/panels/challenges.pt'
+    )
+class ChallengesPanel(object):
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        is_homepage = self.request.view_name in ('index', '')
+        if not is_homepage:
+            return {'condition': False}
+
+        challenges_view = SeeChallengesHomeView(self.context, self.request)
+        try:
+            challenges_view_result = challenges_view()
+            if getattr(challenges_view, 'no_challenges', False):
+                return {'condition': False}
+
+        except Exception as error:
+            log.warning(error)
+            return {'condition': False}
+
+        challenges = ''
+        result = {'condition': True, 'css_links': [], 'js_links': []}
+        if isinstance(challenges_view_result, dict) and \
+           'coordinates' in challenges_view_result:
+            search_render = challenges_view_result['coordinates'][challenges_view.coordinates][0]
+            result['css_links'] = [c for c in challenges_view_result['css_links']
+                                   if c not in resources['css_links']]
+            result['js_links'] = [c for c in challenges_view_result['js_links']
+                                  if c not in resources['js_links']]
+            challenges = challenges_view.render_item(
+                search_render,
+                challenges_view.coordinates,
+                None)
+
+        result['challenges'] = challenges
+        result['view'] = self
+        update_resources(self.request, result)
+        return result

@@ -74,6 +74,28 @@ Bonjour,
 PRESENTATION_AMENDMENT_SUBJECT = u"""« {subject_title} »"""
 
 
+PRESENTATION_QUESTION_SUBJECT = u"""Présentation de la question « {subject_title} »""" 
+
+
+PRESENTATION_QUESTION_MESSAGE = u"""
+Bonjour,
+
+{my_first_name} {my_last_name} souhaite vous présenter la question « {subject_title} » figurant sur la plateforme {novaideo_title}. Cette question est accessible à l'adresse : {subject_url}.
+
+""" + PORTAL_PRESENTATION + PORTAL_SIGNATURE
+
+
+PRESENTATION_ANSWER_SUBJECT = u"""Présentation de la réponse à une question « {subject_title} »""" 
+
+
+PRESENTATION_ANSWER_MESSAGE = u"""
+Bonjour,
+
+{my_first_name} {my_last_name} souhaite vous présenter la réponse à une question « {subject_title} » figurant sur la plateforme {novaideo_title}. Cette réponse est accessible à l'adresse : {subject_url}.
+
+""" + PORTAL_PRESENTATION + PORTAL_SIGNATURE
+
+
 AMENDABLE_FIRST_SUBJECT = u"""Début du cycle d'amélioration de la proposition « {subject_title} »"""
 
 
@@ -377,6 +399,21 @@ Vous pouvez retrouver votre idée sous {subject_url}.
 
 """+ PORTAL_SIGNATURE
 
+ARCHIVECONTENT_SUBJECT = u"""Décision des modérateurs d'archiver le contenu « {subject_title} »"""
+
+
+ARCHIVECONTENT_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Le contenu « {subject_title} » vient d'être archivée par les modérateurs pour la raison suivante: 
+
+{explanation}
+
+Vous pouvez retrouver votre contenu sous {subject_url}.
+
+"""+ PORTAL_SIGNATURE
+
+
 ARCHIVEPROPOSAL_SUBJECT = u"""Décision des modérateurs d'archiver la proposition « {subject_title} »"""
 
 
@@ -550,6 +587,19 @@ La durée de la Modération est de {duration} jour(s). Au-delà de la date du {d
 
 """+ PORTAL_SIGNATURE
 
+ALERTANSWER_SUBJECT = u"""Nouvelle réponse sur {subject_type} « {subject_title} »"""
+
+
+ALERTANSWER_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Une nouvelle réponse a été donnée à {subject_type} « {subject_title} ».
+
+"{comment_content}"
+
+Vous pouvez le retrouver sous {comment_url} et lui apporter une réponse.
+
+"""+ PORTAL_SIGNATURE
 
 ADMIN_REPORT_SUBJECT = u"""Nouvelle signalisation sur la plateforme participative {novaideo_title}"""
 
@@ -614,6 +664,42 @@ Les modérateurs assignés à la vérification de votre inscription sont:
 Vous recevrez le résultat de cette procédure de vérification d'identité à la fin de la période laissée aux Vérificateurs pour travailler, soit le {date_end_vote} au plus tard.
 
 """+ PORTAL_SIGNATURE
+
+PUBLISHEDCHALLENGE_SUBJECT = u"""Décision des modérateurs de publier le challenge « {subject_title} »"""
+
+
+PUBLISHEDCHALLENGE_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Le challenge « {subject_title} » qui se trouve sous {subject_url} vient d'être publiée par les modérateurs sur la plateforme {novaideo_title}.
+
+"""+ PORTAL_SIGNATURE
+
+ARCHIVECHALLENGE_SUBJECT = u"""Décision des modérateurs d'archiver le challenge « {subject_title} »"""
+
+
+ARCHIVECHALLENGE_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Le challenge « {subject_title} » vient d'être archivée par les modérateurs pour la raison suivante: 
+
+{explanation}
+
+Vous pouvez retrouver votre challenge sous {subject_url}.
+
+"""+ PORTAL_SIGNATURE
+
+
+PRESENTATION_CHALLENGE_SUBJECT = u"""Présentation du challenge « {subject_title} »""" 
+
+
+PRESENTATION_CHALLENGE_MESSAGE = u"""
+Bonjour,
+
+{my_first_name} {my_last_name} souhaite vous présenter le challenge « {subject_title} » figurant sur la plateforme {novaideo_title}. Ce challenge est accessible à l'adresse : {subject_url}.
+
+""" + PORTAL_PRESENTATION + PORTAL_SIGNATURE
+
 
 
 ADMIN_CONTENT_SUB_SUBJECT = u"""Nouveau contenu sur la plateforme participative {novaideo_title}"""
@@ -908,6 +994,44 @@ DEFAULT_SITE_MAILS = {
               'title': _("Close the proposal"),
               'subject': SYSTEM_CLOSE_PROPOSAL_SUBJECT,
               'template': SYSTEM_CLOSE_PROPOSAL_MESSAGE
+    },
+
+    'presentation_question': {
+              'title': _("Presentation of a question"),
+              'subject': PRESENTATION_QUESTION_SUBJECT,
+              'template': PRESENTATION_QUESTION_MESSAGE
+    },
+
+    'presentation_answer': {
+              'title': _("Presentation of an answer"),
+              'subject': PRESENTATION_ANSWER_SUBJECT,
+              'template': PRESENTATION_ANSWER_MESSAGE
+    },
+    'alert_answer': {
+              'title': _("Warning: new answer"),
+              'subject': ALERTANSWER_SUBJECT,
+              'template': ALERTANSWER_MESSAGE
+    },
+    'archive_content_decision': {
+              'title': _("Moderation: Archive the content"),
+              'subject': ARCHIVECONTENT_SUBJECT,
+              'template': ARCHIVECONTENT_MESSAGE
+    },
+    'archive_challenge_decision': {
+              'title': _("Moderation: Archive the challenge"),
+              'subject': ARCHIVECHALLENGE_SUBJECT,
+              'template': ARCHIVECHALLENGE_MESSAGE
+    },
+    'publish_challenge_decision': {
+              'title': _("Moderation: Publish the challenge"),
+              'subject': PUBLISHEDCHALLENGE_SUBJECT,
+              'template': PUBLISHEDCHALLENGE_MESSAGE
+    },
+
+    'presentation_challenge': {
+              'title': _("Presentation of a challenge"),
+              'subject': PRESENTATION_CHALLENGE_SUBJECT,
+              'template': PRESENTATION_CHALLENGE_MESSAGE
     },
     'moderate_content': {
               'title': _("New content to moderate"),

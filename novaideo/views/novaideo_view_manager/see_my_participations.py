@@ -18,6 +18,7 @@ from novaideo import _
 from novaideo.views.filter import (
     FILTER_SOURCES)
 from .see_my_contents import SeeMyContentsView
+from novaideo.views.core import asyn_component_config
 
 
 CONTENTS_MESSAGES = {
@@ -27,6 +28,7 @@ CONTENTS_MESSAGES = {
 }
 
 
+@asyn_component_config(id='novaideoapp_seemyparticipations')
 @view_config(
     name='seemyparticipations',
     context=NovaIdeoApplication,
@@ -39,7 +41,7 @@ class SeeMyParticipationsView(SeeMyContentsView):
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'
     viewid = 'seemyparticipations'
     contents_messages = CONTENTS_MESSAGES
-    selected_filter = [('metadata_filter', ['tree', 'states']),
+    selected_filter = [('metadata_filter', ['tree', 'states', 'challenges']),
                        ('temporal_filter', ['negation', 'created_date']),
                        'text_filter', 'other_filter']
     include_archived = False

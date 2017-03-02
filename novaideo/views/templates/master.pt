@@ -38,12 +38,12 @@
 
     <!-- Styles -->
     <div tal:omit-tag="" tal:define="theme getattr(request.root, 'theme', None)">
-      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=2"
+      <link href="${theme.url if theme else su('novaideo:static/css/bootstrap.css')}?v=13"
             rel="stylesheet"/>
     </div>
     <link href="${su('daceui:static/css/dace_ui.css')}"
           rel="stylesheet"/>
-    <link href="${su('novaideo:static/css/steps/steps.css')}"
+    <link href="${su('novaideo:static/css/steps/steps.css')}?v=2"
           rel="stylesheet"/>
 
     <div tal:omit-tag=""
@@ -94,15 +94,17 @@
             type="text/javascript"></script>
     <script src="${su('daceui:static/jquery-endless-scroll/js/jquery.endless-scroll.js')}"
             type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/novaideo_langs.js')}"
+    <script src="${su('novaideo:static/js/novaideo_langs.js')}?v=2"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/action_interaction.js')}"
+    <script src="${su('novaideo:static/js/action_interaction.js')}?v=9"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/novaideo.js')}?v=2"
+    <script src="${su('novaideo:static/js/home_add_content.js')}"
+          type="text/javascript"></script>
+    <script src="${su('novaideo:static/js/novaideo.js')}?v=13"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/admin_nav.js')}"
           type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/filter.js')}"
+    <script src="${su('novaideo:static/js/filter.js')}?v=5"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/steps.js')}"
           type="text/javascript"></script>
@@ -118,12 +120,10 @@
         type="text/javascript"></script>
     <script src="${request.static_url('novaideo:static/jsnetworkx/jsnetworkx.js')}"
         type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/pseudo_react.js')}"
+    <script src="${su('novaideo:static/js/pseudo_react.js')}?v=4"
           type="text/javascript"></script>
     <script src="${request.static_url('novaideo:static/emoji/emoji.js')}" type="text/javascript"></script>
     <script src="${request.static_url('novaideo:static/emoji/jquery.emoji.js')}" type="text/javascript"></script>
-    <script src="${su('novaideo:static/js/jQueryRotate.js')}"
-          type="text/javascript"></script>
     <script src="${su('novaideo:static/js/little-loader.js')}"
           type="text/javascript"></script>
     <script src="${su('novaideo:static/js/include.js')}"
@@ -135,6 +135,7 @@
             type="text/javascript"></script>
     <script src="${su('novaideo:static/js/templates.js')}"
           type="text/javascript"></script>
+
 
     ${panel('debatescore')}
     ${panel('social_share')}
@@ -159,6 +160,7 @@
   <body tal:define="
     adminnavbar panel('adminnavbar');
     contextual_help panel('contextual_help')"
+    data-spinner="${request.static_url('novaideo:static/images/progress_bar.gif')}"
     data-api_url="${request.resource_url(request.root, 'novaideoapi')}"
     data-emoji_url="${request.static_url('novaideo:static/emoji/images/sheet_apple_64_indexed_256colors.png')}"
     data-view_name="${request.view_name}">
@@ -175,7 +177,9 @@
         </div>
         <!-- bar  -->
         ${panel('homepage')}
+        ${panel('challenge')}
         ${panel('usernavbar', True if contextual_help else False)}
+        ${panel('challenges')}
         <div class="container-fluid">
           <div class="novaideo-info row"
                tal:define="content panel('novaideo_contents');
@@ -194,8 +198,8 @@
             <div tal:condition="not view_only" class="col-md-2 column ui-sortable novaideo-left">
               ${panel('channels')}
               ${adminnavbar}
-              ${panel('navigation_bar')}
                <div metal:define-slot="left"></div>
+              ${panel('navigation_bar')}
             </div>
             <div class="col-md-7 column ui-sortable novaideo-main">
               <div class="above-content" style="text-align: center;">
@@ -215,8 +219,8 @@
                 </div>
               </div>
               <div class="inner-content ${(context.__class__.__name__ == 'Person' and request.view_name in ('index', '@@index')) and 'user-view-index'}">
-                <div tal:omit-tag="" tal:condition="not view_only">
-                 ${panel('addideaform')}
+                <div tal:omit-tag="" tal:condition="not view_only and request.context is request.root">
+                  ${panel('addcontenthomeform')}
                 </div>
                 <div metal:define-slot="main"></div>
               </div>
@@ -288,7 +292,9 @@
     <div tal:omit-tag="" tal:condition="not request.accessible_to_anonymous">
         <div class="container-fluid anonymous-container">
           <div class="anonymous-logo">
-            <a class="navbar-brand" href="/" tal:define="logo getattr(request.root, 'picture', None)" >
+            <a class="navbar-brand"
+               href="${request.script_name + '/'}"
+               tal:define="logo getattr(request.root, 'picture', None)">
                 <img tal:condition="logo" src="${logo.url}" class="globe-logo">
                 <div tal:omit-tag="" tal:condition="not logo">
                   <img alt="Nova-Ideo" src="${request.static_url('novaideo:static/images/novaideo_logo.png')}" class="globe-logo"> Nova-Ideo
@@ -327,18 +333,20 @@
     <!--TODO footer panel-->
 
 
-    <div role="tooltip" class="action-popover-container popover fade right" style="display: none;"
-      id="action-popover-container">
+    <div role="tooltip" class="action-interation-container action-popover-container popover fade right" style="display: none;"
+      id="action-popover-container"
+      data-interaction_kind="popover">
       <div class="arrow" style="top: 50%;"></div>
       <div class="popover-content">
       </div>
     </div>
 
-    <div class="action-modal-container modal fade" 
+    <div class="action-interation-container action-modal-container modal fade" 
        role="dialog"
        id="action-modal-container"
        aria-labelledby="ModalActionsContainer" 
-       aria-hidden="true" style="text-align: justify;color: #333;">
+       aria-hidden="true" style="text-align: justify;color: #333;"
+       data-interaction_kind="modal">
       <div class="modal-dialog">
         <div class="modal-content">
            <div class="modal-header">
@@ -351,11 +359,12 @@
       </div>
    </div>
 
-   <div class="votes-modal-container modal fade" 
+   <div class="action-interation-container votes-modal-container modal fade" 
        role="dialog"
        id="votes-modal-container"
        aria-labelledby="VotesActionsContainer" 
-       aria-hidden="true" style="text-align: justify;color: #333;">
+       aria-hidden="true" style="text-align: justify;color: #333;"
+       data-interaction_kind="modal">
       <div class="modal-dialog">
         <div class="modal-content">
            <div class="modal-header">
@@ -386,7 +395,7 @@
          </div>
       </div>
    </div>
-
+  ${panel('guide_tour')}
   </body>
 
 </html>

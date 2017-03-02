@@ -80,7 +80,18 @@ STATES_PARTICIPANT_MAPPING = {
 	    'deactivated': _('Inactive'),
 	    'closed': _('Closed'),
         'archived': _('Archived', context='workinggroup')
-	}
+	},
+    'question': {
+        'pending': _('Pending', context='question'),
+        'closed': _('Closed', context='question'),
+        'censored': _('Censored'),
+        'archived': _('Archived'),
+    },
+    'invitation': {
+        'validated': _('Validated'),
+        'censored': _('Censored'),
+        'archived': _('Archived'),
+    }
 }
 
 STATES_MEMBER_MAPPING = {
@@ -147,7 +158,18 @@ STATES_MEMBER_MAPPING = {
 	    'deactivated': _('Inactive'),
 	    'closed': _('Closed'),
         'archived': _('Archived', context='workinggroup')
-	}
+	},
+    'question': {
+        'pending': _('Pending', context='question'),
+        'closed': _('Closed', context='question'),
+        'censored': _('Censored'),
+        'archived': _('Archived'),
+    },
+    'invitation': {
+        'validated': _('Validated'),
+        'censored': _('Censored'),
+        'archived': _('Archived'),
+    }
 }
 
 

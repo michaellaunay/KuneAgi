@@ -101,11 +101,13 @@ class NoteFormView(FormView):
 
         note_node.widget = notes_widget
         self.schema.view = self
-        formwidget = deform.widget.FormWidget(css_class='vote-form')
         self.action = self.request.resource_url(
-            self.context, 'notefptp',
-            query={'action_uid': getattr(note_actions[0], '__oid__', '')})
-        self.schema.widget = formwidget
+            self.context, 'novaideoapi',
+            query={'op': 'update_action_view',
+                   'node_id': Note.node_definition.id,
+                   'action_uid': getattr(note_actions[0], '__oid__', '')})
+        self.schema.widget = deform.widget.FormWidget(
+            css_class='deform vote-form')
 
 
 @view_config(

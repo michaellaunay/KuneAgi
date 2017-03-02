@@ -170,29 +170,35 @@ function init_comment_form_changes(form){
     var select_itention = $(form.find("select[name=\'intention\']"))
     var intention = select_itention.val();
     intention = select_itention.find('option[value="'+intention+'"]').text()
-    var select_related_contents = $(form.find("select[name='related_contents']").first());
+    var select_related_contents = $(form.find("select[name='associated_contents']").first());
     var related_len = 0;
     if(select_related_contents.val()){
       related_len = select_related_contents.val().length
     };
     var len_files = $(form.find('.comment-files .form-group.deform-seq-item.uploaded')).length;
-    var result = '<div class="comment-form-changes"> <span class="glyphicon glyphicon-question-sign"></span> ' +
+    
+    var result = '<div class="comment-form-changes">'
+    if(intention){
+      result += '<span class="glyphicon glyphicon-question-sign"></span> ' +
                  intention;
+    }
     if(len_files>0){
-      result += ', <span class="glyphicon glyphicon-paperclip"></span> ' +
+      result += ' <span class="glyphicon glyphicon-paperclip"></span> ' +
                  len_files + ' ' + (len_files ==1?novaideo_translate('file'): novaideo_translate('files'));
     }
     if(related_len>0){
-       result += ', <span class="glyphicon glyphicon-link"></span> ' +
+       result += ' <span class="glyphicon glyphicon-link"></span> ' +
                  related_len + ' ' +(related_len ==1?novaideo_translate('association'): novaideo_translate('associations'));
     }
 
     result += '</div>'
-    if(form.hasClass('edit-comment-form')){
-        form.append(result)  
-    }else{
-        form.prepend(result)
-    }
+    var textarea_container = form.find('.comment-textarea-container').first()
+    textarea_container.before(result)
+    // if(form.hasClass('edit-comment-form')){
+    //     form.append(result)  
+    // }else{
+    //     form.prepend(result)
+    // }
 }
 
 $(document).on('click', '.comment-filter-action', function(){
@@ -229,7 +235,7 @@ $(document).on('submit','.commentform:not(.comment-inline-form)', function( even
     var button = $this.find('button[type="submit"]').last();
     var select_itention = $($this.find("select[name=\'intention\']"))
     var intention = select_itention.val();
-    var select_related_contents = $($this.find("select[name='related_contents']").first());
+    var select_related_contents = $($this.find("select[name='associated_contents']").first());
     var textarea = $this.find('textarea');
     var comment = textarea.val();
     var parent = $($this.parents('.comment-view-block').first());
@@ -313,7 +319,7 @@ $(document).on('submit','.respondform', function( event ) {
     var intention = select_itention.val();
     var textarea = $this.find('textarea');
     var comment = textarea.val();
-    var select_related_contents = $($this.find("select[name='related_contents']").first());
+    var select_related_contents = $($this.find("select[name='associated_contents']").first());
     var parent = $($this.parents('.views-container').get(1));
     var parentform = parent.find('.commentform');
     

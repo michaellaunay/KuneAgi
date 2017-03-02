@@ -17,7 +17,29 @@ function get_action_metadata(action){
             counters: JSON.stringify(counters),
             included_resources: JSON.stringify(includejs_resources),
             contextual_help: JSON.stringify(contextual_help),
-            steps_navbars: JSON.stringify(steps_navbars)}
+            steps_navbars: JSON.stringify(steps_navbars),
+            load_view: 'load'}
+}
+
+
+function load_views(){
+  var body = $(document.body)
+  var loading_components = $('[data-component_type="on-load-view"]')
+        .map(function(){return $(this).attr('id')}).get()
+  data = {
+    source_path: window.location.pathname,
+    view_name: body.data('view_name'),
+    'loading_components': JSON.stringify(loading_components),
+    included_resources: JSON.stringify(includejs_resources),
+    'op': 'load_views',
+    'load_view': 'load'
+  }
+  var url = body.data('api_url')
+  $.post(url, data, function(data) {
+    include_resources(data['resources'], function(){
+         update_components(data)
+    })
+  });
 }
 
 
@@ -28,7 +50,7 @@ function update_modal_action(event){
     var modal_css_class = action.data('component_style');
     var after_exe_url = action.data('after_exe_url');
     var modal_container = $('.action-modal-container')
-    modal_container.attr('class', modal_css_class+' action-modal-container modal fade')
+    modal_container.attr('class', modal_css_class+' action-modal-container action-interation-container modal fade')
     modal_container.data('after_exe_url', after_exe_url)
     if (Boolean(toreplay)){
       var action_body =jQuery.parseJSON(action.data('body'));
@@ -97,7 +119,10 @@ function update_direct_action(event){
 
 function update_inline_action(){
     var $this = $(this)
-    var target = $($this.parents('.search-item, .content-view').find('.actions-footer-container').first())//closest('.dace-action-inline').data('target')+'-target';
+    var target = $($this.parents('.search-item').find('.action-inline-container').first())
+    if (target.length==0){
+      target = $($this.parents('.content-view').find('.action-inline-container').first())
+    }
     var actions = $($this.parents('.actions-block').find('.dace-action-inline'));
     if($this.hasClass('activated')){
        target.slideUp();
@@ -106,23 +131,42 @@ function update_inline_action(){
     }
     actions.removeClass('activated')
     var action = $this.closest('.dace-action-inline')
+    var toreplay = action.data('toreplay');
+    if (Boolean(toreplay)){
+      var action_body =jQuery.parseJSON(action.data('body'));
+      if($(action_body).hasClass('pontus-main-view')){
+         var panel = $($(action_body).find('>.panel-body').first())
+         $(target.find('.container-body')).html(panel.html())
+      }else{
+          $(target.find('.container-body')).html(action_body);
+      }
+      try {
+         deform.processCallbacks();
+      }
+      catch(err) {};
+      return false
+    }
+    
     var url = action.data('updateurl');
     var url_attr = {tomerge:'True', coordinates:'main'}
     $.extend( url_attr, get_action_metadata(action));
+    loading_progress()
     $.post(url, url_attr, function(data) {
       include_resources(data['resources'], function(){
        var action_body = data['body'];
        if (action_body){
-           target.slideDown();
+           target.slideDown("fast");
            $(target.find('.container-body')).html(action_body);
            $this.addClass('activated')
-           init_comment_scroll(target)
            target.find('.carousel').carousel()
            try {
                 deform.processCallbacks();
             }
            catch(err) {};
+           finish_progress()
+           target.data('action_id', action.attr('id'))
            focus_on_form(target)
+           init_emoji($(target.find('.emoji-container:not(.emojified)')));
         }else{
            location.reload();
            return false
@@ -131,6 +175,110 @@ function update_inline_action(){
     });
     return false;
 };
+
+
+function _close_slider(slider){
+  slider.find('.container-body').css({
+      display: 'none'})
+ slider.stop().animate({
+      width: 0,   
+  }, 400, function(){
+    slider.css({
+      height: 0,
+      display: 'none'})
+  });
+ $(slider.find('.container-body')).html("");
+ var id = slider.data('action_id')
+ $('[id="'+id+'"]').removeClass('activated')
+}
+
+
+function update_slider_action(){
+    var $this = $(this)
+    var item = $this.parents('.search-item').first();
+    var target = $(item.find('>.action-slider-container').first())
+    var is_content_view = false;
+    if (target.length==0){
+      item = $this.parents('.content-view').first()
+      is_content_view = true;
+      target = $(item.find('>.action-slider-container').first())
+    }
+    var is_sidebar = item.parents('.sidebar-container').length>0
+    var actions = $($this.parents('.actions-block').find('.dace-action-slider'));
+    if($this.hasClass('activated')){
+       actions.removeClass('activated');
+       _close_slider(target)
+       return
+    }
+    actions.removeClass('activated')
+    var action = $this.closest('.dace-action-slider')
+    var toreplay = action.data('toreplay');
+    if (Boolean(toreplay)){
+      var action_body =jQuery.parseJSON(action.data('body'));
+      if($(action_body).hasClass('pontus-main-view')){
+         var panel = $($(action_body).find('>.panel-body').first())
+         $(target.find('.container-body')).html(panel.html())
+      }else{
+          $(target.find('.container-body')).html(action_body);
+      }
+      try {
+         deform.processCallbacks();
+      }
+      catch(err) {};
+      return false
+    }
+    
+    var url = action.data('updateurl');
+    var url_attr = {tomerge:'True', coordinates:'main'}
+    $.extend( url_attr, get_action_metadata(action));
+    loading_progress()
+    $.post(url, url_attr, function(data) {
+      include_resources(data['resources'], function(){
+       var action_body = data['body'];
+       if (action_body){
+          var width = is_content_view? item.outerWidth()+30:item.outerWidth();
+          width = is_sidebar && is_content_view? width-10: width;
+          var height = is_content_view? item.outerHeight()+15:item.outerHeight();
+          target.css({
+            height: height,
+            display: 'block'})
+          target.stop().animate({
+              width: width,
+          }, 400, function(){
+             target.find('.container-body').css({
+              display: 'block'})
+             $(target.find('.container-body')).html(action_body);
+            
+             $this.addClass('activated')
+             target.find('.carousel').carousel()
+             try {
+                  deform.processCallbacks();
+              }
+             catch(err) {};
+             target.data('action_id', action.attr('id'))
+             init_emoji($(target.find('.emoji-container:not(.emojified)')));
+             init_content_text_scroll(target.find(".content-text-scroll"))
+             var result_scroll = target.find(".result-scroll")
+             var height_scroll = is_content_view && is_sidebar? $(window).height()-30:item.outerHeight()-30
+             initscroll(result_scroll)
+             rebuild_scrolls(target.find('.malihu-scroll'))
+             finish_progress()
+             focus_on_form(target)
+           });
+        }else{
+           location.reload();
+           return false
+        }
+     })
+    });
+    return false;
+};
+
+function close_slider_action(){
+  var target = $($(this).parents('.action-slider-container').first())
+  _close_slider(target)
+}
+
 
 
 function _update_sidebar_nav_items(target){
@@ -265,7 +413,8 @@ function update_sidebar_action(){
            init_emoji(target.find('.emoji-container:not(.emojified)'));
            init_content_text_scroll(target.find(".content-text-scroll"))
            rebuild_scrolls(target.find('.malihu-scroll'))
-           initscroll(target.find(".result-scroll"))
+           var result_scroll = target.find(".result-scroll")
+           initscroll(result_scroll)
            finish_progress()
            focus_on_form(target)
         }else{
@@ -293,12 +442,10 @@ function update_popover_action(){
     $.extend(url_attr, get_action_metadata(action));
     loading_progress()
     $.post(url, url_attr, function(data) {
+      include_resources(data['resources'], function(){
        var action_body = data['body'];
        if (action_body){
            target.html(action_body);
-           init_emoji($(target.find('.emoji-container:not(.emojified)')));
-           rebuild_scrolls($(target.find('.malihu-scroll')))
-           initscroll(target.find(".result-scroll"))
            $this.addClass('activated')
            var position = $this.offset()
            popover_container.css('top', position.top-$(document).scrollTop()-(popover_container.height()/2)+'px')
@@ -309,13 +456,20 @@ function update_popover_action(){
                 deform.processCallbacks();
             }
            catch(err) {};
-           init_comment_scroll(target)
+           target.find('.carousel').carousel()
+           init_emoji(target.find('.emoji-container:not(.emojified)'));
+           init_content_text_scroll(target.find(".content-text-scroll"))
+           rebuild_scrolls(target.find('.malihu-scroll'))
+           var result_scroll = target.find(".result-scroll")
+           initscroll(result_scroll)
            finish_progress()
            focus_on_form(target)
+           target.data('action_id', action.attr('id'))
         }else{
            location.reload();
            return false
         }
+      })
     });
     return false;
 };
@@ -328,14 +482,30 @@ $(document).on('click', '.dace-action-modal', update_modal_action);
 
 $(document).on('click', '.dace-action-direct', update_direct_action);
 
+$(document).on('click', '.dace-action-inline', update_inline_action);
+
+$(document).on('click', '.dace-action-slider', update_slider_action);
+$(document).on('click', '.action-slider-btn', close_slider_action);
+
+
+
+function hide_action_interaction_container(action_container){
+  var interaction_type = action_container.data('interaction_kind');
+  if(interaction_type == 'modal'){action_container.modal('hide');}
+  if(interaction_type == 'inline'){action_container.slideDown();}
+  if(interaction_type == 'popover'){action_container.css('display', 'none');}
+  if(interaction_type == 'slider'){_close_slider(action_container)}
+}
+
 
 $(document).on('submit', 'form.novaideo-ajax-form', function(event){
     var $this = $(this)
+    var action_container = $this.parents('.action-interation-container').first()
+    var interaction_type = action_container.data('interaction_kind')
     var formid = $this.attr('id');
     var button = $this.find('button.active[type="submit"]').last();
-    var modal_container = $('.action-modal-container.in')
     if(button.val() == 'Cancel'){
-      modal_container.modal('hide');
+      hide_action_interaction_container(action_container)
       event.preventDefault();
       return
     }
@@ -343,7 +513,7 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(event){
     $(button).addClass('disabled');
     var formData = new FormData($(this)[0]);
     formData.append(button.val(), button.val())
-    var action = $('#'+modal_container.data('action_id'))
+    var action = $('#'+action_container.data('action_id'))
     var action_metadata = get_action_metadata(action)
     for(key in action_metadata){
         formData.append(key, action_metadata[key])
@@ -364,7 +534,7 @@ $(document).on('submit', 'form.novaideo-ajax-form', function(event){
           catch(err) {};
          finish_progress()
         }else if(! (data.redirect_url && !data.ignore_redirect)){
-          modal_container.modal('hide')
+          hide_action_interaction_container(action_container)
           finish_progress()
         }
         update_components(data)
@@ -412,4 +582,8 @@ $(document).on('click', '.sidebar-nav-items .item.closed',function(event){
       var $this = $(this)
       var to_open = $('#'+$this.data('target'))
       open_sidebar_container_item(to_open)
-});             
+});
+
+$(document).on('resources_loaded', function(){
+  load_views()
+})

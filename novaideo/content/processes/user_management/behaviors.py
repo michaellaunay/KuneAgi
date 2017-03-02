@@ -497,6 +497,12 @@ class ConfirmRegistration(InfiniteCardinality):
         if organization:
             person.setproperty('organization', organization)
 
+        ballots = context.ballots
+        person.setproperty('ballots', ballots)
+        for ballot in ballots:
+            ballot.setproperty('subjects', [person])
+            ballot.report.setproperty('subjects', [person])
+
         root.delfromproperty('preregistrations', context)
         person.init_annotations()
         person.annotations.setdefault(
@@ -581,6 +587,8 @@ class Remind(InfiniteCardinality):
         email_data = get_user_data(context, 'recipient', request)
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
+        deadline_str = to_localized_time(
+            deadline_date, request, translate=True)
         message = mail_template['template'].format(
             url=url,
             deadline_date=deadline_str.lower(),
@@ -787,16 +795,9 @@ class Discuss(InfiniteCardinality):
             comment.format(request)
             comment.setproperty('author', user)
             grant_roles(user=user, roles=(('Owner', comment), ))
-            if appstruct['related_contents']:
-                related_contents = appstruct['related_contents']
-                correlation = connect(
-                    context,
-                    list(related_contents),
-                    {'comment': comment.comment,
-                     'type': comment.intention},
-                    user,
-                    unique=True)
-                comment.setproperty('related_correlation', correlation[0])
+            if appstruct.get('associated_contents', []):
+                comment.set_associated_contents(
+                    appstruct['associated_contents'], user)
 
             self._alert_users(context, request, user, comment, channel)
             context.reindex()
@@ -866,16 +867,9 @@ class GeneralDiscuss(InfiniteCardinality):
             comment.format(request)
             comment.setproperty('author', user)
             grant_roles(user=user, roles=(('Owner', comment), ))
-            if appstruct['related_contents']:
-                related_contents = appstruct['related_contents']
-                correlation = connect(
-                    context,
-                    list(related_contents),
-                    {'comment': comment.comment,
-                     'type': comment.intention},
-                    user,
-                    unique=True)
-                comment.setproperty('related_correlation', correlation[0])
+            if appstruct.get('associated_contents', []):
+                comment.set_associated_contents(
+                    appstruct['associated_contents'], user)
 
             self._alert_users(context, request, user, comment, channel)
             context.reindex()
@@ -947,6 +941,7 @@ class ModerationVote(StartBallot):
         close_ballot(self, preregistration, request)
         # preregistration not removed
         if preregistration and preregistration.__parent__:
+            root = getSite()
             moderators = self.process.execution_context.get_involved_collection(
                 'electors')
             for moderator in moderators:
@@ -954,8 +949,18 @@ class ModerationVote(StartBallot):
                     user=moderator,
                     roles=(('LocalModerator', preregistration),))
 
+            ballots = getattr(self.sub_process, 'ballots', [])
+            ballot = None
+            for ballot_ in ballots:
+                ballot_.finish_ballot()
+                ballot = ballot_
+
+            ballot_oid = get_oid(ballot, '')
+            ballot_url = request.resource_url(
+                root, '@@seeballot', query={'id': ballot_oid})
             accepted = ballot_result(self)
-            root = getSite()
+            preregistration_data = get_user_data(
+                preregistration, 'user', request, True)
             if accepted:
                 preregistration.state = PersistentList(['accepted'])
                 accept_preregistration(
@@ -967,6 +972,13 @@ class ModerationVote(StartBallot):
                 push_callback_after_commit(
                     remove_expired_preregistration, deadline, call_id,
                     root=root, preregistration=preregistration)
+                alert(
+                    'internal', [root], moderators,
+                    internal_kind=InternalAlertKind.moderation_alert,
+                    subjects=[ballot],
+                    alert_kind='registration_accepted',
+                    ballot=ballot_url,
+                    **preregistration_data)
             else:
                 mail_template = root.get_mail_template(
                     'moderate_preregistration_refused')
@@ -981,6 +993,13 @@ class ModerationVote(StartBallot):
                     'email', [root.get_site_sender()],
                     [preregistration.email],
                     subject=subject, body=message)
+                alert(
+                    'internal', [ballot], moderators,
+                    internal_kind=InternalAlertKind.moderation_alert,
+                    subjects=[root],
+                    alert_kind='registration_refused',
+                    ballot=ballot_url,
+                    **preregistration_data)
                 remove_expired_preregistration(root, preregistration)
 
         super(ModerationVote, self).after_execution(

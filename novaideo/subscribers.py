@@ -12,9 +12,10 @@ from pyramid.request import Request
 from pyramid.threadlocal import manager
 
 from substanced.event import RootAdded
-from substanced.util import find_service
+from substanced.util import find_service, get_oid
 
-from dace.util import getSite, get_system_request
+from dace.util import getSite, find_catalog
+from pontus.file import File
 
 from novaideo import core
 from novaideo.event import (
@@ -94,15 +95,28 @@ def mysubscriber(event):
 @subscriber(ObjectPublished)
 def mysubscriber_object_published(event):
     content = event.object
+    author = getattr(content, 'author', None)
     tree = content.tree
     request = get_current_request()
-    users = get_users_by_keywords(tree)
     root = request.root
+    challenge = getattr(content, 'challenge', None)
+    query = None
+    challeng_followers = []
+    if getattr(challenge, 'is_restricted', False):
+        novaideo_catalog = find_catalog('novaideo')
+        challenges_index = novaideo_catalog['challenges']
+        query = challenges_index.any([get_oid(challenge)])
+    elif challenge:
+        challeng_followers = get_users_by_preferences(challenge)
+        alert('internal', [root], set(challeng_followers),
+              internal_kind=InternalAlertKind.content_alert,
+              subjects=[content], alert_kind='published_in_challenge')
+
+    users = get_users_by_keywords(tree, query)
     mail_template = root.get_mail_template('alert_new_content')
     subject_data = get_entity_data(content, 'subject', request)
     subject = mail_template['subject'].format(
         **subject_data)
-    author = getattr(content, 'author', None)
     all_users = []
     for member in users:
         all_users.append(member)

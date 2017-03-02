@@ -19,6 +19,8 @@ from dace.objectofcollaboration.principal.util import (
 from dace.util import (
     getAllBusinessAction, find_catalog,
     get_obj)
+from pontus.view import ViewError
+from pontus.util import merge_dicts
 
 from novaideo import _, nothing, log
 from novaideo.views.idea_management.comment_idea import (
@@ -48,11 +50,10 @@ from novaideo.utilities.util import (
 from novaideo.views.filter import find_entities
 from novaideo.content.interface import (
     IPreregistration, IInvitation, IOrganization,
-    Iidea)
+    Iidea, IQuestion)
 from novaideo.content.organization import Organization
 from novaideo.content.proposal import Proposal
-from novaideo.core import can_access
-
+from novaideo.core import can_access, ON_LOAD_VIEWS
 
 VOTE_TEMPLATE = 'novaideo:views/templates/vote_uid_result.pt'
 
@@ -77,6 +78,7 @@ def _get_resources_to_include(request, resources, currents):
 def _render_obj_view(id_, user, request):
     if request.POST:
         request.POST.clear()
+        request.POST['load_view'] = 'load'
 
     request.invalidate_cache = True
     type_, oid = id_.split('_')
@@ -174,14 +176,18 @@ def get_all_updated_data(action, request, context, api, **kwargs):
         #update views: listing view, index view
         result_ovtu = result.get('object_views_to_update', [])
         #include listingbloc
-        for ovtu in list(result_ovtu):
-            if ovtu.startswith('listing_'):
-                result_ovtu.append(
-                    ovtu.replace('listing_', 'listingbloc_'))
-
+        result_ovtu.extend([ovtu.replace('listing_', 'listingbloc_')
+                            for ovtu in result_ovtu
+                            if ovtu.startswith('listing_')])
         object_views_to_update = [o for o in result_ovtu
                                   if o in kwargs['object_views']]
-        for obj_id in object_views_to_update:
+        force_ovtu = result.get('force_object_views_to_update', [])
+        force_ovtu.extend([ovtu.replace('listing_', 'listingbloc_')
+                           for ovtu in force_ovtu
+                           if ovtu.startswith('listing_')])
+        object_views_to_update.extend(force_ovtu)
+        result['object_views_to_update'] = list(set(object_views_to_update))
+        for obj_id in result['object_views_to_update']:
             result.update(_render_obj_view(
                 obj_id, user, request))
 
@@ -219,6 +225,52 @@ def get_all_updated_data(action, request, context, api, **kwargs):
 def get_components_data(action, view, **kwargs):
     kwargs['action_id'] = action
     return kwargs
+
+
+def load_components(request, context, api, **kwargs):
+    result = {'action': 'loading-action', 'view': api}
+    current_resources = api.params('included_resources')
+    current_resources = json.loads(current_resources) \
+        if current_resources else []
+
+    loading_components = api.params('loading_components')
+    loading_components = json.loads(loading_components) if \
+        loading_components else []
+    source_path = api.params('source_path')
+    source_context = None
+    if source_path:
+        source_path = '/'.join(source_path.split('/')[:-1])
+        try:
+            source_context = find_resource(request.root, source_path)
+        except Exception:
+            source_context = context
+
+    loaded_views = []
+    resources = {}
+    for loading_component in loading_components:
+        loaded_views.append(loading_component)
+        view = ON_LOAD_VIEWS.get(loading_component, None)
+        if view:
+            try:
+                view_instance = view(source_context, request)
+                view_result = view_instance()
+                item = view_result['coordinates'][view_instance.coordinates][0]
+                body = view_instance.render_item(item, view_instance.coordinates, None)
+                view_resources = {
+                    'css_links': view_result['css_links'],
+                    'js_links': view_result['js_links']
+                }
+                resources = merge_dicts(view_resources, resources)
+                result[loading_component] = body
+            except ViewError as error:
+                result[loading_component] = error.render(request)
+        else:
+            result[loading_component] = ''
+
+    result['loaded_views'] = loaded_views
+    result['resources'] = _get_resources_to_include(
+        request, resources, current_resources)
+    return result
 
 
 def get_default_action_metadata(action, request, context, api, **kwargs):
@@ -633,6 +685,7 @@ def get_respond_metadata(action, request, context, api, **kwargs):
     body = None
     if 'view_data' in kwargs:
         request.POST.clear()
+        request.POST['load_view'] = 'load'
         comments = [context.comments[-1]]
         result_view = CommentsView(context, request)
         result_view.comments = comments
@@ -679,6 +732,19 @@ def get_tranform_into_idea_metadata(action, request, context, api, **kwargs):
         'component-navbar-mycontents',
         'novideo-contents-ideas',
         'home-ideas-counter'
+        ]
+    return result
+
+
+def get_tranform_into_question_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("The comment has been transformed into a question."),
+        **kwargs)
+    result['counters-to-update'] = [
+        'component-navbar-mycontents',
+        'novideo-contents-questions',
+        'home-questions-counter'
         ]
     return result
 
@@ -999,8 +1065,186 @@ def get_add_subfolder_metadata(action, request, context, api, **kwargs):
         _("The sub-topic of interest has been added."),
         **kwargs)
 
+# Question
+
+
+def get_answer_question_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("Your answer has been registered"),
+        **kwargs)
+
+
+def get_support_entity_metadata(action, request, context, api, **kwargs):
+    node_id = action.node_id
+    alert_msg = None
+    if node_id == 'oppose':
+        alert_msg = _('You are now opposed to the content ${context}.',
+                      mapping={'context': context.title})
+    elif node_id == 'support':
+        alert_msg = _('Now you support the content ${context}.',
+                      mapping={'context': context.title})
+    elif node_id == 'withdraw_token':
+        alert_msg = _('Your token has been recovered from content ${context}.',
+                      mapping={'context': context.title})
+
+    return get_dirct_edit_entity_metadata(
+        action, request, context, api,
+        alert_msg,
+        **kwargs)
+
+
+def get_create_question_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("The question has been asked."),
+        **kwargs)
+    result['counters-to-update'] = [
+        'component-navbar-mycontents',
+        'novideo-contents-questions',
+        'home-questions-counter',
+        'challenge-contents-questions',
+        'challenge-questions-counter'
+        ]
+    return result
+
+
+def get_remove_question_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("The question has been suppressed."),
+        **kwargs)
+    result['ignore_redirect'] = not kwargs['is_source_context']
+    result['counters-to-update'] = [
+        'component-navbar-mycontents',
+        'novideo-contents-questions',
+        'home-questions-counter'
+        'challenge-contents-questions',
+        'challenge-questions-counter'
+        ]
+    return result
+
+
+def get_archive_question_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The question has been archived."),
+        **kwargs)
+    source_view_name = kwargs.get('view_name', '')
+    view_name = 'seemycontents'
+    if result.get('is_excuted') and source_view_name != view_name:
+        result['objects_to_hide'] = [
+            'listing_'+str(get_oid(context, None))]
+        result['counters-to-update'] = [
+            'home-questions-counter',
+            'person-questions-counter',
+            'novideo-contents-questions',
+            'challenge-contents-questions',
+            'challenge-questions-counter'
+        ]
+
+    return result
+
+
+def get_edit_question_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The question has been modified."),
+        **kwargs)
+
+
+def get_close_question_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The question has been closed."),
+        **kwargs)
+
+
+def get_edit_answer_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The answer has been modified."),
+        **kwargs)
+
+
+def get_validate_answer_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The answer has been validated."),
+        **kwargs)
+    context_id = str(get_oid(context.question, None))
+    result['force_object_views_to_update'] = [
+        'listing_'+context_id,
+        'index_'+context_id]
+    return result
+
+
+def get_tranform_answer_into_idea_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("The answer has been transformed into an idea."),
+        **kwargs)
+    result['counters-to-update'] = [
+        'component-navbar-mycontents',
+        'novideo-contents-ideas',
+        'home-ideas-counter',
+        'challenge-contents-ideas',
+        'challenge-ideas-counter'
+        ]
+    return result
+
+# Challenges
+
+
+def get_edit_challenge_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The data relating to the challenge have been updated."),
+        **kwargs)
+
+
+def get_submit_challenge_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The challenge has been submitted to moderation."),
+        **kwargs)
+
+
+def get_archive_challenge_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The challenge has been archived."),
+        **kwargs)
+    return result
+
+
+def get_publish_challenge_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The challenge has been published."),
+        **kwargs)
+
+
+def get_remove_challenge_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("The challenge has been suppressed."),
+        **kwargs)
+    result['ignore_redirect'] = not kwargs['is_source_context']
+    return result
 
 #Ideas
+
 
 def get_archive_idea_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
@@ -1015,6 +1259,7 @@ def get_archive_idea_metadata(action, request, context, api, **kwargs):
             'listing_'+str(get_oid(context, None))]
         result['counters-to-update'] = [
             'home-ideas-counter',
+            'challenge-ideas-counter',
             'person-ideas-counter',
             'novideo-contents-ideas'
         ]
@@ -1109,7 +1354,9 @@ def get_create_idea_metadata(action, request, context, api, **kwargs):
     result['counters-to-update'] = [
         'component-navbar-mycontents',
         'novideo-contents-ideas',
-        'home-ideas-counter'
+        'home-ideas-counter',
+        'challenge-contents-ideas',
+        'challenge-ideas-counter'
         ]
     return result
 
@@ -1429,6 +1676,37 @@ def get_vote_metadata(
     result['is_excuted'] = is_excuted
     return result
 
+
+def get_note_metadata(
+    action, request, context, api,
+    msg=None, viewname=None, **kwargs):
+    alert_msg = None
+    redirect_url = None
+    is_excuted = False
+    body = None
+    if 'view_data' in kwargs:
+        view_instance, view_result = kwargs['view_data']
+        if view_result:
+            if isinstance(view_result, HTTPFound) or getattr(view_result, 'is_nothing', False):
+                is_excuted = True
+                alert_msg = msg
+                if isinstance(view_result, HTTPFound):
+                    redirect_url = view_result.headers['location']
+            else:
+                body = view_result['coordinates'][view_instance.coordinates][0]['body']
+
+    result = {
+        'action': 'redirect_action',
+        'view': api,
+        'redirect_url': redirect_url,
+        'view_name': viewname,
+        'new_body': json.dumps(body) if body else None
+    }
+    result['alert_msg'] = request.localizer.translate(alert_msg) if alert_msg else None
+    result['alert_type'] = 'success'
+    result['is_excuted'] = is_excuted
+    return result
+
 #Counters
 
 def component_navbar_myselections(action, request, context, api, **kwargs):
@@ -1533,6 +1811,25 @@ def component_navbar_mycontents(action, request, context, api, **kwargs):
     return result
 
 
+def novideo_contents_questions(action, request, context, api, **kwargs):
+    dace_catalog = find_catalog('dace')
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    query = object_provides_index.any((IQuestion.__identifier__, )) & \
+        states_index.any(['published'])
+    item_nb = query.execute().__len__()
+    title = _('Asked question')
+    if item_nb > 1:
+        title = _('Asked questions')
+
+    result = {
+        'novideo-contents-questions.item_nb': item_nb,
+        'novideo-contents-questions.title': request.localizer.translate(title),
+    }
+
+    return result
+
+
 def novideo_contents_ideas(action, request, context, api, **kwargs):
     dace_catalog = find_catalog('dace')
     states_index = dace_catalog['object_states']
@@ -1547,6 +1844,58 @@ def novideo_contents_ideas(action, request, context, api, **kwargs):
     result = {
         'novideo-contents-ideas.item_nb': item_nb,
         'novideo-contents-ideas.title': request.localizer.translate(title),
+    }
+
+    return result
+
+
+def challenge_contents_questions(action, request, context, api, **kwargs):
+    source_context = kwargs.get('source_context', None)
+    if not source_context:
+        return {}
+
+    novaideo_index = find_catalog('novaideo')
+    dace_catalog = find_catalog('dace')
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    challenges = novaideo_index['challenges']
+    query = challenges.any([source_context.__oid__]) & \
+        object_provides_index.any((IQuestion.__identifier__, )) & \
+        states_index.any(['published'])
+    item_nb = query.execute().__len__()
+    title = _('Asked question')
+    if item_nb > 1:
+        title = _('Asked questions')
+
+    result = {
+        'challenge-contents-questions.item_nb': item_nb,
+        'challenge-contents-questions.title': request.localizer.translate(title),
+    }
+
+    return result
+
+
+def challenge_contents_ideas(action, request, context, api, **kwargs):
+    source_context = kwargs.get('source_context', None)
+    if not source_context:
+        return {}
+
+    novaideo_index = find_catalog('novaideo')
+    dace_catalog = find_catalog('dace')
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    challenges = novaideo_index['challenges']
+    query = challenges.any([source_context.__oid__]) & \
+        object_provides_index.any((Iidea.__identifier__, )) & \
+        states_index.any(['published'])
+    item_nb = query.execute().__len__()
+    title = _('Published idea')
+    if item_nb > 1:
+        title = _('Published ideas')
+
+    result = {
+        'challenge-contents-ideas.item_nb': item_nb,
+        'challenge-contents-ideas.title': request.localizer.translate(title),
     }
 
     return result
@@ -1621,6 +1970,21 @@ def home_proposals_counter(action, request, context, api, **kwargs):
     return {}
 
 
+def home_questions_counter(action, request, context, api, **kwargs):
+    dace_catalog = find_catalog('dace')
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    query = object_provides_index.any((IQuestion.__identifier__, )) & \
+        states_index.any(['published'])
+    item_nb = query.execute().__len__()
+    title = _('Questions (${nb})', mapping={'nb': item_nb})
+
+    result = {
+        'home-questions-counter.title': request.localizer.translate(title),
+    }
+    return result
+
+
 def home_ideas_counter(action, request, context, api, **kwargs):
     dace_catalog = find_catalog('dace')
     states_index = dace_catalog['object_states']
@@ -1636,12 +2000,70 @@ def home_ideas_counter(action, request, context, api, **kwargs):
     return result
 
 
+def challenge_proposals_counter(action, request, context, api, **kwargs):
+    #TODO
+    return {}
+
+
+def challenge_questions_counter(action, request, context, api, **kwargs):
+    source_context = kwargs.get('source_context', None)
+    if not source_context:
+        return {}
+
+    novaideo_index = find_catalog('novaideo')
+    dace_catalog = find_catalog('dace')
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    challenges = novaideo_index['challenges']
+    query = challenges.any([source_context.__oid__]) & \
+        object_provides_index.any((IQuestion.__identifier__, )) & \
+        states_index.any(['published'])
+    item_nb = query.execute().__len__()
+    title = _('Questions (${nb})', mapping={'nb': item_nb})
+
+    result = {
+        'challenge-questions-counter.title': request.localizer.translate(title),
+    }
+    return result
+
+
+def challenge_ideas_counter(action, request, context, api, **kwargs):
+    source_context = kwargs.get('source_context', None)
+    if not source_context:
+        return {}
+
+    novaideo_index = find_catalog('novaideo')
+    dace_catalog = find_catalog('dace')
+    states_index = dace_catalog['object_states']
+    object_provides_index = dace_catalog['object_provides']
+    challenges = novaideo_index['challenges']
+    query = challenges.any([source_context.__oid__]) & \
+        object_provides_index.any((Iidea.__identifier__, )) & \
+        states_index.any(['published'])
+    item_nb = query.execute().__len__()
+    title = _('Ideas (${nb})', mapping={'nb': item_nb})
+
+    result = {
+        'challenge-ideas-counter.title': request.localizer.translate(title),
+    }
+    return result
+
+
 METADATA_GETTERS = {
     'smartfoldermanagement.edit_smart_folder': get_edit_folder_metadata,
     'smartfoldermanagement.remove_smart_folder': get_remove_folder_metadata,
     'smartfoldermanagement.publish_smart_folder': get_publish_folder_metadata,
     'smartfoldermanagement.withdraw_smart_folder': get_archive_folder_metadata,
     'smartfoldermanagement.addsub_smart_folder': get_add_subfolder_metadata,
+
+    'challengemanagement.delchallenge': get_remove_challenge_metadata,
+    'challengemanagement.archive': get_archive_challenge_metadata,
+    'challengemanagement.publish': get_publish_challenge_metadata,
+    'challengemanagement.comment': get_comment_metadata,
+    'challengemanagement.present': get_present_metadata,
+    'challengemanagement.add_members': get_edit_challenge_metadata,
+    'challengemanagement.remove_members': get_edit_challenge_metadata,
+    'challengemanagement.submit': get_submit_challenge_metadata,
 
     'novaideoabstractprocess.select': get_selection_metadata,
     'novaideoabstractprocess.deselect': get_selection_metadata,
@@ -1658,6 +2080,27 @@ METADATA_GETTERS = {
 
     'channelmanagement.subscribe': get_subscribtion_metadata,
     'channelmanagement.unsubscribe': get_subscribtion_metadata,
+
+    'questionmanagement.creat': get_create_question_metadata,
+    'questionmanagement.comment': get_comment_metadata,
+    'questionmanagement.answer': get_answer_question_metadata,
+    'questionmanagement.present': get_present_metadata,
+    'questionmanagement.support': get_support_entity_metadata,
+    'questionmanagement.oppose': get_support_entity_metadata,
+    'questionmanagement.withdraw_token': get_support_entity_metadata,
+    'questionmanagement.edit': get_edit_question_metadata,
+    'questionmanagement.delquestion': get_remove_question_metadata,
+    'questionmanagement.archive': get_archive_question_metadata,
+    'questionmanagement.close': get_close_question_metadata,
+
+    'answermanagement.comment': get_comment_metadata,
+    'answermanagement.present': get_present_metadata,
+    'answermanagement.support': get_support_entity_metadata,
+    'answermanagement.oppose': get_support_entity_metadata,
+    'answermanagement.withdraw_token': get_support_entity_metadata,
+    'answermanagement.edit': get_edit_answer_metadata,
+    'answermanagement.validate': get_validate_answer_metadata,
+    'answermanagement.transformtoidea': get_tranform_answer_into_idea_metadata,
 
     'ideamanagement.creat': get_create_idea_metadata,
     'ideamanagement.creatandpublish': get_create_idea_metadata,
@@ -1708,6 +2151,7 @@ METADATA_GETTERS = {
     'commentmanagement.remove': get_remove_comment_metadata,
     'commentmanagement.edit': get_edit_comment_metadata,
     'commentmanagement.transformtoidea': get_tranform_into_idea_metadata,
+    'commentmanagement.transformtoquestion': get_tranform_into_question_metadata,
 
     'registrationmanagement.remove': get_remove_registration_metadata,
     'registrationmanagement.remind': get_remind_registration_metadata,
@@ -1732,6 +2176,7 @@ METADATA_GETTERS = {
     'referendumprocess.vote': get_vote_metadata,
     'majorityjudgmentprocess.vote': get_vote_metadata,
     'rangevotingprocess.vote': get_vote_metadata,
+    'membernotationmanagement.note': get_note_metadata
 }
 
 
@@ -1744,5 +2189,12 @@ COUNTERS_COMPONENTS = {
    'person-ideas-counter': person_ideas_counter,
    'home-proposals-counter': home_proposals_counter,
    'home-ideas-counter': home_ideas_counter,
-   'novideo-contents-ideas': novideo_contents_ideas
+   'home-questions-counter': home_questions_counter,
+   'novideo-contents-ideas': novideo_contents_ideas,
+   'novideo-contents-questions': novideo_contents_questions,
+   'challenge-contents-ideas': challenge_contents_ideas,
+   'challenge-contents-questions': challenge_contents_questions,
+   'challenge-proposals-counter': challenge_proposals_counter,
+   'challenge-ideas-counter': challenge_ideas_counter,
+   'challenge-questions-counter': challenge_questions_counter,
 }

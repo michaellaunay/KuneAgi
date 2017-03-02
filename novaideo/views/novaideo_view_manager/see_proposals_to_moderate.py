@@ -23,6 +23,7 @@ from novaideo.views.filter import (
     get_filter, FILTER_SOURCES, merge_with_filter_view, find_entities)
 from novaideo.views.filter.sort import (
     sort_view_objects)
+from novaideo.views.core import asyn_component_config
 
 
 CONTENTS_MESSAGES = {
@@ -32,6 +33,7 @@ CONTENTS_MESSAGES = {
     }
 
 
+@asyn_component_config(id='novaideoap_seeproposalstomoderate')
 @view_config(
     name='seeproposalstomoderate',
     context=NovaIdeoApplication,
@@ -64,7 +66,7 @@ class SeeProposalsToModerateView(BasicView):
             self,
             url=url,
             source=source,
-            select=[('metadata_filter', ['keywords']),
+            select=[('metadata_filter', ['tree', 'challenges']),
                     'contribution_filter', ('temporal_filter', ['negation', 'created_date']),
                     'text_filter', 'other_filter'])
 

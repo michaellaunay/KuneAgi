@@ -193,8 +193,7 @@ class EditAmendment(InfiniteCardinality):
     state_validation = edit_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        # root = getSite()
-        # root.merge_tree(context.tree)
+        root = getSite()
         context.set_data(appstruct)
         context.text = html_diff_wrapper.normalize_text(context.text)
         context.text_diff = get_text_amendment_diff(

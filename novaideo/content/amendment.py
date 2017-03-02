@@ -31,7 +31,8 @@ from novaideo.core import (
     CorrelableEntity,
     Channel,
     PresentableEntity,
-    DuplicableEntity)
+    DuplicableEntity,
+    Debatable)
 from novaideo import _
 from novaideo.views.widget import (
     AddIdeaWidget,
@@ -56,17 +57,17 @@ def relatedideas_choice(node, kw):
     request = node.bindings['request']
     used_ideas = context.get_used_ideas()
     root = getSite()
-    ideas = list(context.proposal.related_ideas.keys())
+    ideas = context.proposal.related_ideas
     ideas.extend(used_ideas)
     ideas = set(ideas)
     values = [(i, i.title) for i in ideas]
     ajax_url = request.resource_url(root, '@@novaideoapi',
-                                    query={'op': 'find_ideas'}
-                               )
-    return AjaxSelect2Widget(values=values,
-                        ajax_url=ajax_url,
-                        css_class="search-idea-form",
-                        multiple=True)
+                                    query={'op': 'find_ideas'})
+    return AjaxSelect2Widget(
+        values=values,
+        ajax_url=ajax_url,
+        css_class="search-idea-form",
+        multiple=True)
 
 
 class RelatedExplanationSchema(Schema):
@@ -251,7 +252,8 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
 class Amendment(CorrelableEntity,
                 SearchableEntity,
                 DuplicableEntity,
-                PresentableEntity):
+                PresentableEntity,
+                Debatable):
     """Amendment class"""
 
     type_title = _('Amendment')
@@ -283,6 +285,10 @@ class Amendment(CorrelableEntity,
     @property
     def authors(self):
         return [self.author]
+
+    @property
+    def challenge(self):
+        return getattr(self.proposal, 'challenge', None)
 
     def _init_presentation_text(self):
         self._presentation_text = html_to_text(
