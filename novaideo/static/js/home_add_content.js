@@ -27,7 +27,7 @@ function close_add_content_form(){
 }
 
 $(document).mouseup(function (e){
-  var container = $(".home-add-idea, .select2-results");
+  var container = $(".home-add-content, .select2-results");
   var target = $(event.target)
   var is_select = target.parents('.select2-container--open').length > 0
   var is_tree = target.find(".vakata-contextmenu-sep").length > 0
@@ -36,8 +36,8 @@ $(document).mouseup(function (e){
       && $(target).parents('body').length != 0 // ... nor a descendant of the container
       && !is_tree && !is_select)
   {
-      if(!$(".home-add-idea .form-group.idea-text textarea").val()){
-         close_add_idea_form()
+      if(!$(".home-add-content .form-group.content-preview-form textarea").val()){
+         close_add_content_form()
       }
   }
 });

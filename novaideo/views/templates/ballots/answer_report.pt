@@ -1,0 +1,16 @@
+<div tal:condition="process" i18n:domain="novaideo"
+  tal:define="novaideo_title request.virtual_root.title">
+	<p i18n:translate="">
+      You are invited, with two other randomly chosen Verifiers, to verify the adequacy between this Answer <a i18n:name="dynamic" target="_blank" href="${request.resource_url(context, '@@index')}" class="alert-link"><span class="${getattr(context, 'icon', '')}"></span> ${context.title}</a>, that was reported as potentially non-compliant, and the Charter of Moderation.
+    </p>
+    <div class="terms-of-use-scroll">
+      ${structure:getattr(request.virtual_root.moderation_rules, 'text', '')}
+    </div>
+    <p i18n:translate="">
+      Thereby, you contribute to ensuring that the content displayed on the platform ${novaideo_title} remains compliant with the Moderation Charter, while avoiding that the important power of Moderation be concentrated in just a few hands!
+    </p>
+    <p i18n:translate="">
+        If a majority of Moderators considers that this new Answer does not comply with the Moderation Charter, it will be withdrawn from the site, otherwise, it will be published.
+    </p>
+</div>
+

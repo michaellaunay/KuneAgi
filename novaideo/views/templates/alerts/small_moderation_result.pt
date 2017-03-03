@@ -1,4 +1,5 @@
 <div i18n:domain="novaideo"
+    tal:condition="object.subjects"
     tal:define="
       icon object.icon;
       new_alert object.is_to_alert(current_user)">

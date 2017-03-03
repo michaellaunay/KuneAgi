@@ -26,7 +26,7 @@ from .behaviors import (
 from novaideo import _
 from novaideo.content.proposal import Proposal
 from novaideo.content.idea import Idea
-from novaideo.content.question import Question
+from novaideo.content.question import Question, Answer
 from novaideo.content.comment import Comment
 from novaideo.content.processes.content_ballot_management import (
     BALLOT_DATA)
@@ -98,6 +98,32 @@ BALLOT_DATA[Question.__name__+'-contentreportdecision'] = {
     'false_value': _("This question DOES NOT comply with the Moderation Charter"),
     'process_id': 'contentreportdecision',
     'group': QUESTION_MODERATION_GROUP
+}
+
+
+def answer_title(process, context):
+    return _("Vote to Moderate the reported answer « ${content} »",
+             mapping={'content': context.title})
+
+
+ANSWER_MODERATION_GROUP = {
+    'group_id': 'vote_moderation',
+    'group_title': _('Moderate the answer'),
+    'group_activate': False,
+    'group_activator_title': _('Moderate the answer'),
+    'group_activator_class_css': 'vote-action',
+    'group_activator_style_picto': 'octicon octicon-check',
+    'group_activator_order': 100
+}
+
+
+BALLOT_DATA[Answer.__name__+'-contentreportdecision'] = {
+    'ballot_description_template': 'novaideo:views/templates/ballots/answer_report.pt',
+    'ballot_title': answer_title,
+    'true_value': _("This answer complies with the Moderation Charter"),
+    'false_value': _("This answer DOES NOT comply with the Moderation Charter"),
+    'process_id': 'contentreportdecision',
+    'group': ANSWER_MODERATION_GROUP
 }
 
 
