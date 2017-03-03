@@ -308,7 +308,8 @@ class ModerationVote(StartBallot):
 
             ballot_oid = get_oid(ballot, '')
             ballot_url = request.resource_url(
-                root, '@@seeballot', query={'id': ballot_oid})
+                root, '@@seeballot', query={'id': ballot_oid}) \
+                if ballot_oid else None
             accepted = ballot_result(self, True)
             if accepted:
                 ignore(content, request, root)

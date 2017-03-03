@@ -1806,16 +1806,20 @@ class Work(ElementaryAction):
         # Get ballot URLs
         ballot_oid = get_oid(vp_ballot, '')
         vp_ballot_url = request.resource_url(
-            root, '@@seeballot', query={'id': ballot_oid})
+            root, '@@seeballot', query={'id': ballot_oid}) \
+            if ballot_oid else None
         ballot_oid = get_oid(wmc_ballot, '')
         wmc_ballot_url = request.resource_url(
-            root, '@@seeballot', query={'id': ballot_oid})
+            root, '@@seeballot', query={'id': ballot_oid}) \
+            if ballot_oid else None
         ballot_oid = get_oid(rc_ballot, '')
         rc_ballot_url = request.resource_url(
-            root, '@@seeballot', query={'id': ballot_oid})
+            root, '@@seeballot', query={'id': ballot_oid}) \
+            if ballot_oid else None
         ballot_oid = get_oid(dc_ballot, '')
         dc_ballot_url = request.resource_url(
-            root, '@@seeballot', query={'id': ballot_oid})
+            root, '@@seeballot', query={'id': ballot_oid}) \
+            if ballot_oid else None
 
         alert('internal', [root], members,
               internal_kind=InternalAlertKind.working_group_alert,
@@ -1969,9 +1973,17 @@ class SubmitProposal(ElementaryAction):
         users = list(get_users_by_preferences(context))
         users.extend(members)
         users = set(users)
+        #Get ballots
+        vp_ballot = getattr(working_group, 'vp_ballot', '')
+        # Get ballot URLs
+        ballot_oid = get_oid(vp_ballot, '')
+        vp_ballot_url = request.resource_url(
+            root, '@@seeballot', query={'id': ballot_oid}) \
+            if ballot_oid else None
         alert('internal', [root], users,
               internal_kind=InternalAlertKind.working_group_alert,
-              subjects=[context], alert_kind='submit_proposal')
+              subjects=[context], alert_kind='submit_proposal',
+              ballot=vp_ballot_url)
         mail_template = root.get_mail_template('publish_proposal')
         subject = mail_template['subject'].format(
             subject_title=context.title)
@@ -2234,7 +2246,8 @@ class ModerationVote(StartBallot):
 
             ballot_oid = get_oid(ballot, '')
             ballot_url = request.resource_url(
-                root, '@@seeballot', query={'id': ballot_oid})
+                root, '@@seeballot', query={'id': ballot_oid}) \
+                if ballot_oid else None
             accepted = ballot_result(self, True)
             user = get_current()
             if accepted:
