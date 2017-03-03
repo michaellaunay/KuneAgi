@@ -6,7 +6,8 @@
          alert_kind getattr(object, 'alert_kind', '');">
   <div class="media-body" tal:define="subject object.subjects[0]">
     <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/></h4>
-    <span i18n:translate="" tal:condition="alert_kind == 'moderation'">The moderators have decided on the contribution <a i18n:name="dynamic"  href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
+    <span tal:condition="alert_kind == 'moderation'">
+      <span i18n:translate="">The moderators have decided on the contribution <a i18n:name="dynamic"  href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
       <span tal:condition="getattr(object, 'ballot', '')">
         <span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
       </span>
@@ -21,7 +22,7 @@
     <span i18n:translate="" tal:condition="alert_kind == 'object_restor'">
       The contribution <a i18n:name="dynamic"  href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> has been restored.
     </span>
-    <span i18n:translate="" tal:condition="alert_kind == 'object_censor'">
+    <span tal:condition="alert_kind == 'object_censor'">
       <span i18n:translate="">The contribution <a i18n:name="dynamic"  href="${subject.get_url(request)}"><span class="${subject.icon}"></span> ${subject.get_title()}</a> has been censored.</span>
       <span tal:condition="getattr(object, 'ballot', '')">
         <span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
@@ -36,16 +37,16 @@
     <span i18n:translate="" tal:condition="alert_kind == 'moderate_report'">
       A content has just been reported as potentially offensive. The content is visible under <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>. You are invited to moderate it.
     </span>
-    <span i18n:translate="" tal:condition="alert_kind == 'registration_refused'">
-      <span i18n:translate="">The registration of has been refused</span>
+    <span tal:condition="alert_kind == 'registration_refused'">
+      <span i18n:translate="">The registration of <span i18n:name="dynamic">${object.user_title}</span> has been refused</span>
       <span tal:condition="getattr(object, 'ballot', '')">
         <span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
       </span>
     </span>
-    <span i18n:translate="" tal:condition="alert_kind == 'registration_accepted'">
+    <span tal:condition="alert_kind == 'registration_accepted'">
       <span i18n:translate="">The registration of <span i18n:name="dynamic">${object.user_title}</span> has been accepted</span>
       <span tal:condition="getattr(object, 'ballot', '')">
-        <span i18n:translate="">The results of <span i18n:name="dynamic">${object.user_title}</span> the ballots are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
+        <span i18n:translate="">The results of the ballots are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
       </span>
     </span>
   </div>

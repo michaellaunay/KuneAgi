@@ -37,10 +37,7 @@
  </div>
  <div tal:condition="len(request.root.get_work_modes()) > 1" class="alert alert-warning">
   <span class="glyphicon glyphicon-warning-sign pull-right"></span>
-  <p tal:condition="can_submit_directly">
-    <b i18n:translate="">In order to improve the proposal, the Working Group must gather at least the quorum, i.e. the minimum number of Participants indicated for each working mode. If this quorum is not reached, the Working Group remains inactive and the proposal cannot be improved.</b>
-  </p>
-  <p tal:condition="not can_submit_directly">
+  <p>
     <b i18n:translate="">In order to improve the proposal, the Working Group must gather at least the quorum, i.e. the minimum number of Participants. If this quorum is not reached, the Working Group remains inactive and the proposal cannot be improved.</b>
   </p>
  </div>

@@ -71,7 +71,8 @@
     
      <span i18n:translate="" tal:condition="alert_kind == 'correction_added'">The Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has received suggestions for improvement and must be re-read.</span>
 
-    <span i18n:translate="" tal:condition="alert_kind == 'participate'">One Member has joined the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.
+    <span tal:condition="alert_kind == 'participate'">
+      <span i18n:translate="" >One Member has joined the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
       <span tal:condition="getattr(object, 'ballot', '')">
         <span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
       </span>
@@ -98,8 +99,8 @@
         The improvement suggestions on the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> have all been either accepted or refused. You can now suggest new improvements.
     </span>
 
-    <span i18n:translate="" tal:condition="alert_kind == 'exclude'">
-      The request to exclude <a i18n:name="dynamic" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> out of the Working Group related to the Proposal <a i18n:name="subject" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been accepted, following the vote of the Participants.
+    <span tal:condition="alert_kind == 'exclude'">
+      <span i18n:translate="" >The request to exclude <a i18n:name="dynamic" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> out of the Working Group related to the Proposal <a i18n:name="subject" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been accepted, following the vote of the Participants.</span>
         <span tal:condition="getattr(object, 'ballot', '')">
           <span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
         </span>
@@ -122,29 +123,29 @@
         The request of <a i18n:name="dynamic" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> to participate in the Working Group related to the Proposal <a i18n:name="subject" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been cancelled. The Member has reached the upper limit of the number of simultaneous participations in, or of applications to, Working Groups, which is <span i18n:name="nb">${getattr(request.virtual_root, 'participations_maxi', 5)}</span>  simultaneous participations or applications maximum.
       </span>
 
-      <span i18n:translate="" tal:condition="alert_kind == 'refuse_participant'">
-        Your application to participate in the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been refused, following the vote of the Participants in this Working Group. You can not submit a new application to this Working Group before the <span tal:replace="layout.to_localized_time(getattr(object, 'period_date', None))"/>.
+      <span tal:condition="alert_kind == 'refuse_participant'">
+        <span i18n:translate="" >Your application to participate in the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been refused, following the vote of the Participants in this Working Group. You can not submit a new application to this Working Group before the <span tal:replace="layout.to_localized_time(getattr(object, 'period_date', None))"/>.</span>
         <span tal:condition="getattr(object, 'ballot', '')">
           <span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
         </span>
       </span>
 
-      <span i18n:translate="" tal:condition="alert_kind == 'refuse_participant_members'">
-        The application of <a i18n:name="dynamic" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> to participate in the Working Group related to the Proposal <a i18n:name="subject" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been refused, following the vote of the Participants in this Working Group.
+      <span tal:condition="alert_kind == 'refuse_participant_members'">
+        <span i18n:translate="" >The application of <a i18n:name="dynamic" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> to participate in the Working Group related to the Proposal <a i18n:name="subject" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been refused, following the vote of the Participants in this Working Group.</span>
         <span tal:condition="getattr(object, 'ballot', '')">
           <span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
         </span>
       </span>
 
-      <span i18n:translate="" tal:condition="alert_kind == 'refuse_exclusion'">
-        The request to exclude you out of the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been refused, following the vote of the Participants in this Working Group. You are maintained in the Working Group.
+      <span tal:condition="alert_kind == 'refuse_exclusion'">
+        <span i18n:translate="" >The request to exclude you out of the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been refused, following the vote of the Participants in this Working Group. You are maintained in the Working Group.</span>
         <span tal:condition="getattr(object, 'ballot', '')">
           <span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
         </span>
       </span>
 
-      <span i18n:translate="" tal:condition="alert_kind == 'refuse_exclusion_members'">
-        The request to exclude <a i18n:name="dynamic" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> out of the Working Group related to the Proposal <a i18n:name="subject" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been refused, following the vote of the Participants in this Working Group. <a i18n:name="participant" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> is maintained in the Working Group. No further requests for exclusion from the Working Group may be requested in respect of <span i18n:name="member" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</span> before the <span tal:replace="layout.to_localized_time(getattr(object, 'period_date', None))"/>
+      <span tal:condition="alert_kind == 'refuse_exclusion_members'">
+        <span i18n:translate="" >The request to exclude <a i18n:name="dynamic" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> out of the Working Group related to the Proposal <a i18n:name="subject" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been refused, following the vote of the Participants in this Working Group. <a i18n:name="participant" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> is maintained in the Working Group. No further requests for exclusion from the Working Group may be requested in respect of <span i18n:name="member" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</span> before the <span tal:replace="layout.to_localized_time(getattr(object, 'period_date', None))"/></span>
         <span tal:condition="getattr(object, 'ballot', '')">
           <span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
         </span>

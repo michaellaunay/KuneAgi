@@ -874,7 +874,7 @@ class MetadataFilter(Schema):
         typ=DictSchemaType(),
         widget=keyword_widget,
         title=_('Keywords'),
-        description=_('You can select keywords of the contents to be displayed.'),
+        description=_('You can select the keywords of the contents to be displayed.'),
         default=DEFAULT_TREE,
         missing=None,
         query=tree_query
