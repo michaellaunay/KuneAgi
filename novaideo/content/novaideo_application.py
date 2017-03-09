@@ -34,7 +34,7 @@ from deform_treepy.utilities.tree_utility import (
     get_keywords_by_level)
 
 from novaideo.content.keyword import ROOT_TREE, DEFAULT_TREE
-from novaideo import _, DEFAULT_FILES
+from novaideo import _, DEFAULT_FILES, DEFAULT_LOCALE
 from novaideo.content.file import FileEntity
 from novaideo.core import Channel, CorrelableEntity, Debatable
 from .organization import OrganizationSchema, Organization
@@ -233,7 +233,7 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
     mail_conf = omit(MailTemplatesConfigurationSchema(
                                 widget=SimpleMappingtWidget(
                                 mapping_css_class='controled-form'
-                                                  ' object-well default-well hide-bloc',
+                                                  ' mail-templats-container hide-bloc',
                                 ajax=True,
                                 activator_icon="glyphicon glyphicon-envelope",
                                 activator_title=_('Edit e-mail templates'))),
@@ -338,6 +338,21 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
         self.branches = PersistentList()
         self.keywords = PersistentList()
         self.initialization()
+
+    def __setattr__(self, name, value):
+        super(NovaIdeoApplication, self).__setattr__(name, value)
+        if name == 'mail_templates' and value:
+            result = {}
+            for template in value:
+                mail_id = template.get('mail_id')
+                languages = template.get('languages', [])
+                languages = {m['locale']: m for m in languages}
+                result[mail_id] = {
+                    'title': template.get('title'),
+                    'languages': languages
+                }
+
+            self._mail_templates = PersistentDict(result)
 
     @property
     def mail_conf(self):
@@ -477,7 +492,18 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
                 info_file.state = PersistentList(['draft'])
                 setattr(self, information['name'], info_file)
 
-    def get_mail_template(self, id):
+    def get_mail_template(self, id, locale=DEFAULT_LOCALE):
+        mail = getattr(self, '_mail_templates', {}).get(id, None)
+        if not mail:
+            mail = DEFAULT_SITE_MAILS.get(id, None)
+
+        template = mail.get('languages').get(locale, None)
+        if not template:
+            template = mail.get('languages').get(DEFAULT_LOCALE, None)
+
+        return template
+
+    def get_mail(self, id):
         for mail in getattr(self, 'mail_templates', {}):
             if mail.get('mail_id', None) == id:
                 return mail
@@ -486,6 +512,7 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
         if template:
             template = template.copy()
             template['mail_id'] = id
+            template['languages'] = list(template['languages'].values())
 
         return template
 

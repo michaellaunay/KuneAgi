@@ -401,7 +401,8 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign', **
         next_user = _get_next_user(working_group.wating_list)
         if next_user is not None:
             mail_template = root.get_mail_template(
-                'wg_wating_list_participation')
+                'wg_wating_list_participation',
+                next_user.user_locale)
             working_group.delfromproperty('wating_list', next_user)
             working_group.addtoproperty('members', next_user)
             grant_roles(next_user, (('Participant', context),))
@@ -473,7 +474,8 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign', **
             internal_kind=InternalAlertKind.working_group_alert,
             subjects=[context], alert_kind='member_notation_excluded',
             **subject_data)
-        mail_template = root.get_mail_template('member_notation_excluded')
+        mail_template = root.get_mail_template(
+            'member_notation_excluded', user.user_locale)
         subject = mail_template['subject'].format(
             novaideo_title=root.title,
             **subject_data)
@@ -614,16 +616,17 @@ class DeleteProposal(InfiniteCardinality):
         request.registry.notify(CorrelableRemoved(object=context))
         root.delfromproperty('proposals', context)
         if not_draft_owner:
-            mail_template = root.get_mail_template('delete_proposal')
             explanation = appstruct['explanation']
-            subject = mail_template['subject'].format(
-                subject_title=context.title)
             alert('internal', [root], members,
                   internal_kind=InternalAlertKind.moderation_alert,
                   subjects=[], removed=True, subject_title=context.title)
             subject_data = get_entity_data(context, 'subject', request)
             for member in members:
                 if getattr(member, 'email', ''):
+                    mail_template = root.get_mail_template(
+                        'delete_proposal', member.user_locale)
+                    subject = mail_template['subject'].format(
+                        subject_title=context.title)
                     email_data = get_user_data(member, 'recipient', request)
                     email_data.update(subject_data)
                     message = mail_template['template'].format(
@@ -716,7 +719,6 @@ class SubmitProposalModeration(InfiniteCardinality):
                     **alert_data)
                 alert('email', [root.get_site_sender()], [author.email],
                       subject=subject, body=message)
-
         return {}
 
     def redirect(self, context, request, **kw):
@@ -986,8 +988,6 @@ class MakeOpinion(InfiniteCardinality):
         context.remove_tokens()
         members = context.working_group.members
         root = getSite()
-        mail_template = root.get_mail_template('opinion_proposal')
-        subject = mail_template['subject'].format(subject_title=context.title)
         localizer = request.localizer
         users = list(get_users_by_preferences(context))
         users.extend(members)
@@ -1003,6 +1003,9 @@ class MakeOpinion(InfiniteCardinality):
         subject_data = get_entity_data(context, 'subject', request)
         for member in members:
             if getattr(member, 'email', ''):
+                mail_template = root.get_mail_template(
+                    'opinion_proposal', member.user_locale)
+                subject = mail_template['subject'].format(subject_title=context.title)
                 email_data = get_user_data(member, 'recipient', request)
                 email_data.update(subject_data)
                 message = mail_template['template'].format(
@@ -1251,7 +1254,7 @@ class Withdraw(InfiniteCardinality):
         working_group.delfromproperty('wating_list', user)
         if getattr(user, 'email', ''):
             root = getSite()
-            mail_template = root.get_mail_template('withdeaw')
+            mail_template = root.get_mail_template('withdeaw', user.user_locale)
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             email_data = get_user_data(user, 'recipient', request)
@@ -1565,7 +1568,6 @@ class ExcludeParticipant(InfiniteCardinality):
               internal_kind=InternalAlertKind.working_group_alert,
               alert_kind='member_exclusion',
               subjects=[context], **alert_data)
-
         request.registry.notify(ActivityExecuted(
             self, [context, working_group], user))
         return {}
@@ -1722,12 +1724,13 @@ class VotingPublication(ElementaryAction):
             alert('internal', [root], members,
                   internal_kind=InternalAlertKind.working_group_alert,
                   subjects=[context], alert_kind='end_work')
-            mail_template = root.get_mail_template('start_vote_publishing')
-            subject = mail_template['subject'].format(
-                subject_title=context.title)
             subject_data = get_entity_data(context, 'subject', request)
             for member in members:
                 if getattr(member, 'email', ''):
+                    mail_template = root.get_mail_template(
+                        'start_vote_publishing', member.user_locale)
+                    subject = mail_template['subject'].format(
+                        subject_title=context.title)
                     email_data = get_user_data(member, 'recipient', request)
                     email_data.update(subject_data)
                     message = mail_template['template'].format(
@@ -1786,16 +1789,12 @@ class Work(ElementaryAction):
 
     def _send_mails(self, context, request, message_id):
         root = getSite()
-        mail_template = root.get_mail_template(message_id)
-        subject_template = mail_template['subject']
-        message_template = mail_template['template']
         working_group = context.working_group
         duration = to_localized_time(
             calculate_improvement_cycle_date(self.process),
             translate=True)
         isclosed = 'closed' in working_group.state
         members = working_group.members
-        subject = subject_template.format(subject_title=context.title)
         localizer = request.localizer
         root = request.root
         #Get ballots
@@ -1830,6 +1829,10 @@ class Work(ElementaryAction):
               dc_ballot=dc_ballot_url)
         subject_data = get_entity_data(context, 'subject', request)
         for member in [m for m in members if getattr(m, 'email', '')]:
+            mail_template = root.get_mail_template(message_id, member.user_locale)
+            subject_template = mail_template['subject']
+            message_template = mail_template['template']
+            subject = subject_template.format(subject_title=context.title)
             email_data = get_user_data(member, 'recipient', request)
             email_data.update(subject_data)
             message = message_template.format(
@@ -1896,11 +1899,12 @@ class Work(ElementaryAction):
                 'internal', [request.root], members,
                 internal_kind=InternalAlertKind.moderation_alert,
                 subjects=[proposal], alert_kind='object_closed')
-            mail_template = root.get_mail_template('close_proposal')
             subject_data = get_entity_data(proposal, 'subject', request)
-            subject = mail_template['subject'].format(
-                **subject_data)
             for member in [m for m in members if getattr(m, 'email', '')]:
+                mail_template = root.get_mail_template(
+                    'close_proposal', member.user_locale)
+                subject = mail_template['subject'].format(
+                    **subject_data)
                 email_data = get_user_data(member, 'recipient', request)
                 email_data.update(subject_data)
                 message = mail_template['template'].format(
@@ -1984,11 +1988,12 @@ class SubmitProposal(ElementaryAction):
               internal_kind=InternalAlertKind.working_group_alert,
               subjects=[context], alert_kind='submit_proposal',
               ballot=vp_ballot_url)
-        mail_template = root.get_mail_template('publish_proposal')
-        subject = mail_template['subject'].format(
-            subject_title=context.title)
         subject_data = get_entity_data(context, 'subject', request)
         for member in [m for m in users if getattr(m, 'email', '')]:
+            mail_template = root.get_mail_template(
+                'publish_proposal', member.user_locale)
+            subject = mail_template['subject'].format(
+                subject_title=context.title)
             email_data = get_user_data(member, 'recipient', request)
             email_data.update(subject_data)
             message = mail_template['template'].format(
@@ -2062,11 +2067,12 @@ class AlertEnd(ElementaryAction):
             alert('internal', [root], members,
                   internal_kind=InternalAlertKind.working_group_alert,
                   subjects=[context], alert_kind='alert_end_work')
-            mail_template = root.get_mail_template('alert_end')
-            subject = mail_template['subject'].format(
-                subject_title=context.title)
             subject_data = get_entity_data(context, 'subject', request)
             for member in [m for m in members if getattr(m, 'email', '')]:
+                mail_template = root.get_mail_template(
+                    'alert_end', member.user_locale)
+                subject = mail_template['subject'].format(
+                    subject_title=context.title)
                 email_data = get_user_data(member, 'recipient', request)
                 email_data.update(subject_data)
                 message = mail_template['template'].format(

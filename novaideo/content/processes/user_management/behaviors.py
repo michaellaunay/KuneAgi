@@ -519,7 +519,8 @@ class ConfirmRegistration(InfiniteCardinality):
 
         transaction.commit()
         if email:
-            mail_template = root.get_mail_template('registration_confiramtion')
+            mail_template = root.get_mail_template(
+                'registration_confiramtion', person.user_locale)
             subject = mail_template['subject'].format(
                 novaideo_title=root.title)
             recipientdata = get_user_data(person, 'recipient', request)
@@ -753,7 +754,6 @@ class Discuss(InfiniteCardinality):
     def _alert_users(self, context, request, user, comment, channel):
         root = getSite()
         users = self._get_users_to_alerts(context, request, user, channel)
-        mail_template = root.get_mail_template('alert_discuss')
         author_data = get_user_data(user, 'author', request)
         alert_data = get_entity_data(comment, 'comment', request)
         alert_data.update(author_data)
@@ -764,9 +764,11 @@ class Discuss(InfiniteCardinality):
               **alert_data)
         subject_data = get_entity_data(user, 'subject', request)
         alert_data.update(subject_data)
-        subject = mail_template['subject'].format(
-            **subject_data)
         for user_to_alert in [u for u in users if getattr(u, 'email', '')]:
+            mail_template = root.get_mail_template(
+                'alert_discuss', user_to_alert.user_locale)
+            subject = mail_template['subject'].format(
+                **subject_data)
             email_data = get_user_data(user_to_alert, 'recipient', request)
             email_data.update(alert_data)
             message = mail_template['template'].format(

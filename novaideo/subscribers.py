@@ -33,6 +33,7 @@ from novaideo.utilities.alerts_utility import (
 from novaideo.utilities.util import gen_random_token
 
 
+
 _CONTENT_TRANSLATION = [_("The proposal"),
                         _("The idea")]
 
@@ -113,14 +114,15 @@ def mysubscriber_object_published(event):
               subjects=[content], alert_kind='published_in_challenge')
 
     users = get_users_by_keywords(tree, query)
-    mail_template = root.get_mail_template('alert_new_content')
     subject_data = get_entity_data(content, 'subject', request)
-    subject = mail_template['subject'].format(
-        **subject_data)
     all_users = []
     for member in users:
         all_users.append(member)
         if getattr(member, 'email', '') and author is not member:
+            mail_template = root.get_mail_template(
+                'alert_new_content', member.user_locale)
+            subject = mail_template['subject'].format(
+                **subject_data)
             email_data = get_user_data(member, 'recipient', request)
             email_data.update(subject_data)
             message = mail_template['template'].format(
@@ -166,14 +168,15 @@ def mysubscriber_object_modified(event):
     users = get_users_by_preferences(content)
     root = request.root
     localizer = request.localizer
-    mail_template = root.get_mail_template('alert_content_modified')
     subject_data = get_entity_data(content, 'subject', request)
-    subject = mail_template['subject'].format(
-        **subject_data)
     all_users = []
     for member in users:
         all_users.append(member)
         if getattr(member, 'email', ''):
+            mail_template = root.get_mail_template(
+                'alert_content_modified', member.user_locale)
+            subject = mail_template['subject'].format(
+                **subject_data)
             state_source_translate = state_source
             state_target_translate = state_target
             if state_source:

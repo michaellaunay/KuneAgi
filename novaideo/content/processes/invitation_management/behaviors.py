@@ -336,7 +336,8 @@ class AcceptInvitation(InfiniteCardinality):
 
         context.person = person
         if manager:
-            mail_template = root.get_mail_template('accept_invitation')
+            mail_template = root.get_mail_template(
+                'accept_invitation', manager.user_locale)
             localizer = request.localizer
             email_data = get_user_data(person, 'user', request, True)
             novaideo_title = request.root.title
@@ -388,7 +389,8 @@ class RefuseInvitation(InfiniteCardinality):
         manager = context.manager
         if manager:
             root = getSite()
-            mail_template = root.get_mail_template('refuse_invitation')
+            mail_template = root.get_mail_template(
+                'refuse_invitation', manager.user_locale)
             localizer = request.localizer
             email_data = get_user_data(context, 'user', request)
             novaideo_title = request.root.title
@@ -404,7 +406,7 @@ class RefuseInvitation(InfiniteCardinality):
                 roles=", ".join(roles_translate),
                 novaideo_title=novaideo_title,
                 **email_data)
-            alert('email', [root.get_site_sender()], [context.manager.email],
+            alert('email', [root.get_site_sender()], [manager.email],
                   subject=subject, body=message)
 
         return {}
