@@ -42,7 +42,7 @@ from novaideo.content.person import (
     Person, PersonSchema, DEADLINE_PREREGISTRATION)
 from novaideo.utilities.util import (
     to_localized_time, gen_random_token, connect)
-from novaideo import _, nothing
+from novaideo import _, nothing, my_locale_negotiator
 from novaideo.core import (
     access_action, serialize_roles, PrivateChannel)
 from novaideo.views.filter import (
@@ -63,8 +63,10 @@ from novaideo.content.processes.content_ballot_management.behaviors import (
 def accept_preregistration(request, preregistration, root, alert_id='preregistration'):
     if getattr(preregistration, 'email', ''):
         deadline_date = preregistration.get_deadline_date()
+        locale = my_locale_negotiator(request)
         url = request.resource_url(preregistration, "")
-        mail_template = root.get_mail_template(alert_id)
+        mail_template = root.get_mail_template(
+            alert_id, getattr(preregistration, 'locale', locale))
         email_data = get_user_data(preregistration, 'recipient', request)
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
@@ -395,6 +397,7 @@ class Registration(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         preregistration = appstruct['_object_data']
         preregistration.__name__ = gen_random_token()
+        preregistration.locale = my_locale_negotiator(request)
         root = getSite()
         root.addtoproperty('preregistrations', preregistration)
         preregistration.state.append('pending')
@@ -478,6 +481,8 @@ class ConfirmRegistration(InfiniteCardinality):
                 if value is not colander.null}
         data.pop('title')
         root = getSite()
+        locale = my_locale_negotiator(request)
+        data['locale'] = locale
         person = Person(**data)
         principals = find_service(root, 'principals')
         name = person.first_name + ' ' + person.last_name \
