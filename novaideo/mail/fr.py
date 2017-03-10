@@ -16,58 +16,6 @@ PORTAL_PRESENTATION = u"""{novaideo_title} est une plateforme participative qui 
 
 """
 
-FIRST_INVITATION_SUBJECT = u"""Invitation à rejoindre la plateforme participative {novaideo_title}"""
-
-FIRST_INVITATION_MESSAGE = u"""
-Bonjour,
-
-Nous vous remercions de l'intérêt que vous portez à Nova-Ideo.
-
-{recipient_first_name} vous êtes invité à rejoindre la plateforme participative Nova-Ideo en tant que administrateur du site.
-
-Pour valider votre invitation, vous devez cliquer sur le lien {invitation_url} et suivre les instructions.
-
-Nous vous rappellons que Nova-Ideo est une solution d'innovation participative en ligne qui permet de répondre aux problèmes suivants :
-- Vous souhaitez mettre en place une solution d'innovation participative ;
-- Vous avez déjà une boite à idées, mais soit elle est vide, soit si pleine qu'il est impossible de trouver les bonnes idées ;
-- Vous n'avez pas de temps à passer à gérer les idées et manquez ainsi de nombreuses opportunités, et créez de la déception chez ceux qui ont des idées.
-
-Nova-Ideo permet de recueillir les idées d'un collectif, de trouver les bonnes idées et de les transformer en propositions applicables reflétant tous les points de vue.
-
-Pour cela Nova-Ideo utilise le crowdsourcing en faisant travailler la "foule" sur la transformation des idées en propositions.
-
-Nova-Ideo fusionne le meilleur de la boite à idées, du portail collaboratif et des outils de communication internes et propose des solutions d'innovation sociale à la pointe comme l'utilisation du jugement majoritaire ou l'organisation de la rareté des soutiens/rejets.
-
-Consultez notre page https://www.nova-ideo.com et notamment sa page Documentation https://www.nova-ideo.com/documentation
-
-Suivez notre compte twitter : https://twitter.com/NovaIdeo
-
-Vous pouvez consulter notre présentation détaillée de Nova-Ideo http://fr.slideshare.net/MichaelLaunay/20160911-novaideo-linnovation-participative-en-ligne
-
-Le code de Nova-Ideo sous licence libre AGPL V3 est accessible sur : https://github.com/ecreall/nova-ideo
-
-La vidéo filmée lors du PyConFR expliquant d'où vient Nova-Ideo et pourquoi il est libre : http://video-pyconfr2015.paulla.asso.fr/112_-_Michael_Launay_-_Nova-Ideo,_une_boite_a_idees_collaborative.html
-
-Nous réalisons également une série de vidéos expliquant l'administration et le fonctionnement de Nova-Ideo accessible depuis la page Documentation de notre site https://www.nova-ideo.com/documentation .
-
-Nous pouvons adapter Nova-Ideo à vos besoins spécifiques, alors n'hésitez pas à nous contacter, nous répondrons à vos questions !
-
-Vous pouvez aussi faire part de vos remarques et proposer des évolutions en créant un compte sur https://evolutions.nova-ideo.com
-
-Cordialement
-L'équipe d'Ecréall
-Services et Solutions en Logiciels Libres
-Parc scientifique de la Haute Borne
-Bâtiment Hub Innovation
-11, rue de l'Harmonie
-59650 Villeneuve d'Ascq
-site : http://www.ecreall.com
-tél : 03 20 79 32 90
-mob : 06 16 85 91 12
-Fax : 09 56 94 39 44
-"""
-
-
 INVITATION_SUBJECT = u"""Invitation à rejoindre la plateforme participative {novaideo_title}"""
 
 INVITATION_MESSAGE = u"""
@@ -281,6 +229,22 @@ Vous pouvez en tant que participant au groupe de travail améliorer la propositi
 
 """ + PORTAL_SIGNATURE
 
+PARTICIPATE_SUB_SUBJECT = u"""Soumisson de votre participation au groupe de travail de la proposition « {subject_title} »"""
+
+
+PARTICIPATE_SUB_MESSAGE = u"""
+
+Bonjour {recipient_first_name},
+
+Votre demande de participation au groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url} a été soumise aux membres du groupe.
+
+À chaque nouvelle demande de participation, les membres du groupe statuent sur l'acceptation ou pas de la demande.
+
+La durée de la vérification est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la vérification sera clôturée, et vous serez informé(e) de son résultat.
+
+"""+ PORTAL_SIGNATURE
+
+
 RESIGN_SUBJECT = u"""Votre départ du groupe de travail de la proposition « {subject_title} »"""
 
 RESIGN_MESSAGE = u"""
@@ -291,6 +255,99 @@ Nous vous confirmons que vous ne faites plus partie du groupe de travail de la p
 Vous pourrez à tout moment le rejoindre de nouveau, si vous ne faites pas partie déjà de cinq autres groupes de travail, qui est le nombre maximum de groupes de travail auxquels un membre a le droit de participer simultanément.
 
 """ + PORTAL_SIGNATURE
+
+
+EXCLUDE_SUBJECT = u"""Exclusion du groupe de travail de la proposition « {subject_title} »"""
+
+EXCLUDE_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Le groupe de travail a dessidé de vous exclure du groupe. Vous ne faites plus partie du groupe de travail de la proposition « {subject_title} » qui se trouve sous {subject_url}.
+
+Vous pourrez à tout moment rejoindre un autre groupe de travail, si vous ne faites pas partie déjà de cinq autres groupes de travail, qui est le nombre maximum de groupes de travail auxquels un membre a le droit de participer simultanément.
+
+""" + PORTAL_SIGNATURE
+
+
+EXCLUDE_PARTICIPANT_SUBJECT = u"""Vous êtes invité(e) à voter sur la demande d'exclusion de {user_first_name} {user_last_name} hors du Groupe de Travail lié à la proposition « {subject_title} »"""
+
+EXCLUDE_PARTICIPANT_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+{user_first_name} {user_last_name} vient de faire l'objet d'une demande d'exclusion hors du Groupe de Travail lié à la proposition « {subject_title} ».
+
+Vous êtes appelé(e) à voter sur cette demande d'exclusion. Pour le faire, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et d'y voter sur la demande d'exclusion de {user_first_name} {user_last_name} hors du Groupe de Travail lié à la proposition « {subject_title} ».
+
+La durée du vote est de {duration} jour(s). Au-delà de la date du {date_end_vote}, le scrutin sera clôturé, et votre vote ne sera plus pris en compte. Attention ! Par défaut, si aucun(e) Participant(e) n'a voté à cette date sur l'exclusion de {user_first_name} {user_last_name} hors du Groupe de Travail lié à la proposition « {subject_title} », {user_first_name} {user_last_name} sera maintenu(e) dans le Groupe de Travail.
+
+""" + PORTAL_SIGNATURE
+
+
+NOTING_MEMBER_SUBJECT = u"""Vous êtes invité(e) à noter le comportement coopératif de « {user_first_name} »"""
+
+NOTING_MEMBER_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+{user_title} vient de quitter le Groupe de Travail, par sa démission ou parce qu'il (elle) en a été exclu(e). À chaque fois qu'un membre quitte un groupe de travail, le système demande aux membres restants du groupe de travail de juger la qualité de son comportement coopératif, tel que ces membres restants ont pu le percevoir dans le cadre du travail de ce groupe.
+
+C'est pourquoi vous êtes invité(e) à attribuer une note à la qualité du comportement coopératif de {user_title} dans le cadre du groupe lié à la proposition {subject_title}. Les notes possibles sont:
+-1 = comportement coopératif inférieur à ce que j'attends dans le cadre d'un groupe de travail
+0 = comportement coopératif conforme à ce que j'attends dans le cadre d'un groupe de travail
++1 = comportement coopératif meilleur que ce que j'attends dans le cadre d'un groupe de travail
+
+Pour attribuer votre note au comportement coopératif de {user_title}, il vous suffit d'accéder à cette URL {subject_url} et de donner une note parmi celles proposées.
+
+""" + PORTAL_SIGNATURE
+
+NOTING_PARTICIPANT_SUBJECT = u"""Vous êtes invité(e) à noter le comportement coopératif des autres membres du groupe lié à la proposition « {subject_title} »"""
+
+NOTING_PARTICIPANT_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Vous venez de quitter le Groupe de Travail lié à la proposition {subject_title}, par votre démission ou parce que vous en avez été exclu(e). À chaque fois qu'un membre quitte un Groupe de Travail, le système demande à ce membre de juger la qualité du comportement coopératif de chacun des Participant(e)s restant(e)s du groupe de travail, tel que ce membre partant a pu les percevoir dans le cadre du travail de ce groupe.
+
+C'est pourquoi vous êtes invité(e) à attribuer une note à la qualité du comportement coopératif des autres Participant(e)s du groupe lié à la proposition {subject_title}. Les notes possibles sont:
+-1 = comportement coopératif inférieur à ce que j'attends dans le cadre d'un groupe de travail
+0 = comportement coopératif conforme à ce que j'attends dans le cadre d'un groupe de travail
++1 = comportement coopératif meilleur que ce que j'attends dans le cadre d'un groupe de travail
+
+Pour attribuer votre note au comportement coopératif des autres Participant(e)s du Groupe de Travail lié à la proposition {subject_title}, il vous suffit d'accéder à cette URL {subject_url} et de donner une note parmi celles proposées, à chacun(e) des Participant(e)s restant(e)s de ce groupe.
+
+""" + PORTAL_SIGNATURE
+
+NOTING_MEMBERS_SUBJECT = u"""Vous êtes invité(e) à noter le comportement coopératif des autres membres du groupe lié à la proposition « {subject_title} »"""
+
+NOTING_MEMBERS_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Le groupe de travail lié à la proposition {subject_title} vient de la publier, et de la soumettre pour appréciation aux autres membres de la plate-forme. Il a donc fini ses travaux. Il est dissout, et ses membres peuvent se consacrer à d'autres propositions.
+
+À chaque fois qu'un groupe de travail cesse ses activités et se dissout, le système demande à chacun de ses membres de juger la qualité du comportement coopératif des autres membres, tel que ce membre a pu le percevoir dans le cadre du travail de ce groupe.
+
+C'est pourquoi vous êtes invité(e) à attribuer une note à la qualité du comportement coopératif des autres membres du groupe lié à la proposition {subject_title}. Les notes possibles sont:
+-1 = comportement coopératif inférieur à ce que j'attends dans le cadre d'un groupe de travail
+0 = comportement coopératif conforme à ce que j'attends dans le cadre d'un groupe de travail
++1 = comportement coopératif meilleur que ce que j'attends dans le cadre d'un groupe de travail
+
+Pour attribuer votre note au comportement coopératif des autres membres du groupe de travail lié à la proposition {subject_title}, il vous suffit d'accéder à cette URL {subject_url} et de donner une note parmi celles proposées, à chacun(e) des autres membres de ce groupe.
+
+""" + PORTAL_SIGNATURE
+
+
+NEW_PARTICIPANT_SUBJECT = u"""Vous êtes invité(e) à voter sur la candidature de {user_first_name} {user_last_name} au Groupe de Travail lié à la proposition « {subject_title} »"""
+
+NEW_PARTICIPANT_MESSAGE = u"""
+
+Bonjour {recipient_first_name},
+
+{user_first_name} {user_last_name} vient de présenter sa candidature pour participer au Groupe de Travail lié à la proposition « {subject_title} ».
+
+Vous êtes appelé(e) à voter sur cette candidature. Pour le faire, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et d'y voter sur la candidature de {user_first_name} {user_last_name} au Groupe de Travail lié à la proposition « {subject_title} ».
+
+La durée du vote est de {duration} jour(s). Au-delà de la date du {date_end_vote}, le scrutin sera clôturé, et votre vote ne sera plus pris en compte. Attention ! Par défaut, si aucun(e) Participant(e) n'a voté à cette date sur la candidature de {user_first_name} {user_last_name} au Groupe de Travail lié à la proposition « {subject_title} », {user_first_name} {user_last_name} sera accepté(e) dans le Groupe de Travail.
+
+""" + PORTAL_SIGNATURE
+
 
 WATINGLIST_SUBJECT = u"""Inscription sur la liste d'attente du groupe de travail de la proposition « {subject_title} »"""
 
@@ -466,7 +523,22 @@ PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {novaid
 PREREGISTRATION_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Vous avez été inscrit à la plateforme participative {novaideo_title}. Vous devez cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant le {deadline_date}.
+Vous devez à présent cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant le {deadline_date}.
+Nous nous réjouissons de vous compter parmi nos membres, et espérons que votre participation sera pour vous une expérience positive et enrichissante, dans un cadre pleinement démocratique. Bienvenue !
+
+"""+ PORTAL_SIGNATURE
+
+
+PREREGISTRATION_MOD_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
+
+
+PREREGISTRATION_MOD_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Les Vérificateurs tirés au sort lors de votre inscription ont validé la concordance entre les Informations d'Identité que vous avez saisies sur la plate-forme et celles des documents officiels d'identité dont vous leur avez transmis la copie en direct.
+Nous sommes à présents sûrs que vous êtes la seule personne inscrite sous ces Informations d'Identité sur la plateforme participative {novaideo_title}, et donc que, comme tou(te)s les autres participant(e)s, vous n'avez qu'un seul compte, et contribuerez donc à respecter le principe démocratique "1 personne = 1 voix".
+Vous devez à présent cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant le {deadline_date}.
+Nous nous réjouissons de vous compter parmi nos membres, et espérons que votre participation sera pour vous une expérience positive et enrichissante, dans un cadre pleinement démocratique. Bienvenue !
 
 """+ PORTAL_SIGNATURE
 
@@ -477,25 +549,41 @@ ADMIN_PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {
 ADMIN_PREREGISTRATION_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Une nouvelle inscription à la plateforme participative {novaideo_title} vient d'être ajoutée. L'inscription est sous {url}. Vous devez donner votre avis pour la modérer.
+Vous avez été choisi(e) par la plateforme {novaideo_title} comme Vérificateur, afin de vérifier l'identité d'une personne qui vient de s'inscrire.
+
+À chaque nouvelle inscription à la plateforme {novaideo_title} le système sélectionne aléatoirement trois membres existants afin de vérifier l'identité de la personne inscrite. En effet, il faut vérifier que chaque membre de la plate-forme correspond à une personne physique et une seule, et ainsi éviter qu'une même personne ne puisse voter plusieurs fois sous plusieurs identités différentes.
+
+Pour procéder à cette vérification de l'identité de cette personne, il vous suffit de suivre les étapes suivantes:
+
+- Vous recevrez avant le {date_end_vote} de la part de la personne qui vient de s'inscrire, et dont l'adresse de courriel est {subject_email}, un courriel comprenant une copie de document d'identité officiel
+- Lorsque vous aurez reçu ce courriel, ou, si vous ne l'avez pas reçu le {date_end_vote}, connectez-vous à la plateforme à l'adresse suivante {subject_url}. Sur cette page, vous devrez décider si les informations reçues ci-dessous de cette personne lors de son inscription correspondent à celles présentes sur le document d'identité officiel dont vous aurez reçu une copie par courriel. Soyez très attentif(ve) ! Pour que vous approuviez l'inscription, TOUS les éléments doivent être strictement IDENTIQUES entre les informations reçues lors de l'inscription et celles du document d'identité officiel. Dans tous les autres cas, même avec une seule petite différence, ou si vous n'avez pas reçu la copie des documents d'identité à la date du {date_end_vote}, vous devez refuser l'inscription.
+
+Les informations reçues de la personne lors de son inscription sont:
+  Nom(s): {subject_last_name}
+  Prénom(s): {subject_first_name}
+  Date de naissance: {birth_date}
+  Lieu de naissance: {birthplace}
+
+La durée de la vérification est de {duration} jour(s), soit jusqu'au {date_end_vote}. Au-delà de cette durée, la vérification sera clôturée, et votre avis ne sera pas pris en compte. Si aucun Vérificateur n'a voté à cette date, l'inscription sera refusée. 
 
 """+ PORTAL_SIGNATURE
 
 
-ALERTCOMMENT_SUBJECT = u"""Nouveau commentaire sur {subject_type} « {subject_title} »"""
+ADMIN_CONTENT_SUBJECT = u"""Nouveau contenu sur la plateforme participative {novaideo_title}"""
 
 
-ALERTCOMMENT_MESSAGE = u"""
+ADMIN_CONTENT_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Un nouveau commentaire a été fait sur {subject_type} « {subject_title} ».
+Vous avez été choisi par la plateforme {novaideo_title} afin de modérer un nouveau contenu ajouté à la plateforme.
 
-"{comment_content}"
+À chaque nouvel ajout à la plateforme {novaideo_title} d'un contenu (idée ou proposition), le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération {url_moderation_rules}.
 
-Vous pouvez le retrouver sous {comment_url} et lui apporter une réponse.
+Pour exercer votre rôle de Modérateur sur ce nouveau contenu, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et d'y donner votre avis sur la conformité de ce contenu avec la Charte de Modération.
+
+La durée de la Modération est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la Modération sera clôturée, et votre vote ne sera plus pris en compte. Attention ! Par défaut, si aucun Modérateur n'a voté pour Modérer ce contenu à cette date, le contenu sera accepté.
 
 """+ PORTAL_SIGNATURE
-
 
 ALERTANSWER_SUBJECT = u"""Nouvelle réponse sur {subject_type} « {subject_title} »"""
 
@@ -504,6 +592,141 @@ ALERTANSWER_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
 Une nouvelle réponse a été donnée à {subject_type} « {subject_title} ».
+
+"{comment_content}"
+
+Vous pouvez le retrouver sous {comment_url} et lui apporter une réponse.
+
+"""+ PORTAL_SIGNATURE
+
+ADMIN_REPORT_SUBJECT = u"""Nouvelle signalisation sur la plateforme participative {novaideo_title}"""
+
+
+ADMIN_REPORT_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Vous avez été choisi par la plateforme {novaideo_title} afin de modérer un contenu signalé sur la plateforme comme étant potentiellement non conforme à la Charte de Modération {url_moderation_rules}.
+
+À chaque signalement d'un contenu sur la plateforme {novaideo_title} d'un contenu comme étant potentiellement non conforme à la Charte de Modération, le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération.
+
+Pour exercer votre rôle de Modérateur sur ce contenu, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et d'y donner votre avis sur la conformité de ce contenu avec la Charte de Modération.
+
+La durée de la Modération est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la Modération sera clôturée, et votre vote ne sera plus pris en compte. Attention ! Par défaut, si aucun Modérateur n'a voté pour Modérer ce contenu à cette date, le contenu sera accepté.
+
+"""+ PORTAL_SIGNATURE
+
+
+AUTHOR_REPORT_SUBJECT = u"""Nouvelle signalisation sur la plateforme participative {novaideo_title}"""
+
+
+AUTHOR_REPORT_MESSAGE = u"""
+
+Bonjour {recipient_first_name},
+
+Votre contenu {subject_url} a été signalé par un Membre comme potentiellement contraire à la Charte de Modération {url_moderation_rules}.
+
+À chaque nouvel fois qu'un contenu est signalé comme potentiellement contraire à la Charte de Modération, le système tire au sort trois membres afin que ceux-ci statuent sur la conformité de ce contenu avec la Charte de Modération .
+
+La durée de la vérification est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la vérification sera clôturée, et vous serez informé(e) de son résultat.
+
+"""+ PORTAL_SIGNATURE
+
+
+ADMIN_PREREGISTRATION_REF_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
+
+
+ADMIN_PREREGISTRATION_REF_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Les Vérificateurs tirés au sort lors de votre inscription N'ont PAS validé la concordance entre les Informations d'Identité que vous avez saisies sur la plate-forme et celles des documents officiels d'identité dont vous leur avez transmis la copie.
+
+Nous regrettons de devoir donc refuser votre inscription sur la plateforme {novaideo_title}, car une même personne physique pourrait s'inscrire plusieurs fois, à chaque fois avec de petites variations dans ses Informations d'Identité, et ainsi avoir plusieurs comptes, et voter plusieurs fois. Ce serait contraire au principe démocratique "1 personne = 1 voix". 
+
+"""+ PORTAL_SIGNATURE
+
+ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
+
+
+ADMIN_PREREGISTRATION_SUB_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Votre inscription a été soumise à vérification de votre identité.
+
+À chaque nouvelle inscription à la plateforme {novaideo_title} le système sélectionne aléatoirement trois membres existants afin de vérifier l'identité de la personne inscrite. En effet, il faut vérifier que chaque membre de la plate-forme correspond à une personne physique et une seule, et ainsi éviter qu'une même personne ne puisse voter plusieurs fois sous plusieurs identités différentes.
+
+Afin que votre identité puisse être ainsi vérifiée, nous vous demandons d'adresser à chacune des personnes suivantes, dans trois courriels séparés, avant le {date_end_vote}, la copie scannée d'un document d'identité officiel. Cette copie devra faire apparaître clairement votre(vos) prénom(s), votre(vos) nom(s) de famille, votre date de naissance et votre lieu de naissance. Au-delà du {date_end_vote}, si les Vérificateurs n'ont pas reçu de copie de votre document d'identité officiel, ils ont instruction de refuser votre inscription.
+
+Les modérateurs assignés à la vérification de votre inscription sont:
+{moderators}
+
+Vous recevrez le résultat de cette procédure de vérification d'identité à la fin de la période laissée aux Vérificateurs pour travailler, soit le {date_end_vote} au plus tard.
+
+"""+ PORTAL_SIGNATURE
+
+PUBLISHEDCHALLENGE_SUBJECT = u"""Décision des modérateurs de publier le challenge « {subject_title} »"""
+
+
+PUBLISHEDCHALLENGE_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Le challenge « {subject_title} » qui se trouve sous {subject_url} vient d'être publiée par les modérateurs sur la plateforme {novaideo_title}.
+
+"""+ PORTAL_SIGNATURE
+
+ARCHIVECHALLENGE_SUBJECT = u"""Décision des modérateurs d'archiver le challenge « {subject_title} »"""
+
+
+ARCHIVECHALLENGE_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Le challenge « {subject_title} » vient d'être archivée par les modérateurs pour la raison suivante: 
+
+{explanation}
+
+Vous pouvez retrouver votre challenge sous {subject_url}.
+
+"""+ PORTAL_SIGNATURE
+
+
+PRESENTATION_CHALLENGE_SUBJECT = u"""Présentation du challenge « {subject_title} »""" 
+
+
+PRESENTATION_CHALLENGE_MESSAGE = u"""
+Bonjour,
+
+{my_first_name} {my_last_name} souhaite vous présenter le challenge « {subject_title} » figurant sur la plateforme {novaideo_title}. Ce challenge est accessible à l'adresse : {subject_url}.
+
+""" + PORTAL_PRESENTATION + PORTAL_SIGNATURE
+
+
+
+ADMIN_CONTENT_SUB_SUBJECT = u"""Nouveau contenu sur la plateforme participative {novaideo_title}"""
+
+
+ADMIN_CONTENT_SUB_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Votre contenu a été soumis à Modération.
+
+À chaque nouvel ajout à la plateforme {novaideo_title} d'un contenu, le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération {url_moderation_rules}.
+
+La durée de la vérification est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la vérification sera clôturée, et vous serez informé(e) de son résultat.
+
+"""+ PORTAL_SIGNATURE
+
+
+MODERATOR_DATA = u"""
+Modérateur {index}:
+  Email: {subject_email}
+"""
+
+ALERTCOMMENT_SUBJECT = u"""Nouveau commentaire sur {subject_type} « {subject_title} »"""
+
+
+ALERTCOMMENT_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Un nouveau commentaire a été fait sur {subject_type} « {subject_title} ».
 
 "{comment_content}"
 
@@ -556,47 +779,6 @@ Vous êtes maintenant désabonné de la newsletter {newsletter_title}.
 
 """ + PORTAL_SIGNATURE
 
-
-PUBLISHEDCHALLENGE_SUBJECT = u"""Décision des modérateurs de publier le challenge « {subject_title} »"""
-
-
-PUBLISHEDCHALLENGE_MESSAGE = u"""
-Bonjour {recipient_first_name},
-
-Le challenge « {subject_title} » qui se trouve sous {subject_url} vient d'être publiée par les modérateurs sur la plateforme {novaideo_title}.
-
-"""+ PORTAL_SIGNATURE
-
-ARCHIVECHALLENGE_SUBJECT = u"""Décision des modérateurs d'archiver le challenge « {subject_title} »"""
-
-
-ARCHIVECHALLENGE_MESSAGE = u"""
-Bonjour {recipient_first_name},
-
-Le challenge « {subject_title} » vient d'être archivée par les modérateurs pour la raison suivante: 
-
-{explanation}
-
-Vous pouvez retrouver votre challenge sous {subject_url}.
-
-"""+ PORTAL_SIGNATURE
-
-
-PRESENTATION_CHALLENGE_SUBJECT = u"""Présentation du challenge « {subject_title} »""" 
-
-
-PRESENTATION_CHALLENGE_MESSAGE = u"""
-Bonjour,
-
-{my_first_name} {my_last_name} souhaite vous présenter le challenge « {subject_title} » figurant sur la plateforme {novaideo_title}. Ce challenge est accessible à l'adresse : {subject_url}.
-
-""" + PORTAL_PRESENTATION + PORTAL_SIGNATURE
-
-
-FIRST_INVITATION = {
-    'subject': FIRST_INVITATION_SUBJECT,
-    'template': FIRST_INVITATION_MESSAGE
-}
 
 mail_locale = 'fr'
 
@@ -782,3 +964,51 @@ add_mail_template('publish_challenge_decision', {'locale': mail_locale,
 add_mail_template('presentation_challenge', {'locale': mail_locale,
              'subject': PRESENTATION_CHALLENGE_SUBJECT,
              'template': PRESENTATION_CHALLENGE_MESSAGE})
+
+add_mail_template('preregistration_moderation', {'locale': mail_locale,
+             'subject': PREREGISTRATION_MOD_SUBJECT,
+             'template': PREREGISTRATION_MOD_MESSAGE})
+
+add_mail_template('wg_exclude', {'locale': mail_locale,
+             'subject': EXCLUDE_SUBJECT,
+             'template': EXCLUDE_MESSAGE})
+
+add_mail_template('moderate_content', {'locale': mail_locale,
+             'subject': ADMIN_CONTENT_SUBJECT,
+             'template': ADMIN_CONTENT_MESSAGE})
+
+add_mail_template('content_submit', {'locale': mail_locale,
+              'subject': ADMIN_CONTENT_SUB_SUBJECT,
+              'template': ADMIN_CONTENT_SUB_MESSAGE})
+
+add_mail_template('moderate_report', {'locale': mail_locale,
+              'subject': ADMIN_REPORT_SUBJECT,
+              'template': ADMIN_REPORT_MESSAGE})
+
+add_mail_template('alert_report', {'locale': mail_locale,
+              'subject': AUTHOR_REPORT_SUBJECT,
+              'template': AUTHOR_REPORT_MESSAGE})
+
+add_mail_template('exclude_participant', {'locale': mail_locale,
+              'subject': EXCLUDE_PARTICIPANT_SUBJECT,
+              'template': EXCLUDE_PARTICIPANT_MESSAGE})
+
+add_mail_template('new_participant', {'locale': mail_locale,
+              'subject': NEW_PARTICIPANT_SUBJECT,
+              'template': NEW_PARTICIPANT_MESSAGE})
+
+add_mail_template('participation_submission', {'locale': mail_locale,
+              'subject': PARTICIPATE_SUB_SUBJECT,
+              'template': PARTICIPATE_SUB_MESSAGE})
+
+add_mail_template('member_notation', {'locale': mail_locale,
+              'subject': NOTING_MEMBER_SUBJECT,
+              'template': NOTING_MEMBER_MESSAGE})
+
+add_mail_template('member_notation_excluded', {'locale': mail_locale,
+              'subject': NOTING_PARTICIPANT_SUBJECT,
+              'template': NOTING_PARTICIPANT_MESSAGE})
+
+add_mail_template('members_notation', {'locale': mail_locale,
+              'subject': NOTING_MEMBERS_SUBJECT,
+              'template': NOTING_MEMBERS_MESSAGE})

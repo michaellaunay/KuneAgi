@@ -34,12 +34,10 @@ DEFAULT_SITE_MAILS = {
         'title': _("Pre-registration of users"),
         'languages': {}
     },
-
     'presentation_idea': {
         'title': _("Presentation of an idea"),
         'languages': {}
     },
-
     'presentation_proposal': {
         'title': _("Presentation of a proposal"),
         'languages': {}
@@ -164,12 +162,10 @@ DEFAULT_SITE_MAILS = {
         'title': _("Close the proposal"),
         'languages': {}
     },
-
     'presentation_question': {
         'title': _("Presentation of a question"),
         'languages': {}
     },
-
     'presentation_answer': {
         'title': _("Presentation of an answer"),
         'languages': {}
@@ -190,9 +186,56 @@ DEFAULT_SITE_MAILS = {
         'title': _("Moderation: Publish the challenge"),
         'languages': {}
     },
-
     'presentation_challenge': {
         'title': _("Presentation of a challenge"),
+        'languages': {}
+    },
+    'preregistration_moderation': {
+        'title': _("Pre-registration of users with moderation"),
+        'languages': {}
+    },
+    'wg_exclude': {
+        'title': _("Exclusion from the working group"),
+        'languages': {}
+    },
+    'moderate_content': {
+        'title': _("New content to moderate"),
+        'languages': {}
+    },
+    'content_submit': {
+        'title': _("Submission of a content"),
+        'languages': {}
+    },
+    'moderate_report': {
+        'title': _("Report a content as potentially contrary to the Moderation rules"),
+        'languages': {}
+    },
+    'alert_report': {
+        'title': _("Alert the author of the reported content"),
+        'languages': {}
+    },
+    'exclude_participant': {
+        'title': _("Exclude a participant"),
+        'languages': {}
+    },
+    'new_participant': {
+        'title': _("New participation"),
+        'languages': {}
+    },
+    'participation_submission': {
+        'title': _("New participation"),
+        'languages': {}
+    },
+    'member_notation': {
+        'title': _("Give a mark to a member's cooperative behaviour"),
+        'languages': {}
+    },
+    'member_notation_excluded': {
+        'title': _("Give a mark to a participant's cooperative behaviour"),
+        'languages': {}
+    },
+    'members_notation': {
+        'title': _("Give a mark to the cooperative behaviour of members"),
         'languages': {}
     }
 }
