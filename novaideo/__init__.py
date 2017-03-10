@@ -12,7 +12,7 @@ from persistent.list import PersistentList
 
 from pyramid.config import Configurator
 from pyramid.exceptions import ConfigurationError
-from pyramid.i18n import TranslationStringFactory
+from pyramid.i18n import TranslationStringFactory, default_locale_negotiator
 from pyramid.session import SignedCookieSessionFactory
 from pyramid.threadlocal import get_current_request
 

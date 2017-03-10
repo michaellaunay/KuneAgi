@@ -91,7 +91,8 @@ def publish_idea_moderation(context, request, root, **kw):
           subjects=[context], alert_kind='moderation',
           ballot=kw.get('ballot_url', ''))
     if getattr(user, 'email', ''):
-        mail_template = root.get_mail_template('publish_idea_decision')
+        mail_template = root.get_mail_template(
+            'publish_idea_decision', user.user_locale)
         subject = mail_template['subject'].format(
             subject_title=context.title)
         email_data = get_user_data(user, 'recipient', request)
@@ -120,7 +121,8 @@ def archive_idea(context, request, root, appstruct, **kw):
           ballot=kw.get('ballot_url', ''))
 
     if getattr(user, 'email', ''):
-        mail_template = root.get_mail_template('archive_idea_decision')
+        mail_template = root.get_mail_template(
+            'archive_idea_decision', user.user_locale)
         subject = mail_template['subject'].format(
             subject_title=context.title)
         email_data = get_user_data(user, 'recipient', request)
@@ -527,7 +529,8 @@ class SubmitIdea(InfiniteCardinality):
             alert_data = get_ballot_alert_data(
                 context, request, root, moderators)
             alert_data.update(get_user_data(author, 'recipient', request))
-            mail_template = root.get_mail_template('content_submit')
+            mail_template = root.get_mail_template(
+                'content_submit', author.user_locale)
             if mail_template:
                 subject = mail_template['subject'].format(
                     **alert_data)
@@ -1297,9 +1300,6 @@ class ModerationVote(StartBallot):
             'internal', [root], moderators,
             internal_kind=InternalAlertKind.moderation_alert,
             subjects=[context], alert_kind='moderate_content')
-        mail_template = root.get_mail_template('moderate_content')
-        subject = mail_template['subject'].format(
-            novaideo_title=root.title)
         subject_data = get_entity_data(context, 'subject', request)
         subject_data.update(get_user_data(context, 'subject', request))
         duration = getattr(root, 'duration_moderation_vote', 7)
@@ -1310,6 +1310,10 @@ class ModerationVote(StartBallot):
         subject_data['url_moderation_rules'] = request.resource_url(
             root.moderation_rules, '@@index')
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
+            mail_template = root.get_mail_template(
+                'moderate_content', moderator.user_locale)
+            subject = mail_template['subject'].format(
+                novaideo_title=root.title)
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
             message = mail_template['template'].format(

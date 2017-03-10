@@ -589,7 +589,8 @@ class Remind(InfiniteCardinality):
             datetime.datetime.now(tz=pytz.UTC))
         deadline_str = to_localized_time(
             deadline_date, request, translate=True)
-        mail_template = root.get_mail_template('preregistration')
+        mail_template = root.get_mail_template(
+            'preregistration', getattr(context, 'locale', root.locale))
         email_data = get_user_data(context, 'recipient', request)
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
@@ -906,9 +907,6 @@ class ModerationVote(StartBallot):
             'internal', [root], moderators,
             internal_kind=InternalAlertKind.admin_alert,
             subjects=[context], alert_kind='new_registration')
-        mail_template = root.get_mail_template('moderate_preregistration')
-        subject = mail_template['subject'].format(
-            novaideo_title=root.title)
         subject_data = get_entity_data(context, 'subject', request)
         subject_data.update(get_user_data(context, 'subject', request))
         duration = getattr(root, 'duration_moderation_vote', 7)
@@ -925,6 +923,10 @@ class ModerationVote(StartBallot):
                 birth_date, request, translate=True)
 
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
+            mail_template = root.get_mail_template(
+                'moderate_preregistration', moderator.user_locale)
+            subject = mail_template['subject'].format(
+                novaideo_title=root.title)
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
             message = mail_template['template'].format(

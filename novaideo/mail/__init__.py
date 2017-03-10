@@ -241,6 +241,12 @@ DEFAULT_SITE_MAILS = {
 }
 
 
+MODERATOR_DATA = u"""
+M {index}:
+  Email: {subject_email}
+"""
+
+
 def add_mail_template(mail_id, template):
     locale = template.get('locale', None)
     if locale:

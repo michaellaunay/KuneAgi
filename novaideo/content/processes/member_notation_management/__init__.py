@@ -67,11 +67,12 @@ def run_notation_process(context, request, user, members, alert_id=None):
                 subjects=[context], alert_kind=alert_id,
                 **alert_data)
             alert_data.update(get_entity_data(context, 'subject', request))
-            mail_template = root.get_mail_template(alert_id)
-            subject = mail_template['subject'].format(
-                novaideo_title=root.title,
-                **alert_data)
             for member in [a for a in members if getattr(a, 'email', '')]:
+                mail_template = root.get_mail_template(
+                    alert_id, member.user_locale)
+                subject = mail_template['subject'].format(
+                    novaideo_title=root.title,
+                    **alert_data)
                 email_data = get_user_data(member, 'recipient', request)
                 alert_data.update(email_data)
                 message = mail_template['template'].format(

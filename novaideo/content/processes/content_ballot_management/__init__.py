@@ -13,7 +13,7 @@ from dace.objectofcollaboration.principal.util import grant_roles
 from novaideo.content.processes.ballot_processes import close_votes
 from novaideo import _
 from novaideo.utilities.alerts_utility import (
-    alert, get_user_data, get_entity_data)
+    get_user_data, get_entity_data)
 from novaideo.utilities.util import to_localized_time
 from novaideo.mail import MODERATOR_DATA
 

@@ -148,7 +148,8 @@ class Report(InfiniteCardinality):
                 alert_data = get_ballot_alert_data(
                     context, request, root, moderators)
                 alert_data.update(get_user_data(author, 'recipient', request))
-                mail_template = root.get_mail_template('alert_report')
+                mail_template = root.get_mail_template(
+                    'alert_report', author.user_locale)
                 if mail_template:
                     subject = mail_template['subject'].format(
                         **alert_data)
@@ -258,9 +259,6 @@ class ModerationVote(StartBallot):
             'internal', [root], moderators,
             internal_kind=InternalAlertKind.moderation_alert,
             subjects=[context], alert_kind='moderate_report')
-        mail_template = root.get_mail_template('moderate_report')
-        subject = mail_template['subject'].format(
-            novaideo_title=root.title)
         subject_data = get_entity_data(context, 'subject', request)
         subject_data.update(get_user_data(context, 'subject', request))
         duration = getattr(root, 'duration_moderation_vote', 7)
@@ -271,6 +269,10 @@ class ModerationVote(StartBallot):
         subject_data['url_moderation_rules'] = request.resource_url(
             root.moderation_rules, '@@index')
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
+            mail_template = root.get_mail_template(
+                'moderate_report', moderator.user_locale)
+            subject = mail_template['subject'].format(
+                novaideo_title=root.title)
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
             message = mail_template['template'].format(

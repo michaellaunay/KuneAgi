@@ -329,7 +329,8 @@ def publish_proposal_moderation(context, request, root, **kw):
           subjects=[context], alert_kind='moderation',
           ballot=kw.get('ballot_url', ''))
     if getattr(user, 'email', ''):
-        mail_template = root.get_mail_template('publish_proposal_decision')
+        mail_template = root.get_mail_template(
+            'publish_proposal_decision', user.user_locale)
         subject = mail_template['subject'].format(
             subject_title=context.title)
         email_data = get_user_data(user, 'recipient', request)
@@ -355,7 +356,8 @@ def archive_proposal_moderation(context, request, root, appstruct, **kw):
           subjects=[context], alert_kind='moderation',
           ballot=kw.get('ballot_url', ''))
     if getattr(user, 'email', ''):
-        mail_template = root.get_mail_template('archive_proposal_decision')
+        mail_template = root.get_mail_template(
+            'archive_proposal_decision', user.user_locale)
         subject = mail_template['subject'].format(
             subject_title=context.title)
         email_data = get_user_data(user, 'recipient', request)
@@ -711,7 +713,8 @@ class SubmitProposalModeration(InfiniteCardinality):
             alert_data = get_ballot_alert_data(
                 context, request, root, moderators)
             alert_data.update(get_user_data(author, 'recipient', request))
-            mail_template = root.get_mail_template('content_submit')
+            mail_template = root.get_mail_template(
+                'content_submit', author.user_locale)
             if mail_template:
                 subject = mail_template['subject'].format(
                     **alert_data)
@@ -1254,7 +1257,8 @@ class Withdraw(InfiniteCardinality):
         working_group.delfromproperty('wating_list', user)
         if getattr(user, 'email', ''):
             root = getSite()
-            mail_template = root.get_mail_template('withdeaw', user.user_locale)
+            mail_template = root.get_mail_template(
+                'withdeaw', user.user_locale)
             subject = mail_template['subject'].format(
                 subject_title=context.title)
             email_data = get_user_data(user, 'recipient', request)
@@ -1421,7 +1425,8 @@ def accept_participation(context, request, user, root, **kw):
 
         #Send Mail alert to user
         if getattr(user, 'email', ''):
-            mail_template = root.get_mail_template('wg_participation')
+            mail_template = root.get_mail_template(
+                'wg_participation', user.user_locale)
             _send_mail_to_user(
                 mail_template['subject'], mail_template['template'],
                 user, context, request)
@@ -1440,7 +1445,8 @@ def accept_participation(context, request, user, root, **kw):
               subjects=[context], alert_kind='wg_participation_max')
 
         if getattr(user, 'email', ''):
-            mail_template = root.get_mail_template('wating_list')
+            mail_template = root.get_mail_template(
+                'wating_list', user.user_locale)
             _send_mail_to_user(
                 mail_template['subject'], mail_template['template'],
                 user, context, request)
@@ -1829,7 +1835,8 @@ class Work(ElementaryAction):
               dc_ballot=dc_ballot_url)
         subject_data = get_entity_data(context, 'subject', request)
         for member in [m for m in members if getattr(m, 'email', '')]:
-            mail_template = root.get_mail_template(message_id, member.user_locale)
+            mail_template = root.get_mail_template(
+                message_id, member.user_locale)
             subject_template = mail_template['subject']
             message_template = mail_template['template']
             subject = subject_template.format(subject_title=context.title)
@@ -2010,11 +2017,12 @@ class SubmitProposal(ElementaryAction):
                 internal_kind=InternalAlertKind.working_group_alert,
                 subjects=[context], alert_kind='members_notation')
             alert_data = get_entity_data(context, 'subject', request)
-            mail_template = root.get_mail_template('members_notation')
-            subject = mail_template['subject'].format(
-                novaideo_title=root.title,
-                **alert_data)
             for member in [a for a in members if getattr(a, 'email', '')]:
+                mail_template = root.get_mail_template(
+                    'members_notation', member.user_locale)
+                subject = mail_template['subject'].format(
+                    novaideo_title=root.title,
+                    **alert_data)
                 email_data = get_user_data(member, 'recipient', request)
                 alert_data.update(email_data)
                 message = mail_template['template'].format(
@@ -2201,7 +2209,6 @@ class ModerationVote(StartBallot):
             'internal', [root], moderators,
             internal_kind=InternalAlertKind.moderation_alert,
             subjects=[context], alert_kind='moderate_content')
-        mail_template = root.get_mail_template('moderate_content')
         subject_data = get_entity_data(context, 'subject', request)
         subject_data.update(get_user_data(context, 'subject', request))
         duration = getattr(root, 'duration_moderation_vote', 7)
@@ -2211,10 +2218,12 @@ class ModerationVote(StartBallot):
             date_end, request, translate=True)
         subject_data['url_moderation_rules'] = request.resource_url(
             root.moderation_rules, '@@index')
-        subject = mail_template['subject'].format(
-            novaideo_title=root.title,
-            **subject_data)
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
+            mail_template = root.get_mail_template(
+                'moderate_content', moderator.user_locale)
+            subject = mail_template['subject'].format(
+                novaideo_title=root.title,
+                **subject_data)
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
             message = mail_template['template'].format(
@@ -2291,7 +2300,6 @@ class ParticipationVote(StartBallot):
             internal_kind=InternalAlertKind.working_group_alert,
             subjects=[context], alert_kind='new_participant',
             **alert_data)
-        mail_template = root.get_mail_template('new_participant')
         subject_data = get_entity_data(context, 'subject', request)
         subject_data.update(get_user_data(participant, 'user', request))
         duration = getattr(root, 'duration_moderation_vote', 7)
@@ -2299,10 +2307,12 @@ class ParticipationVote(StartBallot):
             datetime.timedelta(days=duration)
         date_end_vote = to_localized_time(
             date_end, request, translate=True)
-        subject = mail_template['subject'].format(
-            novaideo_title=root.title,
-            **subject_data)
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
+            mail_template = root.get_mail_template(
+                'new_participant', moderator.user_locale)
+            subject = mail_template['subject'].format(
+                novaideo_title=root.title,
+                **subject_data)
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
             message = mail_template['template'].format(
@@ -2405,7 +2415,6 @@ class ExclusionVote(StartBallot):
             internal_kind=InternalAlertKind.working_group_alert,
             subjects=[context], alert_kind='exclude_participant',
             **alert_data)
-        mail_template = root.get_mail_template('exclude_participant')
         subject_data = get_entity_data(context, 'subject', request)
         subject_data.update(get_user_data(participant, 'user', request))
         duration = getattr(root, 'duration_moderation_vote', 7)
@@ -2413,10 +2422,12 @@ class ExclusionVote(StartBallot):
             datetime.timedelta(days=duration)
         date_end_vote = to_localized_time(
             date_end, request, translate=True)
-        subject = mail_template['subject'].format(
-            novaideo_title=root.title,
-            **subject_data)
         for moderator in [a for a in moderators if getattr(a, 'email', '')]:
+            mail_template = root.get_mail_template(
+                'exclude_participant', moderator.user_locale)
+            subject = mail_template['subject'].format(
+                novaideo_title=root.title,
+                **subject_data)
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
             message = mail_template['template'].format(

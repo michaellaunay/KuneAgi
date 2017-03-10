@@ -715,11 +715,6 @@ La durée de la vérification est de {duration} jour(s). Au-delà de la date du 
 """+ PORTAL_SIGNATURE
 
 
-MODERATOR_DATA = u"""
-Modérateur {index}:
-  Email: {subject_email}
-"""
-
 ALERTCOMMENT_SUBJECT = u"""Nouveau commentaire sur {subject_type} « {subject_title} »"""
 
 
