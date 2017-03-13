@@ -189,6 +189,9 @@ class Question(VersionableEntity, DuplicableEntity,
         if name == 'author':
             self.init_organization()
 
+    def is_managed(self, root):
+        return root.manage_questions
+
     def update_len_answers(self):
         self.len_answers = len(self.answers)
         return self.len_answers
