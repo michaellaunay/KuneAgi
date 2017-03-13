@@ -9356,8 +9356,9 @@ msgstr "Contenus à gérer avec les idées"
 
 #: novaideo/content/site_configuration.py:68
 msgid "Content that can be created by members. Ideas are included by default."
-msgstr "Contenu pouvant être créé par les membres. Les idées sont incluses par défaut."
-
+msgstr ""
+"Contenu pouvant être créé par les membres. Les idées sont incluses par "
+"défaut."
 
 #: novaideo/content/site_configuration.py:82
 msgid "Contents to be moderated"
