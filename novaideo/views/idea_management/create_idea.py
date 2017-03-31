@@ -151,6 +151,14 @@ class CreateIdeaView_Json(BasicView):
             values = {'title': self.params('title'),
                       'text': self.params('text'),
                       'tree': tree}
+            challenge = self.params('challenge')
+            if challenge:
+                try:
+                    challenge = get_obj(int(challenge))
+                    values['challenge'] = challenge
+                except:
+                    pass
+
             idea = Idea()
             idea.set_data(values)
             appstruct = {'_object_data': idea}

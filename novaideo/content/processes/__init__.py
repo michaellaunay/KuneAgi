@@ -10,7 +10,7 @@ from dace.objectofcollaboration.principal.util import(
     has_role, get_current)
 from dace.util import request_memoize
 
-from novaideo.core import _
+from novaideo import _
 
 
 MODERATORS_NB = 3
@@ -247,3 +247,8 @@ def global_user_processsecurity():
     user = get_current()
     return 'active' in list(getattr(user, 'state', [])) or\
         has_role(role=('SiteAdmin',), user=user)
+
+
+def access_user_processsecurity(process, context):
+    request = get_current_request()
+    return request.accessible_to_anonymous

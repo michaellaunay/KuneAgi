@@ -15,7 +15,7 @@ from pontus.view import BasicView
 from pontus.schema import select
 from pontus.view_operation import MultipleView
 
-from novaideo.views.widget import ReCAPTCHAWidget
+from novaideo.widget import TOUCheckboxWidget, ReCAPTCHAWidget
 from novaideo.content.processes.user_management.behaviors import (
     Registration)
 from novaideo.content.person import PersonSchema, Preregistration

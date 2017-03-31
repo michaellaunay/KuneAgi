@@ -43,6 +43,7 @@ class KeywordSchema(VisualisableElementSchema):
 @implementer(IKeyword)
 class Keyword(VisualisableElement, Entity):
     """Keyword class"""
+    
     name = renamer()
     referenced_elements = SharedMultipleProperty('referenced_elements',
                                                  'keywords')

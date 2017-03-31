@@ -5,10 +5,10 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import os
 import pytz
 import colander
 import datetime
-import os
 from zope.interface import implementer
 from persistent.list import PersistentList
 from persistent.dict import PersistentDict
@@ -43,7 +43,7 @@ from .invitation import InvitationSchema, Invitation
 from novaideo.utilities.analytics_utility import hover_color, random_color
 from novaideo.content.processes.proposal_management import WORK_MODES
 from novaideo.mail import DEFAULT_SITE_MAILS
-from novaideo.views.widget import SimpleMappingtWidget
+from novaideo.widget import SimpleMappingtWidget
 from novaideo.content.site_configuration import (
     WorkParamsConfigurationSchema,
     MailTemplatesConfigurationSchema,

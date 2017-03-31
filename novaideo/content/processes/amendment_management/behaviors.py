@@ -109,7 +109,6 @@ class DuplicateAmendment(InfiniteCardinality):
                                  omit=('created_at',
                                        'modified_at',
                                        'explanations'))
-        # root.merge_tree(appstruct['tree'])
         copy_of_amendment.set_data(appstruct)
         copy_of_amendment.text = html_diff_wrapper.normalize_text(
             copy_of_amendment.text)

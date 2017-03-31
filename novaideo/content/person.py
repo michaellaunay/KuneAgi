@@ -54,7 +54,7 @@ from .interface import (
     IPerson, IPreregistration, IAlert, IProposal, Iidea)
 from novaideo import _, AVAILABLE_LANGUAGES, LANGUAGES_TITLES
 from novaideo.file import Image
-from novaideo.views.widget import (
+from novaideo.widget import (
     TOUCheckboxWidget, LimitedTextAreaWidget, EmailInputWidget)
 from novaideo.utilities.attr_utility import synchronize_tree
 from novaideo.content.keyword import DEFAULT_TREE
@@ -373,7 +373,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         self.branches = PersistentList()
         self.keywords = PersistentList()
         super(Person, self).__init__(**kwargs)
-        kwargs.pop('password')
+        kwargs.pop('password', None)
         self.set_data(kwargs)
         self.set_title()
         self.last_connection = datetime.datetime.now(tz=pytz.UTC)

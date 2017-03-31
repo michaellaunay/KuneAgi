@@ -24,7 +24,7 @@ from pontus.file import File
 
 from novaideo.content.bot import Bot
 
-from zope.processlifetime import IDatabaseOpenedWithRoot
+#from zope.processlifetime import IDatabaseOpenedWithRoot
 # from .twitter import start_ioloop
 
 
