@@ -927,6 +927,14 @@ add_mail_template('moderate_preregistration', {'locale': mail_locale,
                    'subject': ADMIN_PREREGISTRATION_SUBJECT,
                    'template': ADMIN_PREREGISTRATION_MESSAGE})
 
+add_mail_template('moderate_preregistration_refused', {'locale': mail_locale,
+                   'subject': ADMIN_PREREGISTRATION_REF_SUBJECT,
+                   'template': ADMIN_PREREGISTRATION_REF_MESSAGE})
+
+add_mail_template('preregistration_submit', {'locale': mail_locale,
+                   'subject': ADMIN_PREREGISTRATION_SUB_SUBJECT,
+                   'template': ADMIN_PREREGISTRATION_SUB_MESSAGE})
+
 add_mail_template('close_proposal', {'locale': mail_locale,
                     'subject': SYSTEM_CLOSE_PROPOSAL_SUBJECT,
                    'template': SYSTEM_CLOSE_PROPOSAL_MESSAGE})

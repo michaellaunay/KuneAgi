@@ -7078,7 +7078,7 @@ msgstr "L'inscription de ${dynamic} a été refusée."
 #: novaideo/views/templates/alerts/moderation_result.pt:47
 #: novaideo/views/templates/alerts/small_moderation_result.pt:48
 msgid "The registration of ${dynamic} has been accepted"
-msgstr "L'inscription de ${context} a bien été acceptée."
+msgstr "L'inscription de ${dynamic} a bien été acceptée."
 
 #: novaideo/views/templates/alerts/moderation_result.pt:49
 msgid "The results of the ballots are available"

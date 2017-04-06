@@ -158,6 +158,14 @@ DEFAULT_SITE_MAILS = {
         'title': _("New registration"),
         'languages': {}
     },
+    'moderate_preregistration_refused': {
+        'title': _("Registration refused"),
+        'languages': {}
+    },
+    'preregistration_submit': {
+        'title': _("Registration submission"),
+        'languages': {}
+    },
     'close_proposal': {
         'title': _("Close the proposal"),
         'languages': {}

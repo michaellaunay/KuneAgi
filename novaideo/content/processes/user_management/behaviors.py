@@ -400,7 +400,6 @@ class Registration(InfiniteCardinality):
         root.addtoproperty('preregistrations', preregistration)
         preregistration.state.append('pending')
         preregistration.reindex()
-        transaction.commit()
 
         def accept():
             accept_preregistration(request, preregistration, root)
