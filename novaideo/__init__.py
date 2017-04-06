@@ -746,18 +746,35 @@ def publish_organizations(root, registry):
 
 
 def evolve_mails_languages(root, registry):
+    from novaideo.mail import DEFAULT_SITE_MAILS
     result = []
     for mail in getattr(root, 'mail_templates', []):
         if 'languages' not in mail:
             mail['languages'] = [{
                 'locale': 'fr',
                 'template': mail['template'],
-                'subject': mail['subject']
+                'subject': mail['subject'],
+                'mail_id': mail['mail_id']
             }]
             mail.pop('template')
             mail.pop('subject')
+            template = DEFAULT_SITE_MAILS.get(mail['mail_id'], None)
+            if template:
+                en_template = template['languages']['en'].copy()
+                en_template['mail_id'] = mail['mail_id']
+                en_template['locale'] = 'en'
+                mail['languages'].append(en_template)
+
             result.append(mail)
         else:
+            if all(m['locale'] != 'en' for m in mail['languages']):
+                template = DEFAULT_SITE_MAILS.get(mail['mail_id'], None)
+                if template:
+                    en_template = template['languages']['en'].copy()
+                    en_template['mail_id'] = mail['mail_id']
+                    en_template['locale'] = 'en'
+                    mail['languages'].append(en_template)
+
             result.append(mail)
 
     root.mail_templates = PersistentList(result)
