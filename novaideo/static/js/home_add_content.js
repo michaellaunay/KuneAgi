@@ -186,7 +186,7 @@ $(document).on('submit','.home-add-content .home-add-question form', function( e
        return
     }
     var parent = $($this.parents('.home-form-container').first());
-    var title = $this.find('input[name="question"]').val();
+    var title = $this.find('input[name="title"]').val();
     var keywords = $($this.find('input[name="tree"]')).val();
     keywords = Object.keys(jQuery.parseJSON(keywords)['#'])
     if(title=='' || !keywords || keywords.length == 0){
@@ -201,7 +201,7 @@ $(document).on('submit','.home-add-content .home-add-question form', function( e
       })
       if (title=='')
       {
-        form_group = $this.find('input[name="question"]').parents('.form-group').first()
+        form_group = $this.find('input[name="title"]').parents('.form-group').first()
         form_group.addClass('has-error')
         form_group.append($(error_help))
       }
@@ -243,7 +243,7 @@ $(document).on('submit','.home-add-content .home-add-question form', function( e
             result_container.find('.result-empty-message').first().remove()
             $(data.new_obj_body).hide().prependTo(result_container).fadeIn(1500)
           }
-          $this.find('input[name="question"]').val('');
+          $this.find('input[name="title"]').val('');
           $this.find('textarea[name="text"]').val('');
           $this.find('.deform-close-button').click()
           buttons.removeClass('disabled');
