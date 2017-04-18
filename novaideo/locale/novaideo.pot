@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-04-18 12:28+0200\n"
+"POT-Creation-Date: 2017-04-18 14:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,11 +48,11 @@ msgstr ""
 msgid "Symbols"
 msgstr ""
 
-#: ./novaideo/subscribers.py:37
+#: ./novaideo/subscribers.py:39
 msgid "The proposal"
 msgstr ""
 
-#: ./novaideo/subscribers.py:38
+#: ./novaideo/subscribers.py:40
 msgid "The idea"
 msgstr ""
 
@@ -2752,13 +2752,11 @@ msgstr ""
 
 #: ./novaideo/views/user_management/templates/see_registration.pt:22
 #: ./novaideo/views/templates/ballots/new_registration.pt:18
-#: ./novaideo/content/person.py:251
 msgid "Birth date"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/see_registration.pt:24
 #: ./novaideo/views/templates/ballots/new_registration.pt:20
-#: ./novaideo/content/person.py:256
 msgid "Birthplace"
 msgstr ""
 
@@ -2799,20 +2797,22 @@ msgstr ""
 
 #: ./novaideo/views/user_management/templates/alert_registration.pt:10
 #: ./novaideo/content/person.py:240
-msgid "Prénoms, dans l'ordre de l'état-civil, séparés par des virgules"
+msgid "First names, in the order of the civil status, separated by commas"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/alert_registration.pt:11
 #: ./novaideo/content/person.py:246
-msgid "Noms, dans l'ordre de l'état-civil"
+msgid "Last names, in the order of the civil status"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/alert_registration.pt:12
-msgid "Date de naissance"
+#: ./novaideo/content/person.py:251
+msgid "Date of birth"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/alert_registration.pt:13
-msgid "Lieu de naissance"
+#: ./novaideo/content/person.py:256
+msgid "Place of birth"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/notations.pt:6
