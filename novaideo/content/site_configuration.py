@@ -419,7 +419,7 @@ class KeywordsConfSchema(Schema):
     def contact_invariant(self, appstruct):
         can_add_keywords = appstruct.get('can_add_keywords', 'false')
         can_add_keywords = False if can_add_keywords == 'false' else True
-        keywords = appstruct.get('keywords', colander.null)
+        keywords = appstruct.get('tree', colander.null)
         if not can_add_keywords and keywords is colander.null:
             raise colander.Invalid(
                 self, _('You must enter at least one keyword.'))

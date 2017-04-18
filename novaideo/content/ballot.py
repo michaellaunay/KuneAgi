@@ -596,7 +596,8 @@ class Ballot(VisualisableElement, Entity):
 
     @property
     def group_id(self):
-        return self.group.get('group_id', None)
+        group = getattr(self, 'group', DEFAULT_BALLOT_GROUP)
+        return group.get('group_id', None)
 
     @property
     def is_finished(self):
