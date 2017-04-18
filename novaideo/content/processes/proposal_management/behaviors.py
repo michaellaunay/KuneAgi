@@ -697,7 +697,7 @@ class SubmitProposalModeration(InfiniteCardinality):
         context.reindex()
         root = getSite()
         # get random moderators
-        moderators = get_random_users(ELECTORS_NB)
+        moderators = get_random_users(ELECTORS_NB, [context.author])
         if not moderators:
             not_published_ideas = publish_proposal_moderation(
                 context, request, root)

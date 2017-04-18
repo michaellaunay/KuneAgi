@@ -675,6 +675,19 @@ class SignalableEntity(Entity):
             self.len_current_reports += 1
             self.len_reports += 1
 
+    def get_decision_ballot(self):
+        ballots = [b for b in self.ballots
+                   if b.group_id == 'vote_moderation'
+                   and b.is_finished]
+        # return only the last ballot
+        ballots = sorted(
+            ballots,
+            key=lambda e: getattr(e, 'release_date', e.modified_at))
+        if ballots:
+            return ballots[-1]
+
+        return None
+
 
 @implementer(ISustainable)
 class Sustainable(Entity):

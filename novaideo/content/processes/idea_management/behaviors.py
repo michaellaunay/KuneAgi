@@ -57,6 +57,7 @@ from novaideo.content.correlation import CorrelationType
 from novaideo.content.processes.proposal_management import (
     init_proposal_ballots, add_attached_files)
 from novaideo.content.comment import Comment
+from novaideo.content.question import Answer
 from novaideo.content.processes.content_ballot_management import (
     ballot_result, close_ballot,
     ELECTORS_NB, start_ballot, remove_ballot_processes, get_ballot_alert_data)
@@ -518,7 +519,7 @@ class SubmitIdea(InfiniteCardinality):
         context.reindex()
         root = getSite()
         # get random moderators
-        moderators = get_random_users(ELECTORS_NB)
+        moderators = get_random_users(ELECTORS_NB, [context.author])
         if not moderators:
             publish_idea_moderation(context, request, root)
         else:

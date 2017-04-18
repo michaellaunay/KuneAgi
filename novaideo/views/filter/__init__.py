@@ -1547,11 +1547,16 @@ def get_comments(channel, filters, text_to_search='', filtered=False):
     return objects
 
 
-def get_random_users(nember):
+def get_random_users(nember, exclude=[]):
     result_set = find_entities(
         interfaces=[IPerson],
         metadata_filter={'states': ['active']})
     ids = list(result_set.ids)
+    for user_to_exclude in exclude:
+        user_id = get_oid(user_to_exclude)
+        if user_id in ids:
+            ids.remove(user_id)
+
     try:
         users_ids = random.sample(ids, nember)
     except ValueError as error:

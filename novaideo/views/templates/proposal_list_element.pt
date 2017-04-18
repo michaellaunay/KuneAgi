@@ -22,8 +22,8 @@
 	  </div>
     </div>
     <div tal:condition="censored">
-     <div class="alert-terms-of-use" i18n:translate="">
-        This content does not respect the terms of use.
+     <div class="alert-terms-of-use" tal:define="decision_ballot object.get_decision_ballot()">
+      <span i18n:translate="">This content does not respect the terms of use.</span> <span tal:condition="decision_ballot"><span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${decision_ballot.get_url(request)}">here</a>.</span>
      </div>
     </div>
   </div>

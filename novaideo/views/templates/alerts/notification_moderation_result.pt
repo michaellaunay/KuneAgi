@@ -15,6 +15,9 @@
     <span i18n:translate="" tal:condition="alert_kind == 'object_censor'">
       The contribution <span i18n:name="dynamic" >${subject.get_title()}</span> has been censored.
     </span>
+    <span tal:condition="alert_kind == 'object_report_ignored'" i18n:translate="">
+      The reports associated with this contribution <span i18n:name="dynamic" >${subject.get_title()}</span> has been ignored.
+    </span>
     <span i18n:translate="" tal:condition="alert_kind == 'object_closed'">
       The Woking Group on this Proposal has been inactive for several cycles, each lasting more than one week. For this reason, the Group has been dissolved, and the Proposal is back to the state "Open to a working group".
     </span>

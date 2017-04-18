@@ -626,6 +626,12 @@ class Ballot(VisualisableElement, Entity):
 
         return True
 
+    def get_url(self, request):
+        ballot_oid = get_oid(self, '')
+        return request.resource_url(
+            request.root, '@@seeballot', query={'id': ballot_oid}) \
+            if ballot_oid else None
+
     def finish_ballot(self):
         if 'finished' not in self.state:
             self.finished_at = datetime.datetime.now(tz=pytz.UTC)

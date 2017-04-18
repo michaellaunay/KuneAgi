@@ -81,7 +81,7 @@ def censor(context, request, root, **kw):
         context, ISignalableObject)
     if adapter is not None:
         context.state.remove('reported')
-        adapter.censor(request, ballo_url=kw.get('ballo_url', ''))
+        adapter.censor(request, ballot_url=kw.get('ballot_url', ''))
 
 
 def select_roles_validation(process, context):
@@ -130,7 +130,7 @@ class Report(InfiniteCardinality):
         ballots = [b for b in getattr(context, 'ballot_processes', [])
                    if b.id == 'contentreportdecision']
         if not ballots:
-            moderators = get_random_users(ELECTORS_NB)
+            moderators = get_random_users(ELECTORS_NB, [context.author])
             if not moderators:
                 ignore(context, request, root)
             else:
@@ -315,8 +315,18 @@ class ModerationVote(StartBallot):
             accepted = ballot_result(self, True)
             if accepted:
                 ignore(content, request, root)
+                alert(
+                    'internal', [request.root], moderators,
+                    internal_kind=InternalAlertKind.moderation_alert,
+                    subjects=[content], alert_kind='object_report_ignored',
+                    ballot=ballot_url)
             else:
                 censor(content, request, root, ballot_url=ballot_url)
+                alert(
+                    'internal', [request.root], moderators,
+                    internal_kind=InternalAlertKind.moderation_alert,
+                    subjects=[content], alert_kind='object_censor',
+                    ballot=ballot_url)
 
         super(ModerationVote, self).after_execution(
             content, request, **kw)

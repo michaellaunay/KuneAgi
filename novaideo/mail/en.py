@@ -615,6 +615,7 @@ The Identity Data received from the person upon his/her registration is the foll
   Family name(s): {subject_last_name}
   Given name(s): {subject_first_name}
   Date of birth: {birth_date}
+  Place of birth: {birthplace}
 
 The Verification process lasts {duration} day(s), i.e. it must be completed on or before {date_end_vote}. Beyond this date, the Verification process will be closed, and your decision will not be taken into account. By default, if no Verifier has voted upon this date, the registration will be refused.
 
