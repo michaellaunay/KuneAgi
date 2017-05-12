@@ -44,8 +44,20 @@ To run in development mode without docker::
     bin/runzeo -C etc/zeo.conf  # It starts in foreground, there is no output.  Use Ctrl+C to stop it.
     bin/pserve development.ini  # in another terminal
 
-The application is on http://localhost:6543
+The application is on http://127.0.0.1:6543
 
+I'll use $DOMAIN for http://127.0.0.1:6543 in the rest of the documentation.
+
+To send emails with gmail smtp, you need to uncomment some lines and configure
+the mail and password in development.ini
+
+
+with docker
+~~~~~~~~~~~
+
+You first need to install the `docker engine
+<https://docs.docker.com/engine/installation/linux/>`__ and
+`docker-compose <https://docs.docker.com/compose/install/>`__.
 
 To run in development mode with docker::
 
