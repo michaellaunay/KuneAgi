@@ -32,8 +32,7 @@ requires = [
     'metadata_parser',
     'deform_treepy',
     'numpy',
-    'keas.kmi',
-    'cipher.encryptingstorage',
+    'randomcolor'
     ]
 
 setup(name='novaideo',
