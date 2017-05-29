@@ -1,4 +1,3 @@
-=========
 Nova Ideo
 =========
 
@@ -32,6 +31,9 @@ The project is licensed under the AGPLv3+.
 
 Getting Started for development
 -------------------------------
+
+without docker
+~~~~~~~~~~~~~~
 
 To run in development mode without docker::
 
@@ -67,12 +69,56 @@ To run in development mode with docker::
 The app is deployed on https://local.ecreall.com:8443
 (local.ecreall.com resolves to 127.0.0.1 and is necessary for nginx)
 
-To send emails, you need to configure the MAILER variables in
-**docker-compose-dev.yml**
-The default configuration is used to connect with a postfix via a ssh tunnel
-like this::
+I'll use $DOMAIN for https://local.ecreall.com:8443 in the rest of the documentation.
+
+The default configuration in **docker-compose-dev.yml** is used to connect
+with a postfix via a ssh tunnel like this::
 
     ssh -L 172.17.0.1:9025:localhost:25 myserver.example.com
+
+To send emails with gmail smtp instead, you need to configure the MAILER
+variables in **docker-compose.override.yml**, copy the file
+**docker-compose.override.yml.templ** to **docker-compose.override.yml** and
+edit it. This will overrides the configuration in **docker-compose-dev.yml**.
+
+To stop the application, do a Ctrl-c, and to stop the other containers (nginx),
+run::
+
+    ./run.sh down
+
+To execute the tests::
+
+    ./run.sh test -s novaideo
+
+
+Allow your gmail account to be used to send emails
+--------------------------------------------------
+
+To allow your gmail account to be used to send emails, you need to enable
+`less secure apps <https://support.google.com/accounts/answer/6010255>`__ and
+do the `captcha <https://support.google.com/accounts/answer/6009563>`__.
+Look at the logs in the terminal if you have an error when sending a mail.
+
+Be careful to not commit your gmail password!
+The ini file doesn't support the use of % character in your password.
+It thinks it's the beginning of a variable.
+If you use this character in your password, you will need to change it!
+
+How to assign roles to a person
+-------------------------------
+
+If you want to give a person some additional roles, you need to have the
+*Administrator* or *Site administrator* role. The first time, you will need to
+do it with the special super administrator account.
+Go to $DOMAIN/manage (there is no accessible link from the home page)
+and authenticate with login admin and the password
+you have in SECRET environment variable
+(It's substanced.initial_password key in development.ini if you use the
+install without docker).
+Return to $DOMAIN and go the hamburger menu on the top left, select
+See/Members, go to a person's profile, click on *Assign
+roles* button and give her the *Site administrator*, *Examiner* or *Moderator*
+role.
 
 
 Deployment with docker
@@ -83,12 +129,15 @@ Clone a specific version::
     git clone -b VERSION git@github.com:ecreall/nova-ideo.git
     cd nova-ideo
 
-(replace VERSION with the latest release, 1.1 for example)
+(replace VERSION with the latest release, 1.2 for example)
 
 docker-compose runs a nginx container on port 80 and 443.
 You need to edit the **nginx-app-prod.conf** file to replace mynovaideo.example.com
 by your domain and add certificates (**server.key** and **server.crt**) to the
 **tls** directory.
+
+Be sure that in **docker-compose.yml** it uses the correct version
+ecreall/novaideo:release-VERSION. Edit it if it's not the case.
 
 You need to configure some environment variables, copy the file
 **docker-compose.override.yml.templ** to **docker-compose.override.yml** and edit it.
@@ -102,6 +151,10 @@ You need to configure some environment variables, copy the file
 - MAILER_PASSWORD: SMTP password
 - MAILER_TLS: Use TLS
 - MAILER_SSL: Use SSL
+- LOGO_FILENAME: empty by default to use the Nova-Ideo logo. You can
+  set the variable to 'marianne.svg' or other images included in the
+  novaideo/static/images/ directory to configure the logo when the application
+  is created.
 
 If you want to connect to a postfix container, there is a commented example
 in **docker-compose.override.yml.templ** that use an external postfix container
@@ -122,6 +175,10 @@ After the initial connection, you can increase the number of workers that are
 used to handle the requests in **docker-compose.override.yml** and run again
 **sudo docker-compose up -d** (WORKERS=3 is a good default).
 
+To see the logs::
+
+    docker-compose logs -f
+
 
 How to upgrade your install
 ---------------------------
@@ -129,10 +186,10 @@ How to upgrade your install
 For each release, a docker image is built and the **docker-compose.yml** is
 modified accordingly.
 
-If you previously cloned the repository with version 1.0, to upgrade to 1.1 for
+If you previously cloned the repository with version 1.1, to upgrade to 1.2 for
 example, do::
 
-    git checkout 1.1
+    git checkout 1.2
     sudo docker-compose up -d
 
 After that, be sure to execute the evolve steps by connecting with the super

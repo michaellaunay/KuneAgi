@@ -2199,12 +2199,9 @@ METADATA_GETTERS = {
     'referendumprocess.vote': get_vote_metadata,
     'majorityjudgmentprocess.vote': get_vote_metadata,
     'rangevotingprocess.vote': get_vote_metadata,
-<<<<<<< HEAD
-    'membernotationmanagement.note': get_note_metadata
-=======
+    'membernotationmanagement.note': get_note_metadata,
 
     'yammerprocess.remove': get_remove_connector_metadata,
->>>>>>> e698368... add yammer connector
 }
 
 

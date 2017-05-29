@@ -1,7 +1,24 @@
 Changelog
 =========
 
-1.2 (unreleased)
+1.4 (unreleased)
+----------------
+
+- Nothing changed yet.
+
+
+1.3 (2017-02-25)
+----------------
+
+- When anonymous, use the browser language for the language of the user
+  interface.
+
+- Add Challenges feature.
+
+- Add Questions feature.
+
+
+1.2 (2017-01-06)
 ----------------
 
 - Remove runtime pyramid_robot dependency, this avoid a dependency on
