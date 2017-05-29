@@ -335,6 +335,7 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
     newsletters = CompositeMultipleProperty('newsletters')
     smart_folders = CompositeMultipleProperty('smart_folders')
     tree = synchronize_tree()
+    connectors = CompositeMultipleProperty('connectors')
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)
@@ -581,3 +582,8 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
     def merge_tree(self, tree):
         if getattr(self, 'can_add_keywords', True):
             self.tree = merge_tree(dict(self.tree), tree)
+
+    def get_connectors(self, connector_id):
+        return filter(
+            lambda c: c.connector_id == connector_id,
+            self.connectors)

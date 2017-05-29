@@ -35,6 +35,7 @@ requires = [
     'randomcolor',
     'keas.kmi',
     'cipher.encryptingstorage',
+    'yampy2'
     ]
 
 setup(name='novaideo',
