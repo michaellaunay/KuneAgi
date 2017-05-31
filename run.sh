@@ -5,7 +5,7 @@ options=${options:-"-f docker-compose-dev.yml"}
 
 do_buildout() {
     CACHE_PATH=${CACHE_PATH:-$PWD/cache}
-    IMAGE=${IMAGE:-"novaideo_novaideo:latest"}
+    IMAGE=${IMAGE:-"kuneagi_novaideo:latest"}
     # do the buildout
     # "-m 100m --memory-swappiness 0" options are used to prevent a fork bomb
     # when buildout restart itself infinitely because of setuptools upgrade,
@@ -43,7 +43,7 @@ case "$1" in
   *)
     if [ -z "$1" ]; then
       docker-compose $options up -d
-      docker attach novaideo_novaideo_1
+      docker attach kuneagi_novaideo_1
     else
       docker-compose $options $@
     fi
