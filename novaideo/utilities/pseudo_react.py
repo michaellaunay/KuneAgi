@@ -1732,6 +1732,13 @@ def get_remove_connector_metadata(action, request, context, api, **kwargs):
     return result
 
 
+def get_import_connector_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("The messages has been imported."),
+        **kwargs)
+    return result
+
 #Counters
 
 def component_navbar_myselections(action, request, context, api, **kwargs):
@@ -2202,6 +2209,7 @@ METADATA_GETTERS = {
     'membernotationmanagement.note': get_note_metadata,
 
     'yammerprocess.remove': get_remove_connector_metadata,
+    'yammerprocess.import_messages': get_import_connector_metadata,
 }
 
 
