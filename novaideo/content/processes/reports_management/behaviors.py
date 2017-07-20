@@ -41,6 +41,9 @@ from novaideo.content.processes.content_ballot_management.behaviors import (
     StartBallot)
 
 
+_marker = object()
+
+
 def ignore(context, request, root):
     user = get_current()
     context_oid = get_oid(context)
@@ -312,14 +315,14 @@ class ModerationVote(StartBallot):
             ballot_url = request.resource_url(
                 root, '@@seeballot', query={'id': ballot_oid}) \
                 if ballot_oid else None
-            accepted = ballot_result(self, True)
+            accepted = ballot_result(self, _marker)
             if accepted:
                 ignore(content, request, root)
                 alert(
                     'internal', [request.root], moderators,
                     internal_kind=InternalAlertKind.moderation_alert,
                     subjects=[content], alert_kind='object_report_ignored',
-                    ballot=ballot_url)
+                    ballot=ballot_url if accepted is not _marker else None)
             else:
                 censor(content, request, root, ballot_url=ballot_url)
                 alert(
