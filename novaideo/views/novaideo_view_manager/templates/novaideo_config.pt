@@ -17,7 +17,7 @@
   <dd>${getattr(root, 'participants_maxi', 12)} <span i18n:translate="">participants</span></dd>
 
   <dt i18n:translate="">Maximum number of Working Groups per Member</dt>
-  <dd>${getattr(root, 'participations_maxi', 5)} <span i18n:translate="">participants</span></dd>
+  <dd>${getattr(root, 'participations_maxi', 5)} <span i18n:translate="">groups</span></dd>
 
   <dt i18n:translate="">Minimum number of evaluation Tokens allocated to a Member</dt>
   <dd>${getattr(root, 'tokens_mini', 7)} <span i18n:translate="">tokens</span></dd>

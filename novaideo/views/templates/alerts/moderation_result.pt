@@ -50,7 +50,7 @@
       </span>
     </span>
     <span tal:condition="alert_kind == 'registration_accepted'">
-      <span i18n:translate="">The registration of <span i18n:name="dynamic">${object.user_title}</span> has been accepted</span>
+      <span i18n:translate="">The registration of <strong i18n:name="dynamic">${object.user_first_name} ${object.user_last_name}</strong> has been accepted</span>
       <span tal:condition="getattr(object, 'ballot', '')">
         <span i18n:translate="">The results of the ballots are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
       </span>

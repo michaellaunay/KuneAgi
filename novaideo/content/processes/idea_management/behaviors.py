@@ -65,6 +65,9 @@ from novaideo.content.processes.content_ballot_management.behaviors import (
     StartBallot)
 
 
+_marker = object()
+
+
 def publish_idea_moderation(context, request, root, **kw):
     if root.support_ideas:
         context.state = PersistentList(['submitted_support', 'published'])
@@ -1355,11 +1358,11 @@ class ModerationVote(StartBallot):
             ballot_url = request.resource_url(
                 root, '@@seeballot', query={'id': ballot_oid}) \
                 if ballot_oid else None
-            accepted = ballot_result(self, True)
+            accepted = ballot_result(self, _marker)
             if accepted:
                 publish_idea_moderation(
                     idea, request, root,
-                    ballot_url=ballot_url)
+                    ballot_url=ballot_url if accepted is not _marker else None)
             else:
                 archive_idea(
                     idea, request, root, {'explanation': ''},

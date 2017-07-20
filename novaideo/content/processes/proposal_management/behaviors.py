@@ -105,6 +105,9 @@ VOTE_REOPENING_MESSAGE = _("Voting results regarding the further improvement of 
                           " your vote on reopening the working group is needed.")
 
 
+_marker = object()
+
+
 def confirm_proposal(
     context, request, user, submitted_appstruct, root):
     working_group = context.working_group
@@ -2267,12 +2270,12 @@ class ModerationVote(StartBallot):
             ballot_url = request.resource_url(
                 root, '@@seeballot', query={'id': ballot_oid}) \
                 if ballot_oid else None
-            accepted = ballot_result(self, True)
+            accepted = ballot_result(self, _marker)
             user = get_current()
             if accepted:
                 not_published_ideas = publish_proposal_moderation(
                     proposal, request, root,
-                    ballot_url=ballot_url)
+                    ballot_url=ballot_url if accepted is not _marker else None)
                 request.registry.notify(ActivityExecuted(
                     self, not_published_ideas, user))
             else:
