@@ -386,7 +386,7 @@ class NovaideoAPI(IndexManagementJsonView):
                 self.context, 'novaideoapi',
                 query={'op': 'support_idea'})
             result['opposit_title'] = localizer.translate(_('Support'))
-            result['opposition_counter'] = len(self.context.tokens_support)
+            result['opposition_counter'] = self.context.len_support
 
         result['hastoken'] = True if getattr(user, 'tokens', []) else False
         result.update(get_components_data(
@@ -407,7 +407,7 @@ class NovaideoAPI(IndexManagementJsonView):
                 self.context, 'novaideoapi',
                 query={'op': 'support_proposal'})
             result['opposit_title'] = localizer.translate(_('Support'))
-            result['opposition_counter'] = len(self.context.tokens_support)
+            result['opposition_counter'] = self.context.len_support
 
         user = get_current()
         result['hastoken'] = True if getattr(user, 'tokens', []) else False
@@ -430,7 +430,7 @@ class NovaideoAPI(IndexManagementJsonView):
                 self.context, 'novaideoapi',
                 query={'op': 'oppose_idea'})
             result['opposit_title'] = localizer.translate(_('Oppose'))
-            result['opposition_counter'] = len(self.context.tokens_opposition)
+            result['opposition_counter'] = self.context.len_opposition
 
         user = get_current()
         result['hastoken'] = True if getattr(user, 'tokens', []) else False
@@ -453,7 +453,7 @@ class NovaideoAPI(IndexManagementJsonView):
                 self.context, 'novaideoapi',
                 query={'op': 'oppose_proposal'})
             result['opposit_title'] = localizer.translate(_('Oppose'))
-            result['opposition_counter'] = len(self.context.tokens_opposition)
+            result['opposition_counter'] = self.context.len_opposition
 
         user = get_current()
         result['hastoken'] = True if getattr(user, 'tokens', []) else False
