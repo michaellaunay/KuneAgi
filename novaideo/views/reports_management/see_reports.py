@@ -32,7 +32,7 @@ from novaideo.utilities.util import (
 CONTENTS_MESSAGES = {
     '0': _(u"""No element found"""),
     '1': _(u"""One element found"""),
-    '*': _(u"""${nember} elements found""")
+    '*': _(u"""${number} elements found""")
 }
 
 
