@@ -746,11 +746,42 @@ class Tokenable(Entity):
         super(Tokenable, self).__init__(**kwargs)
         self.set_data(kwargs)
 
-    @property
-    def tokens(self):
-        result = list(self.tokens_opposition)
-        result.extend(list(self.tokens_support))
-        return result
+    def remove_token(self, user):
+        user_oid = get_oid(user)
+        if user_oid in self.allocated_tokens:
+            evaluation_type = self.allocated_tokens.pop(user_oid)
+            self.len_allocated_tokens.setdefault(evaluation_type, 0)
+            self.len_allocated_tokens[evaluation_type] -= 1
+
+    def evaluators(self, evaluation_type=None):
+        if evaluation_type:
+            return [get_obj(key) for value, key
+                    in self.allocated_tokens.byValue(evaluation_type)]
+
+        return [get_obj(key) for key
+                in self.allocated_tokens.keys()]
+
+    def evaluation(self, user):
+        user_oid = get_oid(user, None)
+        return self.allocated_tokens.get(user_oid, None)
+
+    def remove_tokens(self, force=False):
+        evaluators = self.evaluators()
+        for user in evaluators:
+            user.remove_token(self)
+            if force:
+                self.remove_token(user)
+
+    def user_has_token(self, user, root=None):
+        if hasattr(user, 'has_token'):
+            return user.has_token(self, root)
+
+        return False
+
+    def init_support_history(self):
+        # [(user_oid, date, support_type), ...], support_type = {1:support, 0:oppose, -1:withdraw}
+        if not hasattr(self, '_support_history'):
+            setattr(self, '_support_history', PersistentList())
 
     @property
     def len_support(self):
