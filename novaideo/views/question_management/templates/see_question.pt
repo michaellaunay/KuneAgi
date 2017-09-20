@@ -44,7 +44,7 @@
     <span i18n:translate="">This content does not respect the Use Charter./span> <span tal:condition="decision_ballot"><span i18n:translate="">The results of the distributed moderation vote are available</span> <a i18n:translate="" href="${decision_ballot.get_url(request)}">here</a>.</span>
    </div>
   </div>
-  <div tal:condition="not to_hide">
+  <div class="content-body" tal:condition="not to_hide">
     <div class="validated-answer-container">
         <div tal:replace="structure support_actions_body"/>
         <span i18n:attributes="title" title="${state}" tal:condition="'closed' in object.state" class="glyphicon glyphicon-ok validated-question">
