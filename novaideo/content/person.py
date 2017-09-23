@@ -387,6 +387,72 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         if name == 'organization' and value:
             self.init_contents_organizations()
 
+
+    def get_len_tokens(self, root=None, exclude_reserved_tokens=False):
+        root = root or getSite()
+        return root.tokens_mini if exclude_reserved_tokens \
+            else root.tokens_mini + len(self.reserved_tokens)
+
+    def get_len_evaluations(self, exclude_reserved_tokens=False):
+        total = self.len_allocated_tokens.get(Evaluations.support, 0) + \
+            self.len_allocated_tokens.get(Evaluations.oppose, 0)
+        if exclude_reserved_tokens:
+            return total - len([o for o in self.reserved_tokens
+                                if o in self.allocated_tokens])
+        return  total
+
+    def get_len_free_tokens(self, root=None, exclude_reserved_tokens=False):
+        root = root or getSite()
+        return self.get_len_tokens(root, exclude_reserved_tokens) - \
+            self.get_len_evaluations(exclude_reserved_tokens)
+
+    def has_token(self, obj=None, root=None):
+        root = root or getSite()
+        obj_oid = get_oid(obj, None)
+        if obj_oid and obj_oid in self.reserved_tokens:
+            return obj_oid not in self.allocated_tokens
+
+        return self.get_len_free_tokens(root, True)>0
+
+    def add_token(self, obj, evaluation_type, root=None):
+        if self.has_token(obj, root):
+            self.allocated_tokens[get_oid(obj)] = evaluation_type
+            self.len_allocated_tokens.setdefault(evaluation_type, 0)
+            self.len_allocated_tokens[evaluation_type] += 1
+
+    def remove_token(self, obj):
+        obj_oid = get_oid(obj)
+        if obj_oid in self.allocated_tokens:
+            evaluation_type = self.allocated_tokens.pop(obj_oid)
+            self.len_allocated_tokens.setdefault(evaluation_type, 0)
+            self.len_allocated_tokens[evaluation_type] -= 1
+
+    
+    def add_reserved_token(self, obj):
+        obj_oid = get_oid(obj)
+        if obj_oid not in self.reserved_tokens:
+            self.reserved_tokens.append(obj_oid)
+
+    def remove_reserved_token(self, obj):
+        obj_oid = get_oid(obj)
+        if obj_oid in self.reserved_tokens:
+            self.reserved_tokens.remove(obj_oid)
+
+    def evaluated_objs(self, evaluation_type=None):
+        if evaluation_type:
+            return [get_obj(key) for value, key
+                    in self.allocated_tokens.byValue(evaluation_type)]
+        
+        return [get_obj(key) for key
+                in self.allocated_tokens.keys()]
+
+    def evaluated_objs_ids(self, evaluation_type=None):
+        if evaluation_type:
+            return [key for value, key
+                    in self.allocated_tokens.byValue(evaluation_type)]
+        
+        return list(self.allocated_tokens.keys())
+
     def init_contents_organizations(self):
         novaideo_catalog = find_catalog('novaideo')
         dace_catalog = find_catalog('dace')
