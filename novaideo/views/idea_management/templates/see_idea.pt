@@ -1,5 +1,6 @@
 <div 
-  tal:define="support_condition request.support_ideas and 'published' in idea.state and 'examined' not in idea.state;
+  tal:define="support_condition request.support_ideas and 'published' in idea.state;
+  examined 'examined' in idea.state;
   oid idea.__oid__;">
   <div class="content-body" tal:condition="not to_hide">
   <div class="content-body-left">

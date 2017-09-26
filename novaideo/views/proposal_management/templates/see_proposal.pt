@@ -1,6 +1,7 @@
 <div tal:omit-tag="" i18n:domain="novaideo"
    tal:define="
     submitted request.support_proposals and 'submitted_support' in proposal.state;
+    examined 'examined' in proposal.state;
     oid proposal.__oid__">
   <div class="content-body" tal:condition="not to_hide">
     <div class="content-body-left">

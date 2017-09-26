@@ -381,6 +381,9 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         self.guide_tour_data = PersistentDict({})
         self.confidence_index = 0
         self._notes = OOBTree()
+        self.allocated_tokens = OOBTree()
+        self.len_allocated_tokens = PersistentDict({})
+        self.reserved_tokens = PersistentList([])
 
     def __setattr__(self, name, value):
         super(Person, self).__setattr__(name, value)
@@ -533,12 +536,6 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         result.extend(self.questions)
         result.extend(self.challenges)
         return result
-
-    @property
-    def supports(self):
-        result = [t.__parent__ for t in self.tokens_ref
-                  if not(t.__parent__ is self)]
-        return list(set(result))
 
     @property
     def active_working_groups(self):

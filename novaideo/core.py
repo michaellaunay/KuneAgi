@@ -9,6 +9,7 @@ import venusian
 from BTrees.OOBTree import OOBTree
 from persistent.list import PersistentList
 from persistent.dict import PersistentDict
+from webob.multidict import MultiDict
 from zope.interface import implementer
 
 from pyramid.threadlocal import get_current_request
@@ -67,6 +68,11 @@ NOVAIDO_ACCES_ACTIONS = {}
 ADVERTISING_CONTAINERS = {}
 
 ON_LOAD_VIEWS = {}
+
+
+class Evaluations():
+    support = 'support'
+    oppose = 'oppose'
 
 
 def get_searchable_content(request=None):
@@ -745,6 +751,17 @@ class Tokenable(Entity):
     def __init__(self, **kwargs):
         super(Tokenable, self).__init__(**kwargs)
         self.set_data(kwargs)
+        self.allocated_tokens = OOBTree()
+        self.len_allocated_tokens = PersistentDict({})
+
+    def add_token(self, user, evaluation_type):
+        user_oid = get_oid(user)
+        if user_oid in self.allocated_tokens:
+            self.remove_token(user)
+
+        self.allocated_tokens[user_oid] = evaluation_type
+        self.len_allocated_tokens.setdefault(evaluation_type, 0)
+        self.len_allocated_tokens[evaluation_type] += 1
 
     def remove_token(self, user):
         user_oid = get_oid(user)
@@ -785,18 +802,8 @@ class Tokenable(Entity):
 
     @property
     def len_support(self):
-        return len(self.tokens_support)
+        return self.len_allocated_tokens.get(Evaluations.support, 0)
 
     @property
     def len_opposition(self):
-        return len(self.tokens_opposition)
-
-    def get_token(self, user):
-        tokens = [t for t in getattr(user, 'tokens', []) if
-                  not t.proposal]
-        return tokens[-1] if tokens else None
-
-    def remove_tokens(self):
-        tokens = [t for t in self.tokens]
-        for token in list(tokens):
-            token.owner.addtoproperty('tokens', token)
+        return self.len_allocated_tokens.get(Evaluations.oppose, 0)

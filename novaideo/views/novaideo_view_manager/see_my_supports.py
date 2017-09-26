@@ -48,12 +48,13 @@ class SeeMySupportsView(SeeMyContentsView):
     content_types = ['idea', 'proposal']
 
     def _get_title(self, **args):
+        user = args.get('user')
         return _(self.contents_messages[args.get('index')],
             mapping={'number': args.get('len_result'),
                      'tokens': user.get_len_free_tokens() if hasattr(user, 'get_len_free_tokens') else 0})
 
     def _get_content_ids(self, user):
-        return [get_oid(o) for o in getattr(user, 'supports', [])]
+        return user.allocated_tokens.keys() if hasattr(user, 'allocated_tokens') else []
 
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
