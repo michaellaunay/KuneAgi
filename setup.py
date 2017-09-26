@@ -38,7 +38,7 @@ requires = [
     'keas.kmi',
     'cipher.encryptingstorage',
     'yampy2',
-    'twilio',
+    'ovh',
     'pyramid-sms'
     ]
 
