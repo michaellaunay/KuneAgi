@@ -22,7 +22,7 @@
 	      <small class="date" tal:condition="getattr(object, 'function', '')">
             ${object.function}
         </small>
-        <small style="margin-top: 0px;" class="user-score pull-right" ><span class="score">${getattr(object, 'confidence_index', 0)}</span> <span i18n:translate="">score</span></small>
+        <small style="margin-top: 0px;" class="badge user-score pull-right" ><span class="score">${getattr(object, 'confidence_index', 0)}</span> <span i18n:translate="">score</span></small>
     </h4>
   </a>
     <div class="popover-content">

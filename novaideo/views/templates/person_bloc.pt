@@ -25,6 +25,7 @@
                tal:condition="profil_picture is None"
                src="${default_img}" width="50"/>
           ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)}
+          <small style="margin-left: 0px;" class="badge user-score" ><span class="score">${getattr(object, 'confidence_index', 0)}</span> <span i18n:translate="">score</span></small>
           <small class="date">
             <span i18n:translate="">Member since</span> <span tal:replace="layout.to_localized_time(object.created_at, date_only=True)"/>
           </small>

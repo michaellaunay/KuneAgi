@@ -817,7 +817,7 @@ class AnalyticsAPIJsonView(BasicView):
         validated = getattr(formview, 'validated', {})
         default_contents = self.request.analytics_default_content_types
         states = validated.get('states', [])
-        keywords = validated.get('keywords', [])
+        tree = validated.get('tree', {})
         types = validated.get('content_types', default_contents)
         author = validated.get('author', None)
         poles = validated.get('poles', [])
@@ -839,7 +839,7 @@ class AnalyticsAPIJsonView(BasicView):
             'metadata_filter': {
                 'content_types': types,
                 'states': states,
-                'keywords': keywords
+                'tree': tree
             },
             'contribution_filter': contribution_filter
         }

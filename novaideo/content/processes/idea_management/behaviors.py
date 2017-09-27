@@ -114,10 +114,8 @@ def publish_idea_moderation(context, request, root, **kw):
 def archive_idea(context, request, root, appstruct, **kw):
     explanation = appstruct['explanation']
     context.state = PersistentList(['archived'])
+    context.remove_tokens(True)
     context.reindex()
-    for token in list(context.tokens):
-        token.owner.addtoproperty('tokens', token)
-
     user = context.author
     alert('internal', [root], [user],
           internal_kind=InternalAlertKind.moderation_alert,

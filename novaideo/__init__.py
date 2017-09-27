@@ -9,6 +9,7 @@ import pytz
 import os
 import logging
 import re
+from persistent.dict import PersistentDict
 from persistent.list import PersistentList
 
 from pyramid.config import Configurator
@@ -677,7 +678,6 @@ def evolve_add_nia_bot(root, registry):
 def add_guide_tour_data(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IPerson
-    from persistent.dict import PersistentDict
 
     contents = find_entities(
         interfaces=[IPerson]
@@ -695,7 +695,6 @@ def add_guide_tour_data(root, registry):
 def init_guide_tour_data(root, registry):
     from novaideo.views.filter import find_entities
     from novaideo.content.interface import IPerson
-    from persistent.dict import PersistentDict
 
     contents = find_entities(
         interfaces=[IPerson]
@@ -784,7 +783,6 @@ def evolve_mails_languages(root, registry):
 
 def evolve_colors(root, registry):
     from novaideo.content.novaideo_application import DEFAULT_COLORS
-    from persistent.dict import PersistentDict
     root.colors_mapping = PersistentDict(DEFAULT_COLORS)
     log.info('Colors evolved.')
 

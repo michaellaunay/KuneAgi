@@ -7,7 +7,6 @@
 import os
 import datetime
 import pytz
-import json
 from math import ceil, floor
 import numpy as np
 from BTrees.OOBTree import OOBTree
@@ -22,7 +21,7 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer, get_oid
 from substanced.principal import UserSchema
 
-from dace.util import getSite, find_catalog
+from dace.util import getSite, find_catalog, get_obj
 from dace.objectofcollaboration.entity import Entity
 from dace.objectofcollaboration.principal import User
 from dace.descriptors import (
@@ -46,10 +45,10 @@ from novaideo.core import (
     SearchableEntity,
     SearchableEntitySchema,
     keyword_widget,
-    keywords_validator,
     CorrelableEntity,
     generate_access_keys,
-    Debatable)
+    Debatable,
+    Evaluations)
 from .interface import (
     IPerson, IPreregistration, IAlert, IProposal, Iidea)
 from novaideo import _, AVAILABLE_LANGUAGES, LANGUAGES_TITLES
