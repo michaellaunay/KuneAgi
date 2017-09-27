@@ -179,15 +179,6 @@ def default_content_types(node, kw):
     return ['proposal']
 
 
-@colander.deferred
-def keywords_choice(node, kw):
-    context = node.bindings['context']
-    values = [(i, i) for i in sorted(context.keywords)]
-    return Select2Widget(values=values,
-                         create=False,
-                         multiple=True)
-
-
 class PublicationDates(Schema):
 
     date_from = colander.SchemaNode(
@@ -227,7 +218,6 @@ class ContentsByKeywordsSchema(Schema):
 
     tree = colander.SchemaNode(
         typ=DictSchemaType(),
-        validator=colander.All(core.keywords_validator),
         widget=core.keyword_widget,
         default=DEFAULT_TREE,
         title=_('Keywords'),
