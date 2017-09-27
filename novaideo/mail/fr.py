@@ -839,6 +839,12 @@ Vous êtes maintenant désabonné de la newsletter {newsletter_title}.
 """ + PORTAL_SIGNATURE
 
 
+FIRST_INVITATION = {
+    'subject': FIRST_INVITATION_SUBJECT,
+    'template': FIRST_INVITATION_MESSAGE
+}
+
+
 FIRST_INVITATION_SMS = {
     'subject': FIRST_INVITATION_SUBJECT,
     'template': FIRST_INVITATION_SMS_MESSAGE
