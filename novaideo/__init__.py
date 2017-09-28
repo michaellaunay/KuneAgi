@@ -938,6 +938,22 @@ def evolve_examined_tokens(root, registry):
     log.info('Tokens evolved.')
 
 
+def evolve_branches(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import ISearchableEntity
+
+    request = get_current_request()
+    request.root = root  # needed when executing the step via sd_evolve script
+    contents = find_entities(interfaces=[ISearchableEntity])
+    for content in contents:
+        try:
+            content.tree = content.tree
+        except Exception as error:
+            log.warning(error)
+
+    log.info('Branches evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -994,6 +1010,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_state_pontusFiles)
     config.add_evolution_step(evolve_person_tokens)
     config.add_evolution_step(evolve_examined_tokens)
+    config.add_evolution_step(evolve_branches)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

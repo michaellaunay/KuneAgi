@@ -36,7 +36,7 @@ def synchronize_tree():
     def _set(self, newtree):
         self._tree = PersistentDict(deepcopy(newtree))
         self.branches = PersistentList(
-            [k.lower() for k in get_all_branches(self._tree)])
+            [k.lower() for k in get_all_branches(self._tree) if k])
         self.keywords = PersistentList(
             tree_to_keywords(self._tree, False))
         if ROOT_TREE in self.keywords:
