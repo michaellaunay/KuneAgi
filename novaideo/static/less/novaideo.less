@@ -1,6 +1,22 @@
+.collapsible-container {
+  min-height: 25px;
+}
 
-.question-container{
-    display: inline-block;  
+.collapsible-activator {
+  float: right;
+  font-size: 17px;
+  margin-right: 10px;
+  color: #54902a;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.collapsible-activator.activated {
+  color: #ef6e18;
+}
+
+.question-container {
+  display: inline-block;
 }
 
 .checkbox-scroll .scroll-item.checkbox {
@@ -1970,8 +1986,16 @@ form .btn {
   left: 0;
   top: 0;
   bottom: 0;
-  z-index: 1050;
-  overflow: auto;
+  z-index: 2000;
+  overflow: auto !important;
+  background-color: white;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.full-screen .content-text {
+  height: auto !important;
 }
 
 .full-screen.full .col-md-4 {
@@ -2688,8 +2712,6 @@ ul.btn-sub-menu li {
 
 .correction-navbar.navbar {
   min-height: 30px;
-  margin-left: 19px;
-  margin-right: 19px;
 }
 
 .correction-navbar.navbar > ul {
@@ -3690,12 +3712,12 @@ ins {
   margin-top: 15px;
 }
 
-.badge.user-score{
+.badge.user-score {
   color: white;
   background-color: #ef6e18;
 }
 
-.user-function{
+.user-function {
   color: gray;
   margin-bottom: 5px;
   margin-left: 5px;
@@ -3706,7 +3728,7 @@ ins {
   font-size: 13px;
 }
 
-.user-panel-container .user-function{
+.user-panel-container .user-function {
   color: white;
 }
 
@@ -4048,17 +4070,15 @@ ins {
 }
 
 .content-body {
-  float:left;
+  float: left;
   width: 100%;
 }
 
 .content-text {
-  margin-left: 19px;
-  margin-right: 19px;
+  padding-left: 19px;
 }
 
 .content-text.row-md {
-  margin-left: 38px !important;
   min-height: 80px;
 }
 
@@ -4091,7 +4111,7 @@ ins {
   height: 110px;
   margin-top: 0px !important;
   margin-right: 0px;
-  margin-bottom: 20px
+  margin-bottom: 20px;
 }
 
 .proposal-support .label .glyphicon {
@@ -5029,8 +5049,8 @@ span.circle {
   }
 
   .content-text {
-    margin-left: 0px;
-    margin-right: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   .user-data-container > h3 > span {
     display: block !important;

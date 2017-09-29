@@ -93,7 +93,18 @@ novaideoI18n = {
       "<strong>Nova-Ideo</strong> is a platform implementing a complete process, " +
       "in which working groups transform ideas into complete proposals with " +
       "a system of amendment and voting sessions.",
-    "Please, validate the captcha.": "Please, validate the captcha."
+    "Please, validate the captcha.": "Please, validate the captcha.",
+    "Click here to collapse or to expand this section":
+      "Click here to collapse or to expand this section",
+    voteFinished:
+      "You have finished your vote. Please keep the associated informations with each ballot.",
+    Finish: "Finish",
+    "Clear formatting": "Clear formatting",
+    "Insert a new paragraph": "Insert a new paragraph",
+    "Add the new text here": "Add the new text here",
+    Collapsible: "Collapsible",
+    "Collapsible style": "Collapsible style",
+    "Collapsible body": "Collapsible body"
   },
 
   fr: {
@@ -190,7 +201,18 @@ novaideoI18n = {
       "<strong>Nova-Ideo</strong> est une plateforme mettant en œuvre un processus complet par lequel des " +
       "groupes de travail transforment des idées en propositions abouties grâce à " +
       "un système de sessions d'amendements et de votes.",
-    "Please, validate the captcha.": "Veuillez valider le captcha."
+    "Please, validate the captcha.": "Veuillez valider le captcha.",
+    "Click here to collapse or to expand this section":
+      "Cliquez ici pour réduire ou étendre cette section",
+    voteFinished:
+      "Vous avez fini de voter. Veuillez conserver les informations associées à chaque scrutin.",
+    Finish: "Terminer",
+    "Clear formatting": "Effacer la mise en forme",
+    "Insert a new paragraph": "Insérer un nouveau paragraphe",
+    "Add the new text here": "Ajouter le nouveau texte ici",
+    "Collapsible body": "Le corps du pliant",
+    Collapsible: "Pliant",
+    "Collapsible style": "Le style du pliant"
   }
 }
 

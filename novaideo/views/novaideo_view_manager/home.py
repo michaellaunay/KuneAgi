@@ -133,6 +133,10 @@ class ContentView(BasicView):
         return result
 
 
+@asyn_component_config(
+    id='home-ideas',
+    on_demand=True,
+    delegate='novaideoapp_home')
 class IdeasView(ContentView):
     title = _('Ideas')
     content_type = 'idea'
@@ -142,13 +146,8 @@ class IdeasView(ContentView):
     counter_id = 'home-ideas-counter'
     empty_message = _("No registered ideas")
     empty_icon = 'icon novaideo-icon icon-idea'
-    isactive = True
 
 
-@asyn_component_config(
-    id='home-proposals',
-    on_demand=True,
-    delegate='novaideoapp_home')
 class ProposalsView(ContentView):
     title = _('The Working Groups')
     content_type = 'proposal'
@@ -158,6 +157,7 @@ class ProposalsView(ContentView):
     counter_id = 'home-proposals-counter'
     empty_message = _("No working group created")
     empty_icon = 'icon novaideo-icon icon-wg'
+    isactive = True
 
 
 @asyn_component_config(
@@ -197,24 +197,24 @@ class HomeView(MultipleView):
     css_class = 'simple-bloc contents-bloc'
     container_css_class = 'home'
     center_tabs = True
-    views = (QuestionsView, IdeasView, ProposalsView)
+    views = (ProposalsView, QuestionsView, IdeasView)
 
     def _init_views(self, views, **kwargs):
         if self.params('load_view'):
             delegated_by = kwargs.get('delegated_by', None)
             views = [IdeasView]
-            if 'question' in self.request.content_to_manage:
-                views = [QuestionsView, IdeasView]
-
             if 'proposal' in self.request.content_to_manage:
-                views.append(ProposalsView)
+                views = [ProposalsView, IdeasView]
+
+            if 'question' in self.request.content_to_manage:
+                views.append(QuestionsView)
 
             views = tuple(views)
             view_id = self.params('view_content_id')
-            if view_id in ('home-ideas', 'pole-home-ideas'):
+            if 'home-ideas' in (delegated_by, view_id):
                 views = (IdeasView, )
 
-            if 'home-proposals' in (delegated_by, view_id):
+            if view_id == 'home-proposals':
                 views = (ProposalsView, )
 
             if 'home-questions' in (delegated_by, view_id):

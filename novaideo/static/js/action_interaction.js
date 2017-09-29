@@ -116,7 +116,8 @@ function update_modal_action(event) {
         $(modal_container.find(".modal-title")).text(title)
         modal_container.css("opacity", "1")
         // set the modal backdrop option to 'static' if the modal contain a form
-        modal_container.data('bs.modal').options.backdrop = modal_container.find('form').length > 0 ? 'static': true
+        modal_container.data("bs.modal").options.backdrop =
+          modal_container.find("form").length > 0 ? "static" : true
         modal_container.modal("show")
         modal_container.find(".carousel").carousel()
         try {
@@ -503,6 +504,7 @@ function update_sidebar_action() {
         target.find(".carousel").carousel()
         init_emoji(target.find(".emoji-container:not(.emojified)"))
         init_content_text_scroll(target.find(".content-text-scroll"))
+        init_collapsible(target)
         rebuild_scrolls(target.find(".malihu-scroll"))
         var result_scroll = target.find(".result-scroll")
         initscroll(result_scroll)
