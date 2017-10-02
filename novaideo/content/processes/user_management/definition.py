@@ -36,7 +36,8 @@ from .behaviors import (
     SeeRegistrations,
     RemoveRegistration,
     ModerationVote,
-    SeeNotations)
+    SeeNotations,
+    ExtractAlerts)
 from novaideo import _
 from novaideo.content.person import Preregistration
 from novaideo.content.processes.content_ballot_management import (
@@ -102,6 +103,10 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Discuss"),
                                        title=_("Discuss"),
                                        groups=[]),
+                extract_alerts = ActivityDefinition(contexts=[ExtractAlerts],
+                                       description=_("Extract the user's alerts"),
+                                       title=_("Extract alerts"),
+                                       groups=[]),
                 eg = ExclusiveGatewayDefinition(),
                 end = EndEventDefinition(),
         )
@@ -110,6 +115,8 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('pg', 'login'),
                 TransitionDefinition('pg', 'logout'),
                 TransitionDefinition('login', 'eg'),
+                TransitionDefinition('pg', 'extract_alerts'),
+                TransitionDefinition('extract_alerts', 'eg'),
                 TransitionDefinition('logout', 'eg'),
                 TransitionDefinition('pg', 'discuss'),
                 TransitionDefinition('discuss', 'eg'),

@@ -5,6 +5,8 @@
 # licence: AGPL
 # author: Amen Souissi
 
+from io import StringIO, BytesIO
+import csv
 import colander
 import transaction
 import uuid
@@ -14,6 +16,8 @@ from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember
 from pyramid.threadlocal import get_current_request
+from pyramid import renderers
+from pyramid.response import FileIter
 
 from substanced.util import get_oid
 from substanced.event import LoggedIn
@@ -59,6 +63,7 @@ from novaideo.content.processes.content_ballot_management import (
     ELECTORS_NB, start_ballot, remove_ballot_processes, get_ballot_alert_data)
 from novaideo.content.processes.content_ballot_management.behaviors import (
     StartBallot)
+from novaideo.adapters import EXTRACTION_ATTR
 
 
 def accept_preregistration(request, preregistration, root, alert_id='preregistration'):
@@ -1037,6 +1042,73 @@ class ModerationVote(StartBallot):
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
+
+
+class ExtractAlerts(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'plus-action'
+    style_picto = 'glyphicon glyphicon-export'
+    style_order = 8
+    submission_title = _('Continue')
+    context = IPerson
+    roles_validation = edit_roles_validation
+    processsecurity_validation = edit_processsecurity_validation
+    state_validation = edit_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        user = context
+        localizer = request.localizer
+        objects = user.all_alerts
+        alerts = []
+        for obj in objects:
+            render_dict = {
+                'object': obj,
+                'current_user': user
+            }
+            alert = {
+                'content': renderers.render(
+                    obj.templates['default'],
+                    render_dict, request).replace('\n', ''),
+                'created_at': to_localized_time(obj.created_at, request, translate=True)
+            }
+            alerts.append(alert)
+
+        attributes_to_extract = ['created_at', 'content']
+        csv_file = StringIO()
+        fieldnames = []
+        for attr in attributes_to_extract:
+            fieldnames.append(
+                localizer.translate(EXTRACTION_ATTR[attr]['title']))
+
+        writer = csv.DictWriter(
+            csv_file, fieldnames=fieldnames, dialect='excel', delimiter=';')
+        writer.writeheader()
+        registry = request.registry
+        for obj in alerts:
+            writer.writerow(
+                dict([(localizer.translate(EXTRACTION_ATTR[attr]['title']),
+                       obj.get(attr)) for
+                      attr in attributes_to_extract]))
+
+        csv_file.seek(0)
+        return {'file': BytesIO(csv_file.read().encode('windows-1252', 'replace')), 'user': user}
+
+    def redirect(self, context, request, **kw):
+        root = getSite()
+        user = kw.get('user', None)
+        user_title = getattr(user, 'title', user.name)
+        now = datetime.datetime.now()
+        date = to_localized_time(now, request=request, translate=True)
+        file_name = 'Alerts_Extraction_{user}_{date}_{app}'.format(
+            date=date, user=user_title, app=root.title)
+        file_name = file_name.replace(' ', '-')
+        csv_file = kw.get('file', '')
+        response = request.response
+        response.content_type = 'application/vnd.ms-excel;charset=windows-1252'
+        response.content_disposition = 'inline; filename="{file_name}.csv"'.format(
+            file_name=file_name)
+        response.app_iter = FileIter(csv_file)
+        return response
 
 
 #TODO behaviors
