@@ -12,6 +12,7 @@ import transaction
 import uuid
 import datetime
 import pytz
+import itertools
 from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember
@@ -1058,9 +1059,10 @@ class ExtractAlerts(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = context
         localizer = request.localizer
-        objects = user.all_alerts
+        new_alerts = getattr(user, 'alerts', [])
+        old_alerts = getattr(user, 'old_alerts', [])
         alerts = []
-        for obj in objects:
+        for obj in itertools.chain(new_alerts, old_alerts):
             render_dict = {
                 'object': obj,
                 'current_user': user

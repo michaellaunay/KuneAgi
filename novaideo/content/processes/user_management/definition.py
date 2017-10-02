@@ -5,8 +5,7 @@
 # author: Amen Souissi
 
 from dace.processdefinition.processdef import ProcessDefinition
-from dace.processdefinition.activitydef import (
-    ActivityDefinition)
+from dace.processdefinition.activitydef import ActivityDefinition
 from dace.processdefinition.gatewaydef import (
     ExclusiveGatewayDefinition,
     ParallelGatewayDefinition)
