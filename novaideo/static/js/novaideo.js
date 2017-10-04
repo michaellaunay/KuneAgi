@@ -422,17 +422,6 @@ function open_node_url() {
   )
 }
 
-function init_content_text_scroll(texts) {
-  var default_top = 600
-  texts = texts ? texts : $(".content-text-scroll")
-  for (var i = 0; i <= texts.length; i++) {
-    var text = $(texts[i])
-    if (text.height() >= default_top) {
-      text.height(default_top)
-    }
-  }
-}
-
 function init_morecontent_scroll() {
   var result_scrolls = $(".more-content-carousel")
   for (var i = 0; i <= result_scrolls.length; i++) {
@@ -1057,8 +1046,6 @@ $(document).ready(function() {
   rebuild_scrolls()
 
   set_visited()
-
-  init_content_text_scroll()
 
   init_morecontent_scroll()
 
