@@ -192,6 +192,7 @@ class CorrectProposalFormView(FormView):
     behaviors = [CorrectProposal, Cancel]
     formid = 'formcorrectproposal'
     name = 'correctproposalform'
+    css_class = 'panel-transparent'
 
     def default_data(self):
         data = self.context.get_data(self.schema)

@@ -76,6 +76,7 @@ class RegistrationForm(FormView):
     name = 'formregistration'
     requirements = {'css_links': [],
                     'js_links': ['novaideo:static/js/user_management.js']}
+    css_class = 'panel-transparent'
 
 
 @view_config(
