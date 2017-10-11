@@ -336,6 +336,7 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
     smart_folders = CompositeMultipleProperty('smart_folders')
     tree = synchronize_tree()
     connectors = CompositeMultipleProperty('connectors')
+    masks = CompositeMultipleProperty('masks')
 
     def __init__(self, **kwargs):
         super(NovaIdeoApplication, self).__init__(**kwargs)

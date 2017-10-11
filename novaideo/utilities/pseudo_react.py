@@ -1445,7 +1445,7 @@ def get_participate_proposal_metadata(action, request, context, api, **kwargs):
     if user in working_group.wating_list:
         msg = _("You are now on the waiting list.")
 
-    if user in working_group.members:
+    if working_group.is_member(user):
         msg = _("You are now a member of the Working Group.")
 
     if user in working_group.wating_list_participation:
@@ -1818,7 +1818,9 @@ def component_navbar_mycontents(action, request, context, api, **kwargs):
     user = kwargs.get('user', None)
     localizer = request.localizer
     source_view_name = kwargs.get('view_name', '')
-    contents = [o for o in getattr(user, 'contents', [])
+    contents = user.get_contents(user) \
+        if hasattr(user, 'get_contents') else []
+    contents = [o for o in contents
                 if not hasattr(o, 'is_managed') or
                 o.is_managed(request.root)]
     item_nb = len(contents)
@@ -1941,7 +1943,9 @@ def component_navbar_myparticipations(action, request, context, api, **kwargs):
     user = kwargs.get('user', None)
     localizer = request.localizer
     source_view_name = kwargs.get('view_name', '')
-    item_nb = len(getattr(user, 'participations', []))
+    participations = user.get_participations(user) \
+        if hasattr(user, 'get_participations') else []
+    item_nb = len(participations)
     result = {
         'component-navbar-myparticipations.item_nb': item_nb,
         'component-navbar-myparticipations.title': request.localizer.translate(_('My working groups')),

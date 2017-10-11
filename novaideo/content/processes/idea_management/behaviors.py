@@ -162,11 +162,13 @@ class CreateIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
+        mask = user.get_mask(root)
+        author = mask if appstruct.get('anonymous', False) and mask else user
         idea = appstruct['_object_data']
         root.addtoproperty('ideas', idea)
         idea.state.append('to work')
-        grant_roles(user=user, roles=(('Owner', idea), ))
-        idea.setproperty('author', user)
+        grant_roles(user=author, roles=(('Owner', idea), ))
+        idea.setproperty('author', author)
         idea.subscribe_to_channel(user)
         if isinstance(context, (Comment, Answer)):
             content = context.subject
@@ -176,7 +178,7 @@ class CreateIdea(InfiniteCardinality):
                 {'comment': context.comment,
                  'type': getattr(context, 'intention',
                                  'Transformation from another content')},
-                user,
+                author,
                 ['transformation'],
                 CorrelationType.solid)
             for correlation in correlations:
@@ -194,7 +196,7 @@ class CreateIdea(InfiniteCardinality):
 
         idea.format(request)
         idea.reindex()
-        request.registry.notify(ActivityExecuted(self, [idea], user))
+        request.registry.notify(ActivityExecuted(self, [idea], author))
         return {'newcontext': idea}
 
     def redirect(self, context, request, **kw):
@@ -222,26 +224,29 @@ class CrateAndPublish(InfiniteCardinality):
         create_actions = self.process.get_actions('creat')
         create_action = create_actions[0] if create_actions else None
         idea = None
+        root = getSite()
         if create_action:
             result = create_action.start(context, request, appstruct, **kw)
             idea = result.get('newcontext', None)
             if idea:
-                user = get_current()
+                user = get_current(request)
+                mask = user.get_mask(root)
+                author = mask if appstruct.get('anonymous', False) and mask else user
                 idea.subscribe_to_channel(user)
                 if request.moderate_ideas:
                     submit_actions = self.process.get_actions('submit')
                     submit_action = submit_actions[0] if submit_actions else None
                     if submit_action:
-                        submit_action.start(idea, request, {})
+                        submit_action.start(idea, request, {'user': author})
                 else:
                     publish_actions = self.process.get_actions('publish')
                     publish_action = publish_actions[0] if publish_actions else None
                     if publish_action:
-                        publish_action.start(idea, request, {})
+                        publish_action.start(idea, request, {'user': author})
 
                 return {'newcontext': idea, 'state': True}
 
-        return {'newcontext': getSite(), 'state': False}
+        return {'newcontext': root, 'state': False}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
@@ -261,7 +266,9 @@ class CrateAndPublishAsProposal(CrateAndPublish):
         if state:
             idea = result.get('newcontext', None)
             if idea:
-                user = get_current()
+                user = get_current(request)
+                mask = user.get_mask(root)
+                author = mask if appstruct.get('anonymous', False) and mask else user
                 idea.subscribe_to_channel(user)
                 related_ideas = [idea]
                 localizer = request.localizer
@@ -285,9 +292,9 @@ class CrateAndPublishAsProposal(CrateAndPublish):
                 proposal.text = html_diff_wrapper.normalize_text(proposal.text)
                 root.addtoproperty('proposals', proposal)
                 proposal.state.append('draft')
-                grant_roles(user=user, roles=(('Owner', proposal), ))
-                grant_roles(user=user, roles=(('Participant', proposal), ))
-                proposal.setproperty('author', user)
+                grant_roles(user=author, roles=(('Owner', proposal), ))
+                grant_roles(user=author, roles=(('Participant', proposal), ))
+                proposal.setproperty('author', author)
                 challenge = idea.challenge
                 if challenge:
                     proposal.setproperty('challenge', challenge)
@@ -296,14 +303,14 @@ class CrateAndPublishAsProposal(CrateAndPublish):
                 root.addtoproperty('working_groups', wg)
                 wg.init_workspace()
                 wg.setproperty('proposal', proposal)
-                wg.addtoproperty('members', user)
+                wg.addtoproperty('members', author)
                 wg.state.append('deactivated')
                 if related_ideas:
                     connect(proposal,
                             related_ideas,
                             {'comment': _('Add related ideas'),
                              'type': _('Creation')},
-                            user,
+                            author,
                             ['related_proposals', 'related_ideas'],
                             CorrelationType.solid)
                 try:
@@ -322,7 +329,7 @@ class CrateAndPublishAsProposal(CrateAndPublish):
                 init_proposal_ballots(proposal)
                 wg.reindex()
                 request.registry.notify(
-                    ActivityExecuted(self, [idea, proposal, wg], user))
+                    ActivityExecuted(self, [idea, proposal, wg], author))
                 return {'newcontext': proposal}
 
         return {'newcontext': root}
@@ -352,6 +359,8 @@ class DuplicateIdea(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current()
+        mask = user.get_mask(root)
+        author = mask if appstruct.pop('anonymous', False) and mask else user
         files = [f['_object_data'] for f in appstruct.pop('attached_files')]
         appstruct['attached_files'] = files
         copy_of_idea = copy(
@@ -363,8 +372,8 @@ class DuplicateIdea(InfiniteCardinality):
         copy_of_idea.init_graph()
         copy_of_idea.setproperty('originalentity', context)
         copy_of_idea.state = PersistentList(['to work'])
-        copy_of_idea.setproperty('author', user)
-        grant_roles(user=user, roles=(('Owner', copy_of_idea), ))
+        copy_of_idea.setproperty('author', author)
+        grant_roles(user=author, roles=(('Owner', copy_of_idea), ))
         copy_of_idea.set_data(appstruct)
         copy_of_idea.modified_at = datetime.datetime.now(tz=pytz.UTC)
         copy_of_idea.subscribe_to_channel(user)
@@ -372,7 +381,7 @@ class DuplicateIdea(InfiniteCardinality):
         copy_of_idea.reindex()
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context, copy_of_idea], user))
+            self, [context, copy_of_idea], author))
         return {'newcontext': copy_of_idea}
 
     def redirect(self, context, request, **kw):
@@ -441,7 +450,7 @@ class EditIdea(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current(request)
+        user = context.author
         last_version = context.version
         copy_of_idea = copy(
             context,
@@ -658,7 +667,7 @@ class PublishIdea(InfiniteCardinality):
         context.reindex()
         request.registry.notify(ObjectPublished(object=context))
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current(request)))
+            self, [context], appstruct.get('user', context.author)))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -694,7 +703,7 @@ class AbandonIdea(InfiniteCardinality):
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current(request)))
+            self, [context], context.author))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -731,7 +740,7 @@ class RecuperateIdea(InfiniteCardinality):
         context.modified_at = datetime.datetime.now(tz=pytz.UTC)
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current(request)))
+            self, [context], context.author))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -764,7 +773,7 @@ class CommentIdea(InfiniteCardinality):
     state_validation = comm_state_validation
 
     def get_nb(self, context, request):
-        user = get_current()
+        user = get_current(request)
         channel = context.channel
         unread_comments = channel.get_comments_between(
             user.get_read_date(channel),
@@ -829,17 +838,19 @@ class CommentIdea(InfiniteCardinality):
             comment.state = PersistentList(['published'])
             comment.reindex()
             user = appstruct.get('user', get_current())
-            grant_roles(user=user, roles=(('Owner', comment), ))
+            mask = user.get_mask(getSite())
+            author = mask if appstruct.get('anonymous', False) and mask else user
+            grant_roles(user=author, roles=(('Owner', comment), ))
             if getattr(self, 'subscribe_to_channel', True):
                 context.subscribe_to_channel(user)
 
-            comment.setproperty('author', user)
+            comment.setproperty('author', author)
             if appstruct.get('associated_contents', []):
                 comment.set_associated_contents(
-                    appstruct['associated_contents'], user)
+                    appstruct['associated_contents'], author)
 
             if appstruct.get('alert', True):
-                self._alert_users(context, request, user, comment)
+                self._alert_users(context, request, author, comment)
 
             context.reindex()
             user.set_read_date(channel, datetime.datetime.now(tz=pytz.UTC))

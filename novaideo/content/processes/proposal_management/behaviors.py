@@ -395,7 +395,7 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign', **
     if working_group.wating_list:
         def _get_next_user(users):
             for user in users:
-                wgs = user.active_working_groups
+                wgs = user.get_active_working_groups(user)
                 if 'active' in user.state and \
                    len(wgs) < root.participations_maxi:
                     return user
@@ -528,26 +528,28 @@ class CreateProposal(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
+        mask = user.get_mask(root)
+        author = mask if appstruct.get('anonymous', False) and mask else user
         related_ideas = appstruct.pop('related_ideas')
         proposal = appstruct['_object_data']
         proposal.text = html_diff_wrapper.normalize_text(proposal.text)
         root.addtoproperty('proposals', proposal)
         proposal.state.append('draft')
-        grant_roles(user=user, roles=(('Owner', proposal), ))
-        grant_roles(user=user, roles=(('Participant', proposal), ))
-        proposal.setproperty('author', user)
+        grant_roles(user=author, roles=(('Owner', proposal), ))
+        grant_roles(user=author, roles=(('Participant', proposal), ))
+        proposal.setproperty('author', author)
         wg = WorkingGroup()
         root.addtoproperty('working_groups', wg)
         wg.init_workspace()
         wg.setproperty('proposal', proposal)
-        wg.addtoproperty('members', user)
+        wg.addtoproperty('members', author)
         wg.state.append('deactivated')
         if related_ideas:
             connect(proposal,
                     related_ideas,
                     {'comment': _('Add related ideas'),
                      'type': _('Creation')},
-                    user,
+                    author,
                     ['related_proposals', 'related_ideas'],
                     CorrelationType.solid)
 
@@ -557,7 +559,7 @@ class CreateProposal(InfiniteCardinality):
         init_proposal_ballots(proposal)
         wg.reindex()
         proposal.subscribe_to_channel(user)
-        request.registry.notify(ActivityExecuted(self, [proposal, wg], user))
+        request.registry.notify(ActivityExecuted(self, [proposal, wg], author))
         return {'newcontext': proposal}
 
     def redirect(self, context, request, **kw):
@@ -661,7 +663,7 @@ def pu_sub_processsecurity_validation(process, context):
                                   for i in context.related_ideas)
 
     return not (not_published_ideas or not_favorable_ideas) and \
-           len(user.active_working_groups) < root.participations_maxi and \
+           len(user.get_active_working_groups(user)) < root.participations_maxi and \
            global_user_processsecurity()
 
 
@@ -716,14 +718,21 @@ class SubmitProposalModeration(InfiniteCardinality):
                 context, request, root, moderators)
             alert_data.update(get_user_data(author, 'recipient', request))
             mail_template = root.get_mail_template(
-                'content_submit', author.user_locale)
-            if mail_template:
-                subject = mail_template['subject'].format(
-                    **alert_data)
-                message = mail_template['template'].format(
-                    **alert_data)
-                alert('email', [root.get_site_sender()], [author.email],
-                      subject=subject, body=message)
+                'publish_proposal_decision', author.user_locale)
+            subject = mail_template['subject'].format(
+                subject_title=context.title)
+            email_data = get_user_data(author, 'recipient', request)
+            email_data.update(get_entity_data(context, 'subject', request))
+            message = mail_template['template'].format(
+                novaideo_title=root.title,
+                **email_data
+            )
+            alert('email', [root.get_site_sender()], [author.email],
+                  subject=subject, body=message)
+
+        request.registry.notify(ObjectPublished(object=context))
+        request.registry.notify(ActivityExecuted(
+            self, not_published_ideas, get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -758,13 +767,13 @@ class PublishProposal(InfiniteCardinality):
     state_validation = publish_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        user = get_current(request)
+        user = context.author
         root = getSite()
         context.state.remove('draft')
         # Share the proposal with the specified members 
         # we need to execute the 'present' action
         members_to_invite = appstruct.get('members_to_invite', [])
-        if(members_to_invite):
+        if members_to_invite:
             present_actions = self.process.get_actions('present')
             present_action = present_actions[0] if present_actions else None
             if present_action:
@@ -815,7 +824,9 @@ class DuplicateProposal(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current()
+        user = get_current(request)
+        mask = user.get_mask(root)
+        author = mask if appstruct.pop('anonymous', False) and mask else user
         related_ideas = appstruct.pop('related_ideas')
         copy_of_proposal = copy(
             context, (root, 'proposals'),
@@ -830,21 +841,21 @@ class DuplicateProposal(InfiniteCardinality):
             copy_of_proposal.text)
         copy_of_proposal.setproperty('originalentity', context)
         copy_of_proposal.state = PersistentList(['draft'])
-        grant_roles(user=user, roles=(('Owner', copy_of_proposal), ))
-        grant_roles(user=user, roles=(('Participant', copy_of_proposal), ))
-        copy_of_proposal.setproperty('author', user)
+        grant_roles(user=author, roles=(('Owner', copy_of_proposal), ))
+        grant_roles(user=author, roles=(('Participant', copy_of_proposal), ))
+        copy_of_proposal.setproperty('author', author)
         wg = WorkingGroup()
         root.addtoproperty('working_groups', wg)
         wg.init_workspace()
         wg.setproperty('proposal', copy_of_proposal)
-        wg.addtoproperty('members', user)
+        wg.addtoproperty('members', author)
         wg.state.append('deactivated')
         if related_ideas:
             connect(copy_of_proposal,
                     related_ideas,
                     {'comment': _('Add related ideas'),
                      'type': _('Duplicate')},
-                    user,
+                    author,
                     ['related_proposals', 'related_ideas'],
                     CorrelationType.solid)
 
@@ -854,7 +865,7 @@ class DuplicateProposal(InfiniteCardinality):
         init_proposal_ballots(copy_of_proposal)
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [copy_of_proposal, wg], user))
+            self, [copy_of_proposal, wg], author))
         copy_of_proposal.subscribe_to_channel(user)
         return {'newcontext': copy_of_proposal}
 
@@ -887,7 +898,7 @@ class EditProposal(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current(request)
+        user = context.author
         if 'related_ideas' in appstruct:
             context.set_related_ideas(
                 appstruct['related_ideas'], user)
@@ -1287,7 +1298,7 @@ def withdraw_processsecurity_validation(process, context):
     user = get_current()
     wg = context.working_group
     return wg and\
-           user in wg.wating_list and \
+           wg.in_wating_list(user) and \
            global_user_processsecurity()
 
 
@@ -1309,24 +1320,25 @@ class Withdraw(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         user = get_current(request)
         working_group = context.working_group
-        working_group.delfromproperty('wating_list', user)
-        if getattr(user, 'email', ''):
+        member = working_group.get_member_in_wating_list(user)
+        working_group.delfromproperty('wating_list', member)
+        if getattr(member, 'email', ''):
             root = getSite()
             mail_template = root.get_mail_template(
-                'withdeaw', user.user_locale)
+                'withdeaw', member.user_locale)
             subject = mail_template['subject'].format(
                 subject_title=context.title)
-            email_data = get_user_data(user, 'recipient', request)
+            email_data = get_user_data(member, 'recipient', request)
             email_data.update(get_entity_data(context, 'subject', request))
             message = mail_template['template'].format(
                 novaideo_title=request.root.title,
                 **email_data
             )
-            alert('email', [root.get_site_sender()], [user.email],
+            alert('email', [root.get_site_sender()], [member.email],
                   subject=subject, body=message)
 
         request.registry.notify(ActivityExecuted(
-            self, [context, working_group], user))
+            self, [context, working_group], member))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1334,9 +1346,8 @@ class Withdraw(InfiniteCardinality):
 
 
 def resign_roles_validation(process, context):
-    user = get_current()
     working_group = context.working_group
-    return working_group and user in working_group.members
+    return working_group and working_group.get_member(get_current()) is not None
 
 
 def resign_processsecurity_validation(process, context):
@@ -1364,7 +1375,7 @@ class Resign(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current()
+        user = context.working_group.get_member(get_current(request))
         exclude_participant_from_wg(context, request, user, root)
         request.registry.notify(ActivityExecuted(
             self, [context, context.working_group], user))
@@ -1377,12 +1388,13 @@ class Resign(InfiniteCardinality):
 def participate_roles_validation(process, context):
     user = get_current()
     working_group = context.working_group
-    return working_group and has_role(role=('Member',)) and \
-        user not in working_group.members
+    return working_group and has_role(user=user, role=('Member',)) and \
+        not working_group.is_member(user)
 
 
 def participate_processsecurity_validation(process, context):
     root = getSite()
+<<<<<<< HEAD
     user = get_current()
     working_group = context.working_group
     participations = getattr(user, 'wg_participations', [])
@@ -1406,6 +1418,14 @@ def participate_processsecurity_validation(process, context):
                              and b.report.get_electeds() is None
                              and b.decision_is_valide]
     return len(participation_ballots) <= 0
+=======
+    wgs = user.get_active_working_groups(user) \
+        if hasattr(user, 'get_active_working_groups') else []
+    return working_group and \
+       not working_group.in_wating_list(user) and \
+       len(wgs) < root.participations_maxi and \
+       global_user_processsecurity()
+>>>>>>> bad3d99a... add anonymous mode
 
 
 def participate_state_validation(process, context):
@@ -1511,11 +1531,10 @@ class Participate(InfiniteCardinality):
     style = 'button' #TODO add style abstract class
     style_descriminator = 'wg-action'
     style_interaction = 'ajax-action'
-    style_interaction_type = 'direct'
     style_order = 1
     style_picto = 'typcn typcn-user-add'
     style_css_class = 'btn-success'
-    submission_title = _('Save')
+    submission_title = _('Continue')
     isSequential = False
     context = IProposal
     roles_validation = participate_roles_validation
@@ -1525,7 +1544,11 @@ class Participate(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
+        mask = user.get_mask(root)
+        member = mask if appstruct.get('anonymous', False) and mask else user
+
         working_group = context.working_group
+<<<<<<< HEAD
         if not getattr(root, 'working_group_composition_control', True):
             accept_participation(context, request, user, root)
         else:
@@ -1561,6 +1584,81 @@ class Participate(InfiniteCardinality):
 def exclude_roles_validation(process, context):
     return has_role(role=('Participant', context))
 
+=======
+        participants = working_group.members
+        mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
+        len_participants = len(participants)
+        if len_participants < mode.participants_maxi:
+            #Alert new participant
+            if participants:
+                alert('internal', [root], participants,
+                      internal_kind=InternalAlertKind.working_group_alert,
+                      subjects=[context], alert_kind='participate')
+
+            working_group.addtoproperty('members', member)
+            grant_roles(member, (('Participant', context),))
+            #alert maw working groups
+            active_wgs = user.get_active_working_groups(user) \
+                if hasattr(user, 'get_active_working_groups') else []
+            if len(active_wgs) == root.participations_maxi:
+                alert('internal', [root], [member],
+                      internal_kind=InternalAlertKind.working_group_alert,
+                      subjects=[member], alert_kind='participations_maxi')
+
+            if (len_participants+1) == mode.participants_mini:
+                working_group.state = PersistentList(['active'])
+                context.state = PersistentList(['amendable', 'published'])
+                working_group.reindex()
+                context.reindex()
+                #Only if is the first improvement cycle
+                if not hasattr(working_group, 'first_improvement_cycle'):
+                    working_group.first_improvement_cycle = True
+                    if not working_group.improvement_cycle_proc:
+                        improvement_cycle_proc = start_improvement_cycle(
+                            context)
+                        working_group.setproperty(
+                            'improvement_cycle_proc', improvement_cycle_proc)
+
+                    #Run the improvement cycle proc
+                    working_group.improvement_cycle_proc.execute_action(
+                        context, request, 'votingpublication', {})
+
+                #Alert start of the improvement cycle proc
+                alert('internal', [root], participants,
+                      internal_kind=InternalAlertKind.working_group_alert,
+                      subjects=[context], alert_kind='amendable')
+                # Add Nia comment
+                alert_comment_nia(
+                    context, request, root,
+                    internal_kind=InternalAlertKind.working_group_alert,
+                    subject_type='proposal',
+                    alert_kind='start_work',
+                    duplication=context
+                    )
+
+            #Send Mail alert to user
+            if getattr(member, 'email', ''):
+                mail_template = root.get_mail_template(
+                    'wg_participation', member.user_locale)
+                self._send_mail_to_user(
+                    mail_template['subject'], mail_template['template'],
+                    user, context, request)
+        else:
+            working_group.addtoproperty('wating_list', user)
+            working_group.reindex()
+            users = list(participants)
+            users.append(member)
+            alert('internal', [root], users,
+                  internal_kind=InternalAlertKind.working_group_alert,
+                  subjects=[context], alert_kind='wg_participation_max')
+
+            if getattr(member, 'email', ''):
+                mail_template = root.get_mail_template(
+                    'wating_list', member.user_locale)
+                self._send_mail_to_user(
+                    mail_template['subject'], mail_template['template'],
+                    user, context, request)
+>>>>>>> bad3d99a... add anonymous mode
 
 def exclude_processsecurity_validation(process, context):
     working_group = context.working_group
@@ -1630,7 +1728,7 @@ class ExcludeParticipant(InfiniteCardinality):
               alert_kind='member_exclusion',
               subjects=[context], **alert_data)
         request.registry.notify(ActivityExecuted(
-            self, [context, working_group], user))
+            self, [context, working_group], member))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1685,8 +1783,9 @@ class AttachFiles(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         add_attached_files({'add_files': appstruct}, context)
         context.reindex()
+        user = context.working_group.get_member( get_current(request))
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current(request)))
+            self, [context], user))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1802,7 +1901,7 @@ class VotingPublication(ElementaryAction):
                           subject=subject, body=message)
 
         request.registry.notify(ActivityExecuted(
-            self, [context], get_current(request)))
+            self, [context], context.author))
         return {}
 
     def after_execution(self, context, request, **kw):
@@ -1939,7 +2038,7 @@ class Work(ElementaryAction):
         context.reindex()
         working_group.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context, working_group], get_current(request)))
+            self, [context, working_group], context.author))
         return {}
 
     def after_execution(self, context, request, **kw):
@@ -2025,7 +2124,8 @@ class SubmitProposal(ElementaryAction):
         working_group.setproperty('wating_list_participation', [])
         members = working_group.members
         for member in members:
-            member.add_reserved_token(context)
+            real_member = getattr(member, 'member', member)
+            real_member.add_reserved_token(context)
             revoke_roles(member, (('Participant', context),))
 
         remove_ballot_processes(
@@ -2091,7 +2191,7 @@ class SubmitProposal(ElementaryAction):
         working_group.reindex()
         context.reindex()
         request.registry.notify(ActivityExecuted(
-            self, [context, working_group], get_current(request)))
+            self, [context, working_group], context.author))
         return {}
 
     def redirect(self, context, request, **kw):

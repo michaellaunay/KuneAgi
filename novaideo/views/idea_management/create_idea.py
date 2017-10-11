@@ -41,12 +41,13 @@ from novaideo.content.keyword import DEFAULT_TREE
 class CreateIdeaView(FormView):
 
     title = _('Create an idea')
-    schema = omit(select(IdeaSchema(factory=Idea, editable=True),
+    schema = omit(select(IdeaSchema(factory=Idea, editable=True, omit=('anonymous',)),
                     ['challenge',
                      'title',
                      'text',
                      'tree',
-                     'attached_files']),
+                     'attached_files',
+                     'anonymous']),
                   ["_csrf_token_"])
     behaviors = [CrateAndPublishAsProposal, CrateAndPublish, CreateIdea, Cancel]
     formid = 'formcreateidea'
@@ -124,14 +125,18 @@ class CreateIdeaView_Json(BasicView):
                 body = ''
                 if button == 'Create_a_working_group':
                     redirect = True
-                    proposal = user.working_groups[-1].proposal
+                    proposal = sorted(
+                        user.get_working_groups(user),
+                        key=lambda w: w.created_at)[-1].proposal
                     if is_mycontents_view:
                         redirect = False
                         body = render_listing_obj(
                             self.request, proposal, user)
 
                 if not redirect:
-                    idea = user.ideas[-1]
+                    idea = sorted(
+                        user.get_ideas(user),
+                        key=lambda w: w.created_at)[-1]
                     if not is_mycontents_view and \
                        'published' not in idea.state:
                         redirect = True

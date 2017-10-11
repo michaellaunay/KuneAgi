@@ -35,8 +35,8 @@ def vote_relation_validation(process, context):
 def vote_processsecurity_validation(process, context):
     user = get_current()
     report = process.ballot.report
-    return user in report.electors and \
-           user not in report.voters and \
+    elector = report.get_elector(user)
+    return elector and not report.he_voted(elector) and \
            global_user_processsecurity()
 
 
