@@ -19,6 +19,8 @@ class Mask(Group):
     member = SharedUniqueProperty('member', 'mask')
     ideas = SharedMultipleProperty('ideas', 'author')
     working_groups = SharedMultipleProperty('working_groups', 'members')
+    wg_participations = SharedMultipleProperty(
+        'wg_participations', 'wating_list_participation')
     questions = SharedMultipleProperty('questions', 'author')
     challenges = SharedMultipleProperty('challenges', 'author')
     templates = {'card': 'novaideo:views/templates/anonymous_card.pt',}

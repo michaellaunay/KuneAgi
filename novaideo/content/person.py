@@ -584,6 +584,12 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         
         return self.active_working_groups
 
+    def get_wg_participations(self, user):
+        if user is self:
+            return self.wg_participations + getattr(self.mask, 'wg_participations', [])
+        
+        return self.wg_participations
+
     @property
     def is_published(self):
         return 'active' in self.state

@@ -120,6 +120,10 @@ class WorkingGroup(VisualisableElement, Entity):
         mask = getattr(user, 'mask', None)
         return user in self.wating_list or (mask and mask in self.wating_list)
 
+    def in_wating_list_participation(self, user):
+        mask = getattr(user, 'mask', None)
+        return user in self.wating_list_participation or (mask and mask in self.wating_list_participation)
+
     def get_member(self, user):
         if not self.is_member(user):
             return None
@@ -142,6 +146,19 @@ class WorkingGroup(VisualisableElement, Entity):
         
         mask = getattr(user, 'mask', None)
         if mask and mask in self.wating_list:
+            return mask
+
+        return None
+
+    def get_member_in_wating_list_participation(self, user):
+        if not self.in_wating_list_participation(user):
+            return None
+
+        if user in self.wating_list_participation:
+            return user
+        
+        mask = getattr(user, 'mask', None)
+        if mask and mask in self.wating_list_participation:
             return mask
 
         return None

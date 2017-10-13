@@ -1394,38 +1394,33 @@ def participate_roles_validation(process, context):
 
 def participate_processsecurity_validation(process, context):
     root = getSite()
-<<<<<<< HEAD
     user = get_current()
+    mask = getattr(user, 'mask', None)
     working_group = context.working_group
-    participations = getattr(user, 'wg_participations', [])
-    wgs = getattr(user, 'active_working_groups', [])
-    if not working_group or user in working_group.wating_list or \
-        user in working_group.wating_list_participation or \
+    participations = user.get_wg_participations(user) \
+        if hasattr(user, 'get_wg_participations') else []
+    wgs = user.get_active_working_groups(user) \
+        if hasattr(user, 'get_active_working_groups') else []
+    if not working_group or working_group.in_wating_list(user) or \
+        working_group.in_wating_list_participation(user) or \
         len(wgs) + len(participations) >= root.participations_maxi or \
         not global_user_processsecurity():
         return False
 
     exclusion_ballots = [b for b in context.ballots
                          if b.group_id == 'vote_exclusion']
-    is_excluded = any(user in b.subjects for b in exclusion_ballots
+    is_excluded = any(user in b.subjects or mask in b.subjects for b in exclusion_ballots
                       if b.is_finished and b.decision_is_valide)
     if is_excluded:
         return False
 
     participation_ballots = [b for b in context.ballots
                              if b.group_id == 'vote_participation'
-                             and b.is_finished and user in b.subjects
+                             and b.is_finished
+                             and (user in b.subjects or mask in b.subjects)
                              and b.report.get_electeds() is None
                              and b.decision_is_valide]
     return len(participation_ballots) <= 0
-=======
-    wgs = user.get_active_working_groups(user) \
-        if hasattr(user, 'get_active_working_groups') else []
-    return working_group and \
-       not working_group.in_wating_list(user) and \
-       len(wgs) < root.participations_maxi and \
-       global_user_processsecurity()
->>>>>>> bad3d99a... add anonymous mode
 
 
 def participate_state_validation(process, context):
@@ -1455,8 +1450,10 @@ def accept_participation(context, request, user, root, **kw):
     participants_mini = getattr(root, 'participants_mini', 3)
     mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
     len_participants = len(participants)
-    if user in working_group.wating_list_participation:
-        working_group.delfromproperty('wating_list_participation', user)
+    member = getattr(user, 'member', user)
+    member_in_wlp = working_group.get_member_in_wating_list_participation(member)
+    if member_in_wlp:
+        working_group.delfromproperty('wating_list_participation', member_in_wlp)
 
     if len_participants < mode.participants_maxi:
         #Alert new participant
@@ -1469,7 +1466,8 @@ def accept_participation(context, request, user, root, **kw):
         working_group.addtoproperty('members', user)
         grant_roles(user, (('Participant', context),))
         #alert max working groups
-        active_wgs = getattr(user, 'active_working_groups', [])
+        active_wgs = member.get_active_working_groups(member) \
+            if hasattr(member, 'get_active_working_groups') else []
         if len(active_wgs) == root.participations_maxi:
             alert('internal', [root], [user],
                   internal_kind=InternalAlertKind.working_group_alert,
@@ -1541,6 +1539,11 @@ class Participate(InfiniteCardinality):
     processsecurity_validation = participate_processsecurity_validation
     state_validation = participate_state_validation
 
+    @property
+    def style_interaction_type(self):
+        root = getSite()
+        return 'modal' if getattr(root, 'anonymisation', False) else 'direct'
+
     def start(self, context, request, appstruct, **kw):
         root = getSite()
         user = get_current(request)
@@ -1548,33 +1551,32 @@ class Participate(InfiniteCardinality):
         member = mask if appstruct.get('anonymous', False) and mask else user
 
         working_group = context.working_group
-<<<<<<< HEAD
         if not getattr(root, 'working_group_composition_control', True):
-            accept_participation(context, request, user, root)
+            accept_participation(context, request, member, root)
         else:
             moderators = working_group.members
             if not moderators:
-                accept_participation(context, request, user, root)
+                accept_participation(context, request, member, root)
             else:
-                working_group.addtoproperty('wating_list_participation', user)
+                working_group.addtoproperty('wating_list_participation', member)
 
                 def before_start(b_proc):
-                    b_proc.participant = user
+                    b_proc.participant = member
 
                 start_ballot(
                     context, user, request, root,
                     moderators, 'proposalparticipation',
                     before_start=before_start,
                     initiator=user,
-                    subjects=[user])
+                    subjects=[member])
                 alert_data = get_ballot_alert_data(
                     context, request, root, moderators)
-                alert('internal', [root], [user],
+                alert('internal', [root], [member],
                       internal_kind=InternalAlertKind.working_group_alert,
                       alert_kind='member_participation',
                       subjects=[context], **alert_data)
         request.registry.notify(ActivityExecuted(
-            self, [context, working_group], user))
+            self, [context, working_group], member))
         return {}
 
     def redirect(self, context, request, **kw):
@@ -1584,81 +1586,6 @@ class Participate(InfiniteCardinality):
 def exclude_roles_validation(process, context):
     return has_role(role=('Participant', context))
 
-=======
-        participants = working_group.members
-        mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
-        len_participants = len(participants)
-        if len_participants < mode.participants_maxi:
-            #Alert new participant
-            if participants:
-                alert('internal', [root], participants,
-                      internal_kind=InternalAlertKind.working_group_alert,
-                      subjects=[context], alert_kind='participate')
-
-            working_group.addtoproperty('members', member)
-            grant_roles(member, (('Participant', context),))
-            #alert maw working groups
-            active_wgs = user.get_active_working_groups(user) \
-                if hasattr(user, 'get_active_working_groups') else []
-            if len(active_wgs) == root.participations_maxi:
-                alert('internal', [root], [member],
-                      internal_kind=InternalAlertKind.working_group_alert,
-                      subjects=[member], alert_kind='participations_maxi')
-
-            if (len_participants+1) == mode.participants_mini:
-                working_group.state = PersistentList(['active'])
-                context.state = PersistentList(['amendable', 'published'])
-                working_group.reindex()
-                context.reindex()
-                #Only if is the first improvement cycle
-                if not hasattr(working_group, 'first_improvement_cycle'):
-                    working_group.first_improvement_cycle = True
-                    if not working_group.improvement_cycle_proc:
-                        improvement_cycle_proc = start_improvement_cycle(
-                            context)
-                        working_group.setproperty(
-                            'improvement_cycle_proc', improvement_cycle_proc)
-
-                    #Run the improvement cycle proc
-                    working_group.improvement_cycle_proc.execute_action(
-                        context, request, 'votingpublication', {})
-
-                #Alert start of the improvement cycle proc
-                alert('internal', [root], participants,
-                      internal_kind=InternalAlertKind.working_group_alert,
-                      subjects=[context], alert_kind='amendable')
-                # Add Nia comment
-                alert_comment_nia(
-                    context, request, root,
-                    internal_kind=InternalAlertKind.working_group_alert,
-                    subject_type='proposal',
-                    alert_kind='start_work',
-                    duplication=context
-                    )
-
-            #Send Mail alert to user
-            if getattr(member, 'email', ''):
-                mail_template = root.get_mail_template(
-                    'wg_participation', member.user_locale)
-                self._send_mail_to_user(
-                    mail_template['subject'], mail_template['template'],
-                    user, context, request)
-        else:
-            working_group.addtoproperty('wating_list', user)
-            working_group.reindex()
-            users = list(participants)
-            users.append(member)
-            alert('internal', [root], users,
-                  internal_kind=InternalAlertKind.working_group_alert,
-                  subjects=[context], alert_kind='wg_participation_max')
-
-            if getattr(member, 'email', ''):
-                mail_template = root.get_mail_template(
-                    'wating_list', member.user_locale)
-                self._send_mail_to_user(
-                    mail_template['subject'], mail_template['template'],
-                    user, context, request)
->>>>>>> bad3d99a... add anonymous mode
 
 def exclude_processsecurity_validation(process, context):
     working_group = context.working_group
@@ -2504,7 +2431,8 @@ class ParticipationVote(StartBallot):
             working_group = proposal.working_group
             members = working_group.members
             if accepted:
-                wgs = getattr(participant, 'active_working_groups', [])
+                wgs = participant.get_active_working_groups(user) \
+                    if hasattr(participant, 'get_active_working_groups') else []
                 if len(wgs) < root.participations_maxi:
                     accept_participation(
                         proposal, request, participant, root,
