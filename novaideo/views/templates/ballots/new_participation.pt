@@ -1,16 +1,18 @@
 <div tal:condition="process" i18n:domain="novaideo">
-	<p i18n:translate="">
-	    The Member <a i18n:name="dynamic"  target="_blank" tal:attributes="href request.resource_url(participant, '@@index')"
+	<p i18n:translate=""
+    tal:define="
+        participant process.participant;
+        is_anonymous getattr(participant, 'is_anonymous', False);
+        picture getattr(participant, 'picture', None);
+        profil_picture getattr(picture, 'profil', None);
+        default_picture getattr(participant, 'default_picture', 'novaideo:static/images/user100.png');">
+	    The Member <a i18n:name="dynamic"  target="_blank" tal:attributes="href request.resource_url(participant, '@@index') if not is_anonymous else '#'"
         data-oid="${getattr(participant, '__oid__', '')}"
-        class="alert-link toggle-popover"
-        tal:define="
-            participant process.participant;
-            picture getattr(participant, 'picture', None);
-            profil_picture getattr(picture, 'profil', None)">
+        class="alert-link toggle-popover">
         <img class="author-img img-circle" 
           tal:condition="profil_picture is not None"
            tal:attributes="src profil_picture.url"  width="25"/>
-        <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+        <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url(default_picture)}" width="25"/>
             ${getattr(participant, 'title', participant.name)}
         </a> has applied to become a Participant in the Working Group related to the Proposal "<span i18n:name="subject">${context.title}</span>". You are requested to vote to determine if you wish to accept him/her or not.
 	</p>

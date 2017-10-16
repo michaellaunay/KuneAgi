@@ -28,9 +28,9 @@ def note_relation_validation(process, context):
 def note_processsecurity_validation(process, context):
     user = get_current()
     report = process.ballot.report
-    return user in report.electors and \
-        user not in report.voters and \
-        global_user_processsecurity()
+    elector = report.get_elector(user)
+    return elector and not report.he_voted(elector) and \
+           global_user_processsecurity()
 
 
 class Note(InfiniteCardinality):
@@ -47,13 +47,15 @@ class Note(InfiniteCardinality):
         user = get_current()
         root = getSite()
         member = self.process.execution_context.involved_entity('member')
+        real_member = getattr(member, 'member', member)
         now = datetime.datetime.utcnow()
-        member.add_note(
+        real_member.add_note(
             user, context, note, now, getattr(root, 'time_constant', 6))
-        member.reindex()
+        real_member.reindex()
         ballot = self.process.ballot
         report = ballot.report
-        report.addtoproperty('voters', user)
+        elector = report.get_elector(user)
+        report.addtoproperty('voters', elector)
         return {}
 
     def after_execution(self, context, request, **kw):

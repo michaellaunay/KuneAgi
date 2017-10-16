@@ -139,7 +139,7 @@ def remove_ballot_processes(content, runtime, exclude=[]):
 
 def remove_elector_vote_processes(ballot_action, user):
     ballot_process = ballot_action.sub_process
-    ballots = ballot_process.ballots
+    ballots = getattr(ballot_process, 'ballots', [])
     for ballot in ballots:
         report = ballot.report
         if user in report.electors and user not in report.voters:

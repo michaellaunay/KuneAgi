@@ -89,6 +89,7 @@ class RegistrationView(MultipleView):
     name = 'registration'
     viewid = 'registration'
     template = 'daceui:templates/mergedmultipleview.pt'
+    css_class = 'panel-transparent'
     views = (RegistrationViewStudyReport, RegistrationForm)
     validators = [Registration.get_validator()]
 

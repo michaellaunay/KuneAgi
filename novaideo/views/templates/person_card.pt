@@ -21,8 +21,8 @@
                 ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)}
           </a>
         <div class="card-addon">
-          <small>
-            <span>${object.function}</span>
+          <small tal:condition="getattr(object, 'function', '')">
+            <span>${getattr(object, 'function', '')}</span>
           </small>
           <div tal:condition="organization" class="card-addon-item">
             <a i18n:attributes="title"

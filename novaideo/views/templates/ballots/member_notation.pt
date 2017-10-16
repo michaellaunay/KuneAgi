@@ -2,20 +2,21 @@
 	<p tal:define="
 		member process.execution_context.involved_entity(
             'member');
+        is_anonymous getattr(member, 'is_anonymous', False);
+        picture getattr(member, 'picture', None);
+        profil_picture getattr(picture, 'profil', None);
+        default_picture getattr(member, 'default_picture', 'novaideo:static/images/user100.png');
 		subject process.execution_context.involved_entity(
             'subject');
         subject_icon getattr(subject, 'icon', '');">
         <span i18n:translate="">You are invited to mark</span>
-         <a target="_blank" tal:attributes="href request.resource_url(member, '@@index')"
+         <a target="_blank" tal:attributes="href request.resource_url(member, '@@index') if not is_anonymous else '#'"
             data-oid="${getattr(member, '__oid__', '')}"
-            class="alert-link toggle-popover"
-            tal:define="
-                picture getattr(member, 'picture', None);
-                profil_picture getattr(picture, 'profil', None)">
+            class="alert-link toggle-popover">
             <img class="author-img img-circle" 
               tal:condition="profil_picture is not None"
                tal:attributes="src profil_picture.url"  width="25"/>
-            <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url('novaideo:static/images/user100.png')}" width="25"/>
+            <img class="author-img img-circle" tal:condition="profil_picture is None" src="${request.static_url(default_picture)}" width="25"/>
             ${getattr(member, 'title', member.name)}
         </a>
         <span i18n:translate="">the quality of his/her cooperative behaviour in the framework of the Working Group related to the proposal</span> 

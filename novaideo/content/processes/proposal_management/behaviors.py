@@ -700,6 +700,7 @@ class SubmitProposalModeration(InfiniteCardinality):
         context.submitted_appstruct = PersistentDict(appstruct)
         context.reindex()
         root = getSite()
+        user = context.author
         # get random moderators
         moderators = get_random_users(ELECTORS_NB, [context.author])
         if not moderators:
@@ -712,7 +713,7 @@ class SubmitProposalModeration(InfiniteCardinality):
             start_ballot(
                 context, author, request, root,
                 moderators, 'proposalmoderation',
-                initiator=get_current(),
+                initiator=user,
                 subjects=[context])
             alert_data = get_ballot_alert_data(
                 context, request, root, moderators)
@@ -1549,7 +1550,6 @@ class Participate(InfiniteCardinality):
         user = get_current(request)
         mask = user.get_mask(root) if hasattr(user, 'get_mask') else user
         member = mask if appstruct.get('anonymous', False) and mask else user
-
         working_group = context.working_group
         if not getattr(root, 'working_group_composition_control', True):
             accept_participation(context, request, member, root)
@@ -1564,10 +1564,10 @@ class Participate(InfiniteCardinality):
                     b_proc.participant = member
 
                 start_ballot(
-                    context, user, request, root,
+                    context, member, request, root,
                     moderators, 'proposalparticipation',
                     before_start=before_start,
-                    initiator=user,
+                    initiator=member,
                     subjects=[member])
                 alert_data = get_ballot_alert_data(
                     context, request, root, moderators)
@@ -1594,7 +1594,7 @@ def exclude_processsecurity_validation(process, context):
        root, 'working_group_composition_control', False):
         return False
 
-    user = get_current()
+    user = working_group.get_member(get_current())
     exclusion_ballots = [b for b in context.ballots
                          if b.group_id == 'vote_exclusion']
     start_process = any(b.initiator is user
@@ -1634,9 +1634,9 @@ class ExcludeParticipant(InfiniteCardinality):
 
     def start(self, context, request, appstruct, **kw):
         root = getSite()
-        user = get_current()
-        user_to_exclure = appstruct['participant']
         working_group = context.working_group
+        user = working_group.get_member(get_current(request))
+        user_to_exclure = appstruct['participant']
         moderators = working_group.members
 
         def before_start(b_proc):
@@ -1655,7 +1655,7 @@ class ExcludeParticipant(InfiniteCardinality):
               alert_kind='member_exclusion',
               subjects=[context], **alert_data)
         request.registry.notify(ActivityExecuted(
-            self, [context, working_group], member))
+            self, [context, working_group], user))
         return {}
 
     def redirect(self, context, request, **kw):
