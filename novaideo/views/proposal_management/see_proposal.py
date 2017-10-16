@@ -56,8 +56,8 @@ class ProposalHeaderView(BasicView):
                 if hasattr(user, 'get_active_working_groups') else []
             participations = getattr(user, 'wg_participations', [])
             is_member = working_group.is_member(user)
-            in_wl = user in working_group.wating_list
-            in_wl_participation = user in working_group.wating_list_participation
+            in_wl = working_group.in_wating_list(user)
+            in_wl_participation = working_group.in_wating_list_participation(user)
             max_participation = (len(active_working_groups) + len(participations)) >= \
                 root.participations_maxi
             is_closed = 'closed' in working_group.state or \
