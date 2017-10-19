@@ -98,13 +98,7 @@ novaideoI18n = {
       "Click here to collapse or to expand this section",
     voteFinished:
       "You have finished your vote. Please keep the associated informations with each ballot.",
-    Finish: "Finish",
-    "Clear formatting": "Clear formatting",
-    "Insert a new paragraph": "Insert a new paragraph",
-    "Add the new text here": "Add the new text here",
-    Collapsible: "Collapsible",
-    "Collapsible style": "Collapsible style",
-    "Collapsible body": "Collapsible body"
+    Finish: "Finish"
   },
 
   fr: {
@@ -206,13 +200,7 @@ novaideoI18n = {
       "Cliquez ici pour réduire ou étendre cette section",
     voteFinished:
       "Vous avez fini de voter. Veuillez conserver les informations associées à chaque scrutin.",
-    Finish: "Terminer",
-    "Clear formatting": "Effacer la mise en forme",
-    "Insert a new paragraph": "Insérer un nouveau paragraphe",
-    "Add the new text here": "Ajouter le nouveau texte ici",
-    "Collapsible body": "Le corps du pliant",
-    Collapsible: "Pliant",
-    "Collapsible style": "Le style du pliant"
+    Finish: "Terminer"
   }
 }
 

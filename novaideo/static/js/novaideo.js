@@ -324,13 +324,6 @@ function init_collapsible(element) {
     ).insertBefore($this)
     elements.insertAfter($this)
   })
-
-  // var collapsibles = element ? element.find(".collapsible-node.collapsible-body"): $(".collapsible-node.collapsible-body")
-  // collapsibles.each(function(){
-  //   var $this = $(this)
-  //   $this.wrap('<div class="collapsible-container"></div>')
-  //   $('<span class="glyphicon glyphicon-triangle-top collapsible-activator" title="'+novaideo_translate('Click here to collapse or to expand this section')+'""></span>').insertBefore($this)
-  // })
 }
 
 function initscroll(result_scrolls) {
@@ -1012,29 +1005,6 @@ $(document).on("component_loaded", function(event, component_id) {
     update_unread_messages_alerts()
   }
 })
-
-// $(document).on(
-//   "click",
-//   ".collapsible-activator:not(.activated)",
-//   function(event, component_id) {
-//    var activator = $(this)
-//    activator.next('.collapsible-node.collapsible-body').first().slideUp("fast", function() {
-//     activator.text('...')
-//    })
-//    activator.addClass('activated glyphicon-triangle-bottom')
-//    activator.removeClass('glyphicon-triangle-top')
-// })
-
-// $(document).on(
-//   "click",
-//   ".collapsible-activator.activated",
-//   function(event, component_id) {
-//    var activator = $(this)
-//    activator.text('')
-//    activator.next('.collapsible-node.collapsible-body').first().slideDown()
-//    activator.removeClass('activated glyphicon-triangle-bottom')
-//    activator.addClass('glyphicon-triangle-top')
-// })
 
 $(document).on("click", ".collapsible-activator:not(.activated)", function(
   event,
