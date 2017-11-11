@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-10-25 15:37+0200\n"
+"POT-Creation-Date: 2017-11-11 12:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1814,7 +1814,8 @@ msgid ""
 msgstr ""
 
 #: ./novaideo/content/challenge.py:167
-#: ./novaideo/views/templates/challenge_bloc.pt:17
+#: ./novaideo/views/templates/challenge_bloc.pt:30
+#: ./novaideo/views/templates/challenge_card.pt:30
 #: ./novaideo/views/templates/panels/challenge.pt:5
 msgid "Is restricted"
 msgstr ""
@@ -1978,7 +1979,7 @@ msgstr ""
 #: ./novaideo/views/templates/person_bloc.pt:41
 #: ./novaideo/views/templates/invitation_result.pt:23
 #: ./novaideo/views/templates/person_result.pt:43
-#: ./novaideo/views/templates/person_card.pt:29
+#: ./novaideo/views/templates/person_card.pt:31
 #: ./novaideo/views/invitation_management/templates/see_invitation.pt:26
 #: ./novaideo/adapters/__init__.py:28
 msgid "Organization"
@@ -2603,8 +2604,8 @@ msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:58
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:59
-#: ./novaideo/views/novaideo_view_manager/search.py:132
-#: ./novaideo/views/novaideo_view_manager/search.py:156
+#: ./novaideo/views/novaideo_view_manager/search.py:133
+#: ./novaideo/views/novaideo_view_manager/search.py:157
 #: ./novaideo/views/channel_management/templates/channel_navbar_actions.pt:16
 msgid "Search"
 msgstr ""
@@ -3177,6 +3178,8 @@ msgstr ""
 
 #: ./novaideo/content/processes/proposal_management/definition.py:352
 #: ./novaideo/content/processes/proposal_management/definition.py:353
+#: ./novaideo/views/templates/challenge_bloc.pt:62
+#: ./novaideo/views/templates/challenge_card.pt:62
 #: ./novaideo/views/proposal_management/participate.py:25
 #: ./novaideo/views/proposal_management/participate.py:55
 #: ./novaideo/views/challenge_management/see_challenge.py:295
@@ -4997,12 +5000,12 @@ msgid "Member since"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/see_person.pt:95
-#: ./novaideo/views/templates/person_card.pt:51
+#: ./novaideo/views/templates/person_card.pt:53
 msgid "Contributions"
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/see_person.pt:96
-#: ./novaideo/views/templates/person_card.pt:52
+#: ./novaideo/views/templates/person_card.pt:54
 msgid "Contribution"
 msgstr ""
 
@@ -5140,13 +5143,13 @@ msgstr ""
 msgid "Advanced search"
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/search.py:128
+#: ./novaideo/views/novaideo_view_manager/search.py:129
 msgid ""
 "If you wish to search with several keywords, you should separate these "
 "keywords with commas."
 msgstr ""
 
-#: ./novaideo/views/novaideo_view_manager/search.py:230
+#: ./novaideo/views/novaideo_view_manager/search.py:231
 msgid "Nova-Ideo contents"
 msgstr ""
 
@@ -5887,7 +5890,11 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
-#: ./novaideo/views/templates/challenge_bloc.pt:53
+#: ./novaideo/views/templates/challenge_bloc.pt:65
+#: ./novaideo/views/templates/challenge_card.pt:65
+msgid "Consult"
+msgstr ""
+
 #: ./novaideo/views/templates/small_proposal_result.pt:28
 #: ./novaideo/views/templates/challenge_result.pt:25
 #: ./novaideo/views/templates/small_challenge_result.pt:28
@@ -6450,6 +6457,16 @@ msgstr ""
 
 #: ./novaideo/views/templates/panels/step4.pt:3
 msgid "Total appreciations"
+msgstr ""
+
+#: ./novaideo/views/templates/panels/challenges.pt:13
+#: ./novaideo/views/challenge_management/see_challenges.py:48
+#: ./novaideo/views/challenge_management/see_challenges.py:134
+msgid "Participate in our challenges"
+msgstr ""
+
+#: ./novaideo/views/templates/panels/challenges.pt:22
+msgid "All challenges"
 msgstr ""
 
 #: ./novaideo/views/templates/panels/deadline.pt:10
@@ -10001,11 +10018,6 @@ msgstr ""
 msgid "${number} challenges found"
 msgstr ""
 
-#: ./novaideo/views/challenge_management/see_challenges.py:48
-#: ./novaideo/views/challenge_management/see_challenges.py:133
-msgid "Participate in our challenges"
-msgstr ""
-
 #: ./novaideo/views/challenge_management/remove_members.py:43
 msgid "Participants"
 msgstr ""
@@ -10049,14 +10061,6 @@ msgstr ""
 msgid ""
 "In order for your duplicated idea to be published, you must modify it "
 "berforehand, so that it be different from the original idea."
-msgstr ""
-
-#: ./novaideo/views/challenge_management/templates/see_challenges.pt:27
-msgid "All challenges"
-msgstr ""
-
-#: ./novaideo/views/challenge_management/templates/see_challenges.pt:31
-msgid "More challenges"
 msgstr ""
 
 #: ./novaideo/views/challenge_management/templates/see_challenge.pt:39
