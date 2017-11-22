@@ -546,7 +546,7 @@ class WorkspaceManagement(ProcessDefinition, VisualisableElement):
                                        groups=[]),
                 remove_file = ActivityDefinition(contexts=[RemoveFile],
                                        description=_("Remove the file"),
-                                       title=_("Remove the file"),
+                                       title=_("Remove"),
                                        groups=[]),
                 add_files = ActivityDefinition(contexts=[AddFiles],
                                        description=_("Add files"),
