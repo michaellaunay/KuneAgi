@@ -89,6 +89,7 @@ class EditView(FormView):
                      'description',
                      'tree',
                      'picture',
+                     'cover_picture',
                      'email',
                      'locale',
                      'change_password'])

@@ -37,9 +37,10 @@ from pontus.widget import (
     Select2Widget
     )
 from pontus.form import FileUploadTempStore
-from pontus.file import ObjectData, Object as ObjectType
+from pontus.file import ObjectData, Object as ObjectType, File
 from deform_treepy.widget import (
     DictSchemaType)
+from pontus.file import ObjectData, Object as ObjectType, File
 
 from novaideo.core import (
     SearchableEntity,
@@ -54,6 +55,7 @@ from .interface import (
 from novaideo import _, AVAILABLE_LANGUAGES, LANGUAGES_TITLES
 from novaideo.file import Image
 from novaideo.content.mask import Mask
+from novaideo.content import get_file_widget
 from novaideo.widget import (
     TOUCheckboxWidget, LimitedTextAreaWidget, EmailInputWidget)
 from novaideo.utilities.attr_utility import synchronize_tree
@@ -224,6 +226,14 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         missing=None,
         )
 
+    cover_picture = colander.SchemaNode(
+        ObjectData(File),
+        widget=get_file_widget(file_extensions=['png', 'jpg', 'svg']),
+        title=_('Cover picture'),
+        missing=None,
+        description=_("Only PNG and SVG files are supported."),
+    )
+
     first_name = colander.SchemaNode(
         colander.String(),
         title=_('First names'),
@@ -341,13 +351,15 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
                  'bloc': 'novaideo:views/templates/person_bloc.pt',
                  'small': 'novaideo:views/templates/small_person_result.pt',
                  'popover': 'novaideo:views/templates/person_popover.pt',
-                 'card': 'novaideo:views/templates/person_card.pt',}
+                 'card': 'novaideo:views/templates/person_card.pt',
+                 'header': 'novaideo:views/templates/person_header.pt',}
     default_picture = 'novaideo:static/images/user100.png'
     name = renamer()
     tokens = CompositeMultipleProperty('tokens')
     tokens_ref = SharedMultipleProperty('tokens_ref')
     organization = SharedUniqueProperty('organization', 'members')
     picture = CompositeUniqueProperty('picture')
+    cover_picture = CompositeUniqueProperty('cover_picture')
     ideas = SharedMultipleProperty('ideas', 'author')
     selections = SharedMultipleProperty('selections')
     working_groups = SharedMultipleProperty('working_groups', 'members')
