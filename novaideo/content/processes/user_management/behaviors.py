@@ -68,6 +68,7 @@ from novaideo.adapters import EXTRACTION_ATTR
 
 
 def accept_preregistration(request, preregistration, root, alert_id='preregistration'):
+    preregistration.init_deadline(datetime.datetime.now(tz=pytz.UTC))
     if getattr(preregistration, 'email', ''):
         deadline_date = preregistration.get_deadline_date()
         locale = my_locale_negotiator(request)
