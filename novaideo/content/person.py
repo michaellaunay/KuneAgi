@@ -65,9 +65,6 @@ from novaideo.fr_lexicon import normalize_title
 DEADLINE_PREREGISTRATION = 86400*2  # 2 days
 
 
-_default_pseudonym = object()
-
-
 @colander.deferred
 def organization_choice(node, kw):
     context = node.bindings['context']
@@ -166,13 +163,6 @@ def pseudonym_validator(node, kw):
         raise colander.Invalid(node,
                 _('${pseudonym} pseudonym already in use',
                   mapping={'pseudonym': kw}))
-
-
-def default_pseudonym(appstruct):
-    if not appstruct:
-        return _default_pseudonym
-
-    return appstruct
 
 
 def context_is_a_person(context, request):
@@ -290,7 +280,6 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
         colander.String(),
         widget=deform.widget.TextInputWidget(
             item_css_class='pseudonym-input'),
-        preparer=default_pseudonym,
         validator=colander.All(
             pseudonym_validator,
             ),

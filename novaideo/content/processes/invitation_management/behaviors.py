@@ -300,6 +300,7 @@ class AcceptInvitation(InfiniteCardinality):
                                          'first_name',
                                          'last_name',
                                          'birth_date',
+                                         'birthplace',
                                          'email',
                                          'organization']))
         datas['pseudonym'] = appstruct.get('pseudonym', None)
