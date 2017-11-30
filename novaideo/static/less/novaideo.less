@@ -924,10 +924,6 @@ a.answer-btn {
   margin-left: 0;
 }
 
-.sidebar-right-nav .navbar-entity {
-  margin-top: -10px;
-}
-
 .sort-container {
   height: 3px;
 }
@@ -1120,7 +1116,7 @@ a.answer-btn {
 .deletion-process {
   background-color: #ffe1dd !important;
 
-  .comment-data {
+  .comment-card {
     background-color: #ffe1dd !important;
   }
 }
@@ -2077,12 +2073,20 @@ form .btn {
   transition: background-color 0.3s ease-out 0s;
 }
 
-.full-screen .content-text {
-  height: auto !important;
+.full-screen.full {
+  .full-screen-btn-container {
+    margin-top: 0;
+  }
+
+  .max-container {
+    max-width: 900px;
+  }
 }
 
-.full-screen.full .col-md-4 {
-  width: 20% !important;
+.full-screen-btn-container {
+  height: 30px;
+  margin-top: -35px;
+  margin-bottom: 10px;
 }
 
 .full-screen-btn {
@@ -2090,12 +2094,6 @@ form .btn {
   cursor: pointer;
   font-size: 17px;
   color: gray;
-  margin-bottom: 10px;
-  margin-top: -30px;
-}
-
-.full-screen.full .full-screen-btn {
-  margin-top: 0;
 }
 
 .full-screen-btn:hover {
@@ -2426,10 +2424,6 @@ form .btn {
   box-shadow: 0 0 1px rgba(138, 138, 138, 0.5);
 }
 
-.user-data-detail .content-footer {
-  width: 93%;
-}
-
 .navbar-user-entity .navbar-entity {
   margin-top: -10px;
 }
@@ -2665,11 +2659,6 @@ ul.btn-sub-menu li {
   hyphens: auto;
   overflow-wrap: break-word;
   line-height: 22px;
-}
-
-.content-view .text-container .object-text,
-.content-view .text-container .content-text {
-  min-height: 150px;
 }
 
 .object-menu {
@@ -3514,24 +3503,6 @@ ins {
   margin-top: 25px;
 }
 
-.amendment-diff .content-text {
-  padding-left: 25px;
-}
-
-/*.amendment-diff del {
-  background-color: #cc66cc;
-}
-
-.amendment-diff ins {padding: 19px 19px 0;
-  background-color: #f19cf0;
-}
-
-.amendment-diff {
-    margin-left: 19px;
-    margin-right: 19px;
-}
-*/
-
 .block-details {
   margin-top: 10px;
 }
@@ -3544,12 +3515,6 @@ ins {
   margin-bottom: 10px;
   margin-top: -20px;
   margin-left: 30px;
-  color: gray;
-}
-
-.object-description-result {
-  margin-bottom: 10px;
-  margin-top: -10px;
   color: gray;
 }
 
@@ -4061,19 +4026,6 @@ ins {
   width: 100%;
 }
 
-.content-text {
-  padding-left: 45px;
-}
-
-.content-text.row-md {
-  min-height: 80px;
-}
-
-.content-text-scroll {
-  overflow: auto;
-  padding-left: 15px !important;
-}
-
 .filigrane-project {
   background-image: url("../images/filigran.png");
   background-repeat: repeat;
@@ -4418,7 +4370,7 @@ small .proposal-support .token {
 }
 
 /*http://helping.probb.fr/t14-code-css-pour-aligner-un-texte-incline-au-centre-d-une-page-a4*/
-.content-text #filigrane {
+.content-view-body-container #filigrane {
   color: #ef827d;
   display: inline-block;
   font-family: Arial Black;
@@ -5088,11 +5040,6 @@ span.circle {
     width: 80%;
   }
 
-  .content-text {
-    padding-left: 40px;
-    padding-right: 10px;
-  }
-
   .navbar-entity-content .nav > li.pull-right:not(.plus-menu) {
     float: none !important;
   }
@@ -5357,16 +5304,6 @@ span.circle {
   padding-bottom: 0;
 }
 
-.content-footer {
-  color: #8b93a3;
-  font-size: 12px;
-  padding-left: 45px;
-  margin-top: 0;
-  position: relative;
-  width: 100%;
-  display: inline-block;
-}
-
 .actions-block > ul {
   margin-bottom: 0;
 }
@@ -5404,7 +5341,6 @@ span.circle {
   color: @novaideo-primary-color !important;
 }
 
-.content-footer a,
 .popover .actions-block a,
 .footer-actions-bodies a {
   color: #797979;
@@ -5416,13 +5352,11 @@ span.circle {
   margin-right: 5px;
 }
 
-.content-footer a:hover,
 .popover .actions-block a:hover,
 .footer-actions-bodies a:hover {
   color: @novaideo-secondary-color;
 }
 
-.content-footer .actions-block a.activated,
 .popover .actions-block a.activated {
   color: @novaideo-secondary-color;
   font-weight: bold;

@@ -1,6 +1,7 @@
 <div class="content-view-header"  i18n:domain="novaideo"
   tal:define="
     icon getattr(idea, 'icon');">
+  <div tal:replace="structure vote_actions_body"/>
   <div tal:replace="structure navbar_body"/>
   <div class="content-view-title-container">
     <h4 tal:condition="state">
