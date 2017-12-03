@@ -418,8 +418,11 @@ def remove_expired_preregistration(root, preregistration):
     if preregistration.__parent__ is not None:
         oid = str(get_oid(preregistration))
         root.delfromproperty('preregistrations', preregistration)
-        get_socket().send_pyobj(
-            ('ack', 'persistent_' + oid))
+
+
+def remove_expired_preregistration_callback(root, preregistration):
+    remove_expired_preregistration(root, preregistration)
+    get_socket().send_pyobj(('ack', 'persistent_' + oid))
 
 
 class Registration(InfiniteCardinality):
@@ -527,9 +530,8 @@ class ConfirmRegistration(InfiniteCardinality):
         grant_roles(person, roles=('Member',))
         grant_roles(person, (('Owner', person),))
         person.state.append('active')
-        get_socket().send_pyobj(
-            ('stop',
-             'persistent_' + str(get_oid(context))))
+        oid = str(get_oid(context))
+        get_socket().send_pyobj(('stop', 'persistent_' + oid))
         organization = context.organization
         if organization:
             person.setproperty('organization', organization)
