@@ -6,6 +6,7 @@
       oid registration.__oid__;
       trusted_email registration.has_trusted_email(getattr(request.root, 'trusted_emails', []))">
   <div class="content-view-header">
+    <div tal:replace="structure vote_actions_body"/>
     <div tal:replace="structure navbar_body"/>
     <div class="content-view-title-container">
       <h4 class="content-title">
