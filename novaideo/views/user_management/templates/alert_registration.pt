@@ -7,10 +7,10 @@
 	      Please fill in the Identity Information fields below with great care. Reproduce all characters appearing on your official ID documents. A discrepancy of one single character will suffice for the Verificators to refuse your registration!
 	    </span>
 	    <ul>
-			<li i18n:translate="">First names, in the order of the civil status, separated by commas</li>
-			<li i18n:translate="">Last names, in the order of the civil status</li>
+			<li i18n:translate="">Given name(s), as it(they) appear(s) on your official identity documents</li>
+			<li i18n:translate="">Family name(s), as it(they) appear(s) on your official identity documents</li>
 			<li i18n:translate="">Date of birth</li>
-			<li i18n:translate="">Place of birth</li>
+			<li i18n:translate="">Place of birth (city or municipality + country if relevant), as it appears on your official identity documents</li>
 	    </ul>
     </p>
 </div>

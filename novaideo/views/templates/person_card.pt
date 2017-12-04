@@ -5,7 +5,8 @@
                  profil_picture getattr(picture, 'profil', picture);
                  default_img request.static_url('novaideo:static/images/user.png');
                  organization getattr(object, 'organization', None);
-                 contributions_len contributions_len|nothing
+                 contributions_len contributions_len|nothing;
+                 function getattr(object, 'function', '')
                  ">
   <div class="listing-card-img" 
        style="
@@ -17,6 +18,9 @@
       <img class="img-circle"
         tal:attributes="src profil_picture.url if profil_picture else default_img"  width="70"/>
     </div>
+    <div class="badge user-score" >
+      <span class="score">${getattr(object, 'confidence_index', 0)}</span> <span i18n:translate="">score</span>
+    </div>
   </div>
   <div class="listing-card-container">
     <div class="listing-card-content">
@@ -25,11 +29,8 @@
               ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)}
         </a>
         <div class="listing-card-addon">
-          <small class="badge user-score" >
-            <span class="score">${getattr(object, 'confidence_index', 0)}</span> <span i18n:translate="">score</span>
-          </small>
-          <small>
-            <span>${getattr(object, 'function', '')}</span>
+          <small >
+            <span>${'function'}</span>
           </small>
           <div tal:condition="organization" class="listing-card-addon-item">
             <a i18n:attributes="title"

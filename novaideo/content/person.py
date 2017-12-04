@@ -64,7 +64,7 @@ from novaideo.fr_lexicon import normalize_title
 
 
 
-DEADLINE_PREREGISTRATION = 86400*2  # 2 days
+DEADLINE_PREREGISTRATION = 86400*4  # 4 days
 
 
 @colander.deferred
@@ -236,14 +236,14 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 
     first_name = colander.SchemaNode(
         colander.String(),
-        title=_('First names'),
-        description=_("First names, in the order of the civil status, separated by commas")
+        title=_('Given name(s)'),
+        description=_("Given name(s), as it(they) appear(s) on your official identity documents")
         )
 
     last_name = colander.SchemaNode(
         colander.String(),
-        title=_('Last names'),
-        description=_("Last names, in the order of the civil status")
+        title=_('Family name(s)'),
+        description=_("Family name(s), as it(they) appear(s) on your official identity documents")
         )
 
     birth_date = colander.SchemaNode(
@@ -253,7 +253,9 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
 
     birthplace = colander.SchemaNode(
         colander.String(),
-        title=_('Place of birth')
+        title=_('Place of birth'),
+        description=_("Place of birth (city or municipality + country if relevant), "
+                      "as it appears on your official identity documents")
         )
 
     user_title = colander.SchemaNode(

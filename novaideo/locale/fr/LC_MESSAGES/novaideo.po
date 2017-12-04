@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-12-01 19:05+0100\n"
+"POT-Creation-Date: 2017-12-04 10:04+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -311,8 +311,8 @@ msgstr "Ajouter un connecteur Facebook"
 #: novaideo/connectors/twitter/content/behaviors.py:120
 #: novaideo/content/processes/user_management/behaviors.py:147
 #: novaideo/content/processes/user_management/behaviors.py:325
-#: novaideo/content/processes/user_management/behaviors.py:426
-#: novaideo/content/processes/user_management/behaviors.py:501
+#: novaideo/content/processes/user_management/behaviors.py:430
+#: novaideo/content/processes/user_management/behaviors.py:505
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:192
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:220
 #: novaideo/content/processes/admin_process/behaviors.py:42
@@ -384,7 +384,7 @@ msgstr "Configurer"
 #: novaideo/connectors/google/content/definition.py:58
 #: novaideo/connectors/twitter/content/behaviors.py:147
 #: novaideo/connectors/twitter/content/definition.py:58
-#: novaideo/content/processes/user_management/behaviors.py:721
+#: novaideo/content/processes/user_management/behaviors.py:724
 #: novaideo/content/processes/user_management/definition.py:177
 #: novaideo/content/processes/proposal_management/definition.py:549
 #: novaideo/content/processes/newsletter_management/definition.py:74
@@ -408,8 +408,8 @@ msgstr "Supprimer"
 #: novaideo/connectors/google/content/behaviors.py:150
 #: novaideo/connectors/twitter/content/behaviors.py:148
 #: novaideo/content/processes/user_management/behaviors.py:231
-#: novaideo/content/processes/user_management/behaviors.py:612
-#: novaideo/content/processes/user_management/behaviors.py:1061
+#: novaideo/content/processes/user_management/behaviors.py:615
+#: novaideo/content/processes/user_management/behaviors.py:1064
 #: novaideo/content/processes/admin_process/behaviors.py:103
 #: novaideo/content/processes/channel_management/behaviors.py:38
 #: novaideo/content/processes/channel_management/behaviors.py:68
@@ -1337,7 +1337,7 @@ msgstr "Vous devez saisir au moins un mot clé."
 msgid "The title of the application"
 msgstr "Le titre de l'application"
 
-#: novaideo/content/site_configuration.py:467 novaideo/content/person.py:269
+#: novaideo/content/site_configuration.py:467 novaideo/content/person.py:271
 #: novaideo/content/smart_folder.py:139
 msgid "Locale"
 msgstr "Langue"
@@ -1555,7 +1555,7 @@ msgstr "Les raisons du signalement"
 
 #: novaideo/content/report.py:73 novaideo/content/question.py:112
 #: novaideo/content/processes/user_management/behaviors.py:371
-#: novaideo/content/processes/user_management/behaviors.py:676
+#: novaideo/content/processes/user_management/behaviors.py:679
 #: novaideo/content/processes/user_management/definition.py:86
 #: novaideo/content/processes/user_management/definition.py:87
 #: novaideo/content/processes/user_management/definition.py:168
@@ -1968,26 +1968,25 @@ msgid "Cover picture"
 msgstr "Photos de couverture"
 
 #: novaideo/content/person.py:239
-#: novaideo/views/user_management/templates/see_registration.pt:21
-#: novaideo/views/templates/ballots/new_registration.pt:14
-msgid "First names"
-msgstr "Prénoms"
+msgid "Given name(s)"
+msgstr "Prénom(s)"
 
 #: novaideo/content/person.py:240
 #: novaideo/views/user_management/templates/alert_registration.pt:10
-msgid "First names, in the order of the civil status, separated by commas"
-msgstr "Prénoms, dans l'ordre de l'état-civil, séparés par des virgules"
+msgid ""
+"Given name(s), as it(they) appear(s) on your official identity documents"
+msgstr ""
+"Prénom(s), tel(s) qu'apparaissant dans vos documents officiels d'identité"
 
 #: novaideo/content/person.py:245
-#: novaideo/views/user_management/templates/see_registration.pt:23
-#: novaideo/views/templates/ballots/new_registration.pt:16
-msgid "Last names"
-msgstr "Noms"
+msgid "Family name(s)"
+msgstr "Nom(s)"
 
 #: novaideo/content/person.py:246
 #: novaideo/views/user_management/templates/alert_registration.pt:11
-msgid "Last names, in the order of the civil status"
-msgstr "Noms, dans l'ordre de l'état-civil"
+msgid ""
+"Family name(s), as it(they) appear(s) on your official identity documents"
+msgstr "Nom(s), tel(s) qu'apparaissant dans vos documents officiels d'identité"
 
 #: novaideo/content/person.py:251
 #: novaideo/views/user_management/templates/alert_registration.pt:12
@@ -1995,16 +1994,24 @@ msgid "Date of birth"
 msgstr "Date de naissance"
 
 #: novaideo/content/person.py:256
-#: novaideo/views/user_management/templates/alert_registration.pt:13
 msgid "Place of birth"
 msgstr "Lieu de naissance"
 
-#: novaideo/content/person.py:262
+#: novaideo/content/person.py:257
+#: novaideo/views/user_management/templates/alert_registration.pt:13
+msgid ""
+"Place of birth (city or municipality + country if relevant), as it appears "
+"on your official identity documents"
+msgstr ""
+"Lieu de naissance (commune + éventuellement pays), tel qu'apparaissant dans "
+"vos documents officiels d'identité"
+
+#: novaideo/content/person.py:264
 msgctxt "user"
 msgid "Title"
 msgstr "Civilité"
 
-#: novaideo/content/person.py:263
+#: novaideo/content/person.py:265
 msgid ""
 "Please do not select anything if you do not want to communicate this "
 "information."
@@ -2012,28 +2019,28 @@ msgstr ""
 "Veuillez ne rien sélectionner si vous ne souhaitez pas communiquer cette "
 "information."
 
-#: novaideo/content/person.py:279
+#: novaideo/content/person.py:281
 #: novaideo/views/user_management/confirmregistration.py:35
 #: novaideo/views/user_management/templates/login.pt:17
 #: novaideo/views/invitation_management/accept_invitation.py:37
 msgid "Password"
 msgstr "Mot de passe"
 
-#: novaideo/content/person.py:286 novaideo/views/templates/person_bloc.pt:36
+#: novaideo/content/person.py:288 novaideo/views/templates/person_bloc.pt:36
 #: novaideo/views/templates/invitation_result.pt:28
 #: novaideo/views/templates/person_result.pt:46
-#: novaideo/views/templates/person_header.pt:34
+#: novaideo/views/templates/person_header.pt:37
 #: novaideo/views/templates/person_card.pt:36
 #: novaideo/views/invitation_management/templates/see_invitation.pt:36
 #: novaideo/adapters/__init__.py:28
 msgid "Organization"
 msgstr "Organisation"
 
-#: novaideo/content/person.py:296
+#: novaideo/content/person.py:298
 msgid "Pseudonym"
 msgstr "Pseudonyme"
 
-#: novaideo/content/person.py:297
+#: novaideo/content/person.py:299
 msgid ""
 "Please choose the pseudonym that will identify you for the whole duration of "
 "your activity on the platform. This pseudonym can match your real identity, "
@@ -2047,15 +2054,15 @@ msgstr ""
 "attention ! Une fois choisi, vous ne pourrez PLUS JAMAIS changer ce "
 "pseudonyme. Choisissez-le avec soin !"
 
-#: novaideo/content/person.py:306
+#: novaideo/content/person.py:308
 msgid "I have read and accept the terms and conditions of use"
 msgstr "J'ai lu et accepte les termes et conditions d'utilisation"
 
-#: novaideo/content/person.py:337
+#: novaideo/content/person.py:339
 msgid "User already exists"
 msgstr "L'utilisateur existe déjà"
 
-#: novaideo/content/person.py:348
+#: novaideo/content/person.py:350
 msgid "Person"
 msgstr "Personne"
 
@@ -2506,7 +2513,7 @@ msgstr "Assigner des rôles"
 msgid "See notations"
 msgstr "Voir les notes"
 
-#: novaideo/content/processes/user_management/behaviors.py:781
+#: novaideo/content/processes/user_management/behaviors.py:784
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:60
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:127
 #: novaideo/content/processes/reports_management/behaviors.py:237
@@ -5176,6 +5183,16 @@ msgstr "Commentaires, Evaluations ..."
 msgid "By clicking on « Continue »..."
 msgstr "En cliquant sur « Continuer »..."
 
+#: novaideo/views/user_management/templates/see_registration.pt:21
+#: novaideo/views/templates/ballots/new_registration.pt:14
+msgid "First names"
+msgstr "Prénoms"
+
+#: novaideo/views/user_management/templates/see_registration.pt:23
+#: novaideo/views/templates/ballots/new_registration.pt:16
+msgid "Last names"
+msgstr "Noms"
+
 #: novaideo/views/user_management/templates/see_registration.pt:25
 #: novaideo/views/templates/ballots/new_registration.pt:18
 msgid "Birth date"
@@ -6090,7 +6107,7 @@ msgstr "Initiée par"
 
 #: novaideo/views/templates/person_bloc.pt:29
 #: novaideo/views/templates/person_result.pt:26
-#: novaideo/views/templates/person_header.pt:50
+#: novaideo/views/templates/person_header.pt:33
 #: novaideo/views/templates/person_card.pt:29
 msgid "score"
 msgstr "score"
@@ -6313,7 +6330,7 @@ msgid "Associated content:"
 msgstr "Contenu associé :"
 
 #: novaideo/views/templates/person_result.pt:28
-#: novaideo/views/templates/person_header.pt:70
+#: novaideo/views/templates/person_header.pt:72
 #: novaideo/views/templates/small_person_result.pt:18
 msgid "Member since"
 msgstr "Membre depuis le"
@@ -6406,7 +6423,7 @@ msgstr ""
 msgid "Consult"
 msgstr "Consulter"
 
-#: novaideo/views/templates/person_header.pt:64
+#: novaideo/views/templates/person_header.pt:66
 msgid "Last connection"
 msgstr "Dernière connexion"
 
@@ -12087,6 +12104,12 @@ msgstr "Examiné(e) le"
 #: novaideo/adapters/__init__.py:32
 msgid "Published on"
 msgstr "Publié(e) le"
+
+#~ msgid "First names, in the order of the civil status, separated by commas"
+#~ msgstr "Prénoms, dans l'ordre de l'état-civil, séparés par des virgules"
+
+#~ msgid "Last names, in the order of the civil status"
+#~ msgstr "Noms, dans l'ordre de l'état-civil"
 
 #~ msgid "More challenges"
 #~ msgstr "Plus de challenges"

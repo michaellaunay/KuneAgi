@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-12-01 19:05+0100\n"
+"POT-Creation-Date: 2017-12-04 10:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -313,8 +313,8 @@ msgstr ""
 #: ./novaideo/connectors/twitter/content/behaviors.py:120
 #: ./novaideo/content/processes/user_management/behaviors.py:147
 #: ./novaideo/content/processes/user_management/behaviors.py:325
-#: ./novaideo/content/processes/user_management/behaviors.py:426
-#: ./novaideo/content/processes/user_management/behaviors.py:501
+#: ./novaideo/content/processes/user_management/behaviors.py:430
+#: ./novaideo/content/processes/user_management/behaviors.py:505
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:192
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:220
 #: ./novaideo/content/processes/admin_process/behaviors.py:42
@@ -386,7 +386,7 @@ msgstr ""
 #: ./novaideo/connectors/google/content/definition.py:58
 #: ./novaideo/connectors/twitter/content/behaviors.py:147
 #: ./novaideo/connectors/twitter/content/definition.py:58
-#: ./novaideo/content/processes/user_management/behaviors.py:721
+#: ./novaideo/content/processes/user_management/behaviors.py:724
 #: ./novaideo/content/processes/user_management/definition.py:177
 #: ./novaideo/content/processes/proposal_management/definition.py:549
 #: ./novaideo/content/processes/newsletter_management/definition.py:74
@@ -410,8 +410,8 @@ msgstr ""
 #: ./novaideo/connectors/google/content/behaviors.py:150
 #: ./novaideo/connectors/twitter/content/behaviors.py:148
 #: ./novaideo/content/processes/user_management/behaviors.py:231
-#: ./novaideo/content/processes/user_management/behaviors.py:612
-#: ./novaideo/content/processes/user_management/behaviors.py:1061
+#: ./novaideo/content/processes/user_management/behaviors.py:615
+#: ./novaideo/content/processes/user_management/behaviors.py:1064
 #: ./novaideo/content/processes/admin_process/behaviors.py:103
 #: ./novaideo/content/processes/channel_management/behaviors.py:38
 #: ./novaideo/content/processes/channel_management/behaviors.py:68
@@ -1320,7 +1320,7 @@ msgid "The title of the application"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:467
-#: ./novaideo/content/person.py:269 ./novaideo/content/smart_folder.py:139
+#: ./novaideo/content/person.py:271 ./novaideo/content/smart_folder.py:139
 msgid "Locale"
 msgstr ""
 
@@ -1535,7 +1535,7 @@ msgstr ""
 
 #: ./novaideo/content/report.py:73 ./novaideo/content/question.py:112
 #: ./novaideo/content/processes/user_management/behaviors.py:371
-#: ./novaideo/content/processes/user_management/behaviors.py:676
+#: ./novaideo/content/processes/user_management/behaviors.py:679
 #: ./novaideo/content/processes/user_management/definition.py:86
 #: ./novaideo/content/processes/user_management/definition.py:87
 #: ./novaideo/content/processes/user_management/definition.py:168
@@ -1928,25 +1928,23 @@ msgid "Cover picture"
 msgstr ""
 
 #: ./novaideo/content/person.py:239
-#: ./novaideo/views/user_management/templates/see_registration.pt:21
-#: ./novaideo/views/templates/ballots/new_registration.pt:14
-msgid "First names"
+msgid "Given name(s)"
 msgstr ""
 
 #: ./novaideo/content/person.py:240
 #: ./novaideo/views/user_management/templates/alert_registration.pt:10
-msgid "First names, in the order of the civil status, separated by commas"
+msgid ""
+"Given name(s), as it(they) appear(s) on your official identity documents"
 msgstr ""
 
 #: ./novaideo/content/person.py:245
-#: ./novaideo/views/user_management/templates/see_registration.pt:23
-#: ./novaideo/views/templates/ballots/new_registration.pt:16
-msgid "Last names"
+msgid "Family name(s)"
 msgstr ""
 
 #: ./novaideo/content/person.py:246
 #: ./novaideo/views/user_management/templates/alert_registration.pt:11
-msgid "Last names, in the order of the civil status"
+msgid ""
+"Family name(s), as it(they) appear(s) on your official identity documents"
 msgstr ""
 
 #: ./novaideo/content/person.py:251
@@ -1955,44 +1953,50 @@ msgid "Date of birth"
 msgstr ""
 
 #: ./novaideo/content/person.py:256
-#: ./novaideo/views/user_management/templates/alert_registration.pt:13
 msgid "Place of birth"
 msgstr ""
 
-#: ./novaideo/content/person.py:262
+#: ./novaideo/content/person.py:257
+#: ./novaideo/views/user_management/templates/alert_registration.pt:13
+msgid ""
+"Place of birth (city or municipality + country if relevant), as it appears on"
+" your official identity documents"
+msgstr ""
+
+#: ./novaideo/content/person.py:264
 msgctxt "user"
 msgid "Title"
 msgstr ""
 
-#: ./novaideo/content/person.py:263
+#: ./novaideo/content/person.py:265
 msgid ""
 "Please do not select anything if you do not want to communicate this "
 "information."
 msgstr ""
 
-#: ./novaideo/content/person.py:279
+#: ./novaideo/content/person.py:281
 #: ./novaideo/views/user_management/confirmregistration.py:35
 #: ./novaideo/views/user_management/templates/login.pt:17
 #: ./novaideo/views/invitation_management/accept_invitation.py:37
 msgid "Password"
 msgstr ""
 
-#: ./novaideo/content/person.py:286
+#: ./novaideo/content/person.py:288
 #: ./novaideo/views/templates/person_bloc.pt:36
 #: ./novaideo/views/templates/invitation_result.pt:28
 #: ./novaideo/views/templates/person_result.pt:46
-#: ./novaideo/views/templates/person_header.pt:34
+#: ./novaideo/views/templates/person_header.pt:37
 #: ./novaideo/views/templates/person_card.pt:36
 #: ./novaideo/views/invitation_management/templates/see_invitation.pt:36
 #: ./novaideo/adapters/__init__.py:28
 msgid "Organization"
 msgstr ""
 
-#: ./novaideo/content/person.py:296
+#: ./novaideo/content/person.py:298
 msgid "Pseudonym"
 msgstr ""
 
-#: ./novaideo/content/person.py:297
+#: ./novaideo/content/person.py:299
 msgid ""
 "Please choose the pseudonym that will identify you for the whole duration of "
 "your activity on the platform. This pseudonym can match your real identity, "
@@ -2001,15 +2005,15 @@ msgid ""
 " it with care!"
 msgstr ""
 
-#: ./novaideo/content/person.py:306
+#: ./novaideo/content/person.py:308
 msgid "I have read and accept the terms and conditions of use"
 msgstr ""
 
-#: ./novaideo/content/person.py:337
+#: ./novaideo/content/person.py:339
 msgid "User already exists"
 msgstr ""
 
-#: ./novaideo/content/person.py:348
+#: ./novaideo/content/person.py:350
 msgid "Person"
 msgstr ""
 
@@ -2458,7 +2462,7 @@ msgstr ""
 msgid "See notations"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:781
+#: ./novaideo/content/processes/user_management/behaviors.py:784
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:60
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:127
 #: ./novaideo/content/processes/reports_management/behaviors.py:237
@@ -5037,6 +5041,16 @@ msgstr ""
 msgid "By clicking on « Continue »..."
 msgstr ""
 
+#: ./novaideo/views/user_management/templates/see_registration.pt:21
+#: ./novaideo/views/templates/ballots/new_registration.pt:14
+msgid "First names"
+msgstr ""
+
+#: ./novaideo/views/user_management/templates/see_registration.pt:23
+#: ./novaideo/views/templates/ballots/new_registration.pt:16
+msgid "Last names"
+msgstr ""
+
 #: ./novaideo/views/user_management/templates/see_registration.pt:25
 #: ./novaideo/views/templates/ballots/new_registration.pt:18
 msgid "Birth date"
@@ -5900,7 +5914,7 @@ msgstr ""
 
 #: ./novaideo/views/templates/person_bloc.pt:29
 #: ./novaideo/views/templates/person_result.pt:26
-#: ./novaideo/views/templates/person_header.pt:50
+#: ./novaideo/views/templates/person_header.pt:33
 #: ./novaideo/views/templates/person_card.pt:29
 msgid "score"
 msgstr ""
@@ -6113,7 +6127,7 @@ msgid "Associated content:"
 msgstr ""
 
 #: ./novaideo/views/templates/person_result.pt:28
-#: ./novaideo/views/templates/person_header.pt:70
+#: ./novaideo/views/templates/person_header.pt:72
 #: ./novaideo/views/templates/small_person_result.pt:18
 msgid "Member since"
 msgstr ""
@@ -6192,7 +6206,7 @@ msgstr ""
 msgid "Consult"
 msgstr ""
 
-#: ./novaideo/views/templates/person_header.pt:64
+#: ./novaideo/views/templates/person_header.pt:66
 msgid "Last connection"
 msgstr ""
 

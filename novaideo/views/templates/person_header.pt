@@ -29,6 +29,9 @@
 							            data-icon=""
 							            data-img="${getattr(profil_picture, 'url', default_img)}">
 							            ${getattr(object, 'title', object.name)} 
+							            <span class="badge user-score" style="margin-left: 10px;" >
+							              <span class="score">${getattr(object, 'confidence_index', 0)}</span> <span i18n:translate="">score</span>
+							            </span>
 							            <span tal:condition="organization">
 							                 <a i18n:attributes="title"
 							                   title="Organization"
@@ -47,7 +50,6 @@
 							              </span>
 							        </h3>
 						            <div class="user-function" tal:condition="getattr(object, 'function', '')">${object.function}</div>
-						            <div class="badge user-score pull-right" style="margin-left: 10px;" ><span class="score">${getattr(object, 'confidence_index', 0)}</span> <span i18n:translate="">score</span></div>
 						            <div tal:omit-tag="" tal:condition="is_portal_manager" tal:define="mail getattr(object, 'email', '')">
 						                <span class="title-icon glyphicon glyphicon-envelope"></span> <a  href="mailto:${mail}">${mail}</a>
 						            </div>
