@@ -32,6 +32,9 @@
             <dd><span tal:replace="layout.to_localized_time(object.created_at)"/></dd>
         </dl>
       </div>
+      <div class="listing-card-footer">
+        <div tal:replace="structure primary_menu_body"/>
+      </div>
     </div>
   </div>
 </div>
