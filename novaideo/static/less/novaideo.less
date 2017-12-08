@@ -1396,7 +1396,12 @@ a.answer-btn {
 }
 
 .emoji-input-widget {
-  display: block !important;
+  display: flex;
+  flex-direction: column;
+  background-color: #f7f7f7;
+  max-height: 320px;
+  z-index: 1300;
+  margin: -9px -9px -20px -12px;
 }
 
 .assigned-emojis.emojified {
@@ -1481,11 +1486,8 @@ a.answer-btn {
 
 .emoji-anchors {
   background-color: #f7f7f7;
-  width: 111%;
-  margin-top: -11px;
-  margin-left: -11px;
   padding: 6px;
-  box-shadow: 0 0 3px gray;
+  box-shadow: 0 0 3px grey;
 }
 
 a.emoji-group-tab.active {
@@ -1516,9 +1518,8 @@ a.emoji-group-tab:hover {
 }
 
 .emoji-container-input .emoji-groups {
-  overflow: auto;
-  max-height: 300px;
-  width: 101%;
+  max-height: 200px;
+  padding: 5px;
 }
 
 .emoji-preview {
