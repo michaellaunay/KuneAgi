@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-12-07 12:51+0100\n"
+"POT-Creation-Date: 2017-12-11 10:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -152,24 +152,24 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: ./novaideo/__init__.py:1090
+#: ./novaideo/__init__.py:1130
 #: ./novaideo/views/templates/panels/novaideo_footer.pt:12
 msgid "Legal notice"
 msgstr ""
 
-#: ./novaideo/__init__.py:1091
+#: ./novaideo/__init__.py:1131
 msgid "The legal notice"
 msgstr ""
 
-#: ./novaideo/__init__.py:1095
+#: ./novaideo/__init__.py:1135
 msgid "Terms of use"
 msgstr ""
 
-#: ./novaideo/__init__.py:1096
+#: ./novaideo/__init__.py:1136
 msgid "The terms of use"
 msgstr ""
 
-#: ./novaideo/__init__.py:1100 ./novaideo/__init__.py:1101
+#: ./novaideo/__init__.py:1140 ./novaideo/__init__.py:1141
 msgid "Moderation rules"
 msgstr ""
 
@@ -185,13 +185,13 @@ msgstr ""
 msgid "Channel"
 msgstr ""
 
-#: ./novaideo/core.py:434 ./novaideo/content/site_configuration.py:424
+#: ./novaideo/core.py:449 ./novaideo/content/site_configuration.py:424
 msgid ""
 "Minimum one keyword required. You can specify a second keyword level for each"
 " keyword chosen."
 msgstr ""
 
-#: ./novaideo/core.py:444 ./novaideo/content/site_configuration.py:434
+#: ./novaideo/core.py:459 ./novaideo/content/site_configuration.py:434
 #: ./novaideo/views/novaideo_view_manager/analytics.py:223
 #: ./novaideo/views/admin_process/manage_keywords.py:62
 #: ./novaideo/views/proposal_management/templates/diff_result.pt:8
@@ -202,7 +202,7 @@ msgstr ""
 msgid "Keywords"
 msgstr ""
 
-#: ./novaideo/core.py:445 ./novaideo/content/person.py:205
+#: ./novaideo/core.py:460 ./novaideo/content/person.py:205
 #: ./novaideo/views/novaideo_view_manager/analytics.py:224
 msgid ""
 "Indicate keywords. You can specify a second keyword level for each keyword "
@@ -239,7 +239,7 @@ msgstr ""
 #: ./novaideo/web_services/export_entities.py:125
 #: ./novaideo/content/processes/novaideo_view_manager/behaviors.py:342
 #: ./novaideo/content/processes/newsletter_management/definition.py:70
-#: ./novaideo/content/processes/invitation_management/behaviors.py:111
+#: ./novaideo/content/processes/invitation_management/behaviors.py:151
 #: ./novaideo/content/processes/idea_management/behaviors.py:901
 #: ./novaideo/views/user_management/reset_password.py:38
 #: ./novaideo/views/user_management/reset_password.py:145
@@ -315,8 +315,8 @@ msgstr ""
 #: ./novaideo/content/processes/user_management/behaviors.py:325
 #: ./novaideo/content/processes/user_management/behaviors.py:430
 #: ./novaideo/content/processes/user_management/behaviors.py:505
-#: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:192
-#: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:220
+#: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:203
+#: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:231
 #: ./novaideo/content/processes/admin_process/behaviors.py:42
 #: ./novaideo/content/processes/admin_process/behaviors.py:72
 #: ./novaideo/content/processes/work_mode_processes/wiki_work_mode_process/behaviors.py:59
@@ -335,9 +335,9 @@ msgstr ""
 #: ./novaideo/content/processes/newsletter_management/behaviors.py:230
 #: ./novaideo/content/processes/newsletter_management/behaviors.py:252
 #: ./novaideo/content/processes/newsletter_management/behaviors.py:338
-#: ./novaideo/content/processes/invitation_management/behaviors.py:227
-#: ./novaideo/content/processes/invitation_management/behaviors.py:258
-#: ./novaideo/content/processes/invitation_management/behaviors.py:287
+#: ./novaideo/content/processes/invitation_management/behaviors.py:267
+#: ./novaideo/content/processes/invitation_management/behaviors.py:298
+#: ./novaideo/content/processes/invitation_management/behaviors.py:327
 #: ./novaideo/content/processes/amendment_management/behaviors.py:98
 #: ./novaideo/content/processes/amendment_management/behaviors.py:191
 #: ./novaideo/content/processes/question_management/behaviors.py:188
@@ -353,11 +353,10 @@ msgstr ""
 #: ./novaideo/content/processes/challenge_management/behaviors.py:66
 #: ./novaideo/content/processes/challenge_management/behaviors.py:384
 #: ./novaideo/content/processes/ballot_processes/__init__.py:45
-#: ./novaideo/content/processes/organization_management/behaviors.py:43
-#: ./novaideo/content/processes/organization_management/behaviors.py:79
-#: ./novaideo/content/processes/organization_management/behaviors.py:116
-#: ./novaideo/content/processes/organization_management/behaviors.py:207
-#: ./novaideo/content/processes/organization_management/behaviors.py:347
+#: ./novaideo/content/processes/organization_management/behaviors.py:107
+#: ./novaideo/content/processes/organization_management/behaviors.py:144
+#: ./novaideo/content/processes/organization_management/behaviors.py:235
+#: ./novaideo/content/processes/organization_management/behaviors.py:375
 #: ./novaideo/content/processes/idea_management/behaviors.py:157
 #: ./novaideo/content/processes/idea_management/behaviors.py:355
 #: ./novaideo/content/processes/idea_management/behaviors.py:445
@@ -449,10 +448,10 @@ msgstr ""
 #: ./novaideo/content/processes/challenge_management/behaviors.py:350
 #: ./novaideo/content/processes/challenge_management/behaviors.py:586
 #: ./novaideo/content/processes/challenge_management/behaviors.py:623
-#: ./novaideo/content/processes/organization_management/behaviors.py:240
-#: ./novaideo/content/processes/organization_management/behaviors.py:260
-#: ./novaideo/content/processes/organization_management/behaviors.py:305
-#: ./novaideo/content/processes/organization_management/behaviors.py:398
+#: ./novaideo/content/processes/organization_management/behaviors.py:268
+#: ./novaideo/content/processes/organization_management/behaviors.py:288
+#: ./novaideo/content/processes/organization_management/behaviors.py:333
+#: ./novaideo/content/processes/organization_management/behaviors.py:426
 #: ./novaideo/content/processes/idea_management/behaviors.py:410
 #: ./novaideo/content/processes/idea_management/behaviors.py:521
 #: ./novaideo/content/processes/idea_management/behaviors.py:581
@@ -583,7 +582,6 @@ msgstr ""
 #: ./novaideo/content/processes/novaideo_file_management/definition.py:47
 #: ./novaideo/content/processes/advertising_management/definition.py:49
 #: ./novaideo/content/processes/challenge_management/definition.py:61
-#: ./novaideo/content/processes/organization_management/definition.py:52
 #: ./novaideo/content/processes/organization_management/definition.py:56
 #: ./novaideo/content/processes/idea_management/definition.py:75
 msgid "Add"
@@ -742,6 +740,8 @@ msgstr ""
 
 #: ./novaideo/connectors/yammer/content/behaviors.py:283
 #: ./novaideo/connectors/yammer/content/definition.py:62
+#: ./novaideo/content/processes/invitation_management/behaviors.py:57
+#: ./novaideo/content/processes/organization_management/behaviors.py:44
 msgid "Import"
 msgstr ""
 
@@ -1568,7 +1568,7 @@ msgstr ""
 #: ./novaideo/content/processes/challenge_management/behaviors.py:538
 #: ./novaideo/content/processes/challenge_management/definition.py:99
 #: ./novaideo/content/processes/challenge_management/definition.py:100
-#: ./novaideo/content/processes/organization_management/behaviors.py:178
+#: ./novaideo/content/processes/organization_management/behaviors.py:206
 #: ./novaideo/content/processes/organization_management/definition.py:71
 #: ./novaideo/content/processes/idea_management/behaviors.py:1040
 #: ./novaideo/content/processes/idea_management/definition.py:129
@@ -2417,7 +2417,7 @@ msgstr ""
 #: ./novaideo/content/processes/question_management/definition.py:183
 #: ./novaideo/content/processes/smart_folder_management/definition.py:59
 #: ./novaideo/content/processes/challenge_management/definition.py:76
-#: ./novaideo/content/processes/organization_management/behaviors.py:206
+#: ./novaideo/content/processes/organization_management/behaviors.py:234
 #: ./novaideo/content/processes/organization_management/definition.py:60
 #: ./novaideo/content/processes/organization_management/definition.py:67
 #: ./novaideo/content/processes/organization_management/definition.py:68
@@ -2585,7 +2585,7 @@ msgid "Add reactions"
 msgstr ""
 
 #: ./novaideo/content/processes/novaideo_abstract_process/definition.py:54
-#: ./novaideo/views/novaideo_abstract_process/add_reaction.py:53
+#: ./novaideo/views/novaideo_abstract_process/add_reaction.py:51
 msgid "Add reaction"
 msgstr ""
 
@@ -2631,7 +2631,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:67
 #: ./novaideo/views/novaideo_view_manager/see_my_contents.py:44
-#: ./novaideo/utilities/pseudo_react.py:1872
+#: ./novaideo/utilities/pseudo_react.py:1882
 msgid "My contents"
 msgstr ""
 
@@ -2641,7 +2641,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:71
 #: ./novaideo/views/novaideo_view_manager/see_my_selections.py:37
-#: ./novaideo/utilities/pseudo_react.py:1804
+#: ./novaideo/utilities/pseudo_react.py:1814
 msgid "My followings"
 msgstr ""
 
@@ -2651,7 +2651,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:75
 #: ./novaideo/views/novaideo_view_manager/see_my_participations.py:38
-#: ./novaideo/utilities/pseudo_react.py:1994
+#: ./novaideo/utilities/pseudo_react.py:2004
 msgid "My working groups"
 msgstr ""
 
@@ -2661,7 +2661,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:79
 #: ./novaideo/views/novaideo_view_manager/see_my_supports.py:38
-#: ./novaideo/utilities/pseudo_react.py:1835
+#: ./novaideo/utilities/pseudo_react.py:1845
 msgid "My evaluations"
 msgstr ""
 
@@ -2739,6 +2739,7 @@ msgstr ""
 
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:130
 #: ./novaideo/content/processes/novaideo_view_manager/definition.py:131
+#: ./novaideo/content/processes/organization_management/behaviors.py:73
 #: ./novaideo/views/novaideo_view_manager/contact.py:104
 #: ./novaideo/views/novaideo_view_manager/contact.py:132
 msgid "Contact"
@@ -2763,7 +2764,8 @@ msgstr ""
 #: ./novaideo/content/processes/admin_process/definition.py:44
 #: ./novaideo/content/processes/admin_process/definition.py:48
 #: ./novaideo/content/processes/admin_process/definition.py:52
-#: ./novaideo/content/processes/invitation_management/behaviors.py:178
+#: ./novaideo/content/processes/invitation_management/behaviors.py:218
+#: ./novaideo/content/processes/organization_management/definition.py:52
 #: ./novaideo/views/panels.py:317
 #: ./novaideo/views/novaideo_view_manager/templates/search_result_users.pt:40
 #: ./novaideo/views/novaideo_view_manager/templates/search_result.pt:29
@@ -3643,7 +3645,7 @@ msgstr ""
 msgid "See content history"
 msgstr ""
 
-#: ./novaideo/content/processes/invitation_management/behaviors.py:257
+#: ./novaideo/content/processes/invitation_management/behaviors.py:297
 #: ./novaideo/content/processes/invitation_management/definition.py:67
 #: ./novaideo/content/processes/invitation_management/definition.py:68
 #: ./novaideo/views/invitation_management/edit_invitation.py:29
@@ -3653,6 +3655,16 @@ msgstr ""
 #: ./novaideo/content/processes/invitation_management/definition.py:39
 #: ./novaideo/content/processes/invitation_management/definition.py:40
 msgid "Invitations management"
+msgstr ""
+
+#: ./novaideo/content/processes/invitation_management/definition.py:47
+msgid "Upload invitations from an xl file"
+msgstr ""
+
+#: ./novaideo/content/processes/invitation_management/definition.py:48
+#: ./novaideo/views/invitation_management/upload_users.py:51
+#: ./novaideo/views/invitation_management/upload_users.py:66
+msgid "Upload invitations"
 msgstr ""
 
 #: ./novaideo/content/processes/invitation_management/definition.py:51
@@ -4201,11 +4213,12 @@ msgid "Organizations management"
 msgstr ""
 
 #: ./novaideo/content/processes/organization_management/definition.py:50
-msgid "Upload organizations from spreadsheet file"
+msgid "Upload organizations from an xls file"
 msgstr ""
 
 #: ./novaideo/content/processes/organization_management/definition.py:51
-#: ./novaideo/views/organization_management/add_organizations.py:38
+#: ./novaideo/views/organization_management/add_organizations.py:51
+#: ./novaideo/views/organization_management/add_organizations.py:65
 msgid "Upload organizations"
 msgstr ""
 
@@ -6040,7 +6053,7 @@ msgid ""
 "${dynamic}"
 msgstr ""
 
-#: ./novaideo/views/templates/master.pt:194
+#: ./novaideo/views/templates/master.pt:195
 msgid "My discussions"
 msgstr ""
 
@@ -6078,26 +6091,26 @@ msgid "Cancel"
 msgstr ""
 
 #: ./novaideo/views/templates/entity_stats.pt:17
-#: ./novaideo/utilities/pseudo_react.py:1902
-#: ./novaideo/utilities/pseudo_react.py:1947
+#: ./novaideo/utilities/pseudo_react.py:1912
+#: ./novaideo/utilities/pseudo_react.py:1957
 msgid "Asked question"
 msgstr ""
 
 #: ./novaideo/views/templates/entity_stats.pt:18
-#: ./novaideo/utilities/pseudo_react.py:1904
-#: ./novaideo/utilities/pseudo_react.py:1949
+#: ./novaideo/utilities/pseudo_react.py:1914
+#: ./novaideo/utilities/pseudo_react.py:1959
 msgid "Asked questions"
 msgstr ""
 
 #: ./novaideo/views/templates/entity_stats.pt:21
-#: ./novaideo/utilities/pseudo_react.py:1921
-#: ./novaideo/utilities/pseudo_react.py:1973
+#: ./novaideo/utilities/pseudo_react.py:1931
+#: ./novaideo/utilities/pseudo_react.py:1983
 msgid "Published idea"
 msgstr ""
 
 #: ./novaideo/views/templates/entity_stats.pt:22
-#: ./novaideo/utilities/pseudo_react.py:1923
-#: ./novaideo/utilities/pseudo_react.py:1975
+#: ./novaideo/utilities/pseudo_react.py:1933
+#: ./novaideo/utilities/pseudo_react.py:1985
 msgid "Published ideas"
 msgstr ""
 
@@ -9480,13 +9493,17 @@ msgstr ""
 msgid "${number} invitations found"
 msgstr ""
 
-#: ./novaideo/views/invitation_management/upload_users.py:27
-#: ./novaideo/views/organization_management/add_organizations.py:27
+#: ./novaideo/views/invitation_management/upload_users.py:26
+msgid "Alert for users import"
+msgstr ""
+
+#: ./novaideo/views/invitation_management/upload_users.py:44
+#: ./novaideo/views/organization_management/add_organizations.py:44
 msgid "The xls file"
 msgstr ""
 
-#: ./novaideo/views/invitation_management/upload_users.py:38
-msgid "Upload users"
+#: ./novaideo/views/invitation_management/upload_users.py:45
+msgid "The xls file containing invitations data."
 msgstr ""
 
 #: ./novaideo/views/invitation_management/remind_invitation.py:24
@@ -9495,6 +9512,53 @@ msgstr ""
 
 #: ./novaideo/views/invitation_management/accept_invitation.py:47
 msgid "Validate the invitation"
+msgstr ""
+
+#: ./novaideo/views/invitation_management/templates/alert_import.pt:2
+#: ./novaideo/views/organization_management/templates/alert_import.pt:2
+msgid "The xls file must contain the following keys:"
+msgstr ""
+
+#: ./novaideo/views/invitation_management/templates/alert_import.pt:4
+msgid ""
+"The title of the user. The value can be 'Mr' or 'Madam'. If not specified, "
+"the 'Mr' title will be assigned."
+msgstr ""
+
+#: ./novaideo/views/invitation_management/templates/alert_import.pt:5
+#: ./novaideo/views/invitation_management/templates/alert_import.pt:6
+#: ./novaideo/views/invitation_management/templates/alert_import.pt:7
+#: ./novaideo/views/organization_management/templates/alert_import.pt:4
+msgid "(required field)"
+msgstr ""
+
+#: ./novaideo/views/invitation_management/templates/alert_import.pt:5
+msgid "The first name of the user."
+msgstr ""
+
+#: ./novaideo/views/invitation_management/templates/alert_import.pt:6
+msgid "The last name of the user."
+msgstr ""
+
+#: ./novaideo/views/invitation_management/templates/alert_import.pt:7
+msgid "The email address of the user."
+msgstr ""
+
+#: ./novaideo/views/invitation_management/templates/alert_import.pt:8
+msgid ""
+"The list of roles to be assigned to the user. The roles must be separeted by "
+"a comma (ex: Examiner, Moderator). the available roles are: 'Examiner', "
+"'Moderator' and 'Member'. If not specified, the 'Member' role will be "
+"assigned."
+msgstr ""
+
+#: ./novaideo/views/invitation_management/templates/alert_import.pt:9
+msgid "The title of the organization of the user."
+msgstr ""
+
+#: ./novaideo/views/invitation_management/templates/alert_import.pt:10
+msgid ""
+"The value must be 'true' if the user is the manager of the organization."
 msgstr ""
 
 #: ./novaideo/views/amendment_management/associate.py:53
@@ -9961,6 +10025,10 @@ msgstr ""
 msgid "You can enter the words that appear in the contents to be displayed."
 msgstr ""
 
+#: ./novaideo/views/filter/templates/sort.pt:3
+msgid "Sort by:"
+msgstr ""
+
 #: ./novaideo/views/filter/templates/sort.pt:5
 msgid "${sort['description'] or sort['title']}"
 msgstr ""
@@ -10184,9 +10252,45 @@ msgstr ""
 msgid "Organization deletion"
 msgstr ""
 
+#: ./novaideo/views/organization_management/add_organizations.py:26
+msgid "Alert for organization import"
+msgstr ""
+
+#: ./novaideo/views/organization_management/add_organizations.py:45
+msgid "The xls file containing organizations data."
+msgstr ""
+
 #: ./novaideo/views/organization_management/withdraw_user.py:36
 #: ./novaideo/views/organization_management/withdraw_user.py:57
 msgid "Withdraw user from the organization"
+msgstr ""
+
+#: ./novaideo/views/organization_management/templates/alert_import.pt:4
+msgid "The title of the organization."
+msgstr ""
+
+#: ./novaideo/views/organization_management/templates/alert_import.pt:5
+msgid "The description of the organization."
+msgstr ""
+
+#: ./novaideo/views/organization_management/templates/alert_import.pt:6
+msgid "The address of the organization."
+msgstr ""
+
+#: ./novaideo/views/organization_management/templates/alert_import.pt:7
+msgid "The phone of the organization."
+msgstr ""
+
+#: ./novaideo/views/organization_management/templates/alert_import.pt:8
+msgid "The email address of the organization."
+msgstr ""
+
+#: ./novaideo/views/organization_management/templates/alert_import.pt:9
+msgid "The website of the organization."
+msgstr ""
+
+#: ./novaideo/views/organization_management/templates/alert_import.pt:10
+msgid "The fax of the organization."
 msgstr ""
 
 #: ./novaideo/views/idea_management/duplicate_idea.py:34
@@ -10907,44 +11011,44 @@ msgstr ""
 msgid "The processes have been updated."
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1667
+#: ./novaideo/utilities/pseudo_react.py:1677
 msgid "The file has been published."
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1675
+#: ./novaideo/utilities/pseudo_react.py:1685
 msgid "The file has been made private."
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1756
+#: ./novaideo/utilities/pseudo_react.py:1766
 msgid "The connector has been suppressed."
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1776
+#: ./novaideo/utilities/pseudo_react.py:1786
 msgid "The messages has been imported."
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:1786
+#: ./novaideo/utilities/pseudo_react.py:1796
 msgid "The amendment has been submitted."
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:2027
+#: ./novaideo/utilities/pseudo_react.py:2037
 #, python-format
 msgid "His/her working groups (${nb})"
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:2044
+#: ./novaideo/utilities/pseudo_react.py:2054
 #, python-format
 msgid "His/her ideas (${nb})"
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:2063
-#: ./novaideo/utilities/pseudo_react.py:2105
+#: ./novaideo/utilities/pseudo_react.py:2073
+#: ./novaideo/utilities/pseudo_react.py:2115
 #, python-format
 msgid "Questions (${nb})"
 msgstr ""
 
-#: ./novaideo/utilities/pseudo_react.py:2078
-#: ./novaideo/utilities/pseudo_react.py:2127
+#: ./novaideo/utilities/pseudo_react.py:2088
+#: ./novaideo/utilities/pseudo_react.py:2137
 #, python-format
 msgid "Ideas (${nb})"
 msgstr ""
