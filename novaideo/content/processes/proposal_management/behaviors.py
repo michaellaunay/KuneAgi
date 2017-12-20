@@ -2423,7 +2423,7 @@ class ParticipationVote(StartBallot):
             working_group = proposal.working_group
             members = working_group.members
             if accepted:
-                wgs = participant.get_active_working_groups(user) \
+                wgs = participant.get_active_working_groups(participant) \
                     if hasattr(participant, 'get_active_working_groups') else []
                 if len(wgs) < root.participations_maxi:
                     accept_participation(
