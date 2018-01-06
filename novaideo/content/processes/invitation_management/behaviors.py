@@ -342,7 +342,7 @@ class AcceptInvitation(InfiniteCardinality):
         datas['pseudonym'] = appstruct.get('pseudonym', None)
         roles = datas.pop('roles')
         password = appstruct['password']
-        data['locale'] = my_locale_negotiator(request)
+        datas['locale'] = my_locale_negotiator(request)
         person = Person(password=password, **datas)
         root = getSite(context)
         principals = find_service(root, 'principals')
