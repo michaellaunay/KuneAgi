@@ -730,10 +730,9 @@ class SubmitProposalModeration(InfiniteCardinality):
             )
             alert('email', [root.get_site_sender()], [author.email],
                   subject=subject, body=message)
+            request.registry.notify(ActivityExecuted(
+                self, [context], get_current()))
 
-        request.registry.notify(ObjectPublished(object=context))
-        request.registry.notify(ActivityExecuted(
-            self, not_published_ideas, get_current()))
         return {}
 
     def redirect(self, context, request, **kw):
