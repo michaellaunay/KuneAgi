@@ -719,17 +719,15 @@ class SubmitProposalModeration(InfiniteCardinality):
                 context, request, root, moderators)
             alert_data.update(get_user_data(author, 'recipient', request))
             mail_template = root.get_mail_template(
-                'publish_proposal_decision', author.user_locale)
-            subject = mail_template['subject'].format(
-                subject_title=context.title)
-            email_data = get_user_data(author, 'recipient', request)
-            email_data.update(get_entity_data(context, 'subject', request))
-            message = mail_template['template'].format(
-                novaideo_title=root.title,
-                **email_data
-            )
-            alert('email', [root.get_site_sender()], [author.email],
-                  subject=subject, body=message)
+                'content_submit', author.user_locale)
+            if mail_template:
+                subject = mail_template['subject'].format(
+                    **alert_data)
+                message = mail_template['template'].format(
+                    **alert_data)
+                alert('email', [root.get_site_sender()], [author.email],
+                      subject=subject, body=message)
+
             request.registry.notify(ActivityExecuted(
                 self, [context], get_current()))
 
