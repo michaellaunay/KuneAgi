@@ -38,8 +38,6 @@ class CreateEventView(FormView):
     formid = 'formcreateevent'
     name = 'createevent'
     css_class = 'panel-transparent'
-    requirements = {'css_links': [],
-                    'js_links': ['deform:static/tinymce/tinymce.min.js']}
 
     def before_update(self):
         self.action = self.request.resource_url(

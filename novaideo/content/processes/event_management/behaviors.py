@@ -1,14 +1,10 @@
 # -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# Copyright (c) 2018 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
 
-"""
-This module represent all of behaviors used in the
-Comment management process definition.
-"""
 import datetime
 import pytz
 from pyramid.httpexceptions import HTTPFound
@@ -87,8 +83,6 @@ class SeeRelatedEvents(InfiniteCardinality):
     style_picto = 'glyphicon glyphicon-calendar'
     style_order = 3
     context = IEventObject
-    #processsecurity_validation = seeideas_processsecurity_validation
-    #roles_validation = seeideas_roles_validation
     state_validation = seeevents_state_validation
 
     def start(self, context, request, appstruct, **kw):
@@ -114,7 +108,7 @@ def see_processsecurity_validation(process, context):
 
 @access_action(access_key=get_access_key)
 class SeeEvent(InfiniteCardinality):
-    """SeeComment is the behavior allowing access to context"""
+    """SeeEvent is the behavior allowing access to context"""
     style = 'button' #TODO add style abstract class
     style_descriminator = 'access-action'
     style_interaction = 'ajax-action'
