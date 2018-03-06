@@ -24,6 +24,7 @@ from novaideo.utilities.util import (
 from novaideo import _
 from .compare_idea import CompareIdeaView
 from .see_workinggroups import SeeRelatedWorkingGroupsView
+from ..event_management.see_events import SeeRelatedEventsView
 
 
 class IdeaHeaderView(BasicView):
@@ -136,7 +137,7 @@ class SeeIdeaActionsView(MultipleView):
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
     css_class = 'integreted-tab-content'
     title = ''
-    views = (DetailIdeaView, SeeRelatedWorkingGroupsView, CompareIdeaView,)
+    views = (DetailIdeaView, SeeRelatedWorkingGroupsView, SeeRelatedEventsView, CompareIdeaView,)
 
     def _activate(self, items):
         pass

@@ -1,0 +1,31 @@
+<div class="listing-card listing-small-card listing-card-idea" 
+     i18n:domain="novaideo"
+     tal:define="url request.resource_url(object, '@@index');
+                 icon getattr(object, 'icon');
+                 censored 'censored' in object.state
+                 ">
+  <div class="listing-card-header">
+
+  </div>
+  <div class="listing-card-container">
+    <div class="listing-card-content">
+      <div>
+        <div class="object-title-block" >
+          <h5 tal:condition="not censored" class="inline">
+            <a data-oid="${getattr(object, '__oid__', '')}"
+               class="toggle-popover"
+               tal:attributes="href url">
+                <span class="icon ${icon}"></span>  ${object.title}
+            </a>
+          </h5>
+          <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
+        </div>
+        <div tal:condition="censored">
+         <div class="alert-terms-of-use">
+          <span i18n:translate="">This content does not respect the Use Charter.</span>
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

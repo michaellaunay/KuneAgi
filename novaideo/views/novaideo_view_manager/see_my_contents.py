@@ -52,7 +52,7 @@ class SeeMyContentsView(BasicView):
     selected_filter = ['metadata_filter', ('temporal_filter', ['negation', 'created_date']),
                        'text_filter', 'other_filter']
     include_archived = True
-    content_types = ['idea', 'proposal', 'question']
+    content_types = ['idea', 'proposal', 'question', 'event']
 
     def _get_title(self, **args):
         return _(self.contents_messages[args.get('index')],

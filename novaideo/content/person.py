@@ -360,6 +360,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
     tokens = CompositeMultipleProperty('tokens')
     tokens_ref = SharedMultipleProperty('tokens_ref')
     organization = SharedUniqueProperty('organization', 'members')
+    events = SharedMultipleProperty('events', 'author')
     picture = CompositeUniqueProperty('picture')
     cover_picture = CompositeUniqueProperty('cover_picture')
     ideas = SharedMultipleProperty('ideas', 'author')
@@ -569,6 +570,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         result.extend(self.proposals)
         result.extend(self.questions)
         result.extend(self.challenges)
+        result.extend(self.events)
         return result
 
     def get_contents(self, user):

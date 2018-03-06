@@ -54,7 +54,8 @@ from novaideo.content.interface import (
     ISignalableEntity,
     ISustainable,
     IDebatable,
-    ITokenable)
+    ITokenable,
+    IEventObject)
 
 
 BATCH_DEFAULT_SIZE = 8
@@ -853,3 +854,14 @@ class Tokenable(Entity):
     @property
     def len_opposition(self):
         return self.len_allocated_tokens.get(Evaluations.oppose, 0)
+
+
+@implementer(IEventObject)
+class EventObject(Entity):
+    """EventObject class"""
+
+    events = CompositeMultipleProperty('events', 'subject')
+
+    def __init__(self, **kwargs):
+        super(EventObject, self).__init__(**kwargs)
+        self.set_data(kwargs)

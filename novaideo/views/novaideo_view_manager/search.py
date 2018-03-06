@@ -31,6 +31,7 @@ from novaideo.views.filter import (
     merge_with_filter_view, find_entities)
 from novaideo.content.idea import Idea
 from novaideo.content.proposal import Proposal
+from novaideo.content.event import Event
 from novaideo.content.person import Person
 from novaideo.content.question import Question
 # from novaideo.views.filter.sort import (
@@ -47,6 +48,7 @@ DEFAULT_SEARCHABLE_CONTENT = [
     ('question', Question),
     ('idea', Idea),
     ('proposal', Proposal),
+    ('event', Event),
     ('person', Person)
 ]
 
@@ -169,6 +171,7 @@ class SearchView(FormView):
         posted_formid = None
         default_content = [key[0] for key in get_default_searchable_content(self.request)]
         default_content.remove("person")
+        default_content.remove("event")
         if 'question' in default_content:
             default_content.remove("question")
 
@@ -253,6 +256,7 @@ class SearchResultView(BasicView):
             default_content = [key[0] for key in
                                get_default_searchable_content(self.request)]
             default_content.remove("person")
+            default_content.remove("event")
             if 'question' in default_content:
                 default_content.remove("question")
 

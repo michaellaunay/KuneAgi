@@ -153,6 +153,11 @@ class ITokenable(IEntity):
     pass
 
 
+@interface(True)
+class IEventObject(IEntity):
+    pass
+
+
 @interface()
 class ISReport(IEntity):
     pass
@@ -246,6 +251,11 @@ class IAnswer(ICorrelableEntity,
 
 @interface()
 class IFile(ISearchableEntity):
+    pass
+
+
+@interface()
+class IEvent(ISearchableEntity):
     pass
 
 

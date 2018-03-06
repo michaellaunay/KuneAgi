@@ -76,6 +76,37 @@ ACCESS_ACTIONS = {}
 DEFAULT_CONTENT_TO_MANAGE = ['challenge', 'question', 'proposal']
 
 
+EUROPEAN_LOCALES = {
+    'bg': _('български'),
+    'cs': _('čeština'),
+    'da': _('dansk'),
+    'de': _('Deutsch'),
+    'et': _('Eesti'),
+    'el': _('ελληνικά'),
+    'en': _('English'),
+    'es': _('Español'),
+    'fr': _('Français'),
+    'ga': _('Gaeilge'),
+    'hr': _('Hrvatski'),
+    'it': _('Italiano'),
+    'lv': _('Latviešu'),
+    'lt': _('Lietuvių'),
+    'hu': _('Magyar'),
+    'mt': _('Malti'),
+    'nl': _('Nederlands'),
+    'pl': _('Polski'),
+    'pt': _('Português'),
+    'ro': _('Română'),
+    'sk': _('Slovenčina'),
+    'sl': _('Slovenščina'),
+    'fi': _('Suomi'),
+    'sv': _('Svenska'),
+}
+
+
+EUROPEAN_ZONES = [tz for tz in pytz.all_timezones if tz.startswith('Europe')]
+
+
 def get_locales():
     dir_ = os.listdir(os.path.join(os.path.dirname(__file__),
                                    '.', 'locale'))

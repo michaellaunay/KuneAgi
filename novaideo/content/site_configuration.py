@@ -259,6 +259,12 @@ class UserParamsConfigurationSchema(Schema):
         default=7,
         )
 
+    nb_event_maxi = colander.SchemaNode(
+        colander.Integer(),
+        title=_('Maximum number of events per Member'),
+        default=7,
+        )
+
 
 class UserInterfaceConfigurationSchema(Schema):
 

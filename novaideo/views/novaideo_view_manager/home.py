@@ -177,6 +177,22 @@ class QuestionsView(ContentView):
     empty_icon = 'md md-live-help'
 
 
+@asyn_component_config(
+    id='home-events',
+    on_demand=True,
+    delegate='novaideoapp_home')
+class EventsView(ContentView):
+    title = _('Discussion events')
+    content_type = 'event'
+    content_id = 'home-events'
+    viewid = 'home-events'
+    view_icon = 'glyphicon glyphicon-calendar'
+    counter_id = 'home-events-counter'
+    empty_message = _("No registered events")
+    empty_icon = 'glyphicon glyphicon-calendar'
+    display_state = False
+
+
 @asyn_component_config(id='novaideoapp_home')
 @view_config(
     name='index',
@@ -198,14 +214,14 @@ class HomeView(MultipleView):
     viewid = 'home'
     css_class = 'transparent-panel contents-bloc'
     center_tabs = True
-    views = (ProposalsView, QuestionsView, IdeasView)
+    views = (ProposalsView, QuestionsView, IdeasView, EventsView)
 
     def _init_views(self, views, **kwargs):
         if self.params('load_view'):
             delegated_by = kwargs.get('delegated_by', None)
-            views = [IdeasView]
+            views = [IdeasView, EventsView]
             if 'proposal' in self.request.content_to_manage:
-                views = [ProposalsView, IdeasView]
+                views = [ProposalsView, IdeasView, EventsView]
 
             if 'question' in self.request.content_to_manage:
                 views.append(QuestionsView)
@@ -214,6 +230,9 @@ class HomeView(MultipleView):
             view_id = self.params('view_content_id')
             if 'home-ideas' in (delegated_by, view_id):
                 views = (IdeasView, )
+
+            if 'home-events' in (delegated_by, view_id):
+                views = (EventsView, )
 
             if view_id == 'home-proposals':
                 views = (ProposalsView, )

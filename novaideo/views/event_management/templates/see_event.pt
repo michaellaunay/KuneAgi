@@ -1,0 +1,23 @@
+<div class="content-view component-obj-view component-index-view"
+  id="index_${oid}"
+  data-component_type="object-view"
+  tal:define="
+      oid object.__oid__"
+  i18n:domain="novaideo">
+  <div class="content-view-header">
+    <div tal:replace="structure navbar_body"/>
+    <div class="content-view-title-container">
+      <h3 class="content-title">
+        <span class="glyphicon glyphicon-picture"></span> ${object.subject.title} <span tal:condition="state" class="content-state label label-basic" i18n:translate="" tal:content="state"/>
+      </h3>
+    </div>
+  </div>
+  <div class="content-view-container">
+    <div class="content-view-body">
+      <div class="content-view-body-container">
+
+      </div>
+    </div>
+  </div>
+  ${panel('social_share_toggle')}
+</div>

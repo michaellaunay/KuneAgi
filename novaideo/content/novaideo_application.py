@@ -425,6 +425,7 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
         self.participants_maxi = 12
         self.participations_maxi = 5
         self.tokens_mini = 7
+        self.nb_event_maxi = 7
         self.tree = DEFAULT_TREE
 
     @property

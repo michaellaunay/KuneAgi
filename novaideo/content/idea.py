@@ -43,7 +43,8 @@ from novaideo.core import (
     Emojiable,
     SignalableEntity,
     Debatable,
-    Tokenable)
+    Tokenable,
+    EventObject)
 from novaideo.content import get_file_widget
 from novaideo.utilities.util import (
     text_urls_format, truncate_text, get_files_data)
@@ -185,7 +186,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 class Idea(VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity, PresentableEntity,
            ExaminableEntity, Node, Emojiable, SignalableEntity, Debatable,
-           Tokenable):
+           Tokenable, EventObject):
     """Idea class"""
 
     type_title = _('Idea')

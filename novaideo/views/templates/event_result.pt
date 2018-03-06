@@ -1,0 +1,27 @@
+<div class="listing-card listing-card-advertising result-item component-obj-view component-listing-view"
+  id="listing_${oid}"
+  data-component_type="object-view"
+  i18n:domain="novaideo"
+  tal:define="url request.resource_url(object, '@@index');
+              icon getattr(object, 'icon', '');
+              oid object.__oid__;">
+  <div class="listing-card-header">
+    <div class="view-item-title" >
+      <a tal:attributes="href url">
+        <h4>
+          <span class="icon ${icon}"></span>  ${object.subject.title}
+          <span class="label label-basic pull-right" i18n:translate="" tal:content="state"/>
+        </h4>
+      </a>
+    </div>
+    <div class="object-menu pull-right">
+      <div tal:replace="structure menu_body"/>
+    </div>
+  </div>
+  <div class="listing-card-container">
+    <div class="listing-card-left"></div>
+    <div class="listing-card-content">
+  
+    </div>
+  </div>
+</div>

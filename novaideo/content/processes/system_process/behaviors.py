@@ -22,7 +22,8 @@ from novaideo.content.processes.\
 from novaideo.content.interface import (
     INovaIdeoApplication,
     IPerson,
-    IChallenge)
+    IChallenge,
+    IEvent)
     # IProposal,
     # Iidea)
 from novaideo.views.filter import find_entities
@@ -102,6 +103,14 @@ class ManageContents(ElementaryAction):
         time_constant = getattr(root, 'time_constant', 6)
         for user in users:
             user.calculate_confidence_index(time_constant)
+
+
+        events = find_entities(
+            interfaces=[IEvent],
+            metadata_filter={
+                'states': ['published']})
+        for event in events:
+            event.update()
 
         return {}
 

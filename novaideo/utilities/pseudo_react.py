@@ -1797,6 +1797,18 @@ def get_directsubmit_metadata(action, request, context, api, **kwargs):
         **kwargs)
     return result
 
+
+#Events
+
+def get_create_event_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("The event has been created."),
+        **kwargs)
+    result['counters-to-update'] = ['component-navbar-mycontents']
+    return result
+
+
 #Counters
 
 def component_navbar_myselections(action, request, context, api, **kwargs):
@@ -2279,6 +2291,8 @@ METADATA_GETTERS = {
     'twitterprocess.remove': get_remove_connector_metadata,
     'facebookprocess.remove': get_remove_connector_metadata,
     'googleprocess.remove': get_remove_connector_metadata,
+
+    'eventmanagement.create': get_create_event_metadata,
 }
 
 
