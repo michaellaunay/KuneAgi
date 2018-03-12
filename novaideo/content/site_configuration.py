@@ -20,7 +20,7 @@ from deform_treepy.utilities.tree_utility import (
     tree_min_len)
 
 from novaideo.content.processes.proposal_management import WORK_MODES
-from novaideo import _, AVAILABLE_LANGUAGES, DEFAULT_CONTENT_TO_MANAGE
+from novaideo import _, AVAILABLE_LANGUAGES, DEFAULT_CONTENT_TO_MANAGE, DEFAULT_EVENTS_DESCRIPTIONS
 from novaideo.mail import DEFAULT_SITE_MAILS
 from novaideo.core_schema import ContactSchema
 from novaideo import core
@@ -259,10 +259,65 @@ class UserParamsConfigurationSchema(Schema):
         default=7,
         )
 
+    nb_reports_maxi = colander.SchemaNode(
+        colander.Integer(),
+        title=_('Maximum number of reports per week'),
+        default=3,
+        )
+
+    nb_submission_maxi = colander.SchemaNode(
+        colander.Integer(),
+        title=_('Maximum number of idea submission per week'),
+        default=3,
+        )
+
+
+@colander.deferred
+def descriptions_default(node, kw):
+    values = DEFAULT_EVENTS_DESCRIPTIONS.copy()
+    values = sorted(values, key=lambda e: e['locale'])
+    return values
+
+
+class EventDescriptionTemplate(Schema):
+
+    locale = colander.SchemaNode(
+        colander.String(),
+        title=_('Language'),
+        widget=locale_widget,
+        validator=colander.OneOf(AVAILABLE_LANGUAGES),
+    )
+
+    template = colander.SchemaNode(
+        colander.String(),
+        widget=deform.widget.TextAreaWidget(rows=4, cols=60),
+        title=_("Template")
+        )
+
+
+class EventsInterfaceConfigurationSchema(Schema):
+
     nb_event_maxi = colander.SchemaNode(
         colander.Integer(),
         title=_('Maximum number of events per Member'),
         default=7,
+        )
+
+    event_descriptions = colander.SchemaNode(
+        colander.Sequence(),
+        omit(select(EventDescriptionTemplate(
+            name='description',
+            title=_('Description'),
+            widget=SimpleMappingWidget(
+                     css_class="object-well default-well mail-template-well mail-template-block")),
+            ['locale', 'template']),
+                    ['_csrf_token_']),
+        widget=SequenceWidget(
+            min_len=1,
+            max_len=len(AVAILABLE_LANGUAGES),
+            add_subitem_text_template=_('Add a new description')),
+        title=_('Descriptions'),
+        default=descriptions_default
         )
 
 

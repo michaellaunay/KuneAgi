@@ -1579,6 +1579,14 @@ def get_home_actions_bodies(process_id, action_id, form_id, request, context):
 
     return result
 
+
+@request_memoize
+def get_event_description_template(request, locale=None):
+    root = request.root
+    user = get_current(request)
+    return root.get_event_description_template(getattr(user, 'user_locale', None))
+
+
 #add unrecognized mimetype
 
 add_mimetype_map('audio/mp3', 'mp3')

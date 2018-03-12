@@ -15,10 +15,9 @@
             <a data-oid="${getattr(object, '__oid__', '')}"
                class="toggle-popover"
                tal:attributes="href url">
-                <span class="icon ${icon}"></span>  ${object.title}
+                <span class="icon ${icon}"></span>  <span i18n:translate="">Discussion event around the Idea</span> « ${object.subject.title} »
             </a>
           </h5>
-          <span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/>
         </div>
         <div tal:condition="censored">
          <div class="alert-terms-of-use">

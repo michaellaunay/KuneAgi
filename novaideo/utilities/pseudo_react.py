@@ -1809,6 +1809,25 @@ def get_create_event_metadata(action, request, context, api, **kwargs):
     return result
 
 
+def get_edit_event_metadata(action, request, context, api, **kwargs):
+    return get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The discussion event has been modified."),
+        **kwargs)
+
+
+def get_remove_event_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request, context, api,
+        _("The discussion event has been suppressed."),
+        **kwargs)
+    result['ignore_redirect'] = not kwargs['is_source_context']
+    result['counters-to-update'] = [
+        'component-navbar-mycontents'
+        ]
+    return result
+
 #Counters
 
 def component_navbar_myselections(action, request, context, api, **kwargs):
@@ -2293,6 +2312,8 @@ METADATA_GETTERS = {
     'googleprocess.remove': get_remove_connector_metadata,
 
     'eventmanagement.create': get_create_event_metadata,
+    'eventmanagement.remove': get_remove_event_metadata,
+    'eventmanagement.edit': get_edit_event_metadata,
 }
 
 

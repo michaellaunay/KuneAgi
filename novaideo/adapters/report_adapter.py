@@ -73,6 +73,10 @@ class IdeaAdapter(Adapter):
             internal_kind=InternalAlertKind.moderation_alert,
             subjects=[self.context], alert_kind='object_censor',
             ballot=kw.get('ballot_url', ''))
+        for event in self.context.events:
+            event.state = PersistentList(['censored'])
+            event.reindex()
+
         self.context.reindex()
 
     def restor(self, request):
@@ -84,6 +88,11 @@ class IdeaAdapter(Adapter):
             'internal', [request.root], members,
             internal_kind=InternalAlertKind.moderation_alert,
             subjects=[self.context], alert_kind='object_restor')
+        for event in self.context.events:
+            event.state = PersistentList(['published'])
+            event.update()
+            event.reindex()
+
         self.context.reindex()
 
 

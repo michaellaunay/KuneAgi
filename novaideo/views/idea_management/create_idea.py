@@ -57,8 +57,18 @@ class CreateIdeaView(FormView):
 
     def before_update(self):
         user = get_current(self.request)
+        behaviors =  [CrateAndPublishAsProposal, CrateAndPublish, CreateIdea, Cancel]
         if 'proposal' not in self.request.content_to_manage:
-            self.behaviors = [CrateAndPublish, CreateIdea, Cancel]
+            behaviors = [CrateAndPublish, CreateIdea, Cancel]
+            
+        
+        if getattr(self.request, 'moderate_ideas', False):
+            can_submit = getattr(user, 'can_submit_idea', lambda: True)
+            if not can_submit():
+                behaviors.remove(CrateAndPublish)
+
+        if len(behaviors) < 4:
+            self.behaviors = behaviors
             self.behaviors_instances = OrderedDict()
             specific_behaviors = [b._class_ for b in
                                   self.specific_behaviors_instances]

@@ -391,6 +391,8 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         self.allocated_tokens = OOBTree()
         self.len_allocated_tokens = PersistentDict({})
         self.reserved_tokens = PersistentList([])
+        self._submited_at = OOBTree()
+        self._reported_at = OOBTree()
 
     def __setattr__(self, name, value):
         super(Person, self).__setattr__(name, value)
@@ -748,6 +750,31 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         self._init_mask(root)
         return self.mask
 
+    def add_submission(self, obj):
+        now = datetime.datetime.now(tz=pytz.UTC)
+        self._submited_at[now] = get_oid(obj)        
+
+    def add_report(self, obj):
+        now = datetime.datetime.now(tz=pytz.UTC)
+        self._reported_at[now] = get_oid(obj)
+
+    def can_submit_idea(self, root=None):
+        root = root if root else getSite()
+        now = datetime.datetime.now(tz=pytz.UTC)
+        monday = datetime.datetime.combine(
+            (now - datetime.timedelta(days=now.weekday())),
+            datetime.time(0, 0, 0, tzinfo=pytz.UTC))
+        return len(self._submited_at.values(
+            min=monday, max=now)) < getattr(root, 'nb_submission_maxi', 3)
+
+    def can_report(self, root=None):
+        root = root if root else getSite()
+        now = datetime.datetime.now(tz=pytz.UTC)
+        monday = datetime.datetime.combine(
+            (now - datetime.timedelta(days=now.weekday())),
+            datetime.time(0, 0, 0, tzinfo=pytz.UTC))
+        return len(self._reported_at.values(
+            min=monday, max=now)) < getattr(root, 'nb_reports_maxi', 3)
 
 @content(
     'preregistration',

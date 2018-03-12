@@ -44,6 +44,7 @@ class SeeEventView(BasicView):
         user = get_current()
         values = {
             'object': self.context,
+            'current_user': user,
             'state': get_states_mapping(
                 user, self.context,
                 getattr(self.context, 'state_or_none', [None])[0]),

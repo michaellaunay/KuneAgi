@@ -88,21 +88,22 @@ def censor(context, request, root, **kw):
         adapter.censor(request, ballot_url=kw.get('ballot_url', ''))
 
 
-def select_roles_validation(process, context):
+def report_roles_validation(process, context):
     return has_role(role=('Member',))
 
 
-def select_processsecurity_validation(process, context):
+def report_processsecurity_validation(process, context):
     report_ballots = [b for b in context.ballots
                       if b.group_id == 'vote_moderation'
                       and context in b.subjects
                       and b.is_finished
                       and b.report.get_electeds() is not None
                       and b.decision_is_valide]
-    return not report_ballots and global_user_processsecurity()
+    can_report = getattr(get_current(), 'can_report', lambda: True)
+    return can_report() and not report_ballots and global_user_processsecurity()
 
 
-def select_state_validation(process, context):
+def report_state_validation(process, context):
     return "published" in context.state
 
 
@@ -115,9 +116,9 @@ class Report(InfiniteCardinality):
     isSequential = False
     submission_title = _('Continue')
     context = ISignalableEntity
-    roles_validation = select_roles_validation
-    processsecurity_validation = select_processsecurity_validation
-    state_validation = select_state_validation
+    roles_validation = report_roles_validation
+    processsecurity_validation = report_processsecurity_validation
+    state_validation = report_state_validation
 
     def start(self, context, request, appstruct, **kw):
         user = get_current()
@@ -129,6 +130,9 @@ class Report(InfiniteCardinality):
         report.setproperty('author', user)
         report.reindex()
         context.reindex()
+        if hasattr(user, 'add_report'):
+            user.add_report(context)
+
         root = getSite()
         # get random moderators
         ballots = [b for b in getattr(context, 'ballot_processes', [])
@@ -167,6 +171,25 @@ class Report(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return nothing
+
+
+def reportmax_processsecurity_validation(process, context):
+    report_ballots = [b for b in context.ballots
+                      if b.group_id == 'vote_moderation'
+                      and context in b.subjects
+                      and b.is_finished
+                      and b.report.get_electeds() is not None
+                      and b.decision_is_valide]
+    can_report = getattr(get_current(), 'can_report', lambda: True)
+    return not can_report() and not report_ballots and global_user_processsecurity()
+
+
+class ReportMax(Report):
+    style_picto = 'md md-sms-failed disabled'
+    processsecurity_validation = reportmax_processsecurity_validation
+    
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 
 def restor_roles_validation(process, context):

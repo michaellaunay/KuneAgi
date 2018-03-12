@@ -9,6 +9,7 @@ import datetime
 import pytz
 import deform
 import colander
+from persistent.dict import PersistentDict
 from zope.interface import implementer
 from persistent.list import PersistentList
 
@@ -17,7 +18,7 @@ from substanced.schema import NameSchemaNode
 from substanced.util import renamer
 
 from dace.util import getSite, get_obj
-from dace.descriptors import SharedUniqueProperty
+from dace.descriptors import SharedUniqueProperty, CompositeMultipleProperty
 from pontus.core import VisualisableElementSchema
 from pontus.widget import RichTextWidget, CheckboxChoiceWidget, Select2Widget
 
@@ -26,7 +27,8 @@ from novaideo import _, log, EUROPEAN_LOCALES, EUROPEAN_ZONES
 from novaideo.core import (
     SearchableEntity,
     SearchableEntitySchema)
-from novaideo.utilities.util import truncate_text
+from novaideo.utilities.util import (
+    text_urls_format, truncate_text, get_event_description_template)
 
 
 KINDS = {
@@ -75,7 +77,7 @@ class EventSchema(VisualisableElementSchema, SearchableEntitySchema):
         colander.String(),
         widget=deform.widget.TextAreaWidget(),
         title=_("Details"),
-        description=_('The details of the event. For example an address or a link ...'),
+        description=_('The details of the event. Connexion mode or location, how to register, agenda...'),
         )
 
     date = colander.SchemaNode(
@@ -128,10 +130,12 @@ class Event(SearchableEntity):
     name = renamer()
     author = SharedUniqueProperty('author', 'events')
     subject = SharedUniqueProperty('subject', 'events')
+    url_files = CompositeMultipleProperty('url_files')
 
     def __init__(self, **kwargs):
         super(Event, self).__init__(**kwargs)
         self.set_data(kwargs)
+        self.urls = PersistentDict({})
 
     @property
     def relevant_data(self):
@@ -158,4 +162,22 @@ class Event(SearchableEntity):
             return self.date < now
         except Exception as e:
             return True
+    
+    def get_description(self, request, locale=None):
+        return get_event_description_template(request, locale)
+
+    def get_mode(self):
+        return KINDS.get(self.kind)
+
+    def get_locale(self):
+        return EUROPEAN_LOCALES.get(self.locale)
+
+    def format(self, request):
+        text = getattr(self, 'text', '')
+        all_urls, url_files, text_urls, formatted_text = text_urls_format(
+            text, request)
+        self.urls = PersistentDict(all_urls)
+        self.setproperty('url_files', url_files)
+        self.formatted_text = formatted_text
+        self.formatted_urls = text_urls
 

@@ -504,8 +504,9 @@ def submit_processsecurity_validation(process, context):
         originalentity = getattr(context, 'originalentity')
         if originalentity.text == context.text:
             return False
-
-    return global_user_processsecurity()
+    
+    can_submit = getattr(get_current(), 'can_submit_idea', lambda: True)
+    return can_submit() and global_user_processsecurity()
 
 
 def submit_state_validation(process, context):
@@ -525,8 +526,12 @@ class SubmitIdea(InfiniteCardinality):
     state_validation = submit_state_validation
 
     def start(self, context, request, appstruct, **kw):
+        user = get_current(request)
         context.state = PersistentList(['submitted'])
         context.reindex()
+        if hasattr(user, 'add_submission'):
+            user.add_submission(context)
+
         root = getSite()
         # get random moderators
         moderators = get_random_users(ELECTORS_NB, [context.author])
@@ -554,6 +559,28 @@ class SubmitIdea(InfiniteCardinality):
 
     def redirect(self, context, request, **kw):
         return nothing
+
+
+def submitmax_processsecurity_validation(process, context):
+    request = get_current_request()
+    if not request.moderate_ideas:
+        return False
+
+    if getattr(context, 'originalentity', None):
+        originalentity = getattr(context, 'originalentity')
+        if originalentity.text == context.text:
+            return False
+    
+    can_submit = getattr(get_current(), 'can_submit_idea', lambda: True)
+    return not can_submit() and global_user_processsecurity()
+
+
+class SubmitIdeaMax(SubmitIdea):
+    style_picto = 'glyphicon glyphicon-share disabled'
+    processsecurity_validation = submitmax_processsecurity_validation
+    
+    def start(self, context, request, appstruct, **kw):
+        return {}
 
 
 def decision_roles_validation(process, context):

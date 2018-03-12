@@ -58,6 +58,7 @@ from novaideo.content.idea import Idea
 from novaideo.content.proposal import Proposal
 from novaideo.content.question import Question
 from novaideo.content.amendment import  Amendment
+from novaideo.content.event import Event
 from novaideo.content.smart_folder import SmartFolder
 from novaideo.fr_lexicon import normalize_title
 from novaideo.content.processes.challenge_management.behaviors import (
@@ -727,7 +728,7 @@ class PersonCard(object):
         result = {'card': None}
         is_index_view = self.request.view_name in ('index', '')
         is_root = self.context is self.request.root
-        is_valid = is_root or isinstance(self.context, (Question, Idea, Proposal, Amendment))
+        is_valid = is_root or isinstance(self.context, (Question, Idea, Proposal, Amendment, Event))
         if not is_index_view or not is_valid:
             return result
 

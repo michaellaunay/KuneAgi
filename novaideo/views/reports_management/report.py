@@ -14,7 +14,7 @@ from pontus.schema import select
 from pontus.view import BasicView
 from pontus.view_operation import MultipleView
 
-from novaideo.content.processes.reports_management.behaviors import Report
+from novaideo.content.processes.reports_management.behaviors import Report, ReportMax
 from novaideo.content.report import ReportSchema, Report as ReportClass
 from novaideo.core import SignalableEntity
 from novaideo import _
@@ -22,7 +22,7 @@ from novaideo import _
 
 class ReportViewStudyReport(BasicView):
     title = _('Alert for restoring')
-    name = 'alertforpublication'
+    name = 'alertforreport'
     template = 'novaideo:views/reports_management/templates/alert_report.pt'
 
     def update(self):
@@ -70,5 +70,29 @@ class ReportView(MultipleView):
     validators = [Report.get_validator()]
 
 
+
+@view_config(
+    name='reportmax',
+    context=SignalableEntity,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class ReportMaxView(BasicView):
+    title = _("You can't report")
+    name = 'reportmax'
+    template = 'novaideo:views/reports_management/templates/alert_report_max.pt'
+
+    def update(self):
+        result = {}
+        values = {'context': self.context, 'root': self.request.root}
+        body = self.content(args=values, template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates: [item]}
+        return result
+
+
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
-    {Report: ReportView})
+    {
+      Report: ReportView,
+      ReportMax: ReportMaxView
+    }
+)

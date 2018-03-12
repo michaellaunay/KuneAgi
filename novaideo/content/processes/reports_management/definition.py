@@ -20,6 +20,7 @@ from pontus.core import VisualisableElement
 
 from .behaviors import (
     Report,
+    ReportMax,
     Restor,
     SeeReports,
     ModerationVote)
@@ -51,6 +52,10 @@ class ReportsManagementProcess(ProcessDefinition, VisualisableElement):
                                        description=_("Report the content"),
                                        title=_("Report"),
                                        groups=[]),
+                report_max = ActivityDefinition(contexts=[ReportMax],
+                                       description=_("Report the content"),
+                                       title=_("Report"),
+                                       groups=[]),
                 see_reports = ActivityDefinition(contexts=[SeeReports],
                                        description=_("See reported contents"),
                                        title=_("Reported contents"),
@@ -66,6 +71,8 @@ class ReportsManagementProcess(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'report'),
                 TransitionDefinition('report', 'eg'),
+                TransitionDefinition('pg', 'report_max'),
+                TransitionDefinition('report_max', 'eg'),
                 TransitionDefinition('pg', 'see_reports'),
                 TransitionDefinition('see_reports', 'eg'),
                 TransitionDefinition('pg', 'restor'),

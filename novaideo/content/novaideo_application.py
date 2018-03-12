@@ -34,7 +34,7 @@ from deform_treepy.utilities.tree_utility import (
     get_keywords_by_level)
 
 from novaideo.content.keyword import ROOT_TREE, DEFAULT_TREE
-from novaideo import _, DEFAULT_FILES, DEFAULT_CONTENT_TO_MANAGE
+from novaideo import _, DEFAULT_FILES, DEFAULT_CONTENT_TO_MANAGE, DEFAULT_EVENTS_DESCRIPTIONS
 from novaideo.content.file import FileEntity
 from novaideo.core import Channel, CorrelableEntity, Debatable
 from .organization import OrganizationSchema, Organization
@@ -53,6 +53,7 @@ from novaideo.content.site_configuration import (
     NotificationConfigurationSchema,
     HomepageConfigurationSchema,
     OtherSchema,
+    EventsInterfaceConfigurationSchema
 )
 from novaideo.utilities.attr_utility import synchronize_tree
 
@@ -167,6 +168,10 @@ class ObjectData(ObjectDataOrigine):
         if 'notif_conf' in result:
             notif_conf = result.pop('notif_conf')
             result.update(notif_conf)
+
+        if 'events_conf' in result:
+            events_conf = result.pop('events_conf')
+            result.update(events_conf)
 
         return result, appstruct, hasevalue
 
@@ -293,6 +298,15 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
                                 activator_title=_('Configure the push notification'))),
                         ["_csrf_token_"])
 
+    events_conf = omit(EventsInterfaceConfigurationSchema(
+                                widget=SimpleMappingtWidget(
+                                mapping_css_class='controled-form'
+                                                  ' mail-templats-container hide-bloc',
+                                ajax=True,
+                                activator_icon="glyphicon glyphicon-calendar",
+                                activator_title=_('Configure the discussion events'))),
+                        ["_csrf_token_"])
+
 
 class NovaIdeoApplicationPropertySheet(PropertySheet):
     schema = select(NovaIdeoApplicationSchema(), ['title',
@@ -359,6 +373,15 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
 
             self._mail_templates = PersistentDict(result)
 
+        if name == 'event_descriptions' and value:
+            result = {}
+            for description in value:
+                result[description['locale']] = {
+                    'template': description['template']
+                }
+
+            self._event_descriptions = PersistentDict(result)
+
     @property
     def mail_conf(self):
         return self.get_data(omit(MailTemplatesConfigurationSchema(),
@@ -398,6 +421,11 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
     @property
     def notif_conf(self):
         return self.get_data(omit(NotificationConfigurationSchema(),
+                                  '_csrf_token_'))
+
+    @property
+    def events_conf(self):
+        return self.get_data(omit(EventsInterfaceConfigurationSchema(),
                                   '_csrf_token_'))
 
     def get_newsletters_for_registration(self):
@@ -589,3 +617,16 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
         return filter(
             lambda c: c.connector_id == connector_id,
             self.connectors)
+
+    def get_event_description_template(self, locale=None):
+        if locale is None:
+            locale = self.locale
+
+        template = getattr(self, '_event_descriptions', {}).get(locale, {}).get('template', None)
+        if not template:
+            for description in DEFAULT_EVENTS_DESCRIPTIONS:
+                if description.get('locale') == locale:
+                    template = description.get('template')
+                    break
+
+        return template

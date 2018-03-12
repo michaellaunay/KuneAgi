@@ -7,6 +7,7 @@
 
 import datetime
 import pytz
+from persistent.list import PersistentList
 from pyramid.httpexceptions import HTTPFound
 
 from dace.objectofcollaboration.principal.util import (
@@ -17,6 +18,7 @@ from dace.objectofcollaboration.principal.util import (
 from dace.util import getSite
 from dace.processinstance.activity import (
     InfiniteCardinality, ActionType)
+from dace.processinstance.core import ActivityExecuted
 
 from ..user_management.behaviors import (
     global_user_processsecurity,
@@ -66,10 +68,78 @@ class Create(InfiniteCardinality):
         timezone = pytz.timezone(event.tzname)
         event.date = event.date.replace(tzinfo=timezone)
         event.init_published_at()
+        event.format(request)
+        event.reindex()
         return {'newcontext': event}
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(kw['newcontext'], "@@index"))
+
+
+def rm_roles_validation(process, context):
+    return has_any_roles(roles=(('Owner', context), 'Moderator'))
+
+
+def rm_processsecurity_validation(process, context):
+    return global_user_processsecurity()
+
+
+class Remove(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'glyphicon glyphicon-trash'
+    style_order = 6
+    submission_title = _('Continue')
+    context = IEvent
+    roles_validation = rm_roles_validation
+    processsecurity_validation = rm_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        context.subject.delfromproperty('events', context)
+        return {}
+
+    def redirect(self, context, request, **kw):
+        root = getSite()
+        return HTTPFound(request.resource_url(root))
+
+
+def edit_roles_validation(process, context):
+    return has_any_roles(roles=(('Owner', context), 'Moderator'))
+
+
+def edit_processsecurity_validation(process, context):
+    return global_user_processsecurity()
+
+
+def edit_state_validation(process, context):
+    return 'censored' not in context.state
+
+
+class Edit(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'text-action'
+    style_interaction = 'ajax-action'
+    style_picto = 'glyphicon glyphicon-pencil'
+    style_order = 1
+    submission_title = _('Save')
+    context = IEvent
+    roles_validation = edit_roles_validation
+    processsecurity_validation = edit_processsecurity_validation
+    state_validation = edit_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        timezone = pytz.timezone(context.tzname)
+        context.date = context.date.replace(tzinfo=timezone)
+        context.state= PersistentList(['published'])
+        context.update()
+        context.format(request)
+        context.reindex()
+        request.registry.notify(ActivityExecuted(self, [context], get_current(request)))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return nothing
 
 
 def seeevents_state_validation(process, context):
@@ -81,7 +151,7 @@ class SeeRelatedEvents(InfiniteCardinality):
     style_interaction = 'ajax-action'
     style_interaction_type = 'slider'
     style_picto = 'glyphicon glyphicon-calendar'
-    style_order = 3
+    style_order = 1
     context = IEventObject
     state_validation = seeevents_state_validation
 

@@ -13,7 +13,7 @@ from pontus.view_operation import MultipleView
 from pontus.view import BasicView
 from pontus.default_behavior import Cancel
 
-from novaideo.content.processes.idea_management.behaviors import SubmitIdea
+from novaideo.content.processes.idea_management.behaviors import SubmitIdea, SubmitIdeaMax
 from novaideo.content.idea import Idea
 from novaideo import _
 
@@ -62,5 +62,25 @@ class PublishIdeaViewMultipleView(MultipleView):
     validators = [SubmitIdea.get_validator()]
 
 
+@view_config(
+    name='submitideamax',
+    context=Idea,
+    renderer='pontus:templates/views_templates/grid.pt',
+    )
+class SubmitIdeaMaxView(BasicView):
+    title = _("You can't submit")
+    name = 'submitideamax'
+    template = 'novaideo:views/idea_management/templates/alert_idea_submission_max.pt'
+
+    def update(self):
+        result = {}
+        values = {'context': self.context, 'root': self.request.root}
+        body = self.content(args=values, template=self.template)['body']
+        item = self.adapt_item(body, self.viewid)
+        result['coordinates'] = {self.coordinates: [item]}
+        return result
+
+
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
-    {SubmitIdea: PublishIdeaViewMultipleView})
+    {SubmitIdea: PublishIdeaViewMultipleView,
+     SubmitIdeaMax: SubmitIdeaMaxView})

@@ -41,6 +41,7 @@ class ConfigureSiteView(FormView):
                      'homepage_conf',
                      'notif_conf',
                      'keywords_conf',
+                     'events_conf',
                      'mail_conf',
                      'ui_conf',
                      'other_conf'

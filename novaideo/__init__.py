@@ -107,6 +107,17 @@ EUROPEAN_LOCALES = {
 EUROPEAN_ZONES = [tz for tz in pytz.all_timezones if tz.startswith('Europe')]
 
 
+DEFAULT_EVENTS_DESCRIPTIONS = [
+    {
+        'locale': 'fr',
+        'template': "Comment transformer l'Idée « {subject} » en une Proposition de Politique Publique ? Venez en discuter. L'événement est ouvert à tou(te)s"
+    },
+    {
+        'locale': 'en',
+        'template': "How to transform the Idea « {subject} » into a Public Policy Proposal? Come and discuss about it. The event is open to all"
+    },
+]
+
 def get_locales():
     dir_ = os.listdir(os.path.join(os.path.dirname(__file__),
                                    '.', 'locale'))
@@ -1080,6 +1091,27 @@ def evolve_novaideoabstractprocess_process(root, registry):
         pass 
 
 
+def evolve_user_dates(root, registry):
+    from novaideo.views.filter import find_entities
+    from novaideo.content.interface import IPerson
+    from BTrees.OOBTree import OOBTree
+
+    request = get_current_request()
+    request.root = root 
+    contents = find_entities(
+        interfaces=[IPerson]
+        )
+    len_entities = str(len(contents))
+    for index, node in enumerate(contents):
+        if not getattr(node, '_submited_at', None):
+            node._submited_at = OOBTree()
+            node._reported_at = OOBTree()
+
+        log.info(str(index) + "/" + len_entities)
+
+    log.info('User dates (submission, report) evolved.')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -1142,6 +1174,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_emojiable_data)
     config.add_evolution_step(evolve_invitation_organization_process)
     config.add_evolution_step(evolve_novaideoabstractprocess_process)
+    config.add_evolution_step(evolve_user_dates)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

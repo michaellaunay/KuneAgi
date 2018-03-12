@@ -23,6 +23,8 @@ from pontus.core import VisualisableElement
 
 from .behaviors import (
     Create,
+    Edit,
+    Remove,
     SeeEvent,
     SeeRelatedEvents)
 from novaideo import _
@@ -45,6 +47,14 @@ class EventManagement(ProcessDefinition, VisualisableElement):
                                        description=_("Organize a discussion event"),
                                        title=_("Organize a discussion event"),
                                        groups=[]),
+                edit = ActivityDefinition(contexts=[Edit],
+                                       description=_("Edit the discussion event"),
+                                       title=_("Edit"),
+                                       groups=[]),
+                remove = ActivityDefinition(contexts=[Remove],
+                                       description=_("Remove the discussion event"),
+                                       title=_("Remove"),
+                                       groups=[]),
                 see_events = ActivityDefinition(contexts=[SeeRelatedEvents],
                                        description=_("The organized discussion events"),
                                        title=_("The organized discussion events"),
@@ -60,6 +70,10 @@ class EventManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('start', 'pg'),
                 TransitionDefinition('pg', 'create'),
                 TransitionDefinition('create', 'eg'),
+                TransitionDefinition('pg', 'edit'),
+                TransitionDefinition('edit', 'eg'),
+                TransitionDefinition('pg', 'remove'),
+                TransitionDefinition('remove', 'eg'),
                 TransitionDefinition('pg', 'see_events'),
                 TransitionDefinition('see_events', 'eg'),
                 TransitionDefinition('pg', 'see'),

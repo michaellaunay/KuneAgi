@@ -1,0 +1,4 @@
+<div class="alert alert-danger" i18n:domain="novaideo" tal:define="nbmax getattr(root, 'nb_reports_maxi', 3)">
+    <span class="glyphicon glyphicon-warning-sign pull-right"></span>
+   <p i18n:translate="">You have exceeded the number of reports per week allowed (a maximum of ${nbmax} reports per week).</p>
+</div>
