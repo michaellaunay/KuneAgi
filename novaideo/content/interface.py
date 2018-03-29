@@ -327,6 +327,12 @@ class IPreregistration(IBaseUser):
 
 
 @interface()
+@interface_config(type_id='quit_request')
+class IQuitRequest(IEntityO):
+    pass
+
+
+@interface()
 @interface_config(type_id='proposal')
 class IProposal(ISearchableEntity,
                 ICorrelableEntity,

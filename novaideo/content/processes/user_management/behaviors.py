@@ -14,6 +14,7 @@ import datetime
 import pytz
 import itertools
 from persistent.list import PersistentList
+from persistent.dict import PersistentDict
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import remember
 from pyramid.threadlocal import get_current_request
@@ -39,12 +40,14 @@ from dace.processinstance.activity import (
     InfiniteCardinality,
     ActionType)
 from dace.processinstance.core import ActivityExecuted, PROCESS_HISTORY_KEY
+from pontus.schema import select
 
 from ..comment_management import VALIDATOR_BY_CONTEXT
 from novaideo.content.interface import (
-    INovaIdeoApplication, IPerson, IPreregistration)
+    INovaIdeoApplication, IPerson, IPreregistration, IQuitRequest)
 from novaideo.content.person import (
-    Person, PersonSchema, DEADLINE_PREREGISTRATION)
+    Person, PersonSchema, DEADLINE_PREREGISTRATION,
+    DEADLINE_QUIT_REQUEST, QuitRequest)
 from novaideo.utilities.util import (
     to_localized_time, gen_random_token, connect)
 from novaideo import _, nothing, my_locale_negotiator
@@ -206,6 +209,186 @@ class GetAPIToken(InfiniteCardinality):
             context, "@@get_api_token", query=query))
 
 
+def quit_roles_validation(process, context):
+    return has_any_roles(roles=(('Owner', context), 'SiteAdmin'))
+
+
+def quit_processsecurity_validation(process, context):
+    return global_user_processsecurity()
+
+
+def quit_state_validation(process, context):
+    return 'active' in context.state
+
+
+def remove_expired_quit_request(root, quit_request):
+    if quit_request.__parent__ is not None:
+        oid = str(get_oid(quit_request))
+        root.delfromproperty('quit_requests', quit_request)
+
+
+def remove_expired_quit_request_callback(root, quit_request):
+    remove_expired_quit_request(root, quit_request)
+    oid = str(get_oid(quit_request))
+    get_socket().send_pyobj(('ack', 'persistent_' + oid))
+
+
+def remove_user_data_callback(root, user, email_data):
+    mail_template = root.get_mail_template(
+        'quit_request_deletion', user.user_locale)
+    subject = mail_template['subject'].format(
+        novaideo_title=root.title)
+    message = mail_template['template'].format(
+        novaideo_title=root.title,
+        **email_data
+    )
+    alert('email', [root.get_site_sender()], [user.email],
+          subject=subject, body=message)
+    del user.old_data
+    user.birth_date = None
+    user.birthplace = ''
+    user.user_title = ''
+    user.email = ''
+    user.setproperty('picture', None)
+    user.setproperty('cover_picture', None)
+    user.reindex()
+    oid = str(get_oid(user))
+    get_socket().send_pyobj(('ack', 'persistent_' + oid + '_quit'))
+
+
+class Quit(InfiniteCardinality):
+    style = 'button' #TODO add style abstract class
+    style_descriminator = 'plus-action'
+    style_picto = 'glyphicon glyphicon-remove-circle'
+    style_interaction = 'ajax-action'
+    style_order = 0
+    title = _('Quit the platform')
+    submission_title = _('Continue')
+    context = IPerson
+    roles_validation = quit_roles_validation
+    processsecurity_validation = quit_processsecurity_validation
+    state_validation = quit_state_validation
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        quit_request = QuitRequest()
+        quit_request.__name__ = gen_random_token()
+        quit_request.setproperty('user', context)
+        root.addtoproperty('quit_requests', quit_request)
+        quit_request.init_deadline(datetime.datetime.now(tz=pytz.UTC))
+        quit_request.state.append('pending')
+        grant_roles(user=context, roles=(('Owner', quit_request), ))
+        quit_request.reindex()
+        deadline = DEADLINE_QUIT_REQUEST * 1000
+        call_id = 'persistent_' + str(get_oid(quit_request))
+        push_callback_after_commit(
+            remove_expired_quit_request_callback, deadline, call_id,
+            root=root, quit_request=quit_request)
+
+        if context.email:
+            deadline_date = quit_request.get_deadline_date()
+            url = request.resource_url(quit_request, "")
+            mail_template = root.get_mail_template(
+                'quit_request', context.user_locale)
+            email_data = get_user_data(context, 'recipient', request)
+            subject = mail_template['subject'].format(
+                novaideo_title=root.title)
+            deadline_str = to_localized_time(
+                deadline_date, request, translate=True)
+            message = mail_template['template'].format(
+                url=url,
+                deadline_date=deadline_str.lower(),
+                novaideo_title=root.title,
+                tquarantaine=getattr(root, 'tquarantaine', 180),
+                **email_data
+                )
+            alert('email', [root.get_site_sender()], [context.email],
+                  subject=subject, body=message)
+
+        request.registry.notify(ActivityExecuted(
+            self, [context], get_current()))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(
+            request.root, "@@resignationsubmitted"))
+
+
+def deactivate_user(user, request, root, resignation=False):
+    from ..proposal_management.behaviors import exclude_participant_from_wg
+    user.state.remove('active')
+    user.state.append('deactivated')
+    user.set_organization(None)
+    proposals = getattr(user, 'participations', [])
+    anonymous_proposals = getattr(user.mask, 'participations', [])
+    for proposal in proposals:
+        exclude_participant_from_wg(
+            proposal, request, user, root, resignation=resignation)
+
+    for proposal in anonymous_proposals:
+        exclude_participant_from_wg(
+            proposal, request, user.mask, root, resignation=resignation)
+
+    user.modified_at = datetime.datetime.now(tz=pytz.UTC)
+    user.reindex()
+    pref_author = list(get_users_by_preferences(user))
+    alert('internal', [request.root], pref_author,
+          internal_kind=InternalAlertKind.content_alert,
+          subjects=[user], alert_kind='user_deactivated')
+
+
+def confirmquit_processsecurity_validation(process, context):
+    return not context.is_expired
+
+
+class ConfirmQuitRequest(InfiniteCardinality):
+    title = _('Confirm the resignation request')
+    context = IQuitRequest
+    processsecurity_validation = confirmquit_processsecurity_validation
+
+    def start(self, context, request, appstruct, **kw):
+        root = getSite()
+        user = context.user
+        email_data = get_user_data(user, 'recipient', request)
+        remove_expired_quit_request_callback(root, context)
+        schema = select(
+            PersonSchema(),
+            ['first_name',
+             'last_name',
+             'pseudonym'])
+        user.old_data = PersistentDict(user.get_data(schema))
+        user.first_name = 'Anonymous'
+        user.last_name = ''
+        user.pseudonym = _('Anonymous (has left the platform)')
+        user.set_title()
+        deactivate_user(user, request, root, resignation=True)
+        request.registry.notify(ActivityExecuted(
+            self, [user], get_current()))
+        
+        deadline = getattr(root, 'tquarantaine', 180) * 86400000
+        call_id = 'persistent_' + str(get_oid(user)) + '_quit'
+        push_callback_after_commit(
+            remove_user_data_callback, deadline, call_id,
+            root=root, user=user, email_data=email_data)
+        mail_template = root.get_mail_template(
+                'quit_request_confiramtion', user.user_locale)
+        subject = mail_template['subject'].format(
+            novaideo_title=root.title)
+        message = mail_template['template'].format(
+            novaideo_title=root.title,
+            tquarantaine=getattr(root, 'tquarantaine', 180),
+            **email_data
+        )
+        alert('email', [root.get_site_sender()], [user.email],
+              subject=subject, body=message)
+        request.registry.notify(ActivityExecuted(
+            self, [user], get_current()))
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return nothing
+
+
 def deactivate_roles_validation(process, context):
     return (context.organization and \
             has_role(role=('OrganizationResponsible',
@@ -235,27 +418,8 @@ class Deactivate(InfiniteCardinality):
     state_validation = deactivate_state_validation
 
     def start(self, context, request, appstruct, **kw):
-        from ..proposal_management.behaviors import exclude_participant_from_wg
         root = getSite()
-        context.state.remove('active')
-        context.state.append('deactivated')
-        context.set_organization(None)
-        proposals = getattr(context, 'participations', [])
-        anonymous_proposals = getattr(context.mask, 'participations', [])
-        for proposal in proposals:
-            exclude_participant_from_wg(
-                proposal, request, context, root)
-
-        for proposal in anonymous_proposals:
-            exclude_participant_from_wg(
-                proposal, request, context.mask, root)
-
-        context.modified_at = datetime.datetime.now(tz=pytz.UTC)
-        context.reindex()
-        pref_author = list(get_users_by_preferences(context))
-        alert('internal', [request.root], pref_author,
-              internal_kind=InternalAlertKind.content_alert,
-              subjects=[context], alert_kind='user_deactivated')
+        deactivate_user(context, request, root)
         request.registry.notify(ActivityExecuted(
             self, [context], get_current()))
         return {}

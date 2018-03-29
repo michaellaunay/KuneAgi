@@ -574,6 +574,16 @@ def get_deactivate_profile_metadata(action, request, context, api, **kwargs):
 
     return result
 
+
+def get_request_resignation_profile_metadata(action, request, context, api, **kwargs):
+    result = get_edit_entity_metadata(
+        action, request,
+        context, api,
+        _("The resignation request has been sended."),
+        **kwargs)
+
+    return result
+
 #Chanels
 
 def get_comment_metadata(action, request, context, api, **kwargs):
@@ -2271,6 +2281,7 @@ METADATA_GETTERS = {
     'usermanagement.general_discuss': get_general_discuss_metadata,
     'usermanagement.assign_roles': get_assigne_roles_user_metadata,
     'usermanagement.deactivate': get_deactivate_profile_metadata,
+    'usermanagement.quit': get_request_resignation_profile_metadata,
 
     'commentmanagement.pin': get_comment_pin_metadata,
     'commentmanagement.unpin': get_comment_unpin_metadata,

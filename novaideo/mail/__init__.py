@@ -245,7 +245,20 @@ DEFAULT_SITE_MAILS = {
     'members_notation': {
         'title': _("Give a mark to the cooperative behaviour of members"),
         'languages': {}
+    },
+    'quit_request': {
+        'title': _("Resignation request"),
+        'languages': {}
+    },
+    'quit_request_confiramtion': {
+        'title': _("Resignation confirmation"),
+        'languages': {}
+    },
+    'quit_request_deletion': {
+        'title': _("Resignation (user data deletion)"),
+        'languages': {}
     }
+
 }
 
 

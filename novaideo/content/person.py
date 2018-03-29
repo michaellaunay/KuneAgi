@@ -51,7 +51,7 @@ from novaideo.core import (
     Debatable,
     Evaluations)
 from .interface import (
-    IPerson, IPreregistration, IAlert, IProposal, Iidea)
+    IPerson, IPreregistration, IAlert, IProposal, Iidea, IQuitRequest)
 from novaideo import _, AVAILABLE_LANGUAGES, LANGUAGES_TITLES
 from novaideo.file import Image
 from novaideo.content.mask import Mask
@@ -65,6 +65,8 @@ from novaideo.fr_lexicon import normalize_title
 
 
 DEADLINE_PREREGISTRATION = 86400*4  # 4 days
+
+DEADLINE_QUIT_REQUEST = 86400*2  # 2 days
 
 
 @colander.deferred
@@ -817,6 +819,40 @@ class Preregistration(VisualisableElement, Entity):
                 email.find(t) >= 0 for t in trusted_emails)
 
         return True
+
+    @property
+    def is_expired(self):
+        return datetime.datetime.now(tz=pytz.UTC) > self.get_deadline_date()
+
+
+@content(
+    'quit_request',
+    icon='glyphicon glyphicon-align-left',
+    )
+@implementer(IQuitRequest)
+class QuitRequest(VisualisableElement, Entity):
+    """QuitRequest class"""
+    icon = 'typcn typcn-user-add'
+    templates = {}
+    name = renamer()
+    user = SharedUniqueProperty('user')
+
+    def __init__(self, **kwargs):
+        super(QuitRequest, self).__init__(**kwargs)
+        self.set_data(kwargs)
+
+    def init_deadline(self, date):
+        self.deadline_date = date\
+            + datetime.timedelta(seconds=DEADLINE_QUIT_REQUEST)
+        return self.deadline_date
+
+    def get_deadline_date(self):
+        if getattr(self, 'deadline_date', None) is not None:
+            return self.deadline_date
+
+        self.deadline_date = self.created_at\
+            + datetime.timedelta(seconds=DEADLINE_QUIT_REQUEST)
+        return self.deadline_date
 
     @property
     def is_expired(self):

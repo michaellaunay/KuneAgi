@@ -271,6 +271,12 @@ class UserParamsConfigurationSchema(Schema):
         default=3,
         )
 
+    tquarantaine = colander.SchemaNode(
+        colander.Integer(),
+        title=_('Delays before deleting deactivated user data'),
+        default=180,
+        )
+
 
 @colander.deferred
 def descriptions_default(node, kw):

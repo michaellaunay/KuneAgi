@@ -839,6 +839,38 @@ Vous êtes maintenant désabonné de la newsletter {newsletter_title}.
 """ + PORTAL_SIGNATURE
 
 
+QUIT_REQUEST_SUBJECT = u"""Demande de démission depuis votre compte sur la plate-forme {novaideo_title}"""
+
+QUIT_REQUEST_MESSAGE = u"""
+Cher(e) {recipient_first_name} {recipient_last_name}, 
+
+Nous avons reçu sur votre compte de la plate-forme {novaideo_title} une demande de démission.
+Si vous avez bien demandé à démissionner de la plate-forme, cliquez sur le lien de confirmation suivant: {url}, avant la date {deadline_date}.
+
+ATTENTION: cette action est IRRÉVERSIBLE. Si vous cliquez sur ce lien, vous n'aurez plus accès à la plate-forme, votre compte sera détruit, et tous les contenus liés à votre compte seront irréversiblement attribués à un auteur anonyme.
+Vous ne pourrez plus vous réinscrire sur la plate-forme, en créant un nouveau compte vierge, avant une durée égale à {tquarantaine} jours.
+
+Si vous n'avez pas demandé à quitter la plate-forme, ignorez ce courriel, et votre compte sera maintenu actif.
+Nous vous recommandons néanmoins de changer votre mot de passe pour éviter que votre compte ne soit piraté.
+
+""" + PORTAL_SIGNATURE
+
+
+QUIT_REQUEST_CONFIRMATION_SUBJECT = u"""Confirmation de démission de la plate-forme {novaideo_title}"""
+
+QUIT_REQUEST_CONFIRMATION_MESSAGE = u"""
+Votre compte a été désactivé! Vos données seront détruites dans un délai de {tquarantaine} jours.
+
+""" + PORTAL_SIGNATURE
+
+
+QUIT_REQUEST_DELETION_SUBJECT = u"""Les données de votre compte ont été supprimées de la plateforme {novaideo_title} !"""
+
+QUIT_REQUEST_DELETION_MESSAGE = u"""
+Les données de votre compte ont été supprimées de la plateforme {novaideo_title} !
+
+""" + PORTAL_SIGNATURE
+
 FIRST_INVITATION = {
     'subject': FIRST_INVITATION_SUBJECT,
     'template': FIRST_INVITATION_MESSAGE
@@ -1090,3 +1122,15 @@ add_mail_template('member_notation_excluded', {'locale': mail_locale,
 add_mail_template('members_notation', {'locale': mail_locale,
               'subject': NOTING_MEMBERS_SUBJECT,
               'template': NOTING_MEMBERS_MESSAGE})
+
+add_mail_template('quit_request', {'locale': mail_locale,
+              'subject': QUIT_REQUEST_SUBJECT,
+              'template': QUIT_REQUEST_MESSAGE})
+
+add_mail_template('quit_request_confiramtion', {'locale': mail_locale,
+              'subject': QUIT_REQUEST_CONFIRMATION_SUBJECT,
+              'template': QUIT_REQUEST_CONFIRMATION_MESSAGE})
+
+add_mail_template('quit_request_deletion', {'locale': mail_locale,
+              'subject': QUIT_REQUEST_DELETION_SUBJECT,
+              'template': QUIT_REQUEST_DELETION_MESSAGE})

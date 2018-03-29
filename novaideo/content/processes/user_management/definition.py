@@ -36,7 +36,9 @@ from .behaviors import (
     RemoveRegistration,
     ModerationVote,
     SeeNotations,
-    ExtractAlerts)
+    ExtractAlerts,
+    Quit,
+    ConfirmQuitRequest)
 from novaideo import _
 from novaideo.content.person import Preregistration
 from novaideo.content.processes.content_ballot_management import (
@@ -69,6 +71,14 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                 edit = ActivityDefinition(contexts=[Edit],
                                        description=_("Edit"),
                                        title=_("Edit"),
+                                       groups=[]),
+                quit = ActivityDefinition(contexts=[Quit],
+                                       description=_("Quit the platform"),
+                                       title=_("Quit the platform"),
+                                       groups=[]),
+                confirm_quit = ActivityDefinition(contexts=[ConfirmQuitRequest],
+                                       description=_("Confirm the resignation request"),
+                                       title=_("Confirm the resignation request"),
                                        groups=[]),
                 deactivate = ActivityDefinition(contexts=[Deactivate],
                                        description=_("Disactivate the profile"),
@@ -127,6 +137,10 @@ class UserManagement(ProcessDefinition, VisualisableElement):
                 TransitionDefinition('get_api_token', 'eg'),
                 TransitionDefinition('pg', 'deactivate'),
                 TransitionDefinition('deactivate', 'eg'),
+                TransitionDefinition('pg', 'quit'),
+                TransitionDefinition('quit', 'eg'),
+                TransitionDefinition('pg', 'confirm_quit'),
+                TransitionDefinition('confirm_quit', 'eg'),
                 TransitionDefinition('pg', 'activate'),
                 TransitionDefinition('activate', 'eg'),
                 TransitionDefinition('pg', 'assign_roles'),

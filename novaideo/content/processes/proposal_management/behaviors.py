@@ -376,6 +376,7 @@ def archive_proposal_moderation(context, request, root, appstruct, **kw):
 def exclude_participant_from_wg(context, request,  user, root, kind='resign', **kw):
     working_group = context.working_group
     working_group.delfromproperty('members', user)
+    resignation = kw.get('resignation', False)
     remove_participant_from_ballots(context, request, user)
     members = working_group.members
     revoke_roles(user, (('Participant', context),))
@@ -450,50 +451,41 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign', **
             duplication=context
             )
 
-    if getattr(user, 'email', ''):
-        alert(
-            'internal', [root], [user],
-            internal_kind=InternalAlertKind.working_group_alert,
-            subjects=[context], alert_kind='wg_'+kind,
-            period_date=kw.get('period_date', None),
-            **subject_data)
-        # mail_template = root.get_mail_template('wg_'+kind)
-        # subject = mail_template['subject'].format(
-        #     subject_title=context.title)
-        # email_data = get_user_data(user, 'recipient', request)
-        # email_data.update(subject_data)
-        # message = mail_template['template'].format(
-        #     novaideo_title=root.title,
-        #     **email_data
-        # )
-        # alert('email', [sender], [user.email],
-        #       subject=subject, body=message)
+    
+    if not resignation:
+        if getattr(user, 'email', ''):
+            alert(
+                'internal', [root], [user],
+                internal_kind=InternalAlertKind.working_group_alert,
+                subjects=[context], alert_kind='wg_'+kind,
+                period_date=kw.get('period_date', None),
+                **subject_data)
 
-    run_notation_process(
-        context, request, user, members, 'member_notation')
+        run_notation_process(
+            context, request, user, members, 'member_notation')
 
-    if members:
-        alert(
-            'internal', [root], [user],
-            internal_kind=InternalAlertKind.working_group_alert,
-            subjects=[context], alert_kind='member_notation_excluded',
-            **subject_data)
-        mail_template = root.get_mail_template(
-            'member_notation_excluded', user.user_locale)
-        subject = mail_template['subject'].format(
-            novaideo_title=root.title,
-            **subject_data)
-        email_data = get_user_data(user, 'recipient', request)
-        email_data.update(subject_data)
-        message = mail_template['template'].format(
-            novaideo_title=root.title,
-            **email_data)
-        alert('email', [root.get_site_sender()], [user.email],
-              subject=subject, body=message)
+        if members:
+            alert(
+                'internal', [root], [user],
+                internal_kind=InternalAlertKind.working_group_alert,
+                subjects=[context], alert_kind='member_notation_excluded',
+                **subject_data)
+            mail_template = root.get_mail_template(
+                'member_notation_excluded', user.user_locale)
+            subject = mail_template['subject'].format(
+                novaideo_title=root.title,
+                **subject_data)
+            email_data = get_user_data(user, 'recipient', request)
+            email_data.update(subject_data)
+            message = mail_template['template'].format(
+                novaideo_title=root.title,
+                **email_data)
+            alert('email', [root.get_site_sender()], [user.email],
+                  subject=subject, body=message)
 
-        for member in members:
-            run_notation_process(
-                context, request, member, [user])
+            for member in members:
+                run_notation_process(
+                    context, request, member, [user])
 
 
 def calculate_improvement_cycle_date(process):

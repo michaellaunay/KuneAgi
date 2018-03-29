@@ -839,6 +839,40 @@ Dear,
 {my_first_name} {my_last_name} wishes to present to you the challenge "{subject_title}" on the {novaideo_title} platform. You can access this challenge at: {subject_url}.
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
+
+QUIT_REQUEST_SUBJECT = u"""Request to quit sent from your account on the {novaideo_title} platform"""
+
+QUIT_REQUEST_MESSAGE = u"""
+Dear {recipient_first_name} {recipient_last_name},
+
+We received on your account on the {novaideo_title} platform a request to quit.
+If you have indeed requested to quit the platform, click on the following confirmation link: {url}, before the date {deadline_date}.
+
+BEWARE: this action CANNOT BE UNDONE. If you click on this link, you will lose any access to the platform, your account will be destroyed and all contents related to your account will irrevertibly be attributed to an anonymous author.
+You will not be able to register again on the platform, thereby creating a new, blank account, before a duration equal to {tquarantaine} days.
+
+If you have not requested to quit the platform, simply ignore this e-mail, and your account will be kept active.
+We recommend however that you change your password, to prevent your account from being hacked.
+
+""" + PORTAL_SIGNATURE
+
+
+QUIT_REQUEST_CONFIRMATION_SUBJECT = u"""Resignation confirmation from the {novaideo_title} platform"""
+
+QUIT_REQUEST_CONFIRMATION_MESSAGE = u"""
+Your account has been deactivated! your data will be destroyed within a period of {tquarantaine} days.
+
+""" + PORTAL_SIGNATURE
+
+
+QUIT_REQUEST_DELETION_SUBJECT = u"""Your account data has been removed from {novaideo_title} platform!"""
+
+QUIT_REQUEST_DELETION_MESSAGE = u"""
+Your account data has been removed from {novaideo_title} platform!
+
+""" + PORTAL_SIGNATURE
+
+
 mail_locale = 'en'
 
 add_mail_template('invitation', {'locale': mail_locale,
@@ -1079,3 +1113,15 @@ add_mail_template('member_notation_excluded', {'locale': mail_locale,
 add_mail_template('members_notation', {'locale': mail_locale,
               'subject': NOTING_MEMBERS_SUBJECT,
               'template': NOTING_MEMBERS_MESSAGE})
+
+add_mail_template('quit_request', {'locale': mail_locale,
+              'subject': QUIT_REQUEST_SUBJECT,
+              'template': QUIT_REQUEST_MESSAGE})
+
+add_mail_template('quit_request_confiramtion', {'locale': mail_locale,
+              'subject': QUIT_REQUEST_CONFIRMATION_SUBJECT,
+              'template': QUIT_REQUEST_CONFIRMATION_MESSAGE})
+
+add_mail_template('quit_request_deletion', {'locale': mail_locale,
+              'subject': QUIT_REQUEST_DELETION_SUBJECT,
+              'template': QUIT_REQUEST_DELETION_MESSAGE})
