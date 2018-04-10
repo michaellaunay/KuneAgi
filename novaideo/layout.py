@@ -28,11 +28,11 @@ class GlobalLayout(object):
         self, date, date_from=None,
         date_only=False, format_id='digital',
         ignore_month=False, ignore_year=False,
-        add_day_name=False):
+        add_day_name=False, ignore_tz=False):
         if not date:
             return ''
 
-        if isinstance(date, datetime.datetime):
+        if not ignore_tz and isinstance(date, datetime.datetime):
             date = date.replace(tzinfo=pytz.UTC)
             date = date.astimezone(self.request.get_time_zone)
 

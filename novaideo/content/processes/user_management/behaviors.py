@@ -248,6 +248,8 @@ def remove_user_data_callback(root, user, email_data):
     user.birth_date = None
     user.birthplace = ''
     user.user_title = ''
+    user.first_name = ''
+    user.last_name = ''
     user.email = ''
     user.setproperty('picture', None)
     user.setproperty('cover_picture', None)
@@ -353,30 +355,29 @@ class ConfirmQuitRequest(InfiniteCardinality):
         remove_expired_quit_request_callback(root, context)
         schema = select(
             PersonSchema(),
-            ['first_name',
-             'last_name',
-             'pseudonym'])
+            ['pseudonym'])
         user.old_data = PersistentDict(user.get_data(schema))
-        user.first_name = 'Anonymous'
-        user.last_name = ''
         user.pseudonym = _('Anonymous (has left the platform)')
         user.set_title()
         deactivate_user(user, request, root, resignation=True)
         request.registry.notify(ActivityExecuted(
             self, [user], get_current()))
         
-        deadline = getattr(root, 'tquarantaine', 180) * 86400000
+        tquarantaine = getattr(root, 'tquarantaine', 180)
+        deadline = tquarantaine * 86400000
         call_id = 'persistent_' + str(get_oid(user)) + '_quit'
         push_callback_after_commit(
             remove_user_data_callback, deadline, call_id,
             root=root, user=user, email_data=email_data)
+        date_tquarantaine = datetime.datetime.now(tz=pytz.UTC) + datetime.timedelta(days=tquarantaine)
         mail_template = root.get_mail_template(
                 'quit_request_confiramtion', user.user_locale)
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
         message = mail_template['template'].format(
             novaideo_title=root.title,
-            tquarantaine=getattr(root, 'tquarantaine', 180),
+            date_tquarantaine=date_tquarantaine,
+            tquarantaine=tquarantaine,
             **email_data
         )
         alert('email', [root.get_site_sender()], [user.email],

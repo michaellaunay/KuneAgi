@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-03-29 15:46+0200\n"
+"POT-Creation-Date: 2018-04-10 10:12+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -144,124 +144,128 @@ msgid "Block view"
 msgstr "La vue en blocs"
 
 #: novaideo/__init__.py:80
-msgid "български"
+msgid "Esperanto"
 msgstr ""
 
 #: novaideo/__init__.py:81
-msgid "čeština"
+msgid "български"
 msgstr ""
 
 #: novaideo/__init__.py:82
-msgid "dansk"
+msgid "čeština"
 msgstr ""
 
 #: novaideo/__init__.py:83
-msgid "Deutsch"
+msgid "dansk"
 msgstr ""
 
 #: novaideo/__init__.py:84
+msgid "Deutsch"
+msgstr ""
+
+#: novaideo/__init__.py:85
 #, fuzzy
 msgid "Eesti"
 msgstr "Question"
 
-#: novaideo/__init__.py:85
+#: novaideo/__init__.py:86
 msgid "ελληνικά"
 msgstr ""
 
-#: novaideo/__init__.py:86
+#: novaideo/__init__.py:87
 msgid "English"
 msgstr ""
 
-#: novaideo/__init__.py:87
+#: novaideo/__init__.py:88
 msgid "Español"
 msgstr ""
 
-#: novaideo/__init__.py:88
+#: novaideo/__init__.py:89
 msgid "Français"
 msgstr ""
 
-#: novaideo/__init__.py:89
+#: novaideo/__init__.py:90
 msgid "Gaeilge"
 msgstr ""
 
-#: novaideo/__init__.py:90
+#: novaideo/__init__.py:91
 msgid "Hrvatski"
 msgstr ""
 
-#: novaideo/__init__.py:91
+#: novaideo/__init__.py:92
 msgid "Italiano"
 msgstr ""
 
-#: novaideo/__init__.py:92
+#: novaideo/__init__.py:93
 msgid "Latviešu"
 msgstr ""
 
-#: novaideo/__init__.py:93
+#: novaideo/__init__.py:94
 msgid "Lietuvių"
 msgstr ""
 
-#: novaideo/__init__.py:94
+#: novaideo/__init__.py:95
 msgid "Magyar"
 msgstr ""
 
-#: novaideo/__init__.py:95
+#: novaideo/__init__.py:96
 msgid "Malti"
 msgstr ""
 
-#: novaideo/__init__.py:96
+#: novaideo/__init__.py:97
 msgid "Nederlands"
 msgstr ""
 
-#: novaideo/__init__.py:97
+#: novaideo/__init__.py:98
 msgid "Polski"
 msgstr ""
 
-#: novaideo/__init__.py:98
+#: novaideo/__init__.py:99
 msgid "Português"
 msgstr ""
 
-#: novaideo/__init__.py:99
+#: novaideo/__init__.py:100
 msgid "Română"
 msgstr ""
 
-#: novaideo/__init__.py:100
+#: novaideo/__init__.py:101
 msgid "Slovenčina"
 msgstr ""
 
-#: novaideo/__init__.py:101
+#: novaideo/__init__.py:102
 msgid "Slovenščina"
 msgstr ""
 
-#: novaideo/__init__.py:102
+#: novaideo/__init__.py:103
 msgid "Suomi"
 msgstr ""
 
-#: novaideo/__init__.py:103
+#: novaideo/__init__.py:104
 msgid "Svenska"
 msgstr ""
 
-#: novaideo/__init__.py:384 novaideo/content/novaideo_application.py:449
+#: novaideo/__init__.py:385 novaideo/content/novaideo_application.py:449
 msgid "General"
 msgstr "Générale"
 
-#: novaideo/__init__.py:1207
+#: novaideo/__init__.py:1208
 #: novaideo/views/templates/panels/novaideo_footer.pt:12
 msgid "Legal notice"
 msgstr "Mentions légales"
 
-#: novaideo/__init__.py:1208
+#: novaideo/__init__.py:1209
 msgid "The legal notice"
 msgstr "Les mentions légales"
 
-#: novaideo/__init__.py:1212
+#: novaideo/__init__.py:1213
 msgid "Terms of use"
 msgstr "Conditions d'utilisation"
 
-#: novaideo/__init__.py:1213
+#: novaideo/__init__.py:1214
 msgid "The terms of use"
 msgstr "Les conditions d'utilisation"
 
-#: novaideo/__init__.py:1217 novaideo/__init__.py:1218
+#: novaideo/__init__.py:1218 novaideo/__init__.py:1219
 msgid "Moderation rules"
 msgstr "Règles de modération"
 
@@ -407,9 +411,9 @@ msgstr "Ajouter un connecteur Facebook"
 #: novaideo/connectors/twitter/content/behaviors.py:75
 #: novaideo/connectors/twitter/content/behaviors.py:120
 #: novaideo/content/processes/user_management/behaviors.py:150
-#: novaideo/content/processes/user_management/behaviors.py:489
-#: novaideo/content/processes/user_management/behaviors.py:594
-#: novaideo/content/processes/user_management/behaviors.py:669
+#: novaideo/content/processes/user_management/behaviors.py:487
+#: novaideo/content/processes/user_management/behaviors.py:592
+#: novaideo/content/processes/user_management/behaviors.py:667
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:224
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:252
 #: novaideo/content/processes/admin_process/behaviors.py:42
@@ -436,7 +440,7 @@ msgstr "Ajouter un connecteur Facebook"
 #: novaideo/content/processes/amendment_management/behaviors.py:98
 #: novaideo/content/processes/amendment_management/behaviors.py:191
 #: novaideo/content/processes/event_management/behaviors.py:53
-#: novaideo/content/processes/event_management/behaviors.py:125
+#: novaideo/content/processes/event_management/behaviors.py:126
 #: novaideo/content/processes/question_management/behaviors.py:188
 #: novaideo/content/processes/question_management/behaviors.py:757
 #: novaideo/content/processes/smart_folder_management/behaviors.py:70
@@ -482,7 +486,7 @@ msgstr "Configurer"
 #: novaideo/connectors/google/content/definition.py:58
 #: novaideo/connectors/twitter/content/behaviors.py:147
 #: novaideo/connectors/twitter/content/definition.py:58
-#: novaideo/content/processes/user_management/behaviors.py:888
+#: novaideo/content/processes/user_management/behaviors.py:886
 #: novaideo/content/processes/user_management/definition.py:191
 #: novaideo/content/processes/proposal_management/definition.py:549
 #: novaideo/content/processes/newsletter_management/definition.py:74
@@ -506,10 +510,10 @@ msgstr "Supprimer"
 #: novaideo/connectors/yammer/content/behaviors.py:284
 #: novaideo/connectors/google/content/behaviors.py:150
 #: novaideo/connectors/twitter/content/behaviors.py:148
-#: novaideo/content/processes/user_management/behaviors.py:266
-#: novaideo/content/processes/user_management/behaviors.py:414
-#: novaideo/content/processes/user_management/behaviors.py:779
-#: novaideo/content/processes/user_management/behaviors.py:1228
+#: novaideo/content/processes/user_management/behaviors.py:268
+#: novaideo/content/processes/user_management/behaviors.py:412
+#: novaideo/content/processes/user_management/behaviors.py:777
+#: novaideo/content/processes/user_management/behaviors.py:1226
 #: novaideo/content/processes/admin_process/behaviors.py:103
 #: novaideo/content/processes/channel_management/behaviors.py:38
 #: novaideo/content/processes/channel_management/behaviors.py:68
@@ -528,7 +532,7 @@ msgstr "Supprimer"
 #: novaideo/content/processes/newsletter_management/behaviors.py:447
 #: novaideo/content/processes/newsletter_management/behaviors.py:494
 #: novaideo/content/processes/amendment_management/behaviors.py:237
-#: novaideo/content/processes/event_management/behaviors.py:93
+#: novaideo/content/processes/event_management/behaviors.py:94
 #: novaideo/content/processes/question_management/behaviors.py:153
 #: novaideo/content/processes/question_management/behaviors.py:223
 #: novaideo/content/processes/question_management/behaviors.py:675
@@ -1352,16 +1356,15 @@ msgid "Maximum number of idea submission per week"
 msgstr "Nombre maximum de soumission d'idées par semaine"
 
 #: novaideo/content/site_configuration.py:276
-msgid "Delays before deleting deactiveted user data"
+msgid "Delays before deleting deactivated user data"
 msgstr "Délais avant la suppression des données utilisateur désactivées"
 
 #: novaideo/content/site_configuration.py:292
-#: novaideo/content/site_configuration.py:409 novaideo/content/event.py:107
+#: novaideo/content/site_configuration.py:409
 #: novaideo/views/templates/event_bloc.pt:72
 #: novaideo/views/templates/event_result.pt:72
-#: novaideo/views/event_management/templates/see_event.pt:63
 msgid "Language"
-msgstr "Langage"
+msgstr "Langue"
 
 #: novaideo/content/site_configuration.py:300
 #: novaideo/content/site_configuration.py:422
@@ -1699,8 +1702,8 @@ msgstr "Les raisons du signalement"
 
 #: novaideo/content/report.py:73 novaideo/content/question.py:111
 #: novaideo/content/event.py:79
-#: novaideo/content/processes/user_management/behaviors.py:535
-#: novaideo/content/processes/user_management/behaviors.py:843
+#: novaideo/content/processes/user_management/behaviors.py:533
+#: novaideo/content/processes/user_management/behaviors.py:841
 #: novaideo/content/processes/user_management/definition.py:96
 #: novaideo/content/processes/user_management/definition.py:97
 #: novaideo/content/processes/user_management/definition.py:182
@@ -1714,7 +1717,7 @@ msgstr "Les raisons du signalement"
 #: novaideo/content/processes/amendment_management/behaviors.py:597
 #: novaideo/content/processes/amendment_management/definition.py:93
 #: novaideo/content/processes/amendment_management/definition.py:94
-#: novaideo/content/processes/event_management/behaviors.py:187
+#: novaideo/content/processes/event_management/behaviors.py:188
 #: novaideo/content/processes/event_management/definition.py:63
 #: novaideo/content/processes/event_management/definition.py:64
 #: novaideo/content/processes/question_management/behaviors.py:519
@@ -1910,7 +1913,7 @@ msgstr "Répondre"
 #: novaideo/content/invitation.py:34
 #, python-format
 msgid "You do not have the right to assign these/this role(s): ${roles}"
-msgstr "Vous n'avez pas le droit d'attribuer ce/ces rôle(s): $ {roles}"
+msgstr "Vous n'avez pas le droit d'attribuer ce/ces rôle(s): ${roles}"
 
 #: novaideo/content/invitation.py:60
 #: novaideo/views/user_management/assign_roles.py:44
@@ -2414,32 +2417,26 @@ msgstr "À distance"
 
 #: novaideo/content/event.py:80
 msgid ""
-"The details of the event. Connexion mode or location, how to register, "
-"agenda..."
+"The details of the event. Connexion mode or location, agenda, how to "
+"register, when appropriate, link to the external registration site..."
 msgstr ""
-"Les détails de l'événement. Le mode de connexion ou le lieu,  le mode "
-"d'inscription, l'ordre du jour..."
+"Les détails de l'événement. Le mode de connexion ou le lieu, l'ordre du "
+"jour,  le mode d'inscription, le cas échéant, lien vers le site externe "
+"d'inscription..."
 
 #: novaideo/content/event.py:85
-#: novaideo/views/user_management/templates/notations.pt:52
-#: novaideo/views/novaideo_view_manager/templates/table_result.pt:31
-#: novaideo/views/templates/web_advertisting_result.pt:60
-#: novaideo/views/templates/event_bloc.pt:64
-#: novaideo/views/templates/event_result.pt:64
 #: novaideo/views/event_management/templates/see_event.pt:55
-#: novaideo/views/ballot_processes/rangevoting/vote.py:32
-msgid "Date"
-msgstr "Date"
+msgid "Date and hour"
+msgstr "Date et heure"
 
 #: novaideo/content/event.py:86
 msgid "The date of the event."
 msgstr "La date de  l'événement de discussion."
 
-#: novaideo/content/event.py:92 novaideo/views/templates/event_bloc.pt:60
-#: novaideo/views/templates/event_result.pt:60
+#: novaideo/content/event.py:92
 #: novaideo/views/event_management/templates/see_event.pt:51
-msgid "Mode"
-msgstr "Mode de réunion"
+msgid "The discussion event mode"
+msgstr "Le mode de l'événement de discussion"
 
 #: novaideo/content/event.py:93
 msgid "The event mode."
@@ -2456,9 +2453,14 @@ msgid "You can specify the timezone of the date of the event."
 msgstr ""
 "Vous pouvez sélectionner le fuseau horaire de  l'événement de discussion."
 
+#: novaideo/content/event.py:107
+#: novaideo/views/event_management/templates/see_event.pt:63
+msgid "The discussion event language"
+msgstr "La langue de l'événement de discussion"
+
 #: novaideo/content/event.py:108
 msgid "You can specify the language of the event."
-msgstr "Vous pouvez sélectionner le langage de l'événement de discussion."
+msgstr "Vous pouvez sélectionner la langue de l'événement de discussion."
 
 #: novaideo/content/event.py:123
 msgid "Discussion event"
@@ -2699,7 +2701,7 @@ msgstr "Obtenez un jeton d'API"
 msgid "Get a new API token"
 msgstr "Obtenir un nouveau jeton"
 
-#: novaideo/content/processes/user_management/behaviors.py:265
+#: novaideo/content/processes/user_management/behaviors.py:267
 #: novaideo/content/processes/user_management/definition.py:76
 #: novaideo/content/processes/user_management/definition.py:77
 #: novaideo/views/user_management/quit.py:38
@@ -2707,18 +2709,18 @@ msgstr "Obtenir un nouveau jeton"
 msgid "Quit the platform"
 msgstr "Quitter la plate-forme"
 
-#: novaideo/content/processes/user_management/behaviors.py:345
+#: novaideo/content/processes/user_management/behaviors.py:347
 #: novaideo/content/processes/user_management/definition.py:80
 #: novaideo/content/processes/user_management/definition.py:81
 #: novaideo/views/user_management/confirm_quit.py:25
 msgid "Confirm the resignation request"
 msgstr "Confirmez la demande de démission"
 
-#: novaideo/content/processes/user_management/behaviors.py:362
+#: novaideo/content/processes/user_management/behaviors.py:360
 msgid "Anonymous (has left the platform)"
 msgstr "Anonyme (a quitté la plate-forme)"
 
-#: novaideo/content/processes/user_management/behaviors.py:413
+#: novaideo/content/processes/user_management/behaviors.py:411
 #: novaideo/content/processes/user_management/definition.py:84
 #: novaideo/content/processes/user_management/definition.py:85
 #: novaideo/views/user_management/deactivate.py:37
@@ -2726,24 +2728,24 @@ msgstr "Anonyme (a quitté la plate-forme)"
 msgid "Disactivate the profile"
 msgstr "Désactiver le compte"
 
-#: novaideo/content/processes/user_management/behaviors.py:451
+#: novaideo/content/processes/user_management/behaviors.py:449
 #: novaideo/content/processes/user_management/definition.py:88
 #: novaideo/content/processes/user_management/definition.py:89
 #: novaideo/views/user_management/activate.py:23
 msgid "Activate the profile"
 msgstr "Activer le compte"
 
-#: novaideo/content/processes/user_management/behaviors.py:488
+#: novaideo/content/processes/user_management/behaviors.py:486
 #: novaideo/content/processes/user_management/definition.py:93
 #: novaideo/views/user_management/assign_roles.py:56
 msgid "Assign roles"
 msgstr "Assigner des rôles"
 
-#: novaideo/content/processes/user_management/behaviors.py:560
+#: novaideo/content/processes/user_management/behaviors.py:558
 msgid "See notations"
 msgstr "Voir les notes"
 
-#: novaideo/content/processes/user_management/behaviors.py:948
+#: novaideo/content/processes/user_management/behaviors.py:946
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:61
 #: novaideo/content/processes/novaideo_abstract_process/behaviors.py:128
 #: novaideo/content/processes/reports_management/behaviors.py:260
@@ -5102,7 +5104,7 @@ msgstr "Modifier le profil"
 
 #: novaideo/views/user_management/quit.py:74
 msgid "Please confirm your resignation"
-msgstr "S'il vous plaît confirmer votre démission"
+msgstr "Veuillez confirmer votre démission"
 
 #: novaideo/views/user_management/see_notations.py:23
 msgid "No mark found"
@@ -5265,8 +5267,8 @@ msgid ""
 "Your account has been deactivated! your data will be destroyed within a "
 "period of ${tquarantaine} days."
 msgstr ""
-"Votre compte a été désactivé !  Vos données seront détruites dans un délai "
-"de $ {tquarantaine} jours."
+"Votre compte a été désactivé ! Vos données seront détruites dans un délai de "
+"${tquarantaine} jours."
 
 #: novaideo/views/user_management/templates/alert_quit_platform.pt:1
 msgid ""
@@ -5274,7 +5276,7 @@ msgid ""
 "and to destroy your account?"
 msgstr ""
 "Êtes-vous sûr(e) de vouloir démissionner de la plate-forme de démocratie "
-"participative [KuneAgi], et de détruire votre compte ?"
+"participative ${title}, et de détruire votre compte ?"
 
 #: novaideo/views/user_management/templates/registrationsubmitted.pt:2
 msgid ""
@@ -5410,6 +5412,15 @@ msgstr ""
 "Voici les notes reçues par ${dynamic}, et les dates d'attribution, à partir "
 "desquelles a été calculée sa note globale."
 
+#: novaideo/views/user_management/templates/notations.pt:52
+#: novaideo/views/novaideo_view_manager/templates/table_result.pt:31
+#: novaideo/views/templates/web_advertisting_result.pt:60
+#: novaideo/views/templates/event_bloc.pt:64
+#: novaideo/views/templates/event_result.pt:64
+#: novaideo/views/ballot_processes/rangevoting/vote.py:32
+msgid "Date"
+msgstr "Date"
+
 #: novaideo/views/user_management/templates/notations.pt:54
 msgctxt "notation"
 msgid "Mark"
@@ -5442,13 +5453,13 @@ msgid ""
 "A confirmation e-mail has been sent to you. Please click on the link in the "
 "email in order to complete your resignation."
 msgstr ""
-"Un courriel de confirmation va vous être envoyé. Merci de cliquer sur le "
-"lien présent dans le courriel pour compléter demande de démission."
+"Un email de confirmation vous a été envoyé. Veuillez cliquer sur le lien "
+"dans l'email afin de compléter votre démission."
 
 #: novaideo/views/user_management/templates/display_api_token.pt:2
 msgid "Your API token is ${api_token}. You can generate a new token below:"
 msgstr ""
-"Votre jeton est $ {api_token}. Vous pouvez générer un nouveau jeton ci-"
+"Votre jeton est ${api_token}. Vous pouvez générer un nouveau jeton ci-"
 "dessous :"
 
 #: novaideo/views/user_management/templates/display_api_token.pt:3
@@ -6590,6 +6601,11 @@ msgstr "Mes discussions"
 #: novaideo/views/event_management/templates/see_event.pt:15
 msgid "Discussion event around the Idea"
 msgstr "Événement de Discussion autour de l'Idée"
+
+#: novaideo/views/templates/event_bloc.pt:60
+#: novaideo/views/templates/event_result.pt:60
+msgid "Mode"
+msgstr "Mode de réunion"
 
 #: novaideo/views/templates/event_bloc.pt:66
 #: novaideo/views/templates/event_result.pt:66
@@ -10744,11 +10760,13 @@ msgstr ""
 
 #: novaideo/views/reports_management/templates/alert_report_max.pt:3
 msgid ""
-"You have exceeded the number of reports per week allowed (a maximum of "
-"${nbmax} reports per week)."
+"You are not allowed to flag this content as inappropriate (i.e. non "
+"compliant with the Moderation Charter). You have reached the maximum allowed "
+"number of flags per week (${nbmax} per week)."
 msgstr ""
-"Vous avez dépassé le nombre de signalements autorisés par semaine (un "
-"maximum de ${nbmax} signalements par semaine)."
+"Vous ne pouvez pas signaler ce contenu comme non conforme à la Charte de "
+"Modération. Vous avez atteint le nombre maximal autorisé de signalements de "
+"contenu non conforme par semaine (${nbmax} par semaine)."
 
 #: novaideo/views/reports_management/templates/alert_restor.pt:2
 msgid "By clicking on « Continue », the content will be restored."
@@ -12019,11 +12037,12 @@ msgstr ""
 
 #: novaideo/views/idea_management/templates/alert_idea_submission_max.pt:3
 msgid ""
-"You have exceeded the number of submissions per week allowed (a maximum of "
-"${nbmax} submissions per week)."
+"You cannot submit a new Idea for Moderation. You have exceeded the maximum "
+"allowed number of Idea submissions per week (${nbmax} per week)."
 msgstr ""
-"Vous avez dépassé le nombre de soumissions par semaine autorisé (un maximum "
-"de ${nbmax} soumissions par semaine)."
+"Vous ne pouvez pas soumettre de nouvelle Idée à la Modération. Vous avez "
+"dépassé le nombre maximal autorisé de soumission d'Idées par semaine "
+"(${nbmax} soumissions par semaine)."
 
 #: novaideo/views/comment_management/remove.py:44
 msgid "Remove comment"
@@ -12639,6 +12658,23 @@ msgstr "Examiné(e) le"
 #: novaideo/adapters/__init__.py:32
 msgid "Published on"
 msgstr "Publié(e) le"
+
+#~ msgid "Language of the event"
+#~ msgstr "Langue de l'événement"
+
+#~ msgid ""
+#~ "You have exceeded the number of reports per week allowed (a maximum of "
+#~ "${nbmax} reports per week)."
+#~ msgstr ""
+#~ "Vous avez dépassé le nombre de signalements autorisés par semaine (un "
+#~ "maximum de ${nbmax} signalements par semaine)."
+
+#~ msgid ""
+#~ "You have exceeded the number of submissions per week allowed (a maximum "
+#~ "of ${nbmax} submissions per week)."
+#~ msgstr ""
+#~ "Vous avez dépassé le nombre de soumissions par semaine autorisé (un "
+#~ "maximum de ${nbmax} soumissions par semaine)."
 
 #~ msgid "Upload users"
 #~ msgstr "Importer des utilisateurs"

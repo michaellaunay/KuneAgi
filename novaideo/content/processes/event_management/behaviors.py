@@ -66,6 +66,7 @@ class Create(InfiniteCardinality):
         grant_roles(user=user, roles=(('Owner', event), ))
         event.setproperty('author', user)
         timezone = pytz.timezone(event.tzname)
+        import pdb; pdb.set_trace()
         event.date = event.date.replace(tzinfo=timezone)
         event.init_published_at()
         event.format(request)

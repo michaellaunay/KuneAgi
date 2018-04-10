@@ -77,6 +77,7 @@ DEFAULT_CONTENT_TO_MANAGE = ['challenge', 'question', 'proposal']
 
 
 EUROPEAN_LOCALES = {
+    'esp': _('Esperanto'),
     'bg': _('български'),
     'cs': _('čeština'),
     'da': _('dansk'),

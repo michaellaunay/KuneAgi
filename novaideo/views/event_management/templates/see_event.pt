@@ -48,19 +48,19 @@
               <span class="icon ${subject.icon}"></span>  <span i18n:translate=""> ${title}
             </a>
            </dd>
-           <dt i18n:translate="">Mode</dt>
+           <dt i18n:translate="">The discussion event mode</dt>
            <dd>
              ${object.get_mode()}
            </dd>
-           <dt i18n:translate="">Date</dt>
+           <dt i18n:translate="">Date and hour</dt>
            <dd class="${is_expired and 'expired'}">
-             <span tal:replace="layout.to_localized_time(object.date)"/>  <span i18n:translate="" tal:condition="is_expired">(Expired)</span>
+             <span tal:replace="layout.to_localized_time(object.date, ignore_tz=True)"/>  <span i18n:translate="" tal:condition="is_expired">(Expired)</span>
            </dd>
            <dt i18n:translate="">Timezone</dt>
            <dd>
              ${object.tzname}
            </dd>
-           <dt i18n:translate="">Language</dt>
+           <dt i18n:translate="">The discussion event language</dt>
            <dd>
              ${object.get_locale()}
            </dd>

@@ -77,19 +77,19 @@ class EventSchema(VisualisableElementSchema, SearchableEntitySchema):
         colander.String(),
         widget=deform.widget.TextAreaWidget(),
         title=_("Details"),
-        description=_('The details of the event. Connexion mode or location, how to register, agenda...'),
+        description=_('The details of the event. Connexion mode or location, agenda, how to register, when appropriate, link to the external registration site...'),
         )
 
     date = colander.SchemaNode(
         colander.DateTime(),
-        title=_('Date'),
+        title=_('Date and hour'),
         description=_('The date of the event.'),
     )
 
     kind = colander.SchemaNode(
         colander.String(),
         widget=kind_choices,
-        title=_('Mode'),
+        title=_('The discussion event mode'),
         description=_('The event mode.'),
         default='physical',
     )
@@ -104,7 +104,7 @@ class EventSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     locale = colander.SchemaNode(
         colander.String(),
-        title=_('Language'),
+        title=_('The discussion event language'),
         description=_('You can specify the language of the event.'),
         widget=locale_widget,
         validator=colander.OneOf(EUROPEAN_LOCALES),

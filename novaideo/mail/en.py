@@ -857,18 +857,26 @@ We recommend however that you change your password, to prevent your account from
 """ + PORTAL_SIGNATURE
 
 
-QUIT_REQUEST_CONFIRMATION_SUBJECT = u"""Resignation confirmation from the {novaideo_title} platform"""
+QUIT_REQUEST_CONFIRMATION_SUBJECT = u"""Your decision to quit the on-line democracy platform {novaideo_title} has been executed"""
 
 QUIT_REQUEST_CONFIRMATION_MESSAGE = u"""
-Your account has been deactivated! your data will be destroyed within a period of {tquarantaine} days.
+Dear {recipient_first_name} {recipient_last_name},
+
+You have decided to quit the on-line democracy platform {novaideo_title}. We regret of course your decision, but respect your choice. We hereby inform you that:
+* Your account has been disactivated. You will receive in the future only one message from us (see below);
+* All content associated with your account has irreversibly been attributed to an Anonymous author
+* The Identity Data that you had transmitted to us upon registration (Given Names, Family Names, date and location of birth) and your e-mail address will be kept in our records for {tquarantaine} days, so that you will not be able to register again during this period. The purpose of this is to prevent people who would have had an inappropriate behaviour on the platform (and thus earned a bad reputation) from re-registering immediately under a new pseudonym and with a virgin reputation
+* At the end of this period, i.e. on {date_tquarantaine}, you will receive from us an e-mail informing you that your Identity Data and your e-mail address have been erased from our database.
 
 """ + PORTAL_SIGNATURE
 
 
-QUIT_REQUEST_DELETION_SUBJECT = u"""Your account data has been removed from {novaideo_title} platform!"""
+QUIT_REQUEST_DELETION_SUBJECT = u"""Your Identity Data and your e-mail address have been erased from the database of the {novaideo_title} platform"""
 
 QUIT_REQUEST_DELETION_MESSAGE = u"""
-Your account data has been removed from {novaideo_title} platform!
+Dear {recipient_first_name} {recipient_last_name},
+
+Today, your Identity Data (Given Names, Family Names, date and location of birth) and your e-mail address have been erased from our database. You will receive no further e-mail from us.
 
 """ + PORTAL_SIGNATURE
 

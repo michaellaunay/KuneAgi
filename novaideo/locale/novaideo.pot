@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2018-03-29 15:46+0200\n"
+"POT-Creation-Date: 2018-04-10 10:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -149,123 +149,127 @@ msgid "Block view"
 msgstr ""
 
 #: ./novaideo/__init__.py:80
-msgid "български"
+msgid "Esperanto"
 msgstr ""
 
 #: ./novaideo/__init__.py:81
-msgid "čeština"
+msgid "български"
 msgstr ""
 
 #: ./novaideo/__init__.py:82
-msgid "dansk"
+msgid "čeština"
 msgstr ""
 
 #: ./novaideo/__init__.py:83
-msgid "Deutsch"
+msgid "dansk"
 msgstr ""
 
 #: ./novaideo/__init__.py:84
-msgid "Eesti"
+msgid "Deutsch"
 msgstr ""
 
 #: ./novaideo/__init__.py:85
-msgid "ελληνικά"
+msgid "Eesti"
 msgstr ""
 
 #: ./novaideo/__init__.py:86
-msgid "English"
+msgid "ελληνικά"
 msgstr ""
 
 #: ./novaideo/__init__.py:87
-msgid "Español"
+msgid "English"
 msgstr ""
 
 #: ./novaideo/__init__.py:88
-msgid "Français"
+msgid "Español"
 msgstr ""
 
 #: ./novaideo/__init__.py:89
-msgid "Gaeilge"
+msgid "Français"
 msgstr ""
 
 #: ./novaideo/__init__.py:90
-msgid "Hrvatski"
+msgid "Gaeilge"
 msgstr ""
 
 #: ./novaideo/__init__.py:91
-msgid "Italiano"
+msgid "Hrvatski"
 msgstr ""
 
 #: ./novaideo/__init__.py:92
-msgid "Latviešu"
+msgid "Italiano"
 msgstr ""
 
 #: ./novaideo/__init__.py:93
-msgid "Lietuvių"
+msgid "Latviešu"
 msgstr ""
 
 #: ./novaideo/__init__.py:94
-msgid "Magyar"
+msgid "Lietuvių"
 msgstr ""
 
 #: ./novaideo/__init__.py:95
-msgid "Malti"
+msgid "Magyar"
 msgstr ""
 
 #: ./novaideo/__init__.py:96
-msgid "Nederlands"
+msgid "Malti"
 msgstr ""
 
 #: ./novaideo/__init__.py:97
-msgid "Polski"
+msgid "Nederlands"
 msgstr ""
 
 #: ./novaideo/__init__.py:98
-msgid "Português"
+msgid "Polski"
 msgstr ""
 
 #: ./novaideo/__init__.py:99
-msgid "Română"
+msgid "Português"
 msgstr ""
 
 #: ./novaideo/__init__.py:100
-msgid "Slovenčina"
+msgid "Română"
 msgstr ""
 
 #: ./novaideo/__init__.py:101
-msgid "Slovenščina"
+msgid "Slovenčina"
 msgstr ""
 
 #: ./novaideo/__init__.py:102
-msgid "Suomi"
+msgid "Slovenščina"
 msgstr ""
 
 #: ./novaideo/__init__.py:103
+msgid "Suomi"
+msgstr ""
+
+#: ./novaideo/__init__.py:104
 msgid "Svenska"
 msgstr ""
 
-#: ./novaideo/__init__.py:384 ./novaideo/content/novaideo_application.py:449
+#: ./novaideo/__init__.py:385 ./novaideo/content/novaideo_application.py:449
 msgid "General"
 msgstr ""
 
-#: ./novaideo/__init__.py:1207
+#: ./novaideo/__init__.py:1208
 #: ./novaideo/views/templates/panels/novaideo_footer.pt:12
 msgid "Legal notice"
 msgstr ""
 
-#: ./novaideo/__init__.py:1208
+#: ./novaideo/__init__.py:1209
 msgid "The legal notice"
 msgstr ""
 
-#: ./novaideo/__init__.py:1212
+#: ./novaideo/__init__.py:1213
 msgid "Terms of use"
 msgstr ""
 
-#: ./novaideo/__init__.py:1213
+#: ./novaideo/__init__.py:1214
 msgid "The terms of use"
 msgstr ""
 
-#: ./novaideo/__init__.py:1217 ./novaideo/__init__.py:1218
+#: ./novaideo/__init__.py:1218 ./novaideo/__init__.py:1219
 msgid "Moderation rules"
 msgstr ""
 
@@ -408,9 +412,9 @@ msgstr ""
 #: ./novaideo/connectors/twitter/content/behaviors.py:75
 #: ./novaideo/connectors/twitter/content/behaviors.py:120
 #: ./novaideo/content/processes/user_management/behaviors.py:150
-#: ./novaideo/content/processes/user_management/behaviors.py:489
-#: ./novaideo/content/processes/user_management/behaviors.py:594
-#: ./novaideo/content/processes/user_management/behaviors.py:669
+#: ./novaideo/content/processes/user_management/behaviors.py:487
+#: ./novaideo/content/processes/user_management/behaviors.py:592
+#: ./novaideo/content/processes/user_management/behaviors.py:667
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:224
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:252
 #: ./novaideo/content/processes/admin_process/behaviors.py:42
@@ -437,7 +441,7 @@ msgstr ""
 #: ./novaideo/content/processes/amendment_management/behaviors.py:98
 #: ./novaideo/content/processes/amendment_management/behaviors.py:191
 #: ./novaideo/content/processes/event_management/behaviors.py:53
-#: ./novaideo/content/processes/event_management/behaviors.py:125
+#: ./novaideo/content/processes/event_management/behaviors.py:126
 #: ./novaideo/content/processes/question_management/behaviors.py:188
 #: ./novaideo/content/processes/question_management/behaviors.py:757
 #: ./novaideo/content/processes/smart_folder_management/behaviors.py:70
@@ -483,7 +487,7 @@ msgstr ""
 #: ./novaideo/connectors/google/content/definition.py:58
 #: ./novaideo/connectors/twitter/content/behaviors.py:147
 #: ./novaideo/connectors/twitter/content/definition.py:58
-#: ./novaideo/content/processes/user_management/behaviors.py:888
+#: ./novaideo/content/processes/user_management/behaviors.py:886
 #: ./novaideo/content/processes/user_management/definition.py:191
 #: ./novaideo/content/processes/proposal_management/definition.py:549
 #: ./novaideo/content/processes/newsletter_management/definition.py:74
@@ -507,10 +511,10 @@ msgstr ""
 #: ./novaideo/connectors/yammer/content/behaviors.py:284
 #: ./novaideo/connectors/google/content/behaviors.py:150
 #: ./novaideo/connectors/twitter/content/behaviors.py:148
-#: ./novaideo/content/processes/user_management/behaviors.py:266
-#: ./novaideo/content/processes/user_management/behaviors.py:414
-#: ./novaideo/content/processes/user_management/behaviors.py:779
-#: ./novaideo/content/processes/user_management/behaviors.py:1228
+#: ./novaideo/content/processes/user_management/behaviors.py:268
+#: ./novaideo/content/processes/user_management/behaviors.py:412
+#: ./novaideo/content/processes/user_management/behaviors.py:777
+#: ./novaideo/content/processes/user_management/behaviors.py:1226
 #: ./novaideo/content/processes/admin_process/behaviors.py:103
 #: ./novaideo/content/processes/channel_management/behaviors.py:38
 #: ./novaideo/content/processes/channel_management/behaviors.py:68
@@ -529,7 +533,7 @@ msgstr ""
 #: ./novaideo/content/processes/newsletter_management/behaviors.py:447
 #: ./novaideo/content/processes/newsletter_management/behaviors.py:494
 #: ./novaideo/content/processes/amendment_management/behaviors.py:237
-#: ./novaideo/content/processes/event_management/behaviors.py:93
+#: ./novaideo/content/processes/event_management/behaviors.py:94
 #: ./novaideo/content/processes/question_management/behaviors.py:153
 #: ./novaideo/content/processes/question_management/behaviors.py:223
 #: ./novaideo/content/processes/question_management/behaviors.py:675
@@ -1332,14 +1336,13 @@ msgid "Maximum number of idea submission per week"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:276
-msgid "Delays before deleting deactiveted user data"
+msgid "Delays before deleting deactivated user data"
 msgstr ""
 
 #: ./novaideo/content/site_configuration.py:292
-#: ./novaideo/content/site_configuration.py:409 ./novaideo/content/event.py:107
+#: ./novaideo/content/site_configuration.py:409
 #: ./novaideo/views/templates/event_bloc.pt:72
 #: ./novaideo/views/templates/event_result.pt:72
-#: ./novaideo/views/event_management/templates/see_event.pt:63
 msgid "Language"
 msgstr ""
 
@@ -1678,8 +1681,8 @@ msgstr ""
 
 #: ./novaideo/content/report.py:73 ./novaideo/content/question.py:111
 #: ./novaideo/content/event.py:79
-#: ./novaideo/content/processes/user_management/behaviors.py:535
-#: ./novaideo/content/processes/user_management/behaviors.py:843
+#: ./novaideo/content/processes/user_management/behaviors.py:533
+#: ./novaideo/content/processes/user_management/behaviors.py:841
 #: ./novaideo/content/processes/user_management/definition.py:96
 #: ./novaideo/content/processes/user_management/definition.py:97
 #: ./novaideo/content/processes/user_management/definition.py:182
@@ -1693,7 +1696,7 @@ msgstr ""
 #: ./novaideo/content/processes/amendment_management/behaviors.py:597
 #: ./novaideo/content/processes/amendment_management/definition.py:93
 #: ./novaideo/content/processes/amendment_management/definition.py:94
-#: ./novaideo/content/processes/event_management/behaviors.py:187
+#: ./novaideo/content/processes/event_management/behaviors.py:188
 #: ./novaideo/content/processes/event_management/definition.py:63
 #: ./novaideo/content/processes/event_management/definition.py:64
 #: ./novaideo/content/processes/question_management/behaviors.py:519
@@ -2362,29 +2365,22 @@ msgstr ""
 
 #: ./novaideo/content/event.py:80
 msgid ""
-"The details of the event. Connexion mode or location, how to register, "
-"agenda..."
+"The details of the event. Connexion mode or location, agenda, how to "
+"register, when appropriate, link to the external registration site..."
 msgstr ""
 
 #: ./novaideo/content/event.py:85
-#: ./novaideo/views/user_management/templates/notations.pt:52
-#: ./novaideo/views/novaideo_view_manager/templates/table_result.pt:31
-#: ./novaideo/views/templates/web_advertisting_result.pt:60
-#: ./novaideo/views/templates/event_bloc.pt:64
-#: ./novaideo/views/templates/event_result.pt:64
 #: ./novaideo/views/event_management/templates/see_event.pt:55
-#: ./novaideo/views/ballot_processes/rangevoting/vote.py:32
-msgid "Date"
+msgid "Date and hour"
 msgstr ""
 
 #: ./novaideo/content/event.py:86
 msgid "The date of the event."
 msgstr ""
 
-#: ./novaideo/content/event.py:92 ./novaideo/views/templates/event_bloc.pt:60
-#: ./novaideo/views/templates/event_result.pt:60
+#: ./novaideo/content/event.py:92
 #: ./novaideo/views/event_management/templates/see_event.pt:51
-msgid "Mode"
+msgid "The discussion event mode"
 msgstr ""
 
 #: ./novaideo/content/event.py:93
@@ -2399,6 +2395,11 @@ msgstr ""
 
 #: ./novaideo/content/event.py:100
 msgid "You can specify the timezone of the date of the event."
+msgstr ""
+
+#: ./novaideo/content/event.py:107
+#: ./novaideo/views/event_management/templates/see_event.pt:63
+msgid "The discussion event language"
 msgstr ""
 
 #: ./novaideo/content/event.py:108
@@ -2644,7 +2645,7 @@ msgstr ""
 msgid "Get a new API token"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:265
+#: ./novaideo/content/processes/user_management/behaviors.py:267
 #: ./novaideo/content/processes/user_management/definition.py:76
 #: ./novaideo/content/processes/user_management/definition.py:77
 #: ./novaideo/views/user_management/quit.py:38
@@ -2652,18 +2653,18 @@ msgstr ""
 msgid "Quit the platform"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:345
+#: ./novaideo/content/processes/user_management/behaviors.py:347
 #: ./novaideo/content/processes/user_management/definition.py:80
 #: ./novaideo/content/processes/user_management/definition.py:81
 #: ./novaideo/views/user_management/confirm_quit.py:25
 msgid "Confirm the resignation request"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:362
+#: ./novaideo/content/processes/user_management/behaviors.py:360
 msgid "Anonymous (has left the platform)"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:413
+#: ./novaideo/content/processes/user_management/behaviors.py:411
 #: ./novaideo/content/processes/user_management/definition.py:84
 #: ./novaideo/content/processes/user_management/definition.py:85
 #: ./novaideo/views/user_management/deactivate.py:37
@@ -2671,24 +2672,24 @@ msgstr ""
 msgid "Disactivate the profile"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:451
+#: ./novaideo/content/processes/user_management/behaviors.py:449
 #: ./novaideo/content/processes/user_management/definition.py:88
 #: ./novaideo/content/processes/user_management/definition.py:89
 #: ./novaideo/views/user_management/activate.py:23
 msgid "Activate the profile"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:488
+#: ./novaideo/content/processes/user_management/behaviors.py:486
 #: ./novaideo/content/processes/user_management/definition.py:93
 #: ./novaideo/views/user_management/assign_roles.py:56
 msgid "Assign roles"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:560
+#: ./novaideo/content/processes/user_management/behaviors.py:558
 msgid "See notations"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:948
+#: ./novaideo/content/processes/user_management/behaviors.py:946
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:61
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:128
 #: ./novaideo/content/processes/reports_management/behaviors.py:260
@@ -5267,6 +5268,15 @@ msgid ""
 "attributed, from which his/her global mark was computed."
 msgstr ""
 
+#: ./novaideo/views/user_management/templates/notations.pt:52
+#: ./novaideo/views/novaideo_view_manager/templates/table_result.pt:31
+#: ./novaideo/views/templates/web_advertisting_result.pt:60
+#: ./novaideo/views/templates/event_bloc.pt:64
+#: ./novaideo/views/templates/event_result.pt:64
+#: ./novaideo/views/ballot_processes/rangevoting/vote.py:32
+msgid "Date"
+msgstr ""
+
 #: ./novaideo/views/user_management/templates/notations.pt:54
 msgctxt "notation"
 msgid "Mark"
@@ -6378,6 +6388,11 @@ msgstr ""
 #: ./novaideo/views/templates/small_event_result.pt:18
 #: ./novaideo/views/event_management/templates/see_event.pt:15
 msgid "Discussion event around the Idea"
+msgstr ""
+
+#: ./novaideo/views/templates/event_bloc.pt:60
+#: ./novaideo/views/templates/event_result.pt:60
+msgid "Mode"
 msgstr ""
 
 #: ./novaideo/views/templates/event_bloc.pt:66
@@ -9699,8 +9714,9 @@ msgstr ""
 
 #: ./novaideo/views/reports_management/templates/alert_report_max.pt:3
 msgid ""
-"You have exceeded the number of reports per week allowed (a maximum of "
-"${nbmax} reports per week)."
+"You are not allowed to flag this content as inappropriate (i.e. non compliant"
+" with the Moderation Charter). You have reached the maximum allowed number of"
+" flags per week (${nbmax} per week)."
 msgstr ""
 
 #: ./novaideo/views/reports_management/templates/alert_restor.pt:2
@@ -10863,8 +10879,8 @@ msgstr ""
 
 #: ./novaideo/views/idea_management/templates/alert_idea_submission_max.pt:3
 msgid ""
-"You have exceeded the number of submissions per week allowed (a maximum of "
-"${nbmax} submissions per week)."
+"You cannot submit a new Idea for Moderation. You have exceeded the maximum "
+"allowed number of Idea submissions per week (${nbmax} per week)."
 msgstr ""
 
 #: ./novaideo/views/comment_management/remove.py:44

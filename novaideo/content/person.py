@@ -764,7 +764,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         root = root if root else getSite()
         now = datetime.datetime.now(tz=pytz.UTC)
         monday = datetime.datetime.combine(
-            (now - datetime.timedelta(days=now.weekday())),
+            (now - datetime.timedelta(days=7)),
             datetime.time(0, 0, 0, tzinfo=pytz.UTC))
         return len(self._submited_at.values(
             min=monday, max=now)) < getattr(root, 'nb_submission_maxi', 3)
@@ -773,7 +773,7 @@ class Person(User, SearchableEntity, CorrelableEntity, Debatable):
         root = root if root else getSite()
         now = datetime.datetime.now(tz=pytz.UTC)
         monday = datetime.datetime.combine(
-            (now - datetime.timedelta(days=now.weekday())),
+            (now - datetime.timedelta(days=7)),
             datetime.time(0, 0, 0, tzinfo=pytz.UTC))
         return len(self._reported_at.values(
             min=monday, max=now)) < getattr(root, 'nb_reports_maxi', 3)

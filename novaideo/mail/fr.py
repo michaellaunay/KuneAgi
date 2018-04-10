@@ -856,20 +856,29 @@ Nous vous recommandons néanmoins de changer votre mot de passe pour éviter que
 """ + PORTAL_SIGNATURE
 
 
-QUIT_REQUEST_CONFIRMATION_SUBJECT = u"""Confirmation de démission de la plate-forme {novaideo_title}"""
+QUIT_REQUEST_CONFIRMATION_SUBJECT = u"""Votre démission de la plate-forme de démocratie en ligne {novaideo_title} a été prise en compte"""
 
 QUIT_REQUEST_CONFIRMATION_MESSAGE = u"""
-Votre compte a été désactivé! Vos données seront détruites dans un délai de {tquarantaine} jours.
+Cher(e) {recipient_first_name} {recipient_last_name},
+
+Vous avez souhaité démissionner de la plate-forme de démocratie en ligne {novaideo_title}. Nous le regrettons bien sûr, mais respectons votre choix. Nous vous informons par la présente que:
+* votre compte a été désactivé. Vous ne recevrez à l'avenir plus qu'un seul message de notre part (voir ci-dessous)
+* tous les contenus de votre compte ont été irréversiblement attribués à un auteur Anonyme
+* les Informations d'Identité que vous nous avez transmises lors de votre inscription (Prénoms, Noms, date et lieu de naissance) et votre adresse de courriel seront conservées pendant {tquarantaine} jours, afin d'éviter que vous ne puissiez vous réinscrire au cours de cette période. L'objectif est d'éviter que les personnes ayant eu un comportement inapproprié sur la plate-forme (et ayant par conséquent une mauvaise réputation), ne reviennent immédiatement sous un nouveau pseudonyme et avec une réputation vierge.
+* au terme de cette période, à savoir le {date_tquarantaine}, vous recevrez de notre part un courriel vous informant que vos Informations d'Identité et votre adresse de courriel ont été définitivement effacées de notre base de données.
 
 """ + PORTAL_SIGNATURE
 
 
-QUIT_REQUEST_DELETION_SUBJECT = u"""Les données de votre compte ont été supprimées de la plateforme {novaideo_title} !"""
+QUIT_REQUEST_DELETION_SUBJECT = u"""Vos Données d'Identité et votre adresse de courriel ont été définitivement effacées de la base de données de la plate-form {novaideo_title} !"""
 
 QUIT_REQUEST_DELETION_MESSAGE = u"""
-Les données de votre compte ont été supprimées de la plateforme {novaideo_title} !
+Cher(e) {recipient_first_name} {recipient_last_name},
+
+Aujourd'hui, vos Informations d'Identité (Prénoms, Noms, date et lieu de naissance) et votre adresse de courriel ont été définitivement effacées de notre base de données. Vous ne recevrez plus aucun courriel de notre part.
 
 """ + PORTAL_SIGNATURE
+
 
 FIRST_INVITATION = {
     'subject': FIRST_INVITATION_SUBJECT,
