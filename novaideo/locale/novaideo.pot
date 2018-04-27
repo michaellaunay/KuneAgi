@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2018-04-10 10:12+0200\n"
+"POT-Creation-Date: 2018-04-27 12:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -412,9 +412,9 @@ msgstr ""
 #: ./novaideo/connectors/twitter/content/behaviors.py:75
 #: ./novaideo/connectors/twitter/content/behaviors.py:120
 #: ./novaideo/content/processes/user_management/behaviors.py:150
-#: ./novaideo/content/processes/user_management/behaviors.py:487
-#: ./novaideo/content/processes/user_management/behaviors.py:592
-#: ./novaideo/content/processes/user_management/behaviors.py:667
+#: ./novaideo/content/processes/user_management/behaviors.py:490
+#: ./novaideo/content/processes/user_management/behaviors.py:595
+#: ./novaideo/content/processes/user_management/behaviors.py:670
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:224
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:252
 #: ./novaideo/content/processes/admin_process/behaviors.py:42
@@ -441,7 +441,7 @@ msgstr ""
 #: ./novaideo/content/processes/amendment_management/behaviors.py:98
 #: ./novaideo/content/processes/amendment_management/behaviors.py:191
 #: ./novaideo/content/processes/event_management/behaviors.py:53
-#: ./novaideo/content/processes/event_management/behaviors.py:126
+#: ./novaideo/content/processes/event_management/behaviors.py:125
 #: ./novaideo/content/processes/question_management/behaviors.py:188
 #: ./novaideo/content/processes/question_management/behaviors.py:757
 #: ./novaideo/content/processes/smart_folder_management/behaviors.py:70
@@ -487,7 +487,7 @@ msgstr ""
 #: ./novaideo/connectors/google/content/definition.py:58
 #: ./novaideo/connectors/twitter/content/behaviors.py:147
 #: ./novaideo/connectors/twitter/content/definition.py:58
-#: ./novaideo/content/processes/user_management/behaviors.py:886
+#: ./novaideo/content/processes/user_management/behaviors.py:889
 #: ./novaideo/content/processes/user_management/definition.py:191
 #: ./novaideo/content/processes/proposal_management/definition.py:549
 #: ./novaideo/content/processes/newsletter_management/definition.py:74
@@ -512,9 +512,9 @@ msgstr ""
 #: ./novaideo/connectors/google/content/behaviors.py:150
 #: ./novaideo/connectors/twitter/content/behaviors.py:148
 #: ./novaideo/content/processes/user_management/behaviors.py:268
-#: ./novaideo/content/processes/user_management/behaviors.py:412
-#: ./novaideo/content/processes/user_management/behaviors.py:777
-#: ./novaideo/content/processes/user_management/behaviors.py:1226
+#: ./novaideo/content/processes/user_management/behaviors.py:415
+#: ./novaideo/content/processes/user_management/behaviors.py:780
+#: ./novaideo/content/processes/user_management/behaviors.py:1229
 #: ./novaideo/content/processes/admin_process/behaviors.py:103
 #: ./novaideo/content/processes/channel_management/behaviors.py:38
 #: ./novaideo/content/processes/channel_management/behaviors.py:68
@@ -533,7 +533,7 @@ msgstr ""
 #: ./novaideo/content/processes/newsletter_management/behaviors.py:447
 #: ./novaideo/content/processes/newsletter_management/behaviors.py:494
 #: ./novaideo/content/processes/amendment_management/behaviors.py:237
-#: ./novaideo/content/processes/event_management/behaviors.py:94
+#: ./novaideo/content/processes/event_management/behaviors.py:93
 #: ./novaideo/content/processes/question_management/behaviors.py:153
 #: ./novaideo/content/processes/question_management/behaviors.py:223
 #: ./novaideo/content/processes/question_management/behaviors.py:675
@@ -1341,8 +1341,9 @@ msgstr ""
 
 #: ./novaideo/content/site_configuration.py:292
 #: ./novaideo/content/site_configuration.py:409
-#: ./novaideo/views/templates/event_bloc.pt:72
-#: ./novaideo/views/templates/event_result.pt:72
+#: ./novaideo/views/templates/event_bloc.pt:78
+#: ./novaideo/views/templates/event_result.pt:78
+#: ./novaideo/views/event_management/templates/see_event.pt:69
 msgid "Language"
 msgstr ""
 
@@ -1408,11 +1409,11 @@ msgstr ""
 #: ./novaideo/content/site_configuration.py:416
 #: ./novaideo/content/newsletter.py:162
 #: ./novaideo/views/novaideo_view_manager/contact.py:65
-#: ./novaideo/views/templates/event_bloc.pt:52
-#: ./novaideo/views/templates/event_result.pt:52
+#: ./novaideo/views/templates/event_bloc.pt:58
+#: ./novaideo/views/templates/event_result.pt:58
 #: ./novaideo/views/proposal_management/present_proposal.py:61
 #: ./novaideo/views/amendment_management/present_amendment.py:60
-#: ./novaideo/views/event_management/templates/see_event.pt:43
+#: ./novaideo/views/event_management/templates/see_event.pt:49
 #: ./novaideo/views/question_management/present_question.py:61
 #: ./novaideo/views/question_management/answer/present_answer.py:61
 #: ./novaideo/views/challenge_management/present_challenge.py:61
@@ -1681,8 +1682,8 @@ msgstr ""
 
 #: ./novaideo/content/report.py:73 ./novaideo/content/question.py:111
 #: ./novaideo/content/event.py:79
-#: ./novaideo/content/processes/user_management/behaviors.py:533
-#: ./novaideo/content/processes/user_management/behaviors.py:841
+#: ./novaideo/content/processes/user_management/behaviors.py:536
+#: ./novaideo/content/processes/user_management/behaviors.py:844
 #: ./novaideo/content/processes/user_management/definition.py:96
 #: ./novaideo/content/processes/user_management/definition.py:97
 #: ./novaideo/content/processes/user_management/definition.py:182
@@ -1696,7 +1697,7 @@ msgstr ""
 #: ./novaideo/content/processes/amendment_management/behaviors.py:597
 #: ./novaideo/content/processes/amendment_management/definition.py:93
 #: ./novaideo/content/processes/amendment_management/definition.py:94
-#: ./novaideo/content/processes/event_management/behaviors.py:188
+#: ./novaideo/content/processes/event_management/behaviors.py:187
 #: ./novaideo/content/processes/event_management/definition.py:63
 #: ./novaideo/content/processes/event_management/definition.py:64
 #: ./novaideo/content/processes/question_management/behaviors.py:519
@@ -1723,11 +1724,11 @@ msgstr ""
 #: ./novaideo/content/processes/comment_management/definition.py:78
 #: ./novaideo/content/processes/comment_management/definition.py:79
 #: ./novaideo/content/processes/correlation_management/behaviors.py:80
-#: ./novaideo/views/templates/event_bloc.pt:76
-#: ./novaideo/views/templates/event_result.pt:76
+#: ./novaideo/views/templates/event_bloc.pt:82
+#: ./novaideo/views/templates/event_result.pt:82
 #: ./novaideo/views/proposal_management/see_proposal.py:181
 #: ./novaideo/views/reports_management/see_reports.py:114
-#: ./novaideo/views/event_management/templates/see_event.pt:67
+#: ./novaideo/views/event_management/templates/see_event.pt:73
 #: ./novaideo/views/challenge_management/see_challenge.py:251
 #: ./novaideo/views/idea_management/see_idea.py:107
 #: ./novaideo/views/correlation_management/see_correlation.py:21
@@ -2369,44 +2370,43 @@ msgid ""
 "register, when appropriate, link to the external registration site..."
 msgstr ""
 
-#: ./novaideo/content/event.py:85
-#: ./novaideo/views/event_management/templates/see_event.pt:55
+#: ./novaideo/content/event.py:87 ./novaideo/views/templates/event_bloc.pt:70
+#: ./novaideo/views/templates/event_result.pt:70
+#: ./novaideo/views/event_management/templates/see_event.pt:61
 msgid "Date and hour"
 msgstr ""
 
-#: ./novaideo/content/event.py:86
+#: ./novaideo/content/event.py:88
 msgid "The date of the event."
 msgstr ""
 
-#: ./novaideo/content/event.py:92
-#: ./novaideo/views/event_management/templates/see_event.pt:51
+#: ./novaideo/content/event.py:94
 msgid "The discussion event mode"
 msgstr ""
 
-#: ./novaideo/content/event.py:93
+#: ./novaideo/content/event.py:95
 msgid "The event mode."
 msgstr ""
 
-#: ./novaideo/content/event.py:99 ./novaideo/views/templates/event_bloc.pt:68
-#: ./novaideo/views/templates/event_result.pt:68
-#: ./novaideo/views/event_management/templates/see_event.pt:59
+#: ./novaideo/content/event.py:101 ./novaideo/views/templates/event_bloc.pt:74
+#: ./novaideo/views/templates/event_result.pt:74
+#: ./novaideo/views/event_management/templates/see_event.pt:65
 msgid "Timezone"
 msgstr ""
 
-#: ./novaideo/content/event.py:100
+#: ./novaideo/content/event.py:102
 msgid "You can specify the timezone of the date of the event."
 msgstr ""
 
-#: ./novaideo/content/event.py:107
-#: ./novaideo/views/event_management/templates/see_event.pt:63
+#: ./novaideo/content/event.py:109
 msgid "The discussion event language"
 msgstr ""
 
-#: ./novaideo/content/event.py:108
+#: ./novaideo/content/event.py:110
 msgid "You can specify the language of the event."
 msgstr ""
 
-#: ./novaideo/content/event.py:123
+#: ./novaideo/content/event.py:125
 msgid "Discussion event"
 msgstr ""
 
@@ -2664,7 +2664,7 @@ msgstr ""
 msgid "Anonymous (has left the platform)"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:411
+#: ./novaideo/content/processes/user_management/behaviors.py:414
 #: ./novaideo/content/processes/user_management/definition.py:84
 #: ./novaideo/content/processes/user_management/definition.py:85
 #: ./novaideo/views/user_management/deactivate.py:37
@@ -2672,24 +2672,24 @@ msgstr ""
 msgid "Disactivate the profile"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:449
+#: ./novaideo/content/processes/user_management/behaviors.py:452
 #: ./novaideo/content/processes/user_management/definition.py:88
 #: ./novaideo/content/processes/user_management/definition.py:89
 #: ./novaideo/views/user_management/activate.py:23
 msgid "Activate the profile"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:486
+#: ./novaideo/content/processes/user_management/behaviors.py:489
 #: ./novaideo/content/processes/user_management/definition.py:93
 #: ./novaideo/views/user_management/assign_roles.py:56
 msgid "Assign roles"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:558
+#: ./novaideo/content/processes/user_management/behaviors.py:561
 msgid "See notations"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:946
+#: ./novaideo/content/processes/user_management/behaviors.py:949
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:61
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:128
 #: ./novaideo/content/processes/reports_management/behaviors.py:260
@@ -5271,8 +5271,6 @@ msgstr ""
 #: ./novaideo/views/user_management/templates/notations.pt:52
 #: ./novaideo/views/novaideo_view_manager/templates/table_result.pt:31
 #: ./novaideo/views/templates/web_advertisting_result.pt:60
-#: ./novaideo/views/templates/event_bloc.pt:64
-#: ./novaideo/views/templates/event_result.pt:64
 #: ./novaideo/views/ballot_processes/rangevoting/vote.py:32
 msgid "Date"
 msgstr ""
@@ -6390,14 +6388,15 @@ msgstr ""
 msgid "Discussion event around the Idea"
 msgstr ""
 
-#: ./novaideo/views/templates/event_bloc.pt:60
-#: ./novaideo/views/templates/event_result.pt:60
-msgid "Mode"
-msgstr ""
-
 #: ./novaideo/views/templates/event_bloc.pt:66
 #: ./novaideo/views/templates/event_result.pt:66
 #: ./novaideo/views/event_management/templates/see_event.pt:57
+msgid "Meeting mode"
+msgstr ""
+
+#: ./novaideo/views/templates/event_bloc.pt:72
+#: ./novaideo/views/templates/event_result.pt:72
+#: ./novaideo/views/event_management/templates/see_event.pt:63
 msgid "(Expired)"
 msgstr ""
 
@@ -10077,6 +10076,10 @@ msgstr ""
 
 #: ./novaideo/views/event_management/remove.py:56
 msgid "Event deletion"
+msgstr ""
+
+#: ./novaideo/views/event_management/templates/alert_remove.pt:1
+msgid "Are you sure you want to delete this event? This cannot be undone."
 msgstr ""
 
 #: ./novaideo/views/web_advertising_management/templates/see_web_advertising.pt:39

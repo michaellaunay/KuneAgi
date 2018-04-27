@@ -32,6 +32,12 @@
               </span>
             </div>
          </small>
+        <div class="keywords-result" style="margin-top: 10px">
+          <span class="glyphicon glyphicon-tags"></span> 
+          <tal:loop repeat="k subject.keywords">
+                <a tal:attributes="href request.resource_url(request.root, 'search', query={'text_to_search':k})">${k}</a><tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+          </tal:loop>
+       </div>
       </div>
     </div>
   </div>
@@ -48,7 +54,7 @@
               <span class="icon ${subject.icon}"></span>  <span i18n:translate=""> ${title}
             </a>
            </dd>
-           <dt i18n:translate="">The discussion event mode</dt>
+           <dt i18n:translate="">Meeting mode</dt>
            <dd>
              ${object.get_mode()}
            </dd>
@@ -60,7 +66,7 @@
            <dd>
              ${object.tzname}
            </dd>
-           <dt i18n:translate="">The discussion event language</dt>
+           <dt i18n:translate="">Language</dt>
            <dd>
              ${object.get_locale()}
            </dd>

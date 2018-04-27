@@ -20,7 +20,7 @@ from novaideo import _
 class RemoveViewStudyReport(BasicView):
     title = _('Alert for deletion')
     name = 'alertfordeletion'
-    template = 'novaideo:views/organization_management/templates/alert_remove.pt'
+    template = 'novaideo:views/event_management/templates/alert_remove.pt'
 
     def update(self):
         result = {}

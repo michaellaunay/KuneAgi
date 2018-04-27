@@ -82,6 +82,8 @@ class EventSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     date = colander.SchemaNode(
         colander.DateTime(),
+        widget=deform.widget.DateTimeInputWidget(
+            default_time_options= (('format', 'HH:i'), ('interval', 30))),
         title=_('Date and hour'),
         description=_('The date of the event.'),
     )
