@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2018-04-27 12:29+0200\n"
+"POT-Creation-Date: 2018-12-21 10:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2148,21 +2148,25 @@ msgstr ""
 #: ./novaideo/content/person.py:301
 msgid ""
 "Please choose the pseudonym that will identify you for the whole duration of "
-"your activity on the platform. This pseudonym can match your real identity, "
-"or be completely different, as you choose. Be very careful! Once you have "
-"chosen it, you will NEVER be able to change this pseudonym afterwards. Choose"
-" it with care!"
+"your activity on the platform. We STRONGLY recommend that you select a "
+"pseudonym that makes tracking back to your real identity impossible (or "
+"extremely difficult). Thereby, you protect the confidentiality of your "
+"political opinions (i.e. personal data that are the purpose of a specific "
+"protection under the General Data Protection Regulation - GDPR) against any "
+"form of external pressure in real life (e.g. by your employer or your "
+"customers). Be very careful! Once you have chosen it, you will NEVER be able "
+"to change this pseudonym afterwards. Choose it with care!"
 msgstr ""
 
-#: ./novaideo/content/person.py:310
+#: ./novaideo/content/person.py:314
 msgid "I have read and accept the terms and conditions of use"
 msgstr ""
 
-#: ./novaideo/content/person.py:341
+#: ./novaideo/content/person.py:345
 msgid "User already exists"
 msgstr ""
 
-#: ./novaideo/content/person.py:352
+#: ./novaideo/content/person.py:356
 msgid "Person"
 msgstr ""
 
@@ -5408,14 +5412,21 @@ msgstr ""
 
 #: ./novaideo/views/user_management/templates/alert_registration.pt:2
 msgid ""
-"Identity information. This information is meant to verify that a given "
-"natural person registers once, and once only, and that therefore the platform"
-" maintains the principle \"1 person = 1 vote\". This Identity Information "
-"will be kept strictly confidential, and will be disclosed only to three "
-"existing members of the platform, randomly selected upon your registration. "
-"Their duty will be to verify the correspondence between the Identity "
-"Information that you are about to write below, and those of your official ID "
-"documents."
+"Identity information = given name(s), family name(s), date and place of "
+"birth. This information is meant to verify that a given natural person "
+"registers once, and once only, and that therefore the platform maintains the "
+"principle \"1 person = 1 vote\". This Identity Information will be kept "
+"strictly confidential, and will be disclosed only to three existing members "
+"of the platform, randomly selected upon your registration (the Verifiers). "
+"Their duty will be (1) to verify the correspondence between the Identity "
+"Information that you are about to write below, and those of one of your "
+"official ID documents, of which you will send them a copy directly by e-mail,"
+" without using the present on-line platform, (2) once this verification is "
+"performed, to destroy all copies of this official identity document from "
+"their computer, and to report to you accordingly. In compliance with our "
+"Terms of Use, your Identity Information will never be made visible to the "
+"other members on the platform. It will never be transmitted nor sold to "
+"anyone, except following a legal requirement."
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/alert_registration.pt:6

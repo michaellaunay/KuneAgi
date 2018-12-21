@@ -299,9 +299,13 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
             ),
         title=_('Pseudonym'),
         description=_("Please choose the pseudonym that will identify you for the whole duration of your "
-                      "activity on the platform. This pseudonym can match your real identity, or be "
-                      "completely different, as you choose. Be very careful! Once you have chosen it, "
-                      "you will NEVER be able to change this pseudonym afterwards. Choose it with care!"),
+                      "activity on the platform. We STRONGLY recommend that you select a pseudonym that makes "
+                      "tracking back to your real identity impossible (or extremely difficult). Thereby, you "
+                      "protect the confidentiality of your political opinions (i.e. personal data that are the "
+                      "purpose of a specific protection under the General Data Protection Regulation - GDPR) "
+                      "against any form of external pressure in real life (e.g. by your employer or your customers). "
+                      "Be very careful! Once you have chosen it, you will NEVER be able to change this pseudonym afterwards. "
+                      "Choose it with care!"),
     )
 
     accept_conditions = colander.SchemaNode(
