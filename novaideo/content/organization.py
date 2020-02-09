@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -38,6 +38,7 @@ def managers():
       class SomeContentType(Persistent):
           tree = synchronize_tree()
     """
+
     def _get(self):
         return get_users_with_role(role=('OrganizationResponsible', self))
 
@@ -55,7 +56,7 @@ def managers():
         for manager in managers_toadd:
             for current_org in manager.managed_organization:
                 revoke_roles(manager, (('OrganizationResponsible',
-                             current_org),))
+                                        current_org),))
 
             grant_roles(user=manager,
                         roles=(('OrganizationResponsible',
@@ -127,7 +128,7 @@ class OrganizationSchema(VisualisableElementSchema):
 
     name = NameSchemaNode(
         editing=context_is_a_organization,
-        )
+    )
 
     logo = colander.SchemaNode(
         ObjectData(Image),
@@ -135,7 +136,7 @@ class OrganizationSchema(VisualisableElementSchema):
         required=False,
         missing=None,
         title=_('Logo'),
-        )
+    )
 
     cover_picture = colander.SchemaNode(
         ObjectData(File),
@@ -149,35 +150,35 @@ class OrganizationSchema(VisualisableElementSchema):
         colander.Sequence(),
         omit(select(ContactSchema(name='contact',
                                   widget=SimpleMappingWidget(
-                                  css_class='contact-well object-well default-well')),
+                                      css_class='contact-well object-well default-well')),
                     ['title', 'address', 'phone', 'surtax', 'email', 'website', 'fax']),
-            ['_csrf_token_']),
+             ['_csrf_token_']),
         widget=SequenceWidget(
             min_len=1,
             add_subitem_text_template=_('Add a new contact')),
         title='Contacts',
         oid='contacts'
-        )
+    )
 
     members = colander.SchemaNode(
         colander.Set(),
         widget=members_choice,
         title=_('Members'),
         missing=[]
-        )
+    )
 
     managers = colander.SchemaNode(
         colander.Set(),
         widget=managers_choice,
         title=_('The managers'),
         missing=[]
-        )
+    )
 
 
 @content(
     'organization',
     icon='glyphicon glyphicon-align-left',
-    )
+)
 @implementer(IOrganization)
 class Organization(VisualisableElement, Group):
     """Organization class"""

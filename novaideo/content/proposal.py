@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -116,7 +116,7 @@ def ideas_choice(node, kw):
         multiple=True,
         add_clear=True,
         title_getter=title_getter,
-        )
+    )
 
 
 @colander.deferred
@@ -131,7 +131,7 @@ def files_choice(node, kw):
     return Select2Widget(
         values=values,
         multiple=True
-        )
+    )
 
 
 class AddFilesSchemaSchema(Schema):
@@ -142,7 +142,7 @@ class AddFilesSchemaSchema(Schema):
         widget=files_choice,
         missing=[],
         title=_("Connect to the files of the workspace")
-        )
+    )
 
     attached_files = colander.SchemaNode(
         colander.Sequence(),
@@ -150,13 +150,13 @@ class AddFilesSchemaSchema(Schema):
             ObjectData(File),
             name=_("File"),
             widget=get_file_widget()
-            ),
+        ),
         widget=FilesWidget(
             add_subitem_text_template=_('Upload a new file'),
             item_css_class='files-block'),
         missing=[],
         title=_('Upload new files'),
-        )
+    )
 
 
 def context_is_a_proposal(context, request):
@@ -168,7 +168,7 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     name = NameSchemaNode(
         editing=context_is_a_proposal,
-        )
+    )
 
     challenge = colander.SchemaNode(
         ObjectType(),
@@ -186,13 +186,13 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
                                      cols=30,
                                      limit=600),
         title=_("Abstract")
-        )
+    )
 
     text = colander.SchemaNode(
         colander.String(),
         widget=RichTextWidget(),
         title=_("Text")
-        )
+    )
 
     related_ideas = colander.SchemaNode(
         colander.Set(),
@@ -200,16 +200,16 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
         title=_('Related ideas'),
         validator=Length(_, min=1),
         default=[],
-        )
+    )
 
     add_files = omit(AddFilesSchemaSchema(
-                        widget=SimpleMappingtWidget(
-                        mapping_css_class='controled-form'
-                                          ' object-well default-well hide-bloc',
-                        ajax=True,
-                        activator_icon="glyphicon glyphicon-file",
-                        activator_title=_('Add files'))),
-                    ["_csrf_token_"])
+        widget=SimpleMappingtWidget(
+            mapping_css_class='controled-form'
+            ' object-well default-well hide-bloc',
+            ajax=True,
+            activator_icon="glyphicon glyphicon-file",
+            activator_title=_('Add files'))),
+        ["_csrf_token_"])
 
     anonymous = colander.SchemaNode(
         colander.Boolean(),
@@ -219,13 +219,13 @@ class ProposalSchema(VisualisableElementSchema, SearchableEntitySchema):
         title='',
         missing=False,
         default=False
-        )
+    )
 
 
 @content(
     'proposal',
     icon='icon novaideo-icon icon-proposal',
-    )
+)
 @implementer(IProposal)
 class Proposal(VersionableEntity,
                SearchableEntity,

@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -33,7 +33,7 @@ class WorkspaceSchema(VisualisableElementSchema):
 
     name = NameSchemaNode(
         editing=context_is_a_workspace,
-        )
+    )
 
     files = colander.SchemaNode(
         colander.Sequence(),
@@ -41,19 +41,19 @@ class WorkspaceSchema(VisualisableElementSchema):
             ObjectData(File),
             name=_("File"),
             widget=get_file_widget()
-            ),
+        ),
         widget=FilesWidget(
             add_subitem_text_template=_('Attach file'),
             item_css_class='files-block'),
         missing=[],
         title=_('Attached files'),
-        )
+    )
 
 
 @content(
     'workspace',
     icon='glyphicon glyphicon-align-left',
-    )
+)
 @implementer(IWorkspace)
 class Workspace(VisualisableElement, Entity):
     """Working group class"""

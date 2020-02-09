@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -50,11 +50,11 @@ class ContentView(BasicView):
             objects = []
             if current_user is user:
                 objects = list(filter(lambda o: 'archived' not in o.state,
-                                 getattr(user, self.content_attr, [])))
+                                      getattr(user, self.content_attr, [])))
             else:
                 objects = list(filter(lambda o: can_access(current_user, o) and
-                                           'archived' not in o.state,
-                                 getattr(user, self.content_attr, [])))
+                                      'archived' not in o.state,
+                                      getattr(user, self.content_attr, [])))
             sort_url = self.request.resource_url(
                 self.context, '@@index',
                 query={'view_content_id': self.content_id})
@@ -188,10 +188,13 @@ class DetailsView(BasicView):
         current_user = get_current()
         details = {}
         stats = get_object_stat(self.context, self.request)
-        stats['nb_other'] = stats.get('nb_other', 0) + len(user.evaluated_objs_ids())
+        stats['nb_other'] = stats.get(
+            'nb_other', 0) + len(user.evaluated_objs_ids())
         stas_len = sum(stats.values())
-        evaluation_chart = render_object_evaluation_stat(self.context, self.request)
-        examination_chart = render_object_examination_stat(self.context, self.request)
+        evaluation_chart = render_object_evaluation_stat(
+            self.context, self.request)
+        examination_chart = render_object_examination_stat(
+            self.context, self.request)
         values = {
             'user': user,
             'proposals': None,
@@ -208,7 +211,8 @@ class DetailsView(BasicView):
             'examination_chart': examination_chart,
         }
         result = {}
-        result = merge_dicts(navbars['resources'], result, ('css_links', 'js_links'))
+        result = merge_dicts(navbars['resources'],
+                             result, ('css_links', 'js_links'))
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = navbars['messages']
@@ -221,12 +225,12 @@ class DetailsView(BasicView):
     name='index',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 @view_config(
     name='',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class SeePersonView(MultipleView):
     title = ''
     name = 'seeperson'

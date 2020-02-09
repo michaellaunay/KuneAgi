@@ -56,11 +56,11 @@ class InvitationSchema(PersonSchema):
         widget=roles_choice,
         validator=colander.All(
             roles_validator
-            ),
+        ),
         title=_('Roles'),
         missing=DEFAULT_ROLES,
         default=DEFAULT_ROLES,
-        )
+    )
 
     ismanager = colander.SchemaNode(
         colander.Boolean(),
@@ -74,7 +74,7 @@ class InvitationSchema(PersonSchema):
 @content(
     'invitation',
     icon='glyphicon glyphicon-align-left',
-    )
+)
 @implementer(IInvitation)
 class Invitation(VisualisableElement, Entity):
     """Invitation class"""

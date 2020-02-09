@@ -30,7 +30,7 @@ def normalize_word(word):
 
 def normalize_title(obj_title):
     title = normalize_word(obj_title).translate(TITLE_RE_MAPPING)
-    #Format the white spaces
+    # Format the white spaces
     return ' '.join(filter(lambda a: a, title.split(' ')))
 
 

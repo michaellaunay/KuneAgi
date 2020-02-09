@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -23,14 +23,14 @@ class EmailInputWidget(deform.widget.TextInputWidget):
 
 class TOUCheckboxWidget(deform.widget.CheckboxWidget):
     template = 'novaideo:views/templates/terms_of_use_checkbox.pt'
-    requirements = ( ('toucheckbox', None), )
+    requirements = (('toucheckbox', None), )
 
 
 class LimitedTextAreaWidget(deform.widget.TextAreaWidget):
     template = 'novaideo:views/templates/textarea.pt'
     default_alert_template = 'novaideo:views/templates/textarea_default_alert.pt'
-    requirements = ( ('jquery.maskedinput', None), 
-                     ('limitedtextarea', None)) 
+    requirements = (('jquery.maskedinput', None),
+                    ('limitedtextarea', None))
 
     @property
     def alert_message(self):
@@ -44,8 +44,9 @@ class LimitedTextAreaWidget(deform.widget.TextAreaWidget):
 
         request = get_current_request()
         body = renderers.render(
-               template, alert_values, request)
+            template, alert_values, request)
         return body
+
 
 class MappinColgWidget(deform.widget.MappingWidget):
 
@@ -77,7 +78,8 @@ class ObjectWidget(deform.widget.MappingWidget):
 
 class SimpleMappingtWidget(deform.widget.MappingWidget):
     template = 'novaideo:views/templates/mapping_simple.pt'
-    requirements = ( ('deform', None), ('simple_mapping', None))
+    requirements = (('deform', None), ('simple_mapping', None))
+
 
 class Select2WidgetSearch(Select2Widget):
     template = 'novaideo:views/templates/select2_search.pt'
@@ -122,7 +124,7 @@ class BootstrapIconInputWidget(deform.widget.TextInputWidget):
         elif isinstance(cstruct, dict):
             cstruct = cstruct.get('icon_class')+','+cstruct.get('icon')
         return super(BootstrapIconInputWidget, self).serialize(
-                                                  field, cstruct, **kw)
+            field, cstruct, **kw)
 
     def deserialize(self, field, pstruct):
         row = super(BootstrapIconInputWidget, self).deserialize(field, pstruct)
@@ -158,66 +160,66 @@ class EmojiInputWidget(deform.widget.TextInputWidget):
 
     def get_emoji_form(self, cstruct=None):
         return get_emoji_form(
-          get_current_request(), emoji_class='emoji-input-widget',
-          is_grouped=getattr(self, 'is_grouped', True),
-          add_preview=getattr(self, 'add_preview', False),
-          items=self.items, selected_items=[cstruct])
+            get_current_request(), emoji_class='emoji-input-widget',
+            is_grouped=getattr(self, 'is_grouped', True),
+            add_preview=getattr(self, 'add_preview', False),
+            items=self.items, selected_items=[cstruct])
 
 
 default_resource_registry.set_js_resources('emoji', None,
-               'novaideo:static/js/emoji_input.js')
+                                           'novaideo:static/js/emoji_input.js')
 
 default_resource_registry.set_js_resources('ajax_checkbox', None,
-               'novaideo:static/js/ajax_checkbox_choice.js')
+                                           'novaideo:static/js/ajax_checkbox_choice.js')
 
 default_resource_registry.set_js_resources('stylepicker', None,
-               'novaideo:static/bgrins-spectrum/spectrum.js',
-               'novaideo:static/js/style_picker.js')
+                                           'novaideo:static/bgrins-spectrum/spectrum.js',
+                                           'novaideo:static/js/style_picker.js')
 
 default_resource_registry.set_css_resources('stylepicker', None,
-              'novaideo:static/bgrins-spectrum/spectrum.css')
+                                            'novaideo:static/bgrins-spectrum/spectrum.css')
 
 default_resource_registry.set_js_resources('bootstrap_icon', None,
-           'novaideo:static/js/bootstrap_iconpicker.js',
-           'novaideo:static/bootstrap-iconpicker/bootstrap-iconpicker/js/bootstrap-iconpicker.min.js')
+                                           'novaideo:static/js/bootstrap_iconpicker.js',
+                                           'novaideo:static/bootstrap-iconpicker/bootstrap-iconpicker/js/bootstrap-iconpicker.min.js')
 
 default_resource_registry.set_css_resources('bootstrap_icon', None,
-              'novaideo:static/bootstrap-iconpicker/bootstrap-iconpicker/css/bootstrap-iconpicker.min.css')
+                                            'novaideo:static/bootstrap-iconpicker/bootstrap-iconpicker/css/bootstrap-iconpicker.min.css')
 
 default_resource_registry.set_js_resources('simple_mapping', None,
-               'novaideo:static/js/simple_mapping.js'  )
+                                           'novaideo:static/js/simple_mapping.js')
 
 default_resource_registry.set_js_resources('toucheckbox', None,
-               'novaideo:static/js/toucheckbox.js'  )
+                                           'novaideo:static/js/toucheckbox.js')
 
-default_resource_registry.set_js_resources('addnewidea', None, 
-                         'novaideo:static/js/add_new_idea.js'  )
+default_resource_registry.set_js_resources('addnewidea', None,
+                                           'novaideo:static/js/add_new_idea.js')
 
-default_resource_registry.set_js_resources('select2search', None, 
-           'pontus:static/select2/dist/js/select2.min.js',
-           'novaideo:static/select2_search/select2_search.js'  )
+default_resource_registry.set_js_resources('select2search', None,
+                                           'pontus:static/select2/dist/js/select2.min.js',
+                                           'novaideo:static/select2_search/select2_search.js')
 
-default_resource_registry.set_css_resources('select2search', None, 
-              'pontus:static/select2/dist/css/select2.min.css',
-              'novaideo:static/select2_search/select2_search.css'  )
+default_resource_registry.set_css_resources('select2search', None,
+                                            'pontus:static/select2/dist/css/select2.min.css',
+                                            'novaideo:static/select2_search/select2_search.css')
 
-default_resource_registry.set_js_resources('select2dragdrop', None, 
-                'pontus:static/select2/dist/js/select2.min.js',
-                'novaideo:static/js/dragdrop_select.js'  )
+default_resource_registry.set_js_resources('select2dragdrop', None,
+                                           'pontus:static/select2/dist/js/select2.min.js',
+                                           'novaideo:static/js/dragdrop_select.js')
 
-default_resource_registry.set_css_resources('select2dragdrop', None, 
-                'pontus:static/select2/dist/css/select2.min.css',
-                'novaideo:static/select2_search/select2_search.css'  )
+default_resource_registry.set_css_resources('select2dragdrop', None,
+                                            'pontus:static/select2/dist/css/select2.min.css',
+                                            'novaideo:static/select2_search/select2_search.css')
 
-default_resource_registry.set_js_resources('limitedtextarea', None, 
-               'novaideo:static/limitedtextarea/limitedtextarea.js'  )
+default_resource_registry.set_js_resources('limitedtextarea', None,
+                                           'novaideo:static/limitedtextarea/limitedtextarea.js')
 
-default_resource_registry.set_css_resources('limitedtextarea', None, 
-              'novaideo:static/limitedtextarea/limitedtextarea.css'  )
+default_resource_registry.set_css_resources('limitedtextarea', None,
+                                            'novaideo:static/limitedtextarea/limitedtextarea.css')
 
 
 default_resource_registry.set_js_resources('date_ical', None,
-               'novaideo:static/js/date_ical.js')
+                                           'novaideo:static/js/date_ical.js')
 
 default_resource_registry.set_css_resources('date_ical', None,
-              'novaideo:static/css/date_ical.css')
+                                            'novaideo:static/css/date_ical.css')

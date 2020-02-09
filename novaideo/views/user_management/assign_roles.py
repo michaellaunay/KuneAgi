@@ -39,7 +39,7 @@ class RolesSchema(Schema):
         colander.Set(),
         validator=colander.All(
             roles_validator
-            ),
+        ),
         widget=roles_choice,
         title=_('Roles'),
         missing='Member'
@@ -50,7 +50,7 @@ class RolesSchema(Schema):
     name='assignroles',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class AssignRolesView(FormView):
 
     title = _('Assign roles')

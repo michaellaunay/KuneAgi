@@ -214,7 +214,8 @@ class Iidea(IDuplicableEntity,
 
     text = Attribute('text')
 
-    attached_files = Attribute('attached_files', type=FILETYPE, multiplicity='*')
+    attached_files = Attribute(
+        'attached_files', type=FILETYPE, multiplicity='*')
 
 
 @interface()
@@ -232,7 +233,8 @@ class IQuestion(IDuplicableEntity,
 
     text = Attribute('text')
 
-    attached_files = Attribute('attached_files', type=FILETYPE, multiplicity='*')
+    attached_files = Attribute(
+        'attached_files', type=FILETYPE, multiplicity='*')
 
 
 @interface()
@@ -246,7 +248,8 @@ class IAnswer(ICorrelableEntity,
               IDebatable):
     comment = Attribute('comment')
 
-    attached_files = Attribute('attached_files', type=FILETYPE, multiplicity='*')
+    attached_files = Attribute(
+        'attached_files', type=FILETYPE, multiplicity='*')
 
 
 @interface()
@@ -345,7 +348,8 @@ class IProposal(ISearchableEntity,
 
     text = Attribute('text')
 
-    attached_files = Attribute('attached_files', type=FILETYPE, multiplicity='*')
+    attached_files = Attribute(
+        'attached_files', type=FILETYPE, multiplicity='*')
 
     workspace = Attribute('workspace', type='workspace')
 

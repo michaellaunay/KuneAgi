@@ -1,0 +1,6 @@
+<div class="alert alert-info" i18n:domain="novaideo" >
+ <p i18n:translate="">Please confirm that you want to be registered on the deliberative democracy platform <strong i18n:name="title">${request.root.title}</strong> with the following identifier:
+
+Identifier (<strong i18n:name="email">${context.email}</strong>)</p>
+<p i18n:translate="">We look forward to welcoming you among us!</p>
+</div>

@@ -16,6 +16,7 @@ def get_stopdict():
     """Return a dictionary of stopwords."""
     return _dict
 
+
 # This list of French stopwords comes from http://www.ranks.nl/stopwords/french
 _words = [
     "alors", "au", "aucuns", "aussi", "autre", "avant", "avec", "avoir", "bon",

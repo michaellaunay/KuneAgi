@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -11,16 +11,17 @@ from pyramid.security import forget
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 
-from novaideo.content.processes.user_management.behaviors import  ConfirmQuitRequest
+from novaideo.content.processes.user_management.behaviors import ConfirmQuitRequest
 from novaideo.content.person import QuitRequest
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo import _
+
 
 @view_config(
     name='',
     context=QuitRequest,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class ConfirmQuitRequestView(BasicView):
     title = _('Confirm the resignation request')
     name = ''
@@ -40,7 +41,7 @@ class ConfirmQuitRequestView(BasicView):
     name='resignationconfirmed',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class ConfirmedQuitRequestView(BasicView):
     template = 'novaideo:views/user_management/templates/resignationconfirmed.pt'
     title = _('Resignation confirmed')
@@ -56,4 +57,5 @@ class ConfirmedQuitRequestView(BasicView):
         return result
 
 
-DEFAULTMAPPING_ACTIONS_VIEWS.update({ConfirmQuitRequest:ConfirmQuitRequestView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update(
+    {ConfirmQuitRequest: ConfirmQuitRequestView})

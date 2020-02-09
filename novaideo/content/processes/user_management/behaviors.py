@@ -27,7 +27,7 @@ from substanced.util import find_service
 
 from dace.util import (
     getSite, name_chooser, name_normalizer,
-    push_callback_after_commit, get_socket)
+    push_callback_after_commit, get_socket, find_service as dace_find_service)
 from dace.objectofcollaboration.principal.role import DACE_ROLES
 from dace.objectofcollaboration.principal.util import (
     grant_roles,
@@ -38,7 +38,8 @@ from dace.objectofcollaboration.principal.util import (
     get_roles)
 from dace.processinstance.activity import (
     InfiniteCardinality,
-    ActionType)
+    ActionType,
+    ElementaryAction)
 from dace.processinstance.core import ActivityExecuted, PROCESS_HISTORY_KEY
 from pontus.schema import select
 
@@ -88,7 +89,7 @@ def accept_preregistration(request, preregistration, root, alert_id='preregistra
             deadline_date=deadline_str.lower(),
             novaideo_title=root.title,
             **email_data
-            )
+        )
         alert('email', [root.get_site_sender()], [preregistration.email],
               subject=subject, body=message)
 
@@ -142,7 +143,7 @@ def edit_state_validation(process, context):
 
 
 class Edit(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
@@ -178,7 +179,7 @@ class Edit(InfiniteCardinality):
 
 
 class GetAPIToken(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-wrench'
     style_order = 1
@@ -247,6 +248,7 @@ def remove_user_data_callback(root, user, email_data):
     del user.old_data
     user.birth_date = None
     user.birthplace = ''
+    user.citizenship = ''
     user.user_title = ''
     user.first_name = ''
     user.last_name = ''
@@ -259,7 +261,7 @@ def remove_user_data_callback(root, user, email_data):
 
 
 class Quit(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-remove-circle'
     style_interaction = 'ajax-action'
@@ -303,7 +305,7 @@ class Quit(InfiniteCardinality):
                 novaideo_title=root.title,
                 tquarantaine=getattr(root, 'tquarantaine', 180),
                 **email_data
-                )
+            )
             alert('email', [root.get_site_sender()], [context.email],
                   subject=subject, body=message)
 
@@ -362,16 +364,17 @@ class ConfirmQuitRequest(InfiniteCardinality):
         deactivate_user(user, request, root, resignation=True)
         request.registry.notify(ActivityExecuted(
             self, [user], get_current()))
-        
+
         tquarantaine = getattr(root, 'tquarantaine', 180)
         deadline = tquarantaine * 86400000
         call_id = 'persistent_' + str(get_oid(user)) + '_quit'
         push_callback_after_commit(
             remove_user_data_callback, deadline, call_id,
             root=root, user=user, email_data=email_data)
-        date_tquarantaine = datetime.datetime.now(tz=pytz.UTC) + datetime.timedelta(days=tquarantaine)
+        date_tquarantaine = datetime.datetime.now(
+            tz=pytz.UTC) + datetime.timedelta(days=tquarantaine)
         mail_template = root.get_mail_template(
-                'quit_request_confiramtion', user.user_locale)
+            'quit_request_confiramtion', user.user_locale)
         subject = mail_template['subject'].format(
             novaideo_title=root.title)
         message = mail_template['template'].format(
@@ -391,10 +394,10 @@ class ConfirmQuitRequest(InfiniteCardinality):
 
 
 def deactivate_roles_validation(process, context):
-    return (context.organization and \
+    return (context.organization and
             has_role(role=('OrganizationResponsible',
                            context.organization))) or \
-            has_role(role=('SiteAdmin',))
+        has_role(role=('SiteAdmin',))
 
 
 def deactivate_processsecurity_validation(process, context):
@@ -406,7 +409,7 @@ def deactivate_state_validation(process, context):
 
 
 class Deactivate(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-ban-circle'
     style_interaction = 'ajax-action'
@@ -430,10 +433,10 @@ class Deactivate(InfiniteCardinality):
 
 
 def activate_roles_validation(process, context):
-    return (context.organization and \
+    return (context.organization and
             has_role(role=('OrganizationResponsible',
                            context.organization))) or \
-            has_role(role=('SiteAdmin',))
+        has_role(role=('SiteAdmin',))
 
 
 def activate_processsecurity_validation(process, context):
@@ -445,7 +448,7 @@ def activate_state_validation(process, context):
 
 
 class Activate(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-ok-circle'
     style_order = 0
@@ -481,7 +484,7 @@ def assignroles_state_validation(process, context):
 
 
 class AssignRoles(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'text-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-tower'
@@ -519,11 +522,25 @@ class AssignRoles(InfiniteCardinality):
 
 
 def get_access_key(obj):
+    if 'deactivated' in obj.state:
+        return serialize_roles(
+            ('SiteAdmin', 'Admin',
+             ('OrganizationResponsible', obj),
+             ('LocalModerator', obj)))
+
     return ['always']
 
 
 def seeperson_processsecurity_validation(process, context):
-    return access_user_processsecurity(process, context)#'active' in context.state
+    access_validation = access_user_processsecurity(process, context)
+    if 'deactivated' in context.state:
+        access_validation = access_validation and \
+            has_any_roles(
+                roles=('SiteAdmin', 'Admin',
+                       ('OrganizationResponsible', context),
+                       ('LocalModerator', context)))
+
+    return access_validation
 
 
 @access_action(access_key=get_access_key)
@@ -554,7 +571,7 @@ def seenotation_processsecurity_validation(process, context):
 
 
 class SeeNotations(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-signal'
     style_order = 100
@@ -589,6 +606,79 @@ def remove_expired_preregistration_callback(root, preregistration):
     remove_expired_preregistration(root, preregistration)
     oid = str(get_oid(preregistration))
     get_socket().send_pyobj(('ack', 'persistent_' + oid))
+
+
+def get_date_send_id_data(root, vote_duration, request):
+    duration_of_forward_notice = getattr(root, 'duration_of_forward_notice', 3)
+    nb_days_deadline = vote_duration - duration_of_forward_notice
+    nb_days_deadline = nb_days_deadline if nb_days_deadline > 1 else 1
+    date_deadline = datetime.datetime.now() + datetime.timedelta(days=nb_days_deadline)
+    return {'nb_days_deadline': nb_days_deadline, 'date_deadline': date_deadline, 'date_deadline_str': to_localized_time(date_deadline, request, translate=True), }
+
+
+def alert_user(request, preregistration, alert_data, reminder=False):
+    root = request.root
+    mail_template = root.get_mail_template(
+        'preregistration_submit')
+    if mail_template:
+        reminder_subject = request.localizer.translate(
+            _('REMINDER')) + ': ' if reminder else ''
+        subject = reminder_subject + mail_template['subject'].format(
+            **alert_data)
+        message = mail_template['template'].format(
+            **alert_data)
+        alert(
+            'email', [root.get_site_sender()],
+            [preregistration.email],
+            subject=subject, body=message)
+
+
+def start_registration_alert(registration, ballot, alert_data, alert_date):
+    def_container = dace_find_service('process_definition_container')
+    runtime = dace_find_service('runtime')
+    pd = def_container.get_definition('registrationalert')
+    proc = pd()
+    proc.__name__ = proc.id
+    runtime.addtoproperty('processes', proc)
+    proc.defineGraph(pd)
+    proc.execution_context.add_created_entity('registration', registration)
+    proc.execution_context.add_created_entity('ballot', ballot)
+    proc.alert_data = alert_data
+    proc.alert_date = alert_date
+    proc.execute()
+    return proc
+
+
+def alert_relation_validation(process, context):
+    return process.execution_context.has_relation(context, 'registration')
+
+
+def alert_roles_validation(process, context):
+    return has_role(role=('System',))
+
+
+class AlertRegistration(ElementaryAction):
+    style = 'button'  # TODO add style abstract class
+    style_descriminator = 'global-action'
+    style_order = 4
+    context = IPreregistration
+    actionType = ActionType.system
+    processs_relation_id = 'registration'
+    roles_validation = alert_roles_validation
+    relation_validation = alert_relation_validation
+
+    def start(self, context, request, appstruct, **kw):
+        ballot = self.process.execution_context.created_entity('ballot')
+        ballot_actions = ballot.get_actions('start_ballot')
+        ballot_action = ballot_actions[0] if len(ballot_actions) > 0 else None
+        ballot_process = ballot_action.sub_process if ballot_action else None
+        if ballot_process is not None and len(ballot_process.ballots[0].report.voters) == 0:
+            alert_user(request, context, self.process.alert_data, True)
+
+        return {}
+
+    def redirect(self, context, request, **kw):
+        return HTTPFound(request.resource_url(context, "@@index"))
 
 
 class Registration(InfiniteCardinality):
@@ -627,7 +717,7 @@ class Registration(InfiniteCardinality):
                 def before_start(b_proc):
                     b_proc.registration = preregistration
 
-                start_ballot(
+                ballot = start_ballot(
                     preregistration, preregistration, request, root,
                     moderators, 'registrationmoderation',
                     before_start=before_start)
@@ -635,18 +725,18 @@ class Registration(InfiniteCardinality):
                     preregistration, request, root, moderators)
                 alert_data.update(get_user_data(
                     preregistration, 'recipient', request))
-                mail_template = root.get_mail_template('preregistration_submit')
-                if mail_template:
-                    subject = mail_template['subject'].format(
-                        **alert_data)
-                    message = mail_template['template'].format(
-                        **alert_data)
-                    alert(
-                        'email', [root.get_site_sender()],
-                        [preregistration.email],
-                        subject=subject, body=message)
+                date_send_id_data_obj = get_date_send_id_data(
+                    root, alert_data['duration'], request)
+                alert_data['date_send_id_data'] = date_send_id_data_obj['date_deadline_str']
+                nb_days_deadline = date_send_id_data_obj['nb_days_deadline'] - 1
+                if nb_days_deadline >= 1:
+                    start_registration_alert(
+                        preregistration, ballot, alert_data, date_send_id_data_obj['date_deadline'])
 
-        request.registry.notify(ActivityExecuted(self, [preregistration], None))
+            alert_user(request, preregistration, alert_data)
+
+        request.registry.notify(ActivityExecuted(
+            self, [preregistration], None))
         return {'preregistration': preregistration}
 
     def redirect(self, context, request, **kw):
@@ -667,7 +757,7 @@ def confirm_state_validation(process, context):
 
 
 class ConfirmRegistration(InfiniteCardinality):
-    submission_title = _('Save')
+    submission_title = _('Validate')
     context = IPreregistration
     roles_validation = reg_roles_validation
     processsecurity_validation = confirm_processsecurity_validation
@@ -678,7 +768,6 @@ class ConfirmRegistration(InfiniteCardinality):
         data['pseudonym'] = getattr(context, 'pseudonym', None)
         annotations = getattr(context, 'annotations', {}).get(
             PROCESS_HISTORY_KEY, [])
-        data.update({'password': appstruct['password']})
         data = {key: value for key, value in data.items()
                 if value is not colander.null}
         data.pop('title')
@@ -686,6 +775,7 @@ class ConfirmRegistration(InfiniteCardinality):
         locale = my_locale_negotiator(request)
         data['locale'] = locale
         person = Person(**data)
+        person.password = context.initial_password
         principals = find_service(root, 'principals')
         name = person.first_name + ' ' + person.last_name \
             if not data['pseudonym'] else \
@@ -771,7 +861,7 @@ def remind_state_validation(process, context):
 
 
 class Remind(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-refresh'
@@ -860,7 +950,7 @@ def seeregs_processsecurity_validation(process, context):
 
 
 class SeeRegistrations(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'typcn typcn-user-add'
     style_order = 4
@@ -877,11 +967,11 @@ class SeeRegistrations(InfiniteCardinality):
 
 def remove_processsecurity_validation(process, context):
     return has_any_roles(roles=('SiteAdmin', 'OrganizationResponsible')) and \
-           global_user_processsecurity()
+        global_user_processsecurity()
 
 
 class RemoveRegistration(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-trash'
@@ -1068,7 +1158,7 @@ class GeneralDiscuss(InfiniteCardinality):
         mask = user.get_mask(root)
         author = mask if appstruct.get('anonymous', False) and mask else user
         channel = root.channel
-        #TODO get
+        # TODO get
         if channel:
             channel.addtoproperty('comments', comment)
             channel.add_comment(comment)
@@ -1120,6 +1210,7 @@ class ModerationVote(StartBallot):
         subject_data['subject_first_name'] = getattr(context, 'first_name', '')
         birth_date = getattr(context, 'birth_date', '')
         birthplace = getattr(context, 'birthplace', '')
+        citizenship = getattr(context, 'citizenship', '')
         if birth_date:
             birth_date = to_localized_time(
                 birth_date, request, translate=True)
@@ -1131,12 +1222,16 @@ class ModerationVote(StartBallot):
                 novaideo_title=root.title)
             email_data = get_user_data(moderator, 'recipient', request)
             email_data.update(subject_data)
+            date_send_id_data = get_date_send_id_data(root, duration, request)[
+                'date_deadline_str']
             message = mail_template['template'].format(
                 novaideo_title=root.title,
                 subject_email=getattr(context, 'email', ''),
                 birth_date=birth_date,
                 birthplace=birthplace,
+                citizenship=citizenship,
                 date_end_vote=date_end_vote,
+                date_send_id_data=date_send_id_data,
                 duration=duration,
                 **email_data)
             alert('email', [root.get_site_sender()], [moderator.email],
@@ -1182,7 +1277,7 @@ class ModerationVote(StartBallot):
                 deadline = DEADLINE_PREREGISTRATION * 1000
                 call_id = 'persistent_' + str(get_oid(preregistration))
                 push_callback_after_commit(
-                    remove_expired_preregistration, deadline, call_id,
+                    remove_expired_preregistration_callback, deadline, call_id,
                     root=root, preregistration=preregistration)
                 alert(
                     'internal', [root], moderators,
@@ -1222,7 +1317,7 @@ class ModerationVote(StartBallot):
 
 
 class ExtractAlerts(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'plus-action'
     style_picto = 'glyphicon glyphicon-export'
     style_order = 8
@@ -1289,7 +1384,7 @@ class ExtractAlerts(InfiniteCardinality):
         return response
 
 
-#TODO behaviors
+# TODO behaviors
 
 VALIDATOR_BY_CONTEXT[Person] = {
     'action': Discuss,

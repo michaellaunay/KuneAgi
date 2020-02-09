@@ -92,6 +92,14 @@ def titles_choice(node, kw):
 
 
 @colander.deferred
+def citizenship_choice(node, kw):
+    root = getSite()
+    values = [(str(i), i) for i in sorted(root.nationalities)]
+    values.insert(0, ('', _('- Select -')))
+    return Select2Widget(values=values)
+
+
+@colander.deferred
 def email_validator(node, kw):
     context = node.bindings['context']
     novaideo_catalog = find_catalog('novaideo')
@@ -251,6 +259,13 @@ class PersonSchema(VisualisableElementSchema, UserSchema, SearchableEntitySchema
     birth_date = colander.SchemaNode(
         colander.Date(),
         title=_('Date of birth')
+        )
+
+    citizenship = colander.SchemaNode(
+        colander.String(),
+        widget=citizenship_choice,
+        title=_('Citizenship'),
+        description=_('What is the Member State of the European Union of which you are a citizen? Only citizens of the European Union can be members of the CosmoPolitical Cooperative.'),
         )
 
     birthplace = colander.SchemaNode(
@@ -799,6 +814,11 @@ class Preregistration(VisualisableElement, Entity):
 
     def __init__(self, **kwargs):
         super(Preregistration, self).__init__(**kwargs)
+        initial_password = kwargs.pop('password', None)
+        if initial_password:
+            initial_password = User.pwd_manager.encode(initial_password)
+
+        self.initial_password = initial_password
         self.set_data(kwargs)
         self.title = self.first_name + ' ' + \
                      self.last_name

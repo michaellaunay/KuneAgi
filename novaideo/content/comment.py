@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -93,7 +93,7 @@ class RelatedContentsSchema(Schema):
         description=_('Choose the contents to be associated'),
         missing=[],
         default=[],
-        )
+    )
 
     associate = colander.SchemaNode(
         colander.Boolean(),
@@ -103,7 +103,7 @@ class RelatedContentsSchema(Schema):
         title='',
         default=False,
         missing=False
-        )
+    )
 
 
 @colander.deferred
@@ -127,7 +127,7 @@ class CommentSchema(VisualisableElementSchema):
 
     name = NameSchemaNode(
         editing=context_is_a_comment,
-        )
+    )
 
     intention = colander.SchemaNode(
         colander.String(),
@@ -135,7 +135,7 @@ class CommentSchema(VisualisableElementSchema):
         title=_('Intention'),
         description=_('Choose your intention'),
         default=_('Remark')
-        )
+    )
 
     associated_contents = colander.SchemaNode(
         colander.Set(),
@@ -144,7 +144,7 @@ class CommentSchema(VisualisableElementSchema):
         description=_('Choose contents to associate'),
         missing=[],
         default=[],
-        )
+    )
 
     files = colander.SchemaNode(
         colander.Sequence(),
@@ -152,21 +152,21 @@ class CommentSchema(VisualisableElementSchema):
             ObjectData(File),
             name=_("File"),
             widget=get_file_widget()
-            ),
+        ),
         widget=FilesWidget(
             add_subitem_text_template='',
             item_css_class="files-block comment-form-group comment-files"),
         missing=[],
         description=_('Add files to your comment'),
         title=_('Attached files'),
-        )
+    )
 
     comment = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=2000),
         widget=comment_textarea,
         title=_("Message")
-        )
+    )
 
     anonymous = colander.SchemaNode(
         colander.Boolean(),
@@ -177,13 +177,13 @@ class CommentSchema(VisualisableElementSchema):
         title='',
         missing=False,
         default=False
-        )
+    )
 
 
 @content(
     'comment',
     icon='glyphicon glyphicon-align-left',
-    )
+)
 @implementer(IComment)
 class Comment(Commentable, CorrelableEntity, Emojiable, SignalableEntity):
     """Comment class"""
@@ -193,7 +193,8 @@ class Comment(Commentable, CorrelableEntity, Emojiable, SignalableEntity):
     author = SharedUniqueProperty('author')
     files = CompositeMultipleProperty('files')
     url_files = CompositeMultipleProperty('url_files')
-    related_correlation = SharedUniqueProperty('related_correlation', 'targets')
+    related_correlation = SharedUniqueProperty(
+        'related_correlation', 'targets')
     contextualized_correlations = SharedMultipleProperty(
         'contextualized_correlations', 'context')
     ballots = CompositeMultipleProperty('ballots')

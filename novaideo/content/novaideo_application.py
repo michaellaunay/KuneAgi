@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -34,7 +34,7 @@ from deform_treepy.utilities.tree_utility import (
     get_keywords_by_level)
 
 from novaideo.content.keyword import ROOT_TREE, DEFAULT_TREE
-from novaideo import _, DEFAULT_FILES, DEFAULT_CONTENT_TO_MANAGE, DEFAULT_EVENTS_DESCRIPTIONS
+from novaideo import _, DEFAULT_NATIONALITIES, DEFAULT_FILES, DEFAULT_CONTENT_TO_MANAGE, DEFAULT_EVENTS_DESCRIPTIONS
 from novaideo.content.file import FileEntity
 from novaideo.core import Channel, CorrelableEntity, Debatable
 from .organization import OrganizationSchema, Organization
@@ -56,7 +56,6 @@ from novaideo.content.site_configuration import (
     EventsInterfaceConfigurationSchema
 )
 from novaideo.utilities.attr_utility import synchronize_tree
-
 
 DEFAULT_TITLES = [
     _('Mr'),
@@ -205,107 +204,107 @@ class NovaIdeoApplicationSchema(VisualisableElementSchema):
 
     name = NameSchemaNode(
         editing=context_is_a_root,
-        )
+    )
 
     invitations = colander.SchemaNode(
         colander.Sequence(),
         omit(InvitationSchema(factory=Invitation,
-                               editable=True,
-                               name=_('The invitations'),
-                               widget=SimpleMappingWidget(css_class='object-well default-well')),
-            ['_csrf_token_']),
+                              editable=True,
+                              name=_('The invitations'),
+                              widget=SimpleMappingWidget(css_class='object-well default-well')),
+             ['_csrf_token_']),
         widget=invitations_choice,
         title=_('List of invitations'),
-        )
+    )
 
     organizations = colander.SchemaNode(
         colander.Sequence(),
         omit(OrganizationSchema(factory=Organization,
-                editable=True,
-                name='organization',
-                widget=SimpleMappingWidget(css_class='object-well default-well')),
-            ['_csrf_token_']),
+                                editable=True,
+                                name='organization',
+                                widget=SimpleMappingWidget(css_class='object-well default-well')),
+             ['_csrf_token_']),
         widget=organizations_choice,
         title=_('The Organizations'),
-        )
+    )
 
     work_conf = omit(WorkParamsConfigurationSchema(
-                                widget=SimpleMappingtWidget(
-                                mapping_css_class='controled-form'
-                                                  ' object-well default-well hide-bloc',
-                                ajax=True,
-                                activator_icon="glyphicon glyphicon-filter",
-                                activator_title=_('Set up work parameters'))),
-                        ["_csrf_token_"])
+        widget=SimpleMappingtWidget(
+            mapping_css_class='controled-form'
+            ' object-well default-well hide-bloc',
+            ajax=True,
+            activator_icon="glyphicon glyphicon-filter",
+            activator_title=_('Set up work parameters'))),
+        ["_csrf_token_"])
 
     mail_conf = omit(MailTemplatesConfigurationSchema(
-                                widget=SimpleMappingtWidget(
-                                mapping_css_class='controled-form'
-                                                  ' mail-templats-container hide-bloc',
-                                ajax=True,
-                                activator_icon="glyphicon glyphicon-envelope",
-                                activator_title=_('Edit e-mail templates'))),
-                        ["_csrf_token_"])
+        widget=SimpleMappingtWidget(
+            mapping_css_class='controled-form'
+            ' mail-templats-container hide-bloc',
+            ajax=True,
+            activator_icon="glyphicon glyphicon-envelope",
+            activator_title=_('Edit e-mail templates'))),
+        ["_csrf_token_"])
 
     user_conf = omit(UserParamsConfigurationSchema(
-                                widget=SimpleMappingtWidget(
-                                mapping_css_class='controled-form'
-                                                  ' object-well default-well hide-bloc',
-                                ajax=True,
-                                activator_icon="glyphicon glyphicon-user",
-                                activator_title=_('Configure user parameters'))),
-                        ["_csrf_token_"])
+        widget=SimpleMappingtWidget(
+            mapping_css_class='controled-form'
+            ' object-well default-well hide-bloc',
+            ajax=True,
+            activator_icon="glyphicon glyphicon-user",
+            activator_title=_('Configure user parameters'))),
+        ["_csrf_token_"])
 
     keywords_conf = omit(KeywordsConfSchema(
-                                widget=SimpleMappingtWidget(
-                                mapping_css_class='controled-form'
-                                                  ' object-well default-well hide-bloc',
-                                ajax=True,
-                                activator_icon="glyphicon glyphicon-tags",
-                                activator_title=_('Configure keywords'))),
-                        ["_csrf_token_"])
+        widget=SimpleMappingtWidget(
+            mapping_css_class='controled-form'
+            ' object-well default-well hide-bloc',
+            ajax=True,
+            activator_icon="glyphicon glyphicon-tags",
+            activator_title=_('Configure keywords'))),
+        ["_csrf_token_"])
 
     other_conf = omit(OtherSchema(
-                                widget=SimpleMappingtWidget(
-                                mapping_css_class='controled-form'
-                                                  ' object-well default-well hide-bloc',
-                                ajax=True,
-                                activator_icon="glyphicon glyphicon-plus",
-                                activator_title=_('Other'))),
-                        ["_csrf_token_"])
+        widget=SimpleMappingtWidget(
+            mapping_css_class='controled-form'
+            ' object-well default-well hide-bloc',
+            ajax=True,
+            activator_icon="glyphicon glyphicon-plus",
+            activator_title=_('Other'))),
+        ["_csrf_token_"])
 
     ui_conf = omit(UserInterfaceConfigurationSchema(widget=SimpleMappingtWidget(
-                                mapping_css_class='controled-form'
-                                                  ' object-well default-well hide-bloc',
-                                ajax=True,
-                                activator_icon="glyphicon glyphicon-eye-open",
-                                activator_title=_('Configure the user interface'))),
-                        ["_csrf_token_"])
+        mapping_css_class='controled-form'
+        ' object-well default-well hide-bloc',
+        ajax=True,
+        activator_icon="glyphicon glyphicon-eye-open",
+        activator_title=_('Configure the user interface'))),
+        ["_csrf_token_"])
 
     homepage_conf = omit(HomepageConfigurationSchema(widget=SimpleMappingtWidget(
-                                mapping_css_class='controled-form'
-                                                  ' object-well default-well hide-bloc',
-                                ajax=True,
-                                activator_icon="glyphicon glyphicon-home",
-                                activator_title=_('Configure the homepage'))),
-                        ["_csrf_token_"])
+        mapping_css_class='controled-form'
+        ' object-well default-well hide-bloc',
+        ajax=True,
+        activator_icon="glyphicon glyphicon-home",
+        activator_title=_('Configure the homepage'))),
+        ["_csrf_token_"])
 
     notif_conf = omit(NotificationConfigurationSchema(widget=SimpleMappingtWidget(
-                                mapping_css_class='controled-form'
-                                                  ' object-well default-well hide-bloc',
-                                ajax=True,
-                                activator_icon="glyphicon glyphicon-bell",
-                                activator_title=_('Configure the push notification'))),
-                        ["_csrf_token_"])
+        mapping_css_class='controled-form'
+        ' object-well default-well hide-bloc',
+        ajax=True,
+        activator_icon="glyphicon glyphicon-bell",
+        activator_title=_('Configure the push notification'))),
+        ["_csrf_token_"])
 
     events_conf = omit(EventsInterfaceConfigurationSchema(
-                                widget=SimpleMappingtWidget(
-                                mapping_css_class='controled-form'
-                                                  ' mail-templats-container hide-bloc',
-                                ajax=True,
-                                activator_icon="glyphicon glyphicon-calendar",
-                                activator_title=_('Configure the discussion events'))),
-                        ["_csrf_token_"])
+        widget=SimpleMappingtWidget(
+            mapping_css_class='controled-form'
+            ' mail-templats-container hide-bloc',
+            ajax=True,
+            activator_icon="glyphicon glyphicon-calendar",
+            activator_title=_('Configure the discussion events'))),
+        ["_csrf_token_"])
 
 
 class NovaIdeoApplicationPropertySheet(PropertySheet):
@@ -319,9 +318,9 @@ class NovaIdeoApplicationPropertySheet(PropertySheet):
     icon='glyphicon glyphicon-home',
     propertysheets=(
         ('Basic', NovaIdeoApplicationPropertySheet),
-        ),
+    ),
     after_create='after_create',
-    )
+)
 @implementer(INovaIdeoApplication)
 class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
     """Nova-Ideo class (Root)"""
@@ -386,12 +385,12 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
     @property
     def mail_conf(self):
         return self.get_data(omit(MailTemplatesConfigurationSchema(),
-                                 '_csrf_token_'))
+                                  '_csrf_token_'))
 
     @property
     def work_conf(self):
         result = self.get_data(omit(WorkParamsConfigurationSchema(),
-                                  '_csrf_token_'))
+                                    '_csrf_token_'))
         return result
 
     @property
@@ -443,6 +442,7 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
         self.deadlines = PersistentList([datetime.datetime.now(tz=pytz.UTC)])
         self.work_modes = list(WORK_MODES.keys())
         self.colors_mapping = PersistentDict(DEFAULT_COLORS)
+        self.nationalities = DEFAULT_NATIONALITIES
 
     def init_channels(self):
         if not self.general_chanel:
@@ -623,7 +623,8 @@ class NovaIdeoApplication(CorrelableEntity, Debatable, Application):
         if locale is None:
             locale = self.locale
 
-        template = getattr(self, '_event_descriptions', {}).get(locale, {}).get('template', None)
+        template = getattr(self, '_event_descriptions', {}).get(
+            locale, {}).get('template', None)
         if not template:
             for description in DEFAULT_EVENTS_DESCRIPTIONS:
                 if description.get('locale') == locale:

@@ -1,4 +1,7 @@
-<div i18n:domain="novaideo" tal:define="moderate_registration getattr(request.root, 'moderate_registration', False)">
+<div i18n:domain="novaideo"
+     tal:define="moderate_registration getattr(request.root, 'moderate_registration', False);
+	            novaideo_title request.root.title;
+				novaideo_email request.root.get_site_sender();">
 	<p i18n:translate="" tal:condition="not moderate_registration">
 		Thank you for having registered. A confirmation e-mail has been sent to you. Please click on the link in the email in order to complete your registration.
 	</p>
@@ -6,4 +9,9 @@
 	<p i18n:translate="" tal:condition="moderate_registration">
 		Thank you for having registered. Your registration is submitted to verification - to check that a given natural person can only be registered (and vote!) once. Once your registration has been verified, a confirmation e-mail will be sent to you. Please click on the link in the email in order to complete your registration.
 	</p>
+	<div class="alert alert-warning">
+       <span i18n:translate="">
+	       The <b i18n:name="novaideo_title">${novaideo_title}</b> platform will send you e-mails. In order for these e-mails not to be filtered out by your spam filter, we strongly recommend that you register immediately the e-mail address <b i18n:name="novaideo_email">${novaideo_email}</b> in the contacts list of the webmail server of your Internet Access Provider / of your e-mail provider and of your e-mail client software
+	   </span>
+     </div>
 </div>

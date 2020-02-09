@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -62,7 +62,7 @@ class DiscussFormView(FormView):
     name='discuss',
     context=IPerson,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class DiscussView(MultipleView):
     title = _('Private discussion')
     description = _('Private discussion')
@@ -121,7 +121,7 @@ class GeneralDiscussFormView(DiscussFormView):
     name='discuss',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class GeneralDiscussView(DiscussView):
     title = _('General discussion')
     description = _('General discussion')

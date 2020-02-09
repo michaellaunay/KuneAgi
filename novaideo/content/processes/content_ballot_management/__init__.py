@@ -1,5 +1,5 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -83,12 +83,12 @@ def ballot_result(vote_action, default_value=False):
 
 
 def start_ballot(
-    context, author, request,
-    root, electors, process_id,
-    role='LocalModerator',
-    before_start=None,
-    initiator=None,
-    subjects=[]):
+        context, author, request,
+        root, electors, process_id,
+        role='LocalModerator',
+        before_start=None,
+        initiator=None,
+        subjects=[]):
     if role:
         for elector in electors:
             grant_roles(
@@ -158,8 +158,8 @@ def remove_elector_from_ballot_processes(content, user, exclude=[]):
 
 
 def get_ballot_alert_data(
-    context, request,
-    root, electors):
+        context, request,
+        root, electors):
     alert_data = get_entity_data(context, 'subject', request)
     moderators_str = ""
     for index, elector in enumerate(electors):
@@ -181,6 +181,6 @@ def get_ballot_alert_data(
         datetime.timedelta(days=duration)
     alert_data['date_end_vote'] = to_localized_time(
         date_end, request, translate=True)
-    alert_data['duration'] = getattr(root, 'duration_moderation_vote', 7)
+    alert_data['duration'] = duration
     alert_data['novaideo_title'] = root.title
     return alert_data

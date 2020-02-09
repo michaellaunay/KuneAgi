@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -56,13 +56,13 @@ class ReportSchema(VisualisableElementSchema):
 
     name = NameSchemaNode(
         editing=context_is_a_report,
-        )
+    )
 
     reporting_reasons = colander.SchemaNode(
         colander.Set(),
         widget=reporting_reasons_choice,
         title=_("Reporting reasons")
-        )
+    )
 
     details = colander.SchemaNode(
         colander.String(),
@@ -72,13 +72,13 @@ class ReportSchema(VisualisableElementSchema):
                                      limit=1200),
         title=_("Details"),
         missing=''
-        )
+    )
 
 
 @content(
     'sreport',
     icon='glyphicon glyphicon-align-left',
-    )
+)
 @implementer(ISReport)
 class Report(VisualisableElement, Entity):
     """Working group class"""

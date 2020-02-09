@@ -41,7 +41,7 @@ from ..user_management.behaviors import (
 from novaideo import _, nothing, log
 from novaideo.content.idea import Idea
 from ..comment_management import VALIDATOR_BY_CONTEXT
-from novaideo.core import access_action, serialize_roles
+from novaideo.core import Evaluations, access_action, serialize_roles
 from novaideo.utilities.util import(
     connect, disconnect, to_localized_time)
 from novaideo.event import (

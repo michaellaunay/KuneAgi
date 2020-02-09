@@ -19,7 +19,7 @@ from .interface import (
 @content(
     'bot',
     icon='icon glyphicon glyphicon-user',
-    )
+)
 @implementer(IBot)
 class Bot(Machine):
     """Bot class"""

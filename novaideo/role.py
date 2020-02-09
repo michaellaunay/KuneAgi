@@ -5,7 +5,7 @@
 # author: Amen Souissi
 
 from dace.objectofcollaboration.principal.util import (
-  has_role, get_current)
+    has_role, get_current)
 from dace.objectofcollaboration.principal.role import (
     Collaborator, Role, Administrator, role)
 

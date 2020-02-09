@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -66,7 +66,7 @@ def image_widget(node, kw):
         tmpstore=tmpstore,
         source=source,
         selection_message=_("Upload image.")
-        )
+    )
 
 
 @colander.deferred
@@ -118,7 +118,7 @@ class ChallengeSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     name = NameSchemaNode(
         editing=context_is_a_challenge,
-        )
+    )
 
     description = colander.SchemaNode(
         colander.String(),
@@ -128,14 +128,14 @@ class ChallengeSchema(VisualisableElementSchema, SearchableEntitySchema):
                                      limit=300),
         title=_("Abstract"),
         description=_("Describe in a few words the challenge.")
-        )
+    )
 
     text = colander.SchemaNode(
         colander.String(),
         widget=RichTextWidget(),
         title=_("Text"),
         description=_("You can describe in detail the challenge.")
-        )
+    )
 
     image = colander.SchemaNode(
         ObjectData(Image),
@@ -144,7 +144,7 @@ class ChallengeSchema(VisualisableElementSchema, SearchableEntitySchema):
         description=_('You see a square on the top left of the image if it exceeds the maximum'
                       ' size allowed. Move and enlarge it if necessary, to determine an area of'
                       ' interest. Several images will be generated from this area.'),
-        )
+    )
 
     attached_files = colander.SchemaNode(
         colander.Sequence(),
@@ -152,13 +152,13 @@ class ChallengeSchema(VisualisableElementSchema, SearchableEntitySchema):
             ObjectData(File),
             name=_("File"),
             widget=get_file_widget()
-            ),
+        ),
         widget=FilesWidget(
             add_subitem_text_template='',
             item_css_class='files-block'),
         missing=[],
         title=_('Attached files'),
-        )
+    )
 
     is_restricted = colander.SchemaNode(
         colander.Boolean(),
@@ -184,7 +184,8 @@ class ChallengeSchema(VisualisableElementSchema, SearchableEntitySchema):
     deadline = colander.SchemaNode(
         colander.Date(),
         title=_('Deadline'),
-        description=_("If your challenge is punctual, you can add a deadline for participation."),
+        description=_(
+            "If your challenge is punctual, you can add a deadline for participation."),
         missing=None
     )
 
@@ -196,23 +197,23 @@ class ChallengeSchema(VisualisableElementSchema, SearchableEntitySchema):
         title='',
         missing=False,
         default=False
-        )
+    )
 
 
 @content(
     'challenge',
     icon='glyphicon glyphicon-align-left',
-    )
+)
 @implementer(IChallenge)
 class Challenge(
-    SearchableEntity,
-    CorrelableEntity,
-    PresentableEntity,
-    ExaminableEntity,
-    Node,
-    Emojiable,
-    SignalableEntity,
-    Debatable):
+        SearchableEntity,
+        CorrelableEntity,
+        PresentableEntity,
+        ExaminableEntity,
+        Node,
+        Emojiable,
+        SignalableEntity,
+        Debatable):
     """Challenge class"""
     type_title = _('Challenge')
     icon = 'ion-trophy'

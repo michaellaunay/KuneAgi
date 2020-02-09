@@ -4,6 +4,7 @@
 # licence: AGPL
 # author: Amen Souissi
 
+import datetime
 from dace.processdefinition.processdef import ProcessDefinition
 from dace.processdefinition.activitydef import ActivityDefinition
 from dace.processdefinition.gatewaydef import (
@@ -12,7 +13,9 @@ from dace.processdefinition.gatewaydef import (
 from dace.processdefinition.transitiondef import TransitionDefinition
 from dace.processdefinition.eventdef import (
     StartEventDefinition,
-    EndEventDefinition)
+    EndEventDefinition,
+    IntermediateCatchEventDefinition,
+    TimerEventDefinition)
 from dace.objectofcollaboration.services.processdef_container import (
     process_definition)
 from pontus.core import VisualisableElement
@@ -38,8 +41,9 @@ from .behaviors import (
     SeeNotations,
     ExtractAlerts,
     Quit,
-    ConfirmQuitRequest)
-from novaideo import _
+    ConfirmQuitRequest,
+    AlertRegistration)
+from novaideo import _, log
 from novaideo.content.person import Preregistration
 from novaideo.content.processes.content_ballot_management import (
     BALLOT_DATA)
@@ -58,98 +62,103 @@ class UserManagement(ProcessDefinition, VisualisableElement):
 
     def _init_definition(self):
         self.defineNodes(
-                start = StartEventDefinition(),
-                pg = ParallelGatewayDefinition(),
-                login = ActivityDefinition(contexts=[LogIn],
-                                       description=_("Log in"),
-                                       title=_("Log in"),
-                                       groups=[_("Access")]),
-                logout = ActivityDefinition(contexts=[LogOut],
-                                       description=_("Log out"),
-                                       title=_("Log out"),
-                                       groups=[_("Access")]),
-                edit = ActivityDefinition(contexts=[Edit],
-                                       description=_("Edit"),
-                                       title=_("Edit"),
-                                       groups=[]),
-                quit = ActivityDefinition(contexts=[Quit],
-                                       description=_("Quit the platform"),
-                                       title=_("Quit the platform"),
-                                       groups=[]),
-                confirm_quit = ActivityDefinition(contexts=[ConfirmQuitRequest],
-                                       description=_("Confirm the resignation request"),
-                                       title=_("Confirm the resignation request"),
-                                       groups=[]),
-                deactivate = ActivityDefinition(contexts=[Deactivate],
-                                       description=_("Disactivate the profile"),
-                                       title=_("Disactivate the profile"),
-                                       groups=[]),
-                activate = ActivityDefinition(contexts=[Activate],
-                                       description=_("Activate the profile"),
-                                       title=_("Activate the profile"),
-                                       groups=[]),
-                assign_roles = ActivityDefinition(contexts=[AssignRoles],
-                                       description=_("Assign roles to user"),
-                                       title=_("Assign roles"),
-                                       groups=[]),
-                see = ActivityDefinition(contexts=[SeePerson],
-                                       description=_("Details"),
-                                       title=_("Details"),
-                                       groups=[]),
-                see_notations = ActivityDefinition(contexts=[SeeNotations],
-                                       description=_("The marks"),
-                                       title=_("The marks"),
-                                       groups=[]),
-                discuss = ActivityDefinition(contexts=[Discuss],
+            start=StartEventDefinition(),
+            pg=ParallelGatewayDefinition(),
+            login=ActivityDefinition(contexts=[LogIn],
+                                     description=_("Log in"),
+                                     title=_("Log in"),
+                                     groups=[_("Access")]),
+            logout=ActivityDefinition(contexts=[LogOut],
+                                      description=_("Log out"),
+                                      title=_("Log out"),
+                                      groups=[_("Access")]),
+            edit=ActivityDefinition(contexts=[Edit],
+                                    description=_("Edit"),
+                                    title=_("Edit"),
+                                    groups=[]),
+            quit=ActivityDefinition(contexts=[Quit],
+                                    description=_("Quit the platform"),
+                                    title=_("Quit the platform"),
+                                    groups=[]),
+            confirm_quit=ActivityDefinition(contexts=[ConfirmQuitRequest],
+                                            description=_(
+                                                "Confirm the resignation request"),
+                                            title=_(
+                                                "Confirm the resignation request"),
+                                            groups=[]),
+            deactivate=ActivityDefinition(contexts=[Deactivate],
+                                          description=_(
+                                              "Disactivate the profile"),
+                                          title=_("Disactivate the profile"),
+                                          groups=[]),
+            activate=ActivityDefinition(contexts=[Activate],
+                                        description=_("Activate the profile"),
+                                        title=_("Activate the profile"),
+                                        groups=[]),
+            assign_roles=ActivityDefinition(contexts=[AssignRoles],
+                                            description=_(
+                                                "Assign roles to user"),
+                                            title=_("Assign roles"),
+                                            groups=[]),
+            see=ActivityDefinition(contexts=[SeePerson],
+                                   description=_("Details"),
+                                   title=_("Details"),
+                                   groups=[]),
+            see_notations=ActivityDefinition(contexts=[SeeNotations],
+                                             description=_("The marks"),
+                                             title=_("The marks"),
+                                             groups=[]),
+            discuss=ActivityDefinition(contexts=[Discuss],
                                        description=_("Discuss"),
                                        title=_("Discuss"),
                                        groups=[]),
-                get_api_token = ActivityDefinition(contexts=[GetAPIToken],
-                                       description=_("Get API token"),
-                                       title=_("Get API token"),
-                                       groups=[]),
-                general_discuss = ActivityDefinition(contexts=[GeneralDiscuss],
-                                       description=_("Discuss"),
-                                       title=_("Discuss"),
-                                       groups=[]),
-                extract_alerts = ActivityDefinition(contexts=[ExtractAlerts],
-                                       description=_("Extract the user's alerts"),
-                                       title=_("Extract alerts"),
-                                       groups=[]),
-                eg = ExclusiveGatewayDefinition(),
-                end = EndEventDefinition(),
+            get_api_token=ActivityDefinition(contexts=[GetAPIToken],
+                                             description=_("Get API token"),
+                                             title=_("Get API token"),
+                                             groups=[]),
+            general_discuss=ActivityDefinition(contexts=[GeneralDiscuss],
+                                               description=_("Discuss"),
+                                               title=_("Discuss"),
+                                               groups=[]),
+            extract_alerts=ActivityDefinition(contexts=[ExtractAlerts],
+                                              description=_(
+                                                  "Extract the user's alerts"),
+                                              title=_("Extract alerts"),
+                                              groups=[]),
+            eg=ExclusiveGatewayDefinition(),
+            end=EndEventDefinition(),
         )
         self.defineTransitions(
-                TransitionDefinition('start', 'pg'),
-                TransitionDefinition('pg', 'login'),
-                TransitionDefinition('pg', 'logout'),
-                TransitionDefinition('login', 'eg'),
-                TransitionDefinition('pg', 'extract_alerts'),
-                TransitionDefinition('extract_alerts', 'eg'),
-                TransitionDefinition('logout', 'eg'),
-                TransitionDefinition('pg', 'discuss'),
-                TransitionDefinition('discuss', 'eg'),
-                TransitionDefinition('pg', 'general_discuss'),
-                TransitionDefinition('general_discuss', 'eg'),
-                TransitionDefinition('pg', 'edit'),
-                TransitionDefinition('edit', 'eg'),
-                TransitionDefinition('pg', 'get_api_token'),
-                TransitionDefinition('get_api_token', 'eg'),
-                TransitionDefinition('pg', 'deactivate'),
-                TransitionDefinition('deactivate', 'eg'),
-                TransitionDefinition('pg', 'quit'),
-                TransitionDefinition('quit', 'eg'),
-                TransitionDefinition('pg', 'confirm_quit'),
-                TransitionDefinition('confirm_quit', 'eg'),
-                TransitionDefinition('pg', 'activate'),
-                TransitionDefinition('activate', 'eg'),
-                TransitionDefinition('pg', 'assign_roles'),
-                TransitionDefinition('assign_roles', 'eg'),
-                TransitionDefinition('pg', 'see_notations'),
-                TransitionDefinition('see_notations', 'eg'),
-                TransitionDefinition('pg', 'see'),
-                TransitionDefinition('see', 'eg'),
-                TransitionDefinition('eg', 'end'),
+            TransitionDefinition('start', 'pg'),
+            TransitionDefinition('pg', 'login'),
+            TransitionDefinition('pg', 'logout'),
+            TransitionDefinition('login', 'eg'),
+            TransitionDefinition('pg', 'extract_alerts'),
+            TransitionDefinition('extract_alerts', 'eg'),
+            TransitionDefinition('logout', 'eg'),
+            TransitionDefinition('pg', 'discuss'),
+            TransitionDefinition('discuss', 'eg'),
+            TransitionDefinition('pg', 'general_discuss'),
+            TransitionDefinition('general_discuss', 'eg'),
+            TransitionDefinition('pg', 'edit'),
+            TransitionDefinition('edit', 'eg'),
+            TransitionDefinition('pg', 'get_api_token'),
+            TransitionDefinition('get_api_token', 'eg'),
+            TransitionDefinition('pg', 'deactivate'),
+            TransitionDefinition('deactivate', 'eg'),
+            TransitionDefinition('pg', 'quit'),
+            TransitionDefinition('quit', 'eg'),
+            TransitionDefinition('pg', 'confirm_quit'),
+            TransitionDefinition('confirm_quit', 'eg'),
+            TransitionDefinition('pg', 'activate'),
+            TransitionDefinition('activate', 'eg'),
+            TransitionDefinition('pg', 'assign_roles'),
+            TransitionDefinition('assign_roles', 'eg'),
+            TransitionDefinition('pg', 'see_notations'),
+            TransitionDefinition('see_notations', 'eg'),
+            TransitionDefinition('pg', 'see'),
+            TransitionDefinition('see', 'eg'),
+            TransitionDefinition('eg', 'end'),
         )
 
 
@@ -164,50 +173,90 @@ class RegistrationManagement(ProcessDefinition, VisualisableElement):
 
     def _init_definition(self):
         self.defineNodes(
-                start = StartEventDefinition(),
-                pg = ParallelGatewayDefinition(),
-                registration = ActivityDefinition(contexts=[Registration],
-                                       description=_("User registration"),
-                                       title=_("User registration"),
-                                       groups=[]),
-                confirmregistration = ActivityDefinition(contexts=[ConfirmRegistration],
-                                       description=_("Confirm registration"),
-                                       title=_("Confirm registration"),
-                                       groups=[]),
-                remind = ActivityDefinition(contexts=[Remind],
-                                       description=_("Remind user"),
-                                       title=_("Remind"),
-                                       groups=[]),
-                see_registration = ActivityDefinition(contexts=[SeeRegistration],
-                                       description=_("Details"),
-                                       title=_("Details"),
-                                       groups=[]),
-                see_registrations = ActivityDefinition(contexts=[SeeRegistrations],
-                                       description=_("See registrations"),
-                                       title=_("Registrations"),
-                                       groups=[_('See')]),
-                remove = ActivityDefinition(contexts=[RemoveRegistration],
-                                       description=_("Remove the registration"),
-                                       title=_("Remove"),
-                                       groups=[]),
-                eg = ExclusiveGatewayDefinition(),
-                end = EndEventDefinition(),
+            start=StartEventDefinition(),
+            pg=ParallelGatewayDefinition(),
+            registration=ActivityDefinition(contexts=[Registration],
+                                            description=_("User registration"),
+                                            title=_("User registration"),
+                                            groups=[]),
+            confirmregistration=ActivityDefinition(contexts=[ConfirmRegistration],
+                                                   description=_(
+                                                       "Confirm registration"),
+                                                   title=_(
+                                                       "Confirm registration"),
+                                                   groups=[]),
+            remind=ActivityDefinition(contexts=[Remind],
+                                      description=_("Remind user"),
+                                      title=_("Remind"),
+                                      groups=[]),
+            see_registration=ActivityDefinition(contexts=[SeeRegistration],
+                                                description=_("Details"),
+                                                title=_("Details"),
+                                                groups=[]),
+            see_registrations=ActivityDefinition(contexts=[SeeRegistrations],
+                                                 description=_(
+                                                     "See registrations"),
+                                                 title=_("Registrations"),
+                                                 groups=[_('See')]),
+            remove=ActivityDefinition(contexts=[RemoveRegistration],
+                                      description=_("Remove the registration"),
+                                      title=_("Remove"),
+                                      groups=[]),
+            eg=ExclusiveGatewayDefinition(),
+            end=EndEventDefinition(),
         )
         self.defineTransitions(
-                TransitionDefinition('start', 'pg'),
-                TransitionDefinition('pg', 'registration'),
-                TransitionDefinition('registration', 'eg'),
-                TransitionDefinition('pg', 'confirmregistration'),
-                TransitionDefinition('confirmregistration', 'eg'),
-                TransitionDefinition('pg', 'remind'),
-                TransitionDefinition('remind', 'eg'),
-                TransitionDefinition('pg', 'see_registration'),
-                TransitionDefinition('see_registration', 'eg'),
-                TransitionDefinition('pg', 'see_registrations'),
-                TransitionDefinition('see_registrations', 'eg'),
-                TransitionDefinition('pg', 'remove'),
-                TransitionDefinition('remove', 'eg'),
-                TransitionDefinition('eg', 'end'),
+            TransitionDefinition('start', 'pg'),
+            TransitionDefinition('pg', 'registration'),
+            TransitionDefinition('registration', 'eg'),
+            TransitionDefinition('pg', 'confirmregistration'),
+            TransitionDefinition('confirmregistration', 'eg'),
+            TransitionDefinition('pg', 'remind'),
+            TransitionDefinition('remind', 'eg'),
+            TransitionDefinition('pg', 'see_registration'),
+            TransitionDefinition('see_registration', 'eg'),
+            TransitionDefinition('pg', 'see_registrations'),
+            TransitionDefinition('see_registrations', 'eg'),
+            TransitionDefinition('pg', 'remove'),
+            TransitionDefinition('remove', 'eg'),
+            TransitionDefinition('eg', 'end'),
+        )
+
+
+def time_date(process):
+    alert_date = getattr(process, 'alert_date', datetime.datetime.now())
+    alert_date = alert_date - datetime.timedelta(days=1)
+    log.warning(alert_date)
+    return alert_date
+
+
+@process_definition(name='registrationalert',
+                    id='registrationalert')
+class RegistrationAlert(ProcessDefinition, VisualisableElement):
+    isControlled = True
+    isVolatile = True
+
+    def __init__(self, **kwargs):
+        super(RegistrationAlert, self).__init__(**kwargs)
+        self.title = _('Registration alert')
+        self.description = _('Registration alert')
+
+    def _init_definition(self):
+        self.defineNodes(
+            start=StartEventDefinition(),
+            timer=IntermediateCatchEventDefinition(
+                TimerEventDefinition(time_date=time_date)),
+            alert=ActivityDefinition(contexts=[AlertRegistration],
+                                     description=_("User registration"),
+                                     title=_("User registration"),
+                                     groups=[]),
+
+            end=EndEventDefinition(),
+        )
+        self.defineTransitions(
+            TransitionDefinition('start', 'timer'),
+            TransitionDefinition('timer', 'alert'),
+            TransitionDefinition('alert', 'end'),
         )
 
 

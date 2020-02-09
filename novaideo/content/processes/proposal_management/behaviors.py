@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -101,14 +101,14 @@ VOTE_MODEWORK_MESSAGE = _("Voting results regarding the further improvement of t
 VOTE_REOPENING_MESSAGE = _("Voting results regarding the further improvement of the proposal will not be known until the end of the ballot. "
                            "If the majority happens to vote for continuing to improve the "
                            "proposal before submitting it to the other members of the platform,"
-                          " your vote on reopening the working group is needed.")
+                           " your vote on reopening the working group is needed.")
 
 
 _marker = object()
 
 
 def confirm_proposal(
-    context, request, user, submitted_appstruct, root):
+        context, request, user, submitted_appstruct, root):
     working_group = context.working_group
     if context.originalentity:
         # Add Nia comment
@@ -118,8 +118,8 @@ def confirm_proposal(
             subject_type='proposal',
             alert_kind='duplicated',
             duplication=context
-            )
-    
+        )
+
     proposal_state = 'amendable'
     if submitted_appstruct.get('vote', False):
         proposal_state = 'published'
@@ -134,7 +134,7 @@ def confirm_proposal(
                 subject_type='proposal',
                 alert_kind='submitted_support',
                 duplication=context
-                )
+            )
         else:
             context.state = PersistentList(
                 ['published', 'submitted_support'])
@@ -150,7 +150,7 @@ def confirm_proposal(
         if mode_id:
             working_group.work_mode_id = mode_id
 
-        #Only the vote of the author is considered
+        # Only the vote of the author is considered
         first_vote_registration(
             user, working_group, submitted_appstruct)
         if participants_mini > 1:
@@ -164,7 +164,7 @@ def confirm_proposal(
                 subject_type='proposal',
                 alert_kind='open_to_a_working_group',
                 duplication=context
-                )
+            )
         else:
             context.state = PersistentList(['amendable', 'published'])
             working_group.state = PersistentList(['active'])
@@ -187,7 +187,7 @@ def confirm_proposal(
                 subject_type='proposal',
                 alert_kind='start_work',
                 duplication=context
-                )
+            )
 
     related_ideas = context.related_ideas
     for idea in related_ideas:
@@ -199,7 +199,7 @@ def confirm_proposal(
             alert_kind='new_proposal',
             proposal_state=proposal_state,
             proposal=context
-            )
+        )
 
     if getattr(context, '_tree', None):
         tree = getattr(context, '_tree')
@@ -259,7 +259,7 @@ def start_improvement_cycle(proposal):
 
 
 def first_vote_registration(user, working_group, appstruct):
-    #duration vote
+    # duration vote
     ballot = working_group.duration_configuration_ballot
     report = ballot.report
     if user not in report.voters:
@@ -273,7 +273,7 @@ def first_vote_registration(user, working_group, appstruct):
         vote.user_id = get_oid(user)
         ballot.ballot_box.addtoproperty('votes', vote)
         report.addtoproperty('voters', user)
-    #publication vote
+    # publication vote
     ballot = working_group.vp_ballot
     report = ballot.report
     if user not in report.voters:
@@ -287,7 +287,7 @@ def first_vote_registration(user, working_group, appstruct):
 
 def first_vote_remove(user, working_group):
     user_oid = get_oid(user)
-    #duration vote
+    # duration vote
     ballot = working_group.duration_configuration_ballot
     votes = [v for v in ballot.ballot_box.votes
              if getattr(v, 'user_id', 0) == user_oid]
@@ -295,7 +295,7 @@ def first_vote_remove(user, working_group):
         ballot.ballot_box.delfromproperty('votes', votes[0])
         ballot.report.delfromproperty('voters', user)
 
-    #publication vote
+    # publication vote
     ballot = working_group.vp_ballot
     votes = [v for v in ballot.ballot_box.votes
              if getattr(v, 'user_id', 0) == user_oid]
@@ -449,9 +449,8 @@ def exclude_participant_from_wg(context, request,  user, root, kind='resign', **
             subject_type='proposal',
             alert_kind='exclusion_open_to_a_wg',
             duplication=context
-            )
+        )
 
-    
     if not resignation:
         if getattr(user, 'email', ''):
             alert(
@@ -507,8 +506,8 @@ def createproposal_processsecurity_validation(process, context):
 
 def include_ideas_texts(proposal, related_ideas):
     proposal.text = getattr(proposal, 'text', '') +\
-                    ''.join(['<div>' + idea.text + '</div>' \
-                             for idea in related_ideas])
+        ''.join(['<div>' + idea.text + '</div>'
+                 for idea in related_ideas])
 
 
 class CreateProposal(InfiniteCardinality):
@@ -545,7 +544,7 @@ class CreateProposal(InfiniteCardinality):
                     ['related_proposals', 'related_ideas'],
                     CorrelationType.solid)
 
-        #TODO Add Nia comment to related ideas
+        # TODO Add Nia comment to related ideas
         add_attached_files(appstruct, proposal)
         proposal.reindex()
         init_proposal_ballots(proposal)
@@ -573,7 +572,7 @@ def pap_processsecurity_validation(process, context):
 
 
 class PublishAsProposal(CreateProposal):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     context = Iidea
     submission_title = _('Save')
     style_order = 0
@@ -585,12 +584,12 @@ class PublishAsProposal(CreateProposal):
 
 def del_processsecurity_validation(process, context):
     return global_user_processsecurity() and \
-           (has_role(role=('Owner', context)) and \
-           'draft' in context.state)
+        (has_role(role=('Owner', context)) and
+            'draft' in context.state)
 
 
 class DeleteProposal(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-trash'
@@ -655,8 +654,8 @@ def pu_sub_processsecurity_validation(process, context):
                                   for i in context.related_ideas)
 
     return not (not_published_ideas or not_favorable_ideas) and \
-           len(user.get_active_working_groups(user)) < root.participations_maxi and \
-           global_user_processsecurity()
+        len(user.get_active_working_groups(user)) < root.participations_maxi and \
+        global_user_processsecurity()
 
 
 def submit_roles_validation(process, context):
@@ -676,7 +675,7 @@ def submit_state_validation(process, context):
 
 
 class SubmitProposalModeration(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-share'
@@ -745,7 +744,7 @@ def publish_state_validation(process, context):
 
 
 class PublishProposal(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-share'
@@ -760,7 +759,7 @@ class PublishProposal(InfiniteCardinality):
         user = context.author
         root = getSite()
         context.state.remove('draft')
-        # Share the proposal with the specified members 
+        # Share the proposal with the specified members
         # we need to execute the 'present' action
         members_to_invite = appstruct.get('members_to_invite', [])
         if members_to_invite:
@@ -804,7 +803,7 @@ def duplicate_processsecurity_validation(process, context):
 
 
 class DuplicateProposal(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'global-action'
     style_picto = 'octicon octicon-git-branch'
     style_order = 7
@@ -876,7 +875,7 @@ def edit_state_validation(process, context):
 
 
 class EditProposal(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'text-action'
     style_picto = 'glyphicon glyphicon-pencil'
     style_order = 1
@@ -915,9 +914,9 @@ def support_processsecurity_validation(process, context):
         return False
 
     return context.evaluation(user) != Evaluations.support and \
-           (context.user_has_token(user) or  \
-            context.evaluation(user) == Evaluations.oppose) and \
-           global_user_processsecurity()
+        (context.user_has_token(user) or
+         context.evaluation(user) == Evaluations.oppose) and \
+        global_user_processsecurity()
 
 
 def support_state_validation(process, context):
@@ -960,7 +959,6 @@ class SupportProposal(InfiniteCardinality):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-
 def oppose_processsecurity_validation(process, context):
     user = get_current()
     request = get_current_request()
@@ -968,9 +966,9 @@ def oppose_processsecurity_validation(process, context):
         return False
 
     return context.evaluation(user) != Evaluations.oppose and \
-           (context.user_has_token(user) or  \
-            context.evaluation(user) == Evaluations.support) and \
-           global_user_processsecurity()
+        (context.user_has_token(user) or
+         context.evaluation(user) == Evaluations.support) and \
+        global_user_processsecurity()
 
 
 class OpposeProposal(InfiniteCardinality):
@@ -1026,7 +1024,7 @@ def opinion_state_validation(process, context):
 
 
 class MakeOpinion(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
     style_picto = 'octicon octicon-checklist'
@@ -1058,13 +1056,14 @@ class MakeOpinion(InfiniteCardinality):
             context, request, root,
             internal_kind=InternalAlertKind.examination_alert,
             subject_type='proposal'
-            )
+        )
         subject_data = get_entity_data(context, 'subject', request)
         for member in members:
             if getattr(member, 'email', ''):
                 mail_template = root.get_mail_template(
                     'opinion_proposal', member.user_locale)
-                subject = mail_template['subject'].format(subject_title=context.title)
+                subject = mail_template['subject'].format(
+                    subject_title=context.title)
                 email_data = get_user_data(member, 'recipient', request)
                 email_data.update(subject_data)
                 message = mail_template['template'].format(
@@ -1086,7 +1085,7 @@ class MakeOpinion(InfiniteCardinality):
 
 def withdrawt_processsecurity_validation(process, context):
     return context.evaluation(get_current()) and \
-           global_user_processsecurity()
+        global_user_processsecurity()
 
 
 class WithdrawToken(InfiniteCardinality):
@@ -1171,7 +1170,7 @@ def seea_roles_validation(process, context):
 
 def seea_processsecurity_validation(process, context):
     return any(not('archived' in a.state) for a in context.amendments) and \
-          global_user_processsecurity()
+        global_user_processsecurity()
 
 
 class SeeAmendments(InfiniteCardinality):
@@ -1241,10 +1240,10 @@ class PresentProposalAnonymous(PresentProposal):
 
 
 def associate_processsecurity_validation(process, context):
-    return (has_role(role=('Owner', context)) or \
-           (has_role(role=('Member',)) and \
-            'draft' not in context.state)) and \
-           global_user_processsecurity()
+    return (has_role(role=('Owner', context)) or
+            (has_role(role=('Member',)) and
+             'draft' not in context.state)) and \
+        global_user_processsecurity()
 
 
 class Associate(AssociateIdea):
@@ -1280,8 +1279,8 @@ def withdraw_processsecurity_validation(process, context):
     user = get_current()
     wg = context.working_group
     return wg and\
-           wg.in_wating_list(user) and \
-           global_user_processsecurity()
+        wg.in_wating_list(user) and \
+        global_user_processsecurity()
 
 
 def withdraw_state_validation(process, context):
@@ -1289,7 +1288,7 @@ def withdraw_state_validation(process, context):
 
 
 class Withdraw(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'wg-action'
     style_order = 3
     style_css_class = 'btn-warning'
@@ -1342,7 +1341,7 @@ def resign_state_validation(process, context):
 
 
 class Resign(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'wg-action'
     style_interaction = 'ajax-action'
     style_order = 2
@@ -1384,9 +1383,9 @@ def participate_processsecurity_validation(process, context):
     wgs = user.get_active_working_groups(user) \
         if hasattr(user, 'get_active_working_groups') else []
     if not working_group or working_group.in_wating_list(user) or \
-        working_group.in_wating_list_participation(user) or \
-        len(wgs) + len(participations) >= root.participations_maxi or \
-        not global_user_processsecurity():
+            working_group.in_wating_list_participation(user) or \
+            len(wgs) + len(participations) >= root.participations_maxi or \
+            not global_user_processsecurity():
         return False
 
     exclusion_ballots = [b for b in context.ballots
@@ -1415,8 +1414,8 @@ def participate_state_validation(process, context):
 
 def accept_participation(context, request, user, root, **kw):
     def _send_mail_to_user(
-        subject_template, message_template,
-        user, context, request):
+            subject_template, message_template,
+            user, context, request):
         subject = subject_template.format(subject_title=context.title)
         email_data = get_user_data(user, 'recipient', request)
         email_data.update(get_entity_data(context, 'subject', request))
@@ -1433,12 +1432,14 @@ def accept_participation(context, request, user, root, **kw):
     mode = getattr(working_group, 'work_mode', root.get_default_work_mode())
     len_participants = len(participants)
     member = getattr(user, 'member', user)
-    member_in_wlp = working_group.get_member_in_wating_list_participation(member)
+    member_in_wlp = working_group.get_member_in_wating_list_participation(
+        member)
     if member_in_wlp:
-        working_group.delfromproperty('wating_list_participation', member_in_wlp)
+        working_group.delfromproperty(
+            'wating_list_participation', member_in_wlp)
 
     if len_participants < mode.participants_maxi:
-        #Alert new participant
+        # Alert new participant
         if participants:
             alert('internal', [root], participants,
                   internal_kind=InternalAlertKind.working_group_alert,
@@ -1447,7 +1448,7 @@ def accept_participation(context, request, user, root, **kw):
 
         working_group.addtoproperty('members', user)
         grant_roles(user, (('Participant', context),))
-        #alert max working groups
+        # alert max working groups
         active_wgs = member.get_active_working_groups(member) \
             if hasattr(member, 'get_active_working_groups') else []
         if len(active_wgs) == root.participations_maxi:
@@ -1460,7 +1461,7 @@ def accept_participation(context, request, user, root, **kw):
             context.state = PersistentList(['amendable', 'published'])
             working_group.reindex()
             context.reindex()
-            #Only if is the first improvement cycle
+            # Only if is the first improvement cycle
             if not hasattr(working_group, 'first_improvement_cycle'):
                 working_group.first_improvement_cycle = True
                 if not working_group.improvement_cycle_proc:
@@ -1469,16 +1470,16 @@ def accept_participation(context, request, user, root, **kw):
                     working_group.setproperty(
                         'improvement_cycle_proc', improvement_cycle_proc)
 
-                #Run the improvement cycle proc
+                # Run the improvement cycle proc
                 working_group.improvement_cycle_proc.execute_action(
                     context, request, 'votingpublication', {})
 
-            #Alert start of the improvement cycle proc
+            # Alert start of the improvement cycle proc
             alert('internal', [root], participants,
                   internal_kind=InternalAlertKind.working_group_alert,
                   subjects=[context], alert_kind='amendable')
 
-        #Send Mail alert to user
+        # Send Mail alert to user
         if getattr(user, 'email', ''):
             mail_template = root.get_mail_template(
                 'wg_participation', user.user_locale)
@@ -1508,7 +1509,7 @@ def accept_participation(context, request, user, root, **kw):
 
 
 class Participate(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'wg-action'
     style_interaction = 'ajax-action'
     style_order = 1
@@ -1539,7 +1540,8 @@ class Participate(InfiniteCardinality):
             if not moderators:
                 accept_participation(context, request, member, root)
             else:
-                working_group.addtoproperty('wating_list_participation', member)
+                working_group.addtoproperty(
+                    'wating_list_participation', member)
 
                 def before_start(b_proc):
                     b_proc.participant = member
@@ -1600,7 +1602,7 @@ def exclude_state_validation(process, context):
 
 
 class ExcludeParticipant(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'wg-action'
     style_interaction = 'ajax-action'
     style_order = 2
@@ -1645,10 +1647,10 @@ class ExcludeParticipant(InfiniteCardinality):
 
 def compare_processsecurity_validation(process, context):
     return getattr(context, 'version', None) is not None and \
-           (has_role(role=('Owner', context)) or \
-           (has_role(role=('Member',)) and\
-            'draft' not in context.state)) and \
-           global_user_processsecurity()
+        (has_role(role=('Owner', context)) or
+            (has_role(role=('Member',)) and
+             'draft' not in context.state)) and \
+        global_user_processsecurity()
 
 
 class CompareProposal(InfiniteCardinality):
@@ -1677,7 +1679,7 @@ def attach_state_validation(process, context):
 
 
 class AttachFiles(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'text-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-paperclip'
@@ -1691,7 +1693,7 @@ class AttachFiles(InfiniteCardinality):
     def start(self, context, request, appstruct, **kw):
         add_attached_files({'add_files': appstruct}, context)
         context.reindex()
-        user = context.working_group.get_member( get_current(request))
+        user = context.working_group.get_member(get_current(request))
         request.registry.notify(ActivityExecuted(
             self, [context], user))
         return {}
@@ -1724,14 +1726,14 @@ def seeproposal_processsecurity_validation(process, context):
         can_access = has_role(role=('ChallengeParticipant', challenge))
 
     return can_access and access_user_processsecurity(process, context) and \
-           ('draft' not in context.state or \
-            has_any_roles(roles=(('Owner', context), ('LocalModerator', context),
-                'SiteAdmin', 'Moderator')))
+        ('draft' not in context.state or
+         has_any_roles(roles=(('Owner', context), ('LocalModerator', context),
+                              'SiteAdmin', 'Moderator')))
 
 
 @access_action(access_key=get_access_key)
 class SeeProposal(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'access-action'
     style_interaction = 'ajax-action'
     style_interaction_type = 'sidebar'
@@ -1762,11 +1764,11 @@ def decision_roles_validation(process, context):
 def decision_state_validation(process, context):
     wg = context.working_group
     return wg and 'active' in wg.state and \
-           'amendable' in context.state
+        'amendable' in context.state
 
 
 class VotingPublication(ElementaryAction):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'plus-action'
     style_order = 5
     context = IProposal
@@ -1845,7 +1847,7 @@ def work_state_validation(process, context):
 
 
 class Work(ElementaryAction):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'plus-action'
     style_order = 5
     context = IProposal
@@ -1865,10 +1867,12 @@ class Work(ElementaryAction):
         members = working_group.members
         localizer = request.localizer
         root = request.root
-        #Get ballots
+        # Get ballots
         vp_ballot = getattr(working_group, 'vp_ballot', '')
-        wmc_ballot = getattr(working_group, 'work_mode_configuration_ballot', '')
-        rc_ballot = getattr(working_group, 'reopening_configuration_ballot', '')
+        wmc_ballot = getattr(
+            working_group, 'work_mode_configuration_ballot', '')
+        rc_ballot = getattr(
+            working_group, 'reopening_configuration_ballot', '')
         dc_ballot = getattr(working_group, 'duration_configuration_ballot', '')
         # Get ballot URLs
         ballot_oid = get_oid(vp_ballot, '')
@@ -1917,7 +1921,7 @@ class Work(ElementaryAction):
     def start(self, context, request, appstruct, **kw):
         working_group = context.working_group
         context.state.remove('votes for publishing')
-        #Only for amendments work mode
+        # Only for amendments work mode
         reopening_ballot = getattr(
             working_group, 'reopening_configuration_ballot', None)
         if reopening_ballot is not None:
@@ -1925,14 +1929,14 @@ class Work(ElementaryAction):
             voters_len = len(report.voters)
             electors_len = len(report.electors)
             report.calculate_votes()
-            #absolute majority
+            # absolute majority
             if (voters_len == electors_len) and \
                (report.result['False'] == 0) and \
                'closed' in working_group.state:
                 working_group.state.remove('closed')
 
         context.state.insert(0, 'amendable')
-        #The first improvement cycle is started
+        # The first improvement cycle is started
         if working_group.first_improvement_cycle:
             self._send_mails(
                 context, request,
@@ -1983,7 +1987,8 @@ class Work(ElementaryAction):
                 alert('email', [root.get_site_sender()], [member.email],
                       subject=subject, body=message)
         else:
-            self.process.execute_action(proposal, request, 'votingpublication', {})
+            self.process.execute_action(
+                proposal, request, 'votingpublication', {})
 
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
@@ -1996,11 +2001,11 @@ def submit_roles_validation(process, context):
 def submit_state_validation(process, context):
     wg = context.working_group
     return wg and 'active' in context.working_group.state and \
-           'votes for publishing' in context.state
+        'votes for publishing' in context.state
 
 
 class SubmitProposal(ElementaryAction):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'global-action'
     style_picto = 'glyphicon glyphicon-certificate'
     style_order = 2
@@ -2023,7 +2028,7 @@ class SubmitProposal(ElementaryAction):
                 subject_type='proposal',
                 alert_kind='submitted_support',
                 duplication=context
-                )
+            )
         else:
             context.state = PersistentList(['published', 'submitted_support'])
 
@@ -2039,11 +2044,11 @@ class SubmitProposal(ElementaryAction):
         remove_ballot_processes(
             context, request.root['runtime'],
             exclude=['contentreportdecision'])
-        #Alert users
+        # Alert users
         users = list(get_users_by_preferences(context))
         users.extend(members)
         users = set(users)
-        #Get ballots
+        # Get ballots
         vp_ballot = getattr(working_group, 'vp_ballot', '')
         # Get ballot URLs
         ballot_oid = get_oid(vp_ballot, '')
@@ -2115,7 +2120,7 @@ def alert_roles_validation(process, context):
 
 
 class AlertEnd(ElementaryAction):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'global-action'
     style_order = 4
     context = IProposal
@@ -2155,7 +2160,7 @@ class AlertEnd(ElementaryAction):
         return HTTPFound(request.resource_url(context, "@@index"))
 
 
-#**********************************************Workspace***************************************************
+# **********************************************Workspace***************************************************
 
 
 def get_access_key_ws(obj):
@@ -2188,7 +2193,7 @@ def addfiles_state_validation(process, context):
 
 
 class AddFiles(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'global-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-import'
@@ -2227,7 +2232,7 @@ def rmfile_state_validation(process, context):
 
 
 class RemoveFile(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-trash'
@@ -2553,7 +2558,8 @@ class ExclusionVote(StartBallot):
     def redirect(self, context, request, **kw):
         return HTTPFound(request.resource_url(context, "@@index"))
 
-#TODO behaviors
+# TODO behaviors
+
 
 VALIDATOR_BY_CONTEXT[Proposal] = {
     'action': CommentProposal,

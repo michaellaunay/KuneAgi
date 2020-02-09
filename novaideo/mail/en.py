@@ -29,8 +29,8 @@ In order to validate your invitation, you must click on the following link {invi
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 PRESENTATION_IDEA_SUBJECT = u"""Presentation of the idea "{subject_title}"""
 
 
@@ -53,8 +53,8 @@ Share your ideas with us by connecting to the {login_url} address!
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 PRESENTATION_PROPOSAL_SUBJECT = u"""Presentation of the proposal "{subject_title}"""
 
 
@@ -65,8 +65,8 @@ Dear,
 
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 PRESENTATION_AMENDMENT_MESSAGE = u"""
 Dear,
 
@@ -75,8 +75,8 @@ Dear,
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 PRESENTATION_AMENDMENT_SUBJECT = u"""« {subject_title} »"""
 
 
@@ -133,12 +133,12 @@ ALERT_SUBJECT = u"""End of the improvement cycle of the proposal "{subject_title
 ALERT_MESSAGE = u"""
 Dear {recipient_first_name},
 
-While the improvement cycle is finished, no improvement was brought to the proposal "{subject_title}", which can be accessed at {subject_url}. You will need to vote on whether you want to submit the proposal as it is, or to start again a new improvement cycle.  
+While the improvement cycle is finished, no improvement was brought to the proposal "{subject_title}", which can be accessed at {subject_url}. You will need to vote on whether you want to submit the proposal as it is, or to start again a new improvement cycle.
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 ALERT_END_SUBJECT = u"""Last improvements before the end of the end of the improvement cycle of the proposal "{subject_title}"""
 
 ALERT_END_MESSAGE = u"""
@@ -148,8 +148,8 @@ The improvement cycle of the proposal "{subject_title}", which can be accessed a
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 RESULT_VOTE_AMENDMENT_SUBJECT = u"""The results of the vote on the amendements related to the proposal "{subject_title}"""
 
 RESULT_VOTE_AMENDMENT_MESSAGE = u"""
@@ -160,8 +160,8 @@ Dear {recipient_first_name},
 </div>
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 PUBLISHPROPOSAL_SUBJECT = u"""Decision to submit the proposal "{subject_title}" to the assessment of the members of the platform"""
 
 PUBLISHPROPOSAL_MESSAGE = u"""
@@ -175,8 +175,8 @@ Every member of the platform can now suppport or oppose the proposal.
 
 # Bogue dans la version FR: le "à l'appréciation des membres de la plateforme" est de trop
 # J'ai repris la formulation de l'état "En attente d'atteinte du quorum" plutôt que "Ouverte à un groupe de travail"
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 SYSTEM_CLOSE_PROPOSAL_SUBJECT = u"""Decision to close the proposal "{subject_title}"""
 
 SYSTEM_CLOSE_PROPOSAL_MESSAGE = u"""
@@ -190,7 +190,7 @@ For this reason, the working group has been dissolved, and the proposal is now b
 
 # La durée de 24 heures pour voter est-elle inscrite en dur dans le code? Si c'est le cas, c'est beaucoup trop court
 # ou alors cela demanderait à être paramétré par l'administrateur ou par les membres du groupe eux-mêmes sur des durées
-# plus longues. La décision par défaut en l'absence de vote exprimé ne suffit pas: elle ouvre la voie à une décision 
+# plus longues. La décision par défaut en l'absence de vote exprimé ne suffit pas: elle ouvre la voie à une décision
 # unilatérale d'un seul participant.
 VOTINGPUBLICATION_SUBJECT = u"""Start of the vote to improve the proposal "{subject_title}" or to submit it to the assessment of the members of the platform"""
 
@@ -203,7 +203,7 @@ You have 24 hours to vote. After this period of time, the ballots will be counte
 
 """ + PORTAL_SIGNATURE
 
-#Ici, il faudrait donner la date de fin du vote
+# Ici, il faudrait donner la date de fin du vote
 VOTINGAMENDMENTS_SUBJECT = u"""Start of the votes on the amendments to the proposal "{subject_title}"""
 
 VOTINGAMENDMENTS_MESSAGE = u"""
@@ -213,8 +213,8 @@ The votes on the amendments to the proposal "{subject_title}", which can be acce
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 WITHDRAW_SUBJECT = u"""Withdrawal from the waiting list of the working group related to the proposal "{subject_title}"""
 
 WITHDRAW_MESSAGE = u"""
@@ -248,12 +248,12 @@ As a participant in the working group, you can improve the proposal, and at the 
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 PARTICIPATE_SUB_SUBJECT = u"""Your request to participate in the working group related to the proposal "{subject_title} is being submitted to the participants in the group"""
 
-#Dans le message en Français, il est fait état de "vérification": cela me paraît être un copier-coller rapide. 
-#Je proposerais "inclusion dans le groupe"
+# Dans le message en Français, il est fait état de "vérification": cela me paraît être un copier-coller rapide.
+# Je proposerais "inclusion dans le groupe"
 PARTICIPATE_SUB_MESSAGE = u"""
 
 Dear {recipient_first_name},
@@ -264,15 +264,15 @@ At each request to participate, the participants in the groupe decide upon the a
 
 The decision process lasts {duration} day(s). On {date_end_vote} at the latest, the ballot on including you or not in the group will be closed, and you will be informed of the result.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-#Dans le texte en Français, on dit "Vous pourrez à tout moment le rejoindre de nouveau"
-#Je préférerais: "Vous pourrez à tout moment demander de nouveau à le rejoindre"
+# Dans le texte en Français, on dit "Vous pourrez à tout moment le rejoindre de nouveau"
+# Je préférerais: "Vous pourrez à tout moment demander de nouveau à le rejoindre"
 
-#Le chiffre d'un maximum de cinq groupes de travail est inscrit en dur dans le code, alors que c'est un
-#paramètre défini par l'administrateur
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# Le chiffre d'un maximum de cinq groupes de travail est inscrit en dur dans le code, alors que c'est un
+# paramètre défini par l'administrateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 RESIGN_SUBJECT = u"""Your departure from the working group related to the proposal "{subject_title}"""
 
 RESIGN_MESSAGE = u"""
@@ -286,8 +286,8 @@ At any time, you can request again to participate in it, if however you are not 
 
 # J'ai introduit l'idée qu'une nouvelle candidature à ce même groupe n'est possible au plus tôt qu'à une date donnée
 # pour suivre la logique du ticket "Durée de validité des décisions" - mais il faut écrire le code pour la #DATE
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 EXCLUDE_SUBJECT = u"""Exclusion from working group related to the proposal "{subject_title}"""
 
 EXCLUDE_MESSAGE = u"""
@@ -313,7 +313,7 @@ Dear {recipient_first_name},
 
 You are invited to vote on this exlcusion request. To do so, you just need to connect to the platform at the following address {subject_url}, and to vote on the request to exclude {user_first_name} {user_last_name} out of the Working Group related to the proposal "{subject_title}".
 
-The ballot process lasts {duration} day(s). After the {date_end_vote}, the ballot process will be closed, and your vote willl not be taken into account. 
+The ballot process lasts {duration} day(s). After the {date_end_vote}, the ballot process will be closed, and your vote willl not be taken into account.
 
 Beware! By default, if no participant has voted at that date on the exclusion of {user_first_name} {user_last_name} out of the Working Group related to the proposal "{subject_title}", {user_first_name} {user_last_name} will be maintainted in the working group. It will not be allowed to request to exclude {user_first_name} {user_last_name} out of the working group before #DATE at the earliest.
 
@@ -325,7 +325,7 @@ NOTING_MEMBER_SUBJECT = u"""You are invited to give a mark to the cooperative be
 NOTING_MEMBER_MESSAGE = u"""
 Dear {recipient_first_name},
 
-{user_title} has just left the working group, because s/he quitted, or because s/he was excluded out of it. 
+{user_title} has just left the working group, because s/he quitted, or because s/he was excluded out of it.
 
 Each time a participant leaves a working group, the platform request the remaining participants in the working group to evaluate the quality of his/her cooperative behaviour, as these remaining participants have been able to assess it in the framework of this group's operations.
 
@@ -343,7 +343,7 @@ NOTING_PARTICIPANT_SUBJECT = u"""You are invited to give a mark to the cooperati
 NOTING_PARTICIPANT_MESSAGE = u"""
 Dear {recipient_first_name},
 
-You have just left the working group related to the proposal {subject_title}, because you quitted it, or because you were excluded out of it. 
+You have just left the working group related to the proposal {subject_title}, because you quitted it, or because you were excluded out of it.
 
 Each time a member leaves a working group, the platform request this member to evaluate the quality of the cooperative behaviour of the remaining participants in the working group, as this leaving member has been able to assess it in the framework of this group's operations.
 
@@ -362,7 +362,7 @@ NOTING_MEMBERS_MESSAGE = u"""
 Dear {recipient_first_name},
 
 
-The working group related to the proposal {subject_title} has just published it, and submitted it to the assessment of the other members of the platform. It has thus finished its work. It is dissolved, and its members can dedicate themselves to other proposals. 
+The working group related to the proposal {subject_title} has just published it, and submitted it to the assessment of the other members of the platform. It has thus finished its work. It is dissolved, and its members can dedicate themselves to other proposals.
 
 Each time a working group ceases its activities, the platform requests each of its former participants to evaluate the quality of the cooperative behaviour of the other former participants in the working group, as s/he has been able to assess it in the framework of this group's operations.
 
@@ -393,8 +393,8 @@ The duration of the vote is {duration} day(s). After the {date_end_vote}, the ba
 
 # Le chiffre de 12 comme étant le nombre maximal de participants dans le groupe de travail est inscrit en dur dans le code
 # C'est en réalité un paramètre de l'application
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 WATINGLIST_SUBJECT = u"""Registration in the waiting list of the working group related to the proposal "{subject_title}"""
 
 WATINGLIST_MESSAGE = u"""
@@ -406,8 +406,8 @@ You are therefore on the waiting list of this working group, and will automatica
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 NEWCONTENT_SUBJECT = u"""{subject_type} "{subject_title}", which contains a keyword among your topics of interest, has just been published."""
 
 NEWCONTENT_MESSAGE = u"""
@@ -417,8 +417,8 @@ Dear {recipient_first_name},
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 CONTENTMODIFIEF_SUBJECT = u"""{subject_type} "subject_title}", which is among your favourites, has changed its status"""
 
 CONTENTMODIFIEF_MESSAGE = u"""
@@ -428,8 +428,8 @@ Dear {recipient_first_name},
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 ARCHIVEIDEA_SUBJECT = u"""Decision by the moderators to archive the idea "{subject_title}"""
 
 ARCHIVEIDEA_MESSAGE = u"""
@@ -457,8 +457,8 @@ You can access your content at the following URL {subject_url}.
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 ARCHIVEPROPOSAL_SUBJECT = u"""Decision by the moderators to archive the proposal "{subject_title}"""
 
 ARCHIVEPROPOSAL_MESSAGE = u"""
@@ -472,8 +472,8 @@ You can access your proposal at the following URL {subject_url}.
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 ALERTOPINION_SUBJECT = u"""Opinion of the Examination Committee on the proposal "{subject_title}"""
 
 ALERTOPINION_MESSAGE = u"""
@@ -483,8 +483,8 @@ The Examination Committee has expressed the following opinion "{opinion}" on the
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 ALERTOPINIONIDEA_SUBJECT = u"""Opinion of an Examiner on the idea "{subject_title}"""
 
 ALERTOPINIONIDEA_MESSAGE = u"""
@@ -494,8 +494,8 @@ An Examiner has expressed the following opinion "{opinion}" on the idea "{subjec
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 PUBLISHEDIDEA_SUBJECT = u"""Decision by the moderators to publish the idea "{subject_title}"""
 
 PUBLISHEDIDEA_MESSAGE = u"""
@@ -506,7 +506,7 @@ The idea "{subject_title}", which is accessible at the URL {subject_url}, has ju
 """ + PORTAL_SIGNATURE
 
 
-#J'ai introduit l'idée de quorum pour le groupe de travail
+# J'ai introduit l'idée de quorum pour le groupe de travail
 PUBLISHEDPROPOSAL_SUBJECT = u"""Decision by the moderators to publish the proposal "{subject_title}"""
 
 PUBLISHEDPROPOSAL_MESSAGE = u"""
@@ -516,8 +516,8 @@ The proposal "{subject_title}", which can be accessed at {subject_url}, has just
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 PROPOSALREMOVED_SUBJECT = u"""Suppression of proposal "{subject_title}"""
 
 PROPOSALREMOVED_MESSAGE = u"""
@@ -529,8 +529,8 @@ The proposal "{subject_title}" has just been suppressed by the moderators for th
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 REFUSE_INVITATION_SUBJECT = u"""{user_first_name} {user_last_name} has refused to join the platform {novaideo_title}"""
 
 REFUSE_INVITATION_MESSAGE = u"""
@@ -540,8 +540,8 @@ We inform you that {user_first_name} {user_last_name} has refused your invitatio
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 ACCEPT_INVITATION_SUBJECT = u"""{user_first_name} {user_last_name} has accepted to join the platform {novaideo_title}"""
 
 ACCEPT_INVITATION_MESSAGE = u"""
@@ -551,8 +551,8 @@ We inform you that {user_first_name} {user_last_name} has accepted your invitati
 
 """ + PORTAL_SIGNATURE
 
-#Cette URL est-t-elle permanente, ou sa durée de validité est-elle limitée ?  
-#Si la durée de validité est limitée, il serait important d'indiquer date de fin de validité dans le message.
+# Cette URL est-t-elle permanente, ou sa durée de validité est-elle limitée ?
+# Si la durée de validité est limitée, il serait important d'indiquer date de fin de validité dans le message.
 RESETPW_SUBJECT = u"""Your new password on the platform {novaideo_title}"""
 
 RESETPW_MESSAGE = u"""
@@ -575,7 +575,7 @@ In order to finalise your registration, you must now click on the following link
 
 We are happy to count you among our members. We hope that your participation will be for you a positive and rewarding experience, in a fully democractic framework. Welcome!
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
 
 PREREGISTRATION_MOD_SUBJECT = u"""Your registration on the {novaideo_title} on-line democracy platfom"""
@@ -592,9 +592,9 @@ YIn order to finalise your registration, you must now click on the following lin
 
 We are happy to count you among our members. We hope that your participation will be for you a positive and rewarding experience, in a fully democractic framework. Welcome!
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-#Il faudra compléter avec le lieu de naissance
+# Il faudra compléter avec le lieu de naissance
 ADMIN_PREREGISTRATION_SUBJECT = u"""Please contribute to verify a new registration on the {novaideo_title} on-line democracy platfom"""
 
 
@@ -616,10 +616,11 @@ The Identity Data received from the person upon his/her registration is the foll
   Given name(s): {subject_first_name}
   Date of birth: {birth_date}
   Place of birth: {birthplace}
+  Citizenship: {citizenship}
 
 The Verification process lasts {duration} day(s), i.e. it must be completed on or before {date_end_vote}. Beyond this date, the Verification process will be closed, and your decision will not be taken into account. By default, if no Verifier has voted upon this date, the registration will be refused.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
 
 ADMIN_CONTENT_SUBJECT = u"""Invitation to moderate a new content on the {novaideo_title} on-line democracy platform"""
@@ -637,7 +638,7 @@ In order for you to exert your function as Moderator on this new content, you ju
 
 The Moderation process lasts {duration} day(s), i.e. it must be completed on or before {date_end_vote}. Beyond this date, the Moderation process will be closed, and your assessment will not be taken into account. By default, if no Moderator has voted upon this date, the new content will be accepted.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
 
 ADMIN_REPORT_SUBJECT = u"""Invitation to moderate a content signalled as potentially non-compliant with the Moderation Rules on the {novaideo_title} on-line democracy platform"""
@@ -655,10 +656,10 @@ In order for you to exert your function as Moderator on this signalled content, 
 
 The Moderation process lasts {duration} day(s), i.e. it must be completed on or before {date_end_vote}. Beyond this date, the Moderation process will be closed, and your assessment will not be taken into account. By default, if no Moderator has voted upon this date, the signalled content will be accepted.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 AUTHOR_REPORT_SUBJECT = u"""Your content has been signalled as potentially non-compliant with the Moderation Rules on the {novaideo_title} on-line democracy platform"""
 
 AUTHOR_REPORT_MESSAGE = u"""
@@ -671,7 +672,7 @@ Each time a content is signalled as potentially non-compliant with the Moderatio
 
 The Moderation process lasts {duration} day(s). On {date_end_vote} at the latest, the Moderation process will be closed, and you will be informed of its result.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
 
 ADMIN_PREREGISTRATION_REF_SUBJECT = u"""Your registration on the {novaideo_title} on-line democracy platform has been refused"""
@@ -682,11 +683,11 @@ Dear {recipient_first_name},
 
 The Verifiers that had been randomly selected upon your registration have NOT validated the adequacy between the Identity Data that you had provided on the platform and those on the official identity documents that you had sent them a copy of.
 
-We therefore regret to inform you that your registration on the {novaideo_title} has been refused. 
+We therefore regret to inform you that your registration on the {novaideo_title} has been refused.
 
-We must be very rigorous in this verification. If we allowed even minor discrepancies between the two, a single natural person could register several times, each time with small variations in his/her Identity Data, open several accounts, and vote several times. This would breach the democratic principle "one person = one vote". 
+We must be very rigorous in this verification. If we allowed even minor discrepancies between the two, a single natural person could register several times, each time with small variations in his/her Identity Data, open several accounts, and vote several times. This would breach the democratic principle "one person = one vote".
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
 ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""Your registration on the {novaideo_title} on-line democracy platform is being processed"""
 
@@ -698,29 +699,29 @@ Your registration on the {novaideo_title} on-line democracy platform is now subj
 
 At each new registration on the {novaideo_title} platfom, the system randomly selects three existing members (the Verifiers of this specific registration), and requests them to verify the identity of the newly registered person. Indeed, it is important to check that each member on the platform is related to one natural person, and to one only. Thereby, we avoid that a given natural person vote several times on the platform under several different pseudonyms.
 
-In order for your identity to be verified, we kindly request you to send to each of the following persons, in separate e-mails, on or before the {date_end_vote}, a scanned copy of an official identity document. This copy must display clearly your family name(s), your given name(s), your birth date and your birth place, written in the Latin alphabet. Beyond the {date_end_vote}, if the Verifiers have not received a copy of  your official identity document, they are instructed to refuse your registration. 
+In order for your identity to be verified, we kindly request you to send to each of the following persons, in separate e-mails, on or before the {date_end_vote}, a scanned copy of an official identity document. This copy must display clearly your family name(s), your given name(s), your birth date and your birth place, written in the Latin alphabet. Beyond the {date_end_vote}, if the Verifiers have not received a copy of  your official identity document, they are instructed to refuse your registration.
 
 The Verifiers assigned to the verification of your identity are:
 {moderators}
 
 You will receive the result of this identity verification process at the end of the time given for the Verifiers to process this verification, i.e. on {date_end_vote} at the latest.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 ADMIN_CONTENT_SUB_SUBJECT = u"""Your content on the {novaideo_title} on-line democracy platform is being moderated"""
 
 ADMIN_CONTENT_SUB_MESSAGE = u"""
 Dear {recipient_first_name},
 
-Your content has been submitted to Moderation.  
+Your content has been submitted to Moderation.
 
 Each time a new content (idea or proposal) is added to the {novaideo_title} platform, the system randomly selects three members, and requests them to verify the compliance of the content with the Moderation Rules {url_moderation_rules}. By randomly distributing the Moderation, we avoid that this important control function be concentrated in a few hands. We contribute thereby to the democratic nature of the platform.
 
 The Moderation process lasts {duration} day(s). On {date_end_vote} at the latest, the Moderation process will be closed, and you will be informed of its result.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
 
 MODERATOR_DATA = u"""
@@ -728,8 +729,8 @@ Verifier {index}:
   Email: {subject_email}
 """
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 ALERTCOMMENT_SUBJECT = u"""New comment on {subject_type} "{subject_title}"""
 
 
@@ -742,7 +743,7 @@ A new comment has been added on the {subject_type} "{subject_title}".
 
 You can access it at the following URL {comment_url} and answer it.
 
-"""+ PORTAL_SIGNATURE
+""" + PORTAL_SIGNATURE
 
 ALERTANSWER_SUBJECT = u"""New answer given to {subject_type} "{subject_title}"""
 
@@ -757,9 +758,9 @@ You can access it at the following URL {comment_url} and answer it.
 
 """ + PORTAL_SIGNATURE
 
-#BUG POTENTIEL: s'il s'agit d'une discussion avec une personne, pourquoi le contenu est-il désigné comme {subject_title}?
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# BUG POTENTIEL: s'il s'agit d'une discussion avec une personne, pourquoi le contenu est-il désigné comme {subject_title}?
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 ALERTDISCUSS_SUBJECT = u"""New message added to your discussion with "subject_title}"""
 
 
@@ -774,8 +775,8 @@ You can access it at the following URL {comment_url} and answer it.
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 ALERTRESPONS_SUBJECT = u"""A person has given an answer to a comment on the {subject_type} "{subject_title}"""
 
 ALERTRESPONS_MESSAGE = u"""
@@ -787,8 +788,8 @@ A person has given an answer to a comment on the {subject_type} "{subject_title}
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 NEWSLETTER_SUBSCRIPTION_SUBJECT = u"""Subscription to the newsletter"""
 
 NEWSLETTER_SUBSCRIPTION_MESSAGE = u"""
@@ -798,8 +799,8 @@ Your subscription to the newsletter {newsletter_title} is now confirmed.
 
 """ + PORTAL_SIGNATURE
 
-# INFORMATION SANS QU'UNE ACTION SOIT REQUISE: 
-#Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
+# INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
+# Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 NEWSLETTER_UNSUBSCRIPTION_SUBJECT = u"""Unsubscription from the newsletter"""
 
 NEWSLETTER_UNSUBSCRIPTION_MESSAGE = u"""
@@ -831,7 +832,7 @@ You can access your challenge at the following URL {subject_url}.
 
 """ + PORTAL_SIGNATURE
 
-PRESENTATION_CHALLENGE_SUBJECT = u"""Presentation of the challenge "{subject_title}""" 
+PRESENTATION_CHALLENGE_SUBJECT = u"""Presentation of the challenge "{subject_title}"""
 
 PRESENTATION_CHALLENGE_MESSAGE = u"""
 Dear,
@@ -884,252 +885,252 @@ Today, your Identity Data (Given Names, Family Names, date and location of birth
 mail_locale = 'en'
 
 add_mail_template('invitation', {'locale': mail_locale,
-                   'subject': INVITATION_SUBJECT,
-                   'template': INVITATION_MESSAGE})
+                                 'subject': INVITATION_SUBJECT,
+                                 'template': INVITATION_MESSAGE})
 
 add_mail_template('refuse_invitation', {'locale': mail_locale,
-                   'subject': REFUSE_INVITATION_SUBJECT,
-                   'template': REFUSE_INVITATION_MESSAGE})
+                                        'subject': REFUSE_INVITATION_SUBJECT,
+                                        'template': REFUSE_INVITATION_MESSAGE})
 
 add_mail_template('accept_invitation', {'locale': mail_locale,
-                   'subject': ACCEPT_INVITATION_SUBJECT,
-                   'template': ACCEPT_INVITATION_MESSAGE})
+                                        'subject': ACCEPT_INVITATION_SUBJECT,
+                                        'template': ACCEPT_INVITATION_MESSAGE})
 
 add_mail_template('reset_password', {'locale': mail_locale,
-                   'subject': RESETPW_SUBJECT,
-                   'template': RESETPW_MESSAGE})
+                                     'subject': RESETPW_SUBJECT,
+                                     'template': RESETPW_MESSAGE})
 
 add_mail_template('registration_confiramtion', {'locale': mail_locale,
-                   'subject': CONFIRMATION_SUBJECT,
-                   'template': CONFIRMATION_MESSAGE})
+                                                'subject': CONFIRMATION_SUBJECT,
+                                                'template': CONFIRMATION_MESSAGE})
 
 add_mail_template('preregistration', {'locale': mail_locale,
-                   'subject': PREREGISTRATION_SUBJECT,
-                   'template': PREREGISTRATION_MESSAGE})
+                                      'subject': PREREGISTRATION_SUBJECT,
+                                      'template': PREREGISTRATION_MESSAGE})
 
 
 add_mail_template('presentation_idea', {'locale': mail_locale,
-                    'subject': PRESENTATION_IDEA_SUBJECT,
-                   'template': PRESENTATION_IDEA_MESSAGE})
+                                        'subject': PRESENTATION_IDEA_SUBJECT,
+                                        'template': PRESENTATION_IDEA_MESSAGE})
 
 
 add_mail_template('presentation_proposal', {'locale': mail_locale,
-                   'subject': PRESENTATION_PROPOSAL_SUBJECT,
-                   'template': PRESENTATION_PROPOSAL_MESSAGE})
+                                            'subject': PRESENTATION_PROPOSAL_SUBJECT,
+                                            'template': PRESENTATION_PROPOSAL_MESSAGE})
 
 add_mail_template('presentation_amendment', {'locale': mail_locale,
-                   'subject': PRESENTATION_AMENDMENT_SUBJECT,
-                   'template': PRESENTATION_AMENDMENT_MESSAGE})
+                                             'subject': PRESENTATION_AMENDMENT_SUBJECT,
+                                             'template': PRESENTATION_AMENDMENT_MESSAGE})
 
 add_mail_template('first_start_work', {'locale': mail_locale,
-                   'subject': AMENDABLE_FIRST_SUBJECT,
-                   'template': AMENDABLE_FIRST_MESSAGE})
+                                       'subject': AMENDABLE_FIRST_SUBJECT,
+                                       'template': AMENDABLE_FIRST_MESSAGE})
 
 add_mail_template('start_work', {'locale': mail_locale,
-                   'subject': AMENDABLE_SUBJECT,
-                   'template': AMENDABLE_MESSAGE})
+                                 'subject': AMENDABLE_SUBJECT,
+                                 'template': AMENDABLE_MESSAGE})
 
 add_mail_template('alert_amendment', {'locale': mail_locale,
-                   'subject': ALERT_SUBJECT,
-                   'template': ALERT_MESSAGE})
+                                      'subject': ALERT_SUBJECT,
+                                      'template': ALERT_MESSAGE})
 
 add_mail_template('alert_end', {'locale': mail_locale,
-                   'subject': ALERT_END_SUBJECT,
-                   'template': ALERT_END_MESSAGE})
+                                'subject': ALERT_END_SUBJECT,
+                                'template': ALERT_END_MESSAGE})
 
 add_mail_template('vote_amendment_result', {'locale': mail_locale,
-                   'subject': RESULT_VOTE_AMENDMENT_SUBJECT,
-                   'template': RESULT_VOTE_AMENDMENT_MESSAGE})
+                                            'subject': RESULT_VOTE_AMENDMENT_SUBJECT,
+                                            'template': RESULT_VOTE_AMENDMENT_MESSAGE})
 
 add_mail_template('publish_proposal', {'locale': mail_locale,
-                    'subject': PUBLISHPROPOSAL_SUBJECT,
-                   'template': PUBLISHPROPOSAL_MESSAGE})
+                                       'subject': PUBLISHPROPOSAL_SUBJECT,
+                                       'template': PUBLISHPROPOSAL_MESSAGE})
 
 add_mail_template('start_vote_publishing', {'locale': mail_locale,
-                   'subject': VOTINGPUBLICATION_SUBJECT,
-                   'template': VOTINGPUBLICATION_MESSAGE})
+                                            'subject': VOTINGPUBLICATION_SUBJECT,
+                                            'template': VOTINGPUBLICATION_MESSAGE})
 
 add_mail_template('start_vote_amendments', {'locale': mail_locale,
-                   'subject': VOTINGAMENDMENTS_SUBJECT,
-                   'template': VOTINGAMENDMENTS_MESSAGE})
+                                            'subject': VOTINGAMENDMENTS_SUBJECT,
+                                            'template': VOTINGAMENDMENTS_MESSAGE})
 
 add_mail_template('withdeaw', {'locale': mail_locale,
-                   'subject': WITHDRAW_SUBJECT,
-                   'template': WITHDRAW_MESSAGE})
+                               'subject': WITHDRAW_SUBJECT,
+                               'template': WITHDRAW_MESSAGE})
 
 add_mail_template('wg_wating_list_participation', {'locale': mail_locale,
-                   'subject': PARTICIPATE_WL_SUBJECT,
-                   'template': PARTICIPATE_WL_MESSAGE})
+                                                   'subject': PARTICIPATE_WL_SUBJECT,
+                                                   'template': PARTICIPATE_WL_MESSAGE})
 
 add_mail_template('wg_participation', {'locale': mail_locale,
-                   'subject': PARTICIPATE_SUBJECT,
-                   'template': PARTICIPATE_MESSAGE})
+                                       'subject': PARTICIPATE_SUBJECT,
+                                       'template': PARTICIPATE_MESSAGE})
 
 add_mail_template('wg_resign', {'locale': mail_locale,
-                   'subject': RESIGN_SUBJECT,
-                  'template': RESIGN_MESSAGE})
+                                'subject': RESIGN_SUBJECT,
+                                'template': RESIGN_MESSAGE})
 
 add_mail_template('wating_list', {'locale': mail_locale,
-                  'subject': WATINGLIST_SUBJECT,
-                  'template': WATINGLIST_MESSAGE})
+                                  'subject': WATINGLIST_SUBJECT,
+                                  'template': WATINGLIST_MESSAGE})
 
 add_mail_template('alert_new_content', {'locale': mail_locale,
-                  'subject': NEWCONTENT_SUBJECT,
-                  'template': NEWCONTENT_MESSAGE})
+                                        'subject': NEWCONTENT_SUBJECT,
+                                        'template': NEWCONTENT_MESSAGE})
 
 add_mail_template('alert_content_modified', {'locale': mail_locale,
-                  'subject': CONTENTMODIFIEF_SUBJECT,
-                  'template': CONTENTMODIFIEF_MESSAGE})
+                                             'subject': CONTENTMODIFIEF_SUBJECT,
+                                             'template': CONTENTMODIFIEF_MESSAGE})
 
 add_mail_template('archive_idea_decision', {'locale': mail_locale,
-                  'subject': ARCHIVEIDEA_SUBJECT,
-                  'template': ARCHIVEIDEA_MESSAGE})
+                                            'subject': ARCHIVEIDEA_SUBJECT,
+                                            'template': ARCHIVEIDEA_MESSAGE})
 
 add_mail_template('opinion_proposal', {'locale': mail_locale,
-                  'subject': ALERTOPINION_SUBJECT,
-                  'template': ALERTOPINION_MESSAGE})
+                                       'subject': ALERTOPINION_SUBJECT,
+                                       'template': ALERTOPINION_MESSAGE})
 
 add_mail_template('opinion_idea', {'locale': mail_locale,
-                  'subject': ALERTOPINIONIDEA_SUBJECT,
-                  'template': ALERTOPINIONIDEA_MESSAGE})
+                                   'subject': ALERTOPINIONIDEA_SUBJECT,
+                                   'template': ALERTOPINIONIDEA_MESSAGE})
 
 add_mail_template('publish_idea_decision', {'locale': mail_locale,
-                  'subject': PUBLISHEDIDEA_SUBJECT,
-                  'template': PUBLISHEDIDEA_MESSAGE})
+                                            'subject': PUBLISHEDIDEA_SUBJECT,
+                                            'template': PUBLISHEDIDEA_MESSAGE})
 
 add_mail_template('archive_proposal_decision', {'locale': mail_locale,
-                  'subject': ARCHIVEPROPOSAL_SUBJECT,
-                  'template': ARCHIVEPROPOSAL_MESSAGE})
+                                                'subject': ARCHIVEPROPOSAL_SUBJECT,
+                                                'template': ARCHIVEPROPOSAL_MESSAGE})
 
 add_mail_template('publish_proposal_decision', {'locale': mail_locale,
-                  'subject': PUBLISHEDPROPOSAL_SUBJECT,
-                  'template': PUBLISHEDPROPOSAL_MESSAGE})
+                                                'subject': PUBLISHEDPROPOSAL_SUBJECT,
+                                                'template': PUBLISHEDPROPOSAL_MESSAGE})
 
 add_mail_template('delete_proposal', {'locale': mail_locale,
-                  'subject': PROPOSALREMOVED_SUBJECT,
-                  'template': PROPOSALREMOVED_MESSAGE})
+                                      'subject': PROPOSALREMOVED_SUBJECT,
+                                      'template': PROPOSALREMOVED_MESSAGE})
 
 add_mail_template('alert_comment', {'locale': mail_locale,
-                  'subject': ALERTCOMMENT_SUBJECT,
-                  'template': ALERTCOMMENT_MESSAGE})
+                                    'subject': ALERTCOMMENT_SUBJECT,
+                                    'template': ALERTCOMMENT_MESSAGE})
 
 add_mail_template('alert_discuss', {'locale': mail_locale,
-                   'subject': ALERTDISCUSS_SUBJECT,
-                   'template': ALERTDISCUSS_MESSAGE})
+                                    'subject': ALERTDISCUSS_SUBJECT,
+                                    'template': ALERTDISCUSS_MESSAGE})
 
 add_mail_template('alert_respons', {'locale': mail_locale,
-                   'subject': ALERTRESPONS_SUBJECT,
-                   'template': ALERTRESPONS_MESSAGE})
+                                    'subject': ALERTRESPONS_SUBJECT,
+                                    'template': ALERTRESPONS_MESSAGE})
 
 add_mail_template('newsletter_subscription', {'locale': mail_locale,
-                   'subject': NEWSLETTER_SUBSCRIPTION_SUBJECT,
-                        'template': NEWSLETTER_SUBSCRIPTION_MESSAGE})
+                                              'subject': NEWSLETTER_SUBSCRIPTION_SUBJECT,
+                                              'template': NEWSLETTER_SUBSCRIPTION_MESSAGE})
 
 add_mail_template('newsletter_unsubscription', {'locale': mail_locale,
-                   'subject': NEWSLETTER_UNSUBSCRIPTION_SUBJECT,
-                   'template': NEWSLETTER_UNSUBSCRIPTION_MESSAGE})
+                                                'subject': NEWSLETTER_UNSUBSCRIPTION_SUBJECT,
+                                                'template': NEWSLETTER_UNSUBSCRIPTION_MESSAGE})
 
 add_mail_template('moderate_preregistration', {'locale': mail_locale,
-                   'subject': ADMIN_PREREGISTRATION_SUBJECT,
-                   'template': ADMIN_PREREGISTRATION_MESSAGE})
+                                               'subject': ADMIN_PREREGISTRATION_SUBJECT,
+                                               'template': ADMIN_PREREGISTRATION_MESSAGE})
 
 add_mail_template('moderate_preregistration_refused', {'locale': mail_locale,
-                   'subject': ADMIN_PREREGISTRATION_REF_SUBJECT,
-                   'template': ADMIN_PREREGISTRATION_REF_MESSAGE})
+                                                       'subject': ADMIN_PREREGISTRATION_REF_SUBJECT,
+                                                       'template': ADMIN_PREREGISTRATION_REF_MESSAGE})
 
 add_mail_template('preregistration_submit', {'locale': mail_locale,
-                   'subject': ADMIN_PREREGISTRATION_SUB_SUBJECT,
-                   'template': ADMIN_PREREGISTRATION_SUB_MESSAGE})
+                                             'subject': ADMIN_PREREGISTRATION_SUB_SUBJECT,
+                                             'template': ADMIN_PREREGISTRATION_SUB_MESSAGE})
 
 add_mail_template('close_proposal', {'locale': mail_locale,
-                    'subject': SYSTEM_CLOSE_PROPOSAL_SUBJECT,
-                   'template': SYSTEM_CLOSE_PROPOSAL_MESSAGE})
+                                     'subject': SYSTEM_CLOSE_PROPOSAL_SUBJECT,
+                                     'template': SYSTEM_CLOSE_PROPOSAL_MESSAGE})
 
 
 add_mail_template('presentation_question', {'locale': mail_locale,
-                   'subject': PRESENTATION_QUESTION_SUBJECT,
-                   'template': PRESENTATION_QUESTION_MESSAGE})
+                                            'subject': PRESENTATION_QUESTION_SUBJECT,
+                                            'template': PRESENTATION_QUESTION_MESSAGE})
 
 add_mail_template('presentation_answer', {'locale': mail_locale,
-                   'subject': PRESENTATION_ANSWER_SUBJECT,
-                   'template': PRESENTATION_ANSWER_MESSAGE})
+                                          'subject': PRESENTATION_ANSWER_SUBJECT,
+                                          'template': PRESENTATION_ANSWER_MESSAGE})
 
 add_mail_template('alert_answer', {'locale': mail_locale,
-                   'subject': ALERTANSWER_SUBJECT,
-                   'template': ALERTANSWER_MESSAGE})
+                                   'subject': ALERTANSWER_SUBJECT,
+                                   'template': ALERTANSWER_MESSAGE})
 
 add_mail_template('archive_content_decision', {'locale': mail_locale,
-                   'subject': ARCHIVECONTENT_SUBJECT,
-                   'template': ARCHIVECONTENT_MESSAGE})
+                                               'subject': ARCHIVECONTENT_SUBJECT,
+                                               'template': ARCHIVECONTENT_MESSAGE})
 
 add_mail_template('archive_challenge_decision', {'locale': mail_locale,
-                   'subject': ARCHIVECHALLENGE_SUBJECT,
-                   'template': ARCHIVECHALLENGE_MESSAGE})
+                                                 'subject': ARCHIVECHALLENGE_SUBJECT,
+                                                 'template': ARCHIVECHALLENGE_MESSAGE})
 
 add_mail_template('publish_challenge_decision', {'locale': mail_locale,
-                   'subject': PUBLISHEDCHALLENGE_SUBJECT,
-                   'template': PUBLISHEDCHALLENGE_MESSAGE})
+                                                 'subject': PUBLISHEDCHALLENGE_SUBJECT,
+                                                 'template': PUBLISHEDCHALLENGE_MESSAGE})
 
 add_mail_template('presentation_challenge', {'locale': mail_locale,
-             'subject': PRESENTATION_CHALLENGE_SUBJECT,
-             'template': PRESENTATION_CHALLENGE_MESSAGE})
+                                             'subject': PRESENTATION_CHALLENGE_SUBJECT,
+                                             'template': PRESENTATION_CHALLENGE_MESSAGE})
 
 add_mail_template('preregistration_moderation', {'locale': mail_locale,
-             'subject': PREREGISTRATION_MOD_SUBJECT,
-             'template': PREREGISTRATION_MOD_MESSAGE})
+                                                 'subject': PREREGISTRATION_MOD_SUBJECT,
+                                                 'template': PREREGISTRATION_MOD_MESSAGE})
 
 add_mail_template('wg_exclude', {'locale': mail_locale,
-             'subject': EXCLUDE_SUBJECT,
-             'template': EXCLUDE_MESSAGE})
+                                 'subject': EXCLUDE_SUBJECT,
+                                 'template': EXCLUDE_MESSAGE})
 
 add_mail_template('moderate_content', {'locale': mail_locale,
-             'subject': ADMIN_CONTENT_SUBJECT,
-             'template': ADMIN_CONTENT_MESSAGE})
+                                       'subject': ADMIN_CONTENT_SUBJECT,
+                                       'template': ADMIN_CONTENT_MESSAGE})
 
 add_mail_template('content_submit', {'locale': mail_locale,
-              'subject': ADMIN_CONTENT_SUB_SUBJECT,
-              'template': ADMIN_CONTENT_SUB_MESSAGE})
+                                     'subject': ADMIN_CONTENT_SUB_SUBJECT,
+                                     'template': ADMIN_CONTENT_SUB_MESSAGE})
 
 add_mail_template('moderate_report', {'locale': mail_locale,
-              'subject': ADMIN_REPORT_SUBJECT,
-              'template': ADMIN_REPORT_MESSAGE})
+                                      'subject': ADMIN_REPORT_SUBJECT,
+                                      'template': ADMIN_REPORT_MESSAGE})
 
 add_mail_template('alert_report', {'locale': mail_locale,
-              'subject': AUTHOR_REPORT_SUBJECT,
-              'template': AUTHOR_REPORT_MESSAGE})
+                                   'subject': AUTHOR_REPORT_SUBJECT,
+                                   'template': AUTHOR_REPORT_MESSAGE})
 
 add_mail_template('exclude_participant', {'locale': mail_locale,
-              'subject': EXCLUDE_PARTICIPANT_SUBJECT,
-              'template': EXCLUDE_PARTICIPANT_MESSAGE})
+                                          'subject': EXCLUDE_PARTICIPANT_SUBJECT,
+                                          'template': EXCLUDE_PARTICIPANT_MESSAGE})
 
 add_mail_template('new_participant', {'locale': mail_locale,
-              'subject': NEW_PARTICIPANT_SUBJECT,
-              'template': NEW_PARTICIPANT_MESSAGE})
+                                      'subject': NEW_PARTICIPANT_SUBJECT,
+                                      'template': NEW_PARTICIPANT_MESSAGE})
 
 add_mail_template('participation_submission', {'locale': mail_locale,
-              'subject': PARTICIPATE_SUB_SUBJECT,
-              'template': PARTICIPATE_SUB_MESSAGE})
+                                               'subject': PARTICIPATE_SUB_SUBJECT,
+                                               'template': PARTICIPATE_SUB_MESSAGE})
 
 add_mail_template('member_notation', {'locale': mail_locale,
-              'subject': NOTING_MEMBER_SUBJECT,
-              'template': NOTING_MEMBER_MESSAGE})
+                                      'subject': NOTING_MEMBER_SUBJECT,
+                                      'template': NOTING_MEMBER_MESSAGE})
 
 add_mail_template('member_notation_excluded', {'locale': mail_locale,
-              'subject': NOTING_PARTICIPANT_SUBJECT,
-              'template': NOTING_PARTICIPANT_MESSAGE})
+                                               'subject': NOTING_PARTICIPANT_SUBJECT,
+                                               'template': NOTING_PARTICIPANT_MESSAGE})
 
 add_mail_template('members_notation', {'locale': mail_locale,
-              'subject': NOTING_MEMBERS_SUBJECT,
-              'template': NOTING_MEMBERS_MESSAGE})
+                                       'subject': NOTING_MEMBERS_SUBJECT,
+                                       'template': NOTING_MEMBERS_MESSAGE})
 
 add_mail_template('quit_request', {'locale': mail_locale,
-              'subject': QUIT_REQUEST_SUBJECT,
-              'template': QUIT_REQUEST_MESSAGE})
+                                   'subject': QUIT_REQUEST_SUBJECT,
+                                   'template': QUIT_REQUEST_MESSAGE})
 
 add_mail_template('quit_request_confiramtion', {'locale': mail_locale,
-              'subject': QUIT_REQUEST_CONFIRMATION_SUBJECT,
-              'template': QUIT_REQUEST_CONFIRMATION_MESSAGE})
+                                                'subject': QUIT_REQUEST_CONFIRMATION_SUBJECT,
+                                                'template': QUIT_REQUEST_CONFIRMATION_MESSAGE})
 
 add_mail_template('quit_request_deletion', {'locale': mail_locale,
-              'subject': QUIT_REQUEST_DELETION_SUBJECT,
-              'template': QUIT_REQUEST_DELETION_MESSAGE})
+                                            'subject': QUIT_REQUEST_DELETION_SUBJECT,
+                                            'template': QUIT_REQUEST_DELETION_MESSAGE})

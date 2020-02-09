@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -45,7 +45,7 @@ class Send(Behavior):
         identifier_index = novaideo_catalog['identifier']
         object_provides_index = dace_catalog['object_provides']
         query = object_provides_index.any([IPerson.__identifier__]) &\
-                identifier_index.any([login])
+            identifier_index.any([login])
         users = list(query.execute().all())
         user = users[0] if users else None
         if user is not None:
@@ -53,7 +53,8 @@ class Send(Behavior):
             reset = principals.add_reset(user)
             reseturl = request.resource_url(reset)
             if not user.email:
-                raise ValueError('User does not possess a valid email address.')
+                raise ValueError(
+                    'User does not possess a valid email address.')
 
             root = request.root
             mail_template = root.get_mail_template(
@@ -86,12 +87,12 @@ def login_validator(node, kw):
         identifier_index = novaideo_catalog['identifier']
         object_provides_index = dace_catalog['object_provides']
         query = object_provides_index.any([IPerson.__identifier__]) &\
-                identifier_index.any([value])
+            identifier_index.any([value])
         users = list(query.execute().all())
         user = users[0] if users else None
         if user is None:
             raise colander.Invalid(node, _('No such user ${member}',
-                                            mapping={'member': value}))
+                                           mapping={'member': value}))
 
     return _login_validator
 
@@ -102,7 +103,7 @@ class ResetRequestSchema(Schema):
         colander.String(),
         validator=login_validator,
         title=_('Login (email)')
-        )
+    )
 
 
 class ResetRequestViewStudyReport(BasicView):
@@ -130,7 +131,7 @@ class ResetRequestView(FormView):
     name='resetpassword',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class ResetRequestViewMultipleView(MultipleView):
     title = _('Request password reset')
     name = 'submitidea'
@@ -160,14 +161,14 @@ class ResetSchema(Schema):
         validator=colander.Length(min=3, max=100),
         widget=deform.widget.CheckedPasswordWidget(),
         title=_("New Password")
-        )
+    )
 
 
 @view_config(
     name='',
     context=IPasswordReset,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class ResetView(FormView):
     title = _('Reset Password')
     schema = ResetSchema()

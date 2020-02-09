@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -35,7 +35,7 @@ from novaideo.views.filter import get_entities_by_title
 
 
 INVITATION_ROLES = {
-    'moderator': 'Moderator', 
+    'moderator': 'Moderator',
     'member': 'Member',
     'examiner': 'Examiner'
 }
@@ -50,7 +50,7 @@ def uploaduser_processsecurity_validation(process, context):
 
 
 class UploadUsers(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'admin-action'
     style_picto = 'glyphicon glyphicon-bullhorn'
     style_order = 5.2
@@ -86,7 +86,8 @@ class UploadUsers(InfiniteCardinality):
                 query = identifier_index.any([email])
                 users = list(query.execute().all())
                 if not users:
-                    organization_title = invitation_data.pop('organization', None)
+                    organization_title = invitation_data.pop(
+                        'organization', None)
                     organizations = list(get_entities_by_title(
                         [IOrganization], organization_title).all())
                     organization = organizations[0] if organizations else None
@@ -119,7 +120,8 @@ class UploadUsers(InfiniteCardinality):
                     subject = mail_template['subject'].format(
                         novaideo_title=novaideo_title
                     )
-                    email_data = get_user_data(invitation, 'recipient', request)
+                    email_data = get_user_data(
+                        invitation, 'recipient', request)
                     email_data.update(get_entity_data(
                         invitation, 'invitation', request))
                     message = mail_template['template'].format(
@@ -137,7 +139,7 @@ class UploadUsers(InfiniteCardinality):
 
 def inviteuser_roles_validation(process, context):
     return has_role(role=('Moderator',)) or \
-           has_role(role=('OrganizationResponsible',))
+        has_role(role=('OrganizationResponsible',))
 
 
 def inviteuser_processsecurity_validation(process, context):
@@ -205,11 +207,11 @@ def get_access_key(obj):
 
 def seeinv_processsecurity_validation(process, context):
     organization = context.organization
-    return (organization and \
+    return (organization and
             has_role(role=('OrganizationResponsible',
                            organization))) or \
-            has_any_roles(roles=('Moderator',
-                                'Anonymous'))
+        has_any_roles(roles=('Moderator',
+                             'Anonymous'))
 
 
 @access_action(access_key=get_access_key)
@@ -257,7 +259,7 @@ def edit_roles_validation(process, context):
 
 def edit_processsecurity_validation(process, context):
     return global_user_processsecurity() and \
-           context.invitations
+        context.invitations
 
 
 class EditInvitations(InfiniteCardinality):
@@ -278,10 +280,10 @@ class EditInvitations(InfiniteCardinality):
 
 
 def editinv_roles_validation(process, context):
-    return (context.organization and \
+    return (context.organization and
             has_role(role=('OrganizationResponsible',
                            context.organization))) or \
-            has_role(role=('Moderator',))
+        has_role(role=('Moderator',))
 
 
 def editinv_processsecurity_validation(process, context):
@@ -289,7 +291,7 @@ def editinv_processsecurity_validation(process, context):
 
 
 class EditInvitation(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
     style_picto = 'glyphicon glyphicon-pencil'
@@ -311,7 +313,7 @@ class EditInvitation(InfiniteCardinality):
 
 def accept_roles_validation(process, context):
     return has_role(role=('Anonymous',)) and \
-           not has_role(role=('SiteAdmin',))
+        not has_role(role=('SiteAdmin',))
 
 
 def accept_state_validation(process, context):
@@ -319,7 +321,7 @@ def accept_state_validation(process, context):
 
 
 class AcceptInvitation(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
     context = IInvitation
@@ -337,6 +339,7 @@ class AcceptInvitation(InfiniteCardinality):
                                          'last_name',
                                          'birth_date',
                                          'birthplace',
+                                         'citizenship',
                                          'email',
                                          'organization']))
         datas['pseudonym'] = appstruct.get('pseudonym', None)
@@ -355,7 +358,7 @@ class AcceptInvitation(InfiniteCardinality):
         if getattr(context, 'ismanager', False) and \
            context.organization:
             grant_roles(person, (('OrganizationResponsible',
-                                   context.organization),))
+                                  context.organization),))
 
         person.state.append('active')
         grant_roles(person, roles)
@@ -401,7 +404,7 @@ class AcceptInvitation(InfiniteCardinality):
 
 def refuse_roles_validation(process, context):
     return has_role(role=('Anonymous',)) and \
-           not has_role(role=('SiteAdmin',))
+        not has_role(role=('SiteAdmin',))
 
 
 def refuse_state_validation(process, context):
@@ -409,7 +412,7 @@ def refuse_state_validation(process, context):
 
 
 class RefuseInvitation(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
     style_interaction_type = 'direct'
@@ -454,10 +457,10 @@ class RefuseInvitation(InfiniteCardinality):
 
 
 def remove_roles_validation(process, context):
-    return (context.organization and \
+    return (context.organization and
             has_role(role=('OrganizationResponsible',
                            context.organization))) or \
-            has_role(role=('Moderator',))
+        has_role(role=('Moderator',))
 
 
 def remove_processsecurity_validation(process, context):
@@ -465,7 +468,7 @@ def remove_processsecurity_validation(process, context):
 
 
 class RemoveInvitation(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
     style_interaction_type = 'direct'
@@ -485,10 +488,10 @@ class RemoveInvitation(InfiniteCardinality):
 
 
 def reinvite_roles_validation(process, context):
-    return (context.organization and \
+    return (context.organization and
             has_role(role=('OrganizationResponsible',
                            context.organization))) or \
-            has_role(role=('Moderator',))
+        has_role(role=('Moderator',))
 
 
 def reinvite_processsecurity_validation(process, context):
@@ -500,7 +503,7 @@ def reinvite_state_validation(process, context):
 
 
 class ReinviteUser(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
     style_interaction_type = 'direct'
@@ -536,10 +539,10 @@ class ReinviteUser(InfiniteCardinality):
 
 
 def remind_roles_validation(process, context):
-    return (context.organization and \
+    return (context.organization and
             has_role(role=('OrganizationResponsible',
                            context.organization))) or \
-            has_role(role=('Moderator',))
+        has_role(role=('Moderator',))
 
 
 def remind_processsecurity_validation(process, context):
@@ -551,7 +554,7 @@ def remind_state_validation(process, context):
 
 
 class RemindInvitation(InfiniteCardinality):
-    style = 'button' #TODO add style abstract class
+    style = 'button'  # TODO add style abstract class
     style_descriminator = 'primary-action'
     style_interaction = 'ajax-action'
     style_interaction_type = 'direct'
@@ -584,4 +587,4 @@ class RemindInvitation(InfiniteCardinality):
     def redirect(self, context, request, **kw):
         return nothing
 
-#TODO behaviors
+# TODO behaviors

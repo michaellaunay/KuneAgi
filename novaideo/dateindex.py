@@ -95,7 +95,7 @@ class HypatiaDateRecurringIndex(KeywordIndex, FieldIndex):
 
         if not isinstance(value, dict):
             raise ValueError('Catalog can only index dict with '
-                'attr and date keys, or date and recurdef keys, given %s' %
+                             'attr and date keys, or date and recurdef keys, given %s' %
                              value)
         # examples:
         # {'attr': 'dates',
@@ -215,16 +215,15 @@ class HypatiaDateRecurringIndex(KeywordIndex, FieldIndex):
         return default
 
     def inrange_with_not_indexed(self, start, end, excludemin=False,
-            excludemax=False):
+                                 excludemax=False):
         return InRangeWithNotIndexed(self, start, end, excludemin, excludemax)
-
 
 
 @content(
     'Date Recurring Index',
     icon='glyphicon glyphicon-search',
     is_index=True,
-    )
+)
 class DateRecurringIndex(SDIndex, HypatiaDateRecurringIndex):
     def __init__(self, discriminator=None, family=None,
                  action_mode=None):
@@ -232,7 +231,7 @@ class DateRecurringIndex(SDIndex, HypatiaDateRecurringIndex):
             discriminator = dummy_discriminator
         HypatiaDateRecurringIndex.__init__(
             self, discriminator, family=family
-            )
+        )
         if action_mode is not None:
             self.action_mode = action_mode
 

@@ -49,7 +49,7 @@ def locale_widget(node, kw):
 
 @colander.deferred
 def tzname_widget(node, kw):
-    zones = sorted( [(title, title) for title in EUROPEAN_ZONES])
+    zones = sorted([(title, title) for title in EUROPEAN_ZONES])
     return Select2Widget(values=zones)
 
 
@@ -71,19 +71,20 @@ class EventSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     name = NameSchemaNode(
         editing=context_is_a_event,
-        )
+    )
 
     text = colander.SchemaNode(
         colander.String(),
         widget=deform.widget.TextAreaWidget(),
         title=_("Details"),
-        description=_('The details of the event. Connexion mode or location, agenda, how to register, when appropriate, link to the external registration site...'),
-        )
+        description=_(
+            'The details of the event. Connexion mode or location, agenda, how to register, when appropriate, link to the external registration site...'),
+    )
 
     date = colander.SchemaNode(
         colander.DateTime(),
         widget=deform.widget.DateTimeInputWidget(
-            default_time_options= (('format', 'HH:i'), ('interval', 30))),
+            default_time_options=(('format', 'HH:i'), ('interval', 30))),
         title=_('Date and hour'),
         description=_('The date of the event.'),
     )
@@ -99,7 +100,8 @@ class EventSchema(VisualisableElementSchema, SearchableEntitySchema):
     tzname = colander.SchemaNode(
         colander.String(),
         title=_('Timezone'),
-        description=_('You can specify the timezone of the date of the event.'),
+        description=_(
+            'You can specify the timezone of the date of the event.'),
         widget=tzname_widget,
         validator=colander.OneOf(EUROPEAN_ZONES)
     )
@@ -117,7 +119,7 @@ class EventSchema(VisualisableElementSchema, SearchableEntitySchema):
 @content(
     'event',
     icon='glyphicon glyphicon-calendar',
-    )
+)
 @implementer(IEvent)
 class Event(SearchableEntity):
     """Event class"""
@@ -158,13 +160,14 @@ class Event(SearchableEntity):
 
     @property
     def is_expired(self):
-        if 'expired' in self.state: return True
+        if 'expired' in self.state:
+            return True
         try:
             now = datetime.datetime.now(tz=pytz.timezone(self.tzname))
             return self.date < now
         except Exception as e:
             return True
-    
+
     def get_description(self, request, locale=None):
         return get_event_description_template(request, locale)
 
@@ -182,4 +185,3 @@ class Event(SearchableEntity):
         self.setproperty('url_files', url_files)
         self.formatted_text = formatted_text
         self.formatted_urls = text_urls
-

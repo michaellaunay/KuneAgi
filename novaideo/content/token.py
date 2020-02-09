@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -19,10 +19,10 @@ from .interface import IToken
 @content(
     'token',
     icon='glyphicon glyphicon-align-left',
-    )
+)
 @implementer(IToken)
 class Token(VisualisableElement, Entity):
-    """Token class""" 
+    """Token class"""
 
     name = renamer()
     owner = SharedUniqueProperty('owner')

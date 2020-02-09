@@ -105,6 +105,36 @@ EUROPEAN_LOCALES = {
 }
 
 
+DEFAULT_NATIONALITIES = [
+    'AT-Austria',
+    'BE-Belgium',
+    'BG-Bulgaria',
+    'CY-Cyprus',
+    'CZ-Czechia',
+    'DE-Germany',
+    'DK-Denmark',
+    'EE-Estonia',
+    'EL-Greece',
+    'ES-Spain',
+    'FI-Finland,'
+    'FR-France',
+    'HR-Croatia',
+    'HU-Hungary',
+    'IE-Ireland',
+    'IT-Italy',
+    'LT-Lithuania',
+    'LU-Luxembourg',
+    'LV-Latvia',
+    'MT-Malta',
+    'NL-Netherlands',
+    'PL-Poland',
+    'PT-Portugal',
+    'RO-Romania',
+    'SE-Sweden',
+    'SI-Slovenia',
+    'SK-Slovakia'
+]
+
 EUROPEAN_ZONES = [tz for tz in pytz.all_timezones if tz.startswith('Europe')]
 
 
@@ -694,6 +724,11 @@ def evolve_root_files(root, registry):
     log.info('Root files evolved')
 
 
+def evolve_root_nationalities(root, registry):
+    root.nationalities = DEFAULT_NATIONALITIES
+    log.info('Root nationalities evolved')
+
+
 def add_nia_bot(root):
     nia_picture = os.path.join(
         os.path.dirname(__file__), 'static', 'images', 'nia.png')
@@ -1176,6 +1211,7 @@ def main(global_config, **settings):
     config.add_evolution_step(evolve_invitation_organization_process)
     config.add_evolution_step(evolve_novaideoabstractprocess_process)
     config.add_evolution_step(evolve_user_dates)
+    config.add_evolution_step(evolve_root_nationalities)
     config.add_translation_dirs('novaideo:locale/')
     config.add_translation_dirs('pontus:locale/')
     config.add_translation_dirs('dace:locale/')

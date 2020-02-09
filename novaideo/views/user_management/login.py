@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -11,7 +11,7 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import (
     HTTPForbidden,
     HTTPFound
-    )
+)
 from pyramid.renderers import get_renderer
 from pyramid.session import check_csrf_token
 from pyramid.security import remember
@@ -36,7 +36,7 @@ from novaideo.connectors.core import CONNECTOR_PROCESSES
     name='login',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class LoginView(BasicView):
     title = _('Log in')
     name = 'login'
@@ -87,17 +87,17 @@ class LoginView(BasicView):
                 identifier_index = novaideo_catalog['identifier']
                 object_provides_index = dace_catalog['object_provides']
                 query = object_provides_index.any([IPerson.__identifier__]) &\
-                        identifier_index.any([login])
+                    identifier_index.any([login])
                 users = list(query.execute().all())
                 user = users[0] if users else None
                 valid_check = user and user.check_password(password)
                 if valid_check and \
-                   (has_role(user=user, role=('SiteAdmin', )) or \
-                   'active' in getattr(user, 'state', [])):
+                   (has_role(user=user, role=('SiteAdmin', )) or
+                        'active' in getattr(user, 'state', [])):
                     request.session.pop('novaideo.came_from', None)
                     headers = remember(request, get_oid(user))
                     request.registry.notify(LoggedIn(login, user,
-                                               context, request))
+                                                     context, request))
                     user.last_connection = datetime.datetime.now(tz=pytz.UTC)
                     if hasattr(user, 'reindex'):
                         user.reindex()
@@ -105,7 +105,8 @@ class LoginView(BasicView):
                     return HTTPFound(location=came_from, headers=headers)
                 elif valid_check and 'deactivated' in getattr(user, 'state', []):
                     error = ViewError()
-                    error.principalmessage = _("Disabled account! Contact the site administrator to activate your account.")
+                    error.principalmessage = _(
+                        "Disabled account! Contact the site administrator to activate your account.")
                     message = error.render_message(request)
                     messages.update({error.type: [message]})
                 else:
@@ -115,7 +116,8 @@ class LoginView(BasicView):
                     messages.update({error.type: [message]})
 
         # Pass this through FBO views (e.g., forbidden) which use its macros.
-        template = get_renderer('novaideo:views/user_management/templates/login.pt').implementation()
+        template = get_renderer(
+            'novaideo:views/user_management/templates/login.pt').implementation()
         login_bodies = []
         try:
             login_navbars = generate_navbars(
@@ -134,7 +136,7 @@ class LoginView(BasicView):
             password=password,
             login_template=template,
             logins=login_bodies
-            )
+        )
         body = self.content(args=values, template=self.template)['body']
         item = self.adapt_item(body, self.viewid)
         item['messages'] = messages

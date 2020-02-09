@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -7,7 +7,7 @@
 from dogpile.cache import make_region
 
 REGION = make_region(
-    ).configure(
+).configure(
     "dogpile.cache.memory_pickle",
     expiration_time=3600,
-    )
+)

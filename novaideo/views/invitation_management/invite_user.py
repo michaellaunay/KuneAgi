@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -20,20 +20,21 @@ from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.content.invitation import InvitationSchema, Invitation
 from novaideo import _
 
+
 class InviteUsersSchema(Schema):
 
     invitations = colander.SchemaNode(
-                colander.Sequence(),
-                select(omit(InvitationSchema(factory=Invitation,
-                                         editable=True,
-                                         name='Invitation',
-                                         widget=SimpleMappingWidget(css_class='object-well default-well')), 
-                            ['_csrf_token_']),
-                       ['user_title', 'roles', 'first_name',
-                       'last_name', 'birth_date', 'birthplace', 'email']),
-                widget=SequenceWidget(min_len=1),
-                title=_('The invitations')
-                )
+        colander.Sequence(),
+        select(omit(InvitationSchema(factory=Invitation,
+                                     editable=True,
+                                     name='Invitation',
+                                     widget=SimpleMappingWidget(css_class='object-well default-well')),
+                    ['_csrf_token_']),
+               ['user_title', 'roles', 'first_name',
+                'last_name', 'birth_date', 'birthplace', 'citizenship', 'email']),
+        widget=SequenceWidget(min_len=1),
+        title=_('The invitations')
+    )
 
 
 def roles_choice(node, roles):
@@ -45,7 +46,7 @@ def roles_choice(node, roles):
     name='inviteusers',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class InviteUserView(FormView):
 
     title = _('Invite users')
@@ -60,8 +61,8 @@ class InviteUserView(FormView):
         schema_instance = InvitationSchema()
         roles_node = invitations_schema.get('roles')
         if has_role(role=('Moderator',)):
-            roles_node.widget = roles_choice(roles_node, 
-                                ['Moderator', 'Member', 'Examiner'])
+            roles_node.widget = roles_choice(roles_node,
+                                             ['Moderator', 'Member', 'Examiner'])
             organization_node = schema_instance.get('organization')
             ismanager_node = schema_instance.get('ismanager')
             invitations_schema.children.append(organization_node)
@@ -71,5 +72,4 @@ class InviteUserView(FormView):
             #roles_node.widget = roles_choice(roles_node, ['Member'])
 
 
-
-DEFAULTMAPPING_ACTIONS_VIEWS.update({InviteUsers:InviteUserView})
+DEFAULTMAPPING_ACTIONS_VIEWS.update({InviteUsers: InviteUserView})

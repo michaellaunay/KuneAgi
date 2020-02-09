@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -25,10 +25,10 @@ class GlobalLayout(object):
         self.request = request
 
     def to_localized_time(
-        self, date, date_from=None,
-        date_only=False, format_id='digital',
-        ignore_month=False, ignore_year=False,
-        add_day_name=False, ignore_tz=False):
+            self, date, date_from=None,
+            date_only=False, format_id='digital',
+            ignore_month=False, ignore_year=False,
+            add_day_name=False, ignore_tz=False):
         if not date:
             return ''
 
@@ -43,8 +43,8 @@ class GlobalLayout(object):
             add_day_name=add_day_name, translate=True)
 
     def get_emoji_form(
-        self, template=EMOJI_TEMPLATE, emoji_class='',
-        groups=DEFAULT_EMOJIS, is_grouped=True):
+            self, template=EMOJI_TEMPLATE, emoji_class='',
+            groups=DEFAULT_EMOJIS, is_grouped=True):
         return get_emoji_form(
             self.request,
             template=template,

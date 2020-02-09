@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -33,19 +33,19 @@ class BaseFunctionalTests(object):
                     'substanced.secret': 'sosecret',
                     'substanced.initial_login': 'admin',
                     'substanced.initial_password': 'admin',
-                    'novaideo.secret' : 'seekri1',
-                    'substanced.uploads_tempdir' : self.tmpdir,
+                    'novaideo.secret': 'seekri1',
+                    'substanced.uploads_tempdir': self.tmpdir,
                     'mail.default_sender': 'admin@example.com',
                     'pyramid.includes': [
                         'substanced',
                         'pyramid_chameleon',
                         'pyramid_layout',
-                        'pyramid_mailer.testing', # have to be after substanced to override the mailer
+                        'pyramid_mailer.testing',  # have to be after substanced to override the mailer
                         'pyramid_tm',
                         'dace',
                         'pontus',
                         'daceui'
-        ]}
+                    ]}
 
         testing.setUp()
         from novaideo import main
@@ -105,7 +105,7 @@ class FunctionalTests(BaseFunctionalTests, unittest.TestCase):
         self.request.moderate_ideas = True
         self.request.moderate_proposals = True
         self.request.root.content_to_moderate = ['idea', 'proposal']
-    
+
     def no_support_novaideo_config(self):
         self.default_novaideo_config()
         self.request.support_ideas = False
@@ -118,7 +118,7 @@ class FunctionalTests(BaseFunctionalTests, unittest.TestCase):
         self.request.examine_proposals = True
         self.request.content_to_examine = ['idea', 'proposal']
         self.request.root.content_to_examine = ['idea', 'proposal']
-            
+
 
 class RobotLayer(BaseFunctionalTests, Layer):
 

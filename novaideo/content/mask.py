@@ -23,7 +23,7 @@ class Mask(Group):
         'wg_participations', 'wating_list_participation')
     questions = SharedMultipleProperty('questions', 'author')
     challenges = SharedMultipleProperty('challenges', 'author')
-    templates = {'card': 'novaideo:views/templates/anonymous_card.pt',}
+    templates = {'card': 'novaideo:views/templates/anonymous_card.pt', }
     default_picture = 'novaideo:static/images/anonymous100.png'
     is_anonymous = True
 
@@ -43,7 +43,6 @@ class Mask(Group):
 
         name = self.name
         return name if name else default_title
-
 
     @property
     def first_name(self):

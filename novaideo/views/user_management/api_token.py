@@ -50,7 +50,7 @@ class GetAPITokenSchema(Schema):
         title=_('Please enter your password to generate a new API token'),
         widget=deform.widget.PasswordWidget(redisplay=True),
         missing=''
-        )
+    )
 
 
 class EditAPITokenView(FormView):
@@ -67,7 +67,7 @@ class EditAPITokenView(FormView):
     name='get_api_token',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class GetAPITokenView(MultipleView):
     title = _('Get API token')
     name = 'get_api_token'

@@ -26,7 +26,7 @@ from novaideo import _
     name='seeregistration',
     context=Preregistration,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class SeeRegistrationView(BasicView):
     title = ''
     name = 'seeregistration'

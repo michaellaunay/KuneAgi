@@ -20,7 +20,7 @@ from deform_treepy.utilities.tree_utility import (
     tree_min_len)
 
 from novaideo.content.processes.proposal_management import WORK_MODES
-from novaideo import _, AVAILABLE_LANGUAGES, DEFAULT_CONTENT_TO_MANAGE, DEFAULT_EVENTS_DESCRIPTIONS
+from novaideo import _, DEFAULT_NATIONALITIES, AVAILABLE_LANGUAGES, DEFAULT_CONTENT_TO_MANAGE, DEFAULT_EVENTS_DESCRIPTIONS
 from novaideo.mail import DEFAULT_SITE_MAILS
 from novaideo.core_schema import ContactSchema
 from novaideo import core
@@ -71,7 +71,8 @@ class WorkParamsConfigurationSchema(Schema):
         colander.Set(),
         widget=content_manage_choices,
         title=_('Contents to be managed with the ideas'),
-        description=_('Content that can be created by members. Ideas are included by default.'),
+        description=_(
+            'Content that can be created by members. Ideas are included by default.'),
         default=DEFAULT_CONTENT_TO_MANAGE,
         missing=DEFAULT_CONTENT_TO_MANAGE
     )
@@ -106,7 +107,7 @@ class WorkParamsConfigurationSchema(Schema):
         title=_('Proposal template'),
         missing=None,
         description=_("Only HTML files are supported."),
-        )
+    )
 
     work_modes = colander.SchemaNode(
         colander.Set(),
@@ -120,9 +121,10 @@ class WorkParamsConfigurationSchema(Schema):
         colander.Integer(),
         validator=colander.Range(1, 10),
         title=_('Number of non-productive cycles'),
-        description=_('The number of non-productive improvement cycles before the closure of the working group.'),
+        description=_(
+            'The number of non-productive improvement cycles before the closure of the working group.'),
         default=3,
-        )
+    )
 
     can_submit_directly = colander.SchemaNode(
         colander.Boolean(),
@@ -147,11 +149,28 @@ def anonymisation_kind_widget(node, kw):
     root = node.bindings['context']
     values = core.AnonymisationKinds.get_items().items()
     return deform.widget.RadioChoiceWidget(
-            values=values,
-            item_css_class='conf-form-anonymisation-kind')
+        values=values,
+        item_css_class='conf-form-anonymisation-kind')
+
+
+@colander.deferred
+def nationalities_choice(node, kw):
+    context = node.bindings['context']
+    values = [(i, i) for i in sorted(
+        getattr(context, 'nationalities', DEFAULT_NATIONALITIES))]
+    return Select2Widget(values=values,
+                         create=True,
+                         multiple=True)
 
 
 class UserParamsConfigurationSchema(Schema):
+
+    nationalities = colander.SchemaNode(
+        colander.Set(),
+        widget=nationalities_choice,
+        title=_('Nationalities'),
+        missing=[]
+    )
 
     only_invitation = colander.SchemaNode(
         colander.Boolean(),
@@ -179,6 +198,13 @@ class UserParamsConfigurationSchema(Schema):
         missing=7
     )
 
+    duration_of_forward_notice = colander.SchemaNode(
+        colander.Int(),
+        title=_('Duration of forward notice for Verifiers'),
+        default=3,
+        missing=3
+    )
+
     trusted_emails = colander.SchemaNode(
         colander.Set(),
         widget=Select2Widget(
@@ -189,7 +215,7 @@ class UserParamsConfigurationSchema(Schema):
         description=_("To add trusted email addresses, you need to tap the « Enter »"
                       " key after each email address or to separate them with commas."),
         missing=[]
-        )
+    )
 
     only_for_members = colander.SchemaNode(
         colander.Boolean(),
@@ -204,7 +230,8 @@ class UserParamsConfigurationSchema(Schema):
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
         label=_('Control the composition of the working group'),
-        description=_('The composition of the Working Group can be controlled by its members.'),
+        description=_(
+            'The composition of the Working Group can be controlled by its members.'),
         title='',
         missing=False
     )
@@ -221,7 +248,7 @@ class UserParamsConfigurationSchema(Schema):
         colander.Integer(),
         title=_('Minimum number of participants for a working group'),
         default=3,
-        )
+    )
 
     anonymisation = colander.SchemaNode(
         colander.Boolean(),
@@ -245,37 +272,37 @@ class UserParamsConfigurationSchema(Schema):
         colander.Integer(),
         title=_('Maximum number of Participants per Working Group'),
         default=12,
-        )
+    )
 
     participations_maxi = colander.SchemaNode(
         colander.Integer(),
         title=_('Maximum number of Working Groups per Member'),
         default=5,
-        )
+    )
 
     tokens_mini = colander.SchemaNode(
         colander.Integer(),
         title=_('Minimum number of evaluation Tokens allocated to a Member'),
         default=7,
-        )
+    )
 
     nb_reports_maxi = colander.SchemaNode(
         colander.Integer(),
         title=_('Maximum number of reports per week'),
         default=3,
-        )
+    )
 
     nb_submission_maxi = colander.SchemaNode(
         colander.Integer(),
         title=_('Maximum number of idea submission per week'),
         default=3,
-        )
+    )
 
     tquarantaine = colander.SchemaNode(
         colander.Integer(),
         title=_('Delays before deleting deactivated user data'),
         default=180,
-        )
+    )
 
 
 @colander.deferred
@@ -298,7 +325,7 @@ class EventDescriptionTemplate(Schema):
         colander.String(),
         widget=deform.widget.TextAreaWidget(rows=4, cols=60),
         title=_("Template")
-        )
+    )
 
 
 class EventsInterfaceConfigurationSchema(Schema):
@@ -307,7 +334,7 @@ class EventsInterfaceConfigurationSchema(Schema):
         colander.Integer(),
         title=_('Maximum number of events per Member'),
         default=7,
-        )
+    )
 
     event_descriptions = colander.SchemaNode(
         colander.Sequence(),
@@ -315,16 +342,16 @@ class EventsInterfaceConfigurationSchema(Schema):
             name='description',
             title=_('Description'),
             widget=SimpleMappingWidget(
-                     css_class="object-well default-well mail-template-well mail-template-block")),
+                css_class="object-well default-well mail-template-well mail-template-block")),
             ['locale', 'template']),
-                    ['_csrf_token_']),
+            ['_csrf_token_']),
         widget=SequenceWidget(
             min_len=1,
             max_len=len(AVAILABLE_LANGUAGES),
             add_subitem_text_template=_('Add a new description')),
         title=_('Descriptions'),
         default=descriptions_default
-        )
+    )
 
 
 class UserInterfaceConfigurationSchema(Schema):
@@ -335,7 +362,7 @@ class UserInterfaceConfigurationSchema(Schema):
         title=_('Logo'),
         missing=None,
         description=_("Only PNG and SVG files are supported."),
-        )
+    )
 
     favicon = colander.SchemaNode(
         ObjectData(File),
@@ -343,7 +370,7 @@ class UserInterfaceConfigurationSchema(Schema):
         title=_('Favicon'),
         missing=None,
         description=_("Only ICO files are supported."),
-        )
+    )
 
     theme = colander.SchemaNode(
         ObjectData(File),
@@ -351,7 +378,7 @@ class UserInterfaceConfigurationSchema(Schema):
         title=_('Theme'),
         missing=None,
         description=_("Only CSS files are supported."),
-        )
+    )
 
     social_share = colander.SchemaNode(
         colander.Boolean(),
@@ -359,7 +386,7 @@ class UserInterfaceConfigurationSchema(Schema):
         label=_('Activate the sharing on social networks'),
         title='',
         missing=False
-        )
+    )
 
 
 class HomepageConfigurationSchema(Schema):
@@ -370,14 +397,14 @@ class HomepageConfigurationSchema(Schema):
         title=_('Picture of the homepage'),
         missing=None,
         description=_("Only PNG and SVG files are supported."),
-        )
+    )
 
     homepage_text = colander.SchemaNode(
         colander.String(),
         widget=RichTextWidget(),
         title=_("Text"),
         missing=''
-        )
+    )
 
 
 @colander.deferred
@@ -414,13 +441,13 @@ class MailTemplate(Schema):
     subject = colander.SchemaNode(
         colander.String(),
         title=_('Subject'),
-        )
+    )
 
     template = colander.SchemaNode(
         colander.String(),
         widget=deform.widget.TextAreaWidget(rows=4, cols=60),
         title=_("Template")
-        )
+    )
 
 
 class MailSeqTemplate(Schema):
@@ -429,29 +456,29 @@ class MailSeqTemplate(Schema):
         colander.String(),
         widget=deform.widget.HiddenWidget(),
         title=_('Mail id'),
-        )
+    )
 
     title = colander.SchemaNode(
         colander.String(),
         widget=deform.widget.TextInputWidget(template='readonly/textinput'),
         title=_('Title'),
         missing=""
-        )
+    )
 
     languages = colander.SchemaNode(
         colander.Sequence(),
         omit(select(MailTemplate(name='language',
                                  title=_('language'),
                                  widget=SimpleMappingWidget(
-                                         css_class="object-well default-well mail-template-well mail-template-block")),
-                        ['locale', 'subject', 'template']),
-                    ['_csrf_token_']),
+                                     css_class="object-well default-well mail-template-well mail-template-block")),
+                    ['locale', 'subject', 'template']),
+             ['_csrf_token_']),
         widget=SequenceWidget(
             min_len=1,
             max_len=len(AVAILABLE_LANGUAGES),
             add_subitem_text_template=_('Add a new language')),
         title=_('Languages'),
-        )
+    )
 
 
 class MailTemplatesConfigurationSchema(Schema):
@@ -459,16 +486,16 @@ class MailTemplatesConfigurationSchema(Schema):
     mail_templates = colander.SchemaNode(
         colander.Sequence(),
         omit(select(MailSeqTemplate(name='template',
-                                 title=_('E-mail template'),
-                                 widget=SimpleMappingWidget(
-                                         css_class="object-well default-well mail-template-well mail-template-block")),
-                        ['mail_id', 'title', 'languages']),
-                    ['_csrf_token_']),
+                                    title=_('E-mail template'),
+                                    widget=SimpleMappingWidget(
+                                        css_class="object-well default-well mail-template-well mail-template-block")),
+                    ['mail_id', 'title', 'languages']),
+             ['_csrf_token_']),
         widget=templates_widget,
         default=templates_default,
         missing=templates_default,
         title=_('E-mail templates'),
-        )
+    )
 
 
 @colander.deferred
@@ -499,7 +526,7 @@ class KeywordsConfSchema(Schema):
         widget=keyword_widget,
         default=DEFAULT_TREE,
         title=_('Keywords'),
-        )
+    )
 
     can_add_keywords = colander.SchemaNode(
         colander.Boolean(),
@@ -527,7 +554,7 @@ class OtherSchema(Schema):
         title=_('Title'),
         description=_("The title of the application"),
         missing=""
-        )
+    )
 
     locale = colander.SchemaNode(
         colander.String(),
@@ -541,21 +568,21 @@ class OtherSchema(Schema):
         colander.Sequence(),
         omit(select(ContactSchema(name='contact',
                                   widget=SimpleMappingWidget(
-                                  css_class='contact-well object-well default-well')),
+                                      css_class='contact-well object-well default-well')),
                     ['title', 'address', 'phone', 'surtax', 'email', 'website', 'fax']),
-            ['_csrf_token_']),
+             ['_csrf_token_']),
         widget=SequenceWidget(
             add_subitem_text_template=_('Add a new contact')),
         title='Contacts',
         oid='contacts'
-        )
+    )
 
     analytics = colander.SchemaNode(
         colander.String(),
         widget=deform.widget.TextAreaWidget(rows=4, cols=60),
         title=_('Analytics'),
         missing=''
-        )
+    )
 
 
 class NotificationConfigurationSchema(Schema):
@@ -573,10 +600,10 @@ class NotificationConfigurationSchema(Schema):
         colander.String(),
         title=_('Application id'),
         missing=""
-        )
+    )
 
     app_key = colander.SchemaNode(
         colander.String(),
         title=_('REST API Key'),
         missing=""
-        )
+    )

@@ -1,4 +1,4 @@
-# Copyright (c) 2015 by Ecreall under licence AGPL terms 
+# Copyright (c) 2015 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -15,8 +15,9 @@ class IObjectPublished(IObjectEvent):
 
 
 @implementer(IObjectPublished)
-class ObjectPublished(object): # pragma: no cover
+class ObjectPublished(object):  # pragma: no cover
     """ An event sent when an object has been published."""
+
     def __init__(self, object):
         self.object = object
 
@@ -27,8 +28,9 @@ class ICorrelableRemoved(IObjectEvent):
 
 
 @implementer(ICorrelableRemoved)
-class CorrelableRemoved(object): # pragma: no cover
+class CorrelableRemoved(object):  # pragma: no cover
     """ An event sent when an object has been removed."""
+
     def __init__(self, object):
         self.object = object
 
@@ -39,8 +41,9 @@ class IObjectModified(IObjectEvent):
 
 
 @implementer(IObjectModified)
-class ObjectModified(object): # pragma: no cover
+class ObjectModified(object):  # pragma: no cover
     """ An event sent when an object has been modified."""
+
     def __init__(self, object, args):
         self.object = object
         self.args = args

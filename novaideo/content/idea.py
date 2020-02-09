@@ -105,8 +105,8 @@ def challenge_choice(node, kw):
 def anonymous_widget(node, kw):
     request = node.bindings['request']
     return deform.widget.CheckboxWidget(
-            request=request,
-            template='novaideo:views/templates/checkbox_anonymous.pt')
+        request=request,
+        template='novaideo:views/templates/checkbox_anonymous.pt')
 
 
 def context_is_a_idea(context, request):
@@ -118,7 +118,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     name = NameSchemaNode(
         editing=context_is_a_idea,
-        )
+    )
 
     challenge = colander.SchemaNode(
         ObjectType(),
@@ -140,7 +140,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
             item_css_class='content-preview-form',
             placeholder=_('I have an idea!')),
         title=_("Text")
-        )
+    )
 
     note = colander.SchemaNode(
         colander.String(),
@@ -151,7 +151,7 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
             alert_values={'limit': 300}),
         title=_("Note"),
         missing=""
-        )
+    )
 
     attached_files = colander.SchemaNode(
         colander.Sequence(),
@@ -159,13 +159,13 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
             ObjectData(File),
             name=_("File"),
             widget=get_file_widget()
-            ),
+        ),
         widget=FilesWidget(
             add_subitem_text_template='',
             item_css_class='files-block'),
         missing=[],
         title=_('Attached files'),
-        )
+    )
 
     anonymous = colander.SchemaNode(
         colander.Boolean(),
@@ -175,13 +175,13 @@ class IdeaSchema(VisualisableElementSchema, SearchableEntitySchema):
         title='',
         missing=False,
         default=False
-        )
+    )
 
 
 @content(
     'idea',
     icon='icon novaideo-icon icon-idea',
-    )
+)
 @implementer(Iidea)
 class Idea(VersionableEntity, DuplicableEntity,
            SearchableEntity, CorrelableEntity, PresentableEntity,
@@ -267,7 +267,6 @@ class Idea(VersionableEntity, DuplicableEntity,
 
     def init_examined_at(self):
         setattr(self, 'examined_at', datetime.datetime.now(tz=pytz.UTC))
-
 
     def presentation_text(self, nb_characters=400):
         return truncate_text(getattr(self, 'text', ""), nb_characters)

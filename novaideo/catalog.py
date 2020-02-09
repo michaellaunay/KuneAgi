@@ -10,7 +10,7 @@ from substanced.catalog import (
     Text,
     indexview,
     indexview_defaults,
-    )
+)
 
 from dace.util import Adapter, adapter
 from dace.objectofcollaboration.principal.util import (
@@ -66,7 +66,8 @@ class ISearchableObject(Interface):
 
     def examined_at():
         pass
-    #str
+    # str
+
     def published_at_str():
         pass
 
@@ -84,7 +85,8 @@ class ISearchableObject(Interface):
 
     def examined_at_year_str():
         pass
-    #end
+    # end
+
     def object_title():
         pass
 
@@ -527,7 +529,6 @@ class NovaideoCatalogViews(object):
 
         return alert_exclude_keys
 
-
     @indexview()
     def support(self, default):
         adapter = get_current_registry().queryAdapter(
@@ -894,7 +895,8 @@ class InvitationSearch(SearchableObject):
             first_name = getattr(self.context, 'first_name', '')
             last_name = getattr(self.context, 'last_name', '')
             birthplace = getattr(self.context, 'birthplace', '')
-            key = first_name + last_name + birthplace + birth_date.strftime("%d/%m/%Y")
+            key = first_name + last_name + birthplace + \
+                birth_date.strftime("%d/%m/%Y")
             key = normalize_title(key).replace(' ', '')
             result.append(key)
 

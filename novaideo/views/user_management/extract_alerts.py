@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -18,7 +18,7 @@ from novaideo import _
     name='extractalerts',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class ExtractalertsView(BasicView):
     title = _('Extract alerts')
     name = 'extractalerts'

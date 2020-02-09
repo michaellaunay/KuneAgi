@@ -1,5 +1,5 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -19,7 +19,7 @@ from novaideo import _
     name='moderationvote',
     context=Proposal,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class ModerationVoteView(BasicView):
     title = _('Decision')
     name = 'moderationvote'
@@ -29,6 +29,7 @@ class ModerationVoteView(BasicView):
     def update(self):
         results = self.execute(None)
         return results[0]
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {ModerationVote: ModerationVoteView})

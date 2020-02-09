@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -25,17 +25,17 @@ from novaideo.content.interface import IPreregistration
 
 
 CONTENTS_MESSAGES = {
-        '0': _(u"""No registration found"""),
-        '1': _(u"""One registration found"""),
-        '*': _(u"""${number} registrations found""")
-        }
+    '0': _(u"""No registration found"""),
+    '1': _(u"""One registration found"""),
+    '*': _(u"""${number} registrations found""")
+}
 
 
 @view_config(
     name='seeregistrations',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class SeeRegistrationsView(BasicView):
     title = _('Registrations')
     name = 'seeregistrations'

@@ -38,7 +38,7 @@ class InternalAlertKind(object):
 @content(
     'alert',
     icon='glyphicon glyphicon-align-left',
-    )
+)
 @implementer(IAlert)
 class Alert(VisualisableElement, Entity):
     """Alert class"""
@@ -97,7 +97,7 @@ class Alert(VisualisableElement, Entity):
 
     def is_to_alert(self, user):
         key = str(get_oid(user, user))
-        #TODO self not in user.old_alerts
+        # TODO self not in user.old_alerts
         return key in self.users_toalert and \
             key not in self.users_toexclude
 
@@ -164,7 +164,7 @@ class _CommentAlert(object):
         return {
             'title': title,
             'message': message,
-            'url': request.resource_url(subject, '@@index') + \
+            'url': request.resource_url(subject, '@@index') +
             '#comment-' + str(getattr(alert, 'comment_oid', 'None'))}
 
 
@@ -208,7 +208,7 @@ class _WorkingGroupAlert(object):
         'small': 'novaideo:views/templates/alerts/small_wg_alert_result.pt',
         'notification': 'novaideo:views/templates/alerts/notification_wg_alert_result.pt',
         'nia': 'novaideo:views/templates/alerts/nia_wg_result.pt'
-        }
+    }
 
     def __call__(self, **kwargs):
         return Alert(InternalAlertKind.working_group_alert, **kwargs)

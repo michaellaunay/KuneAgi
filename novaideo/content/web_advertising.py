@@ -55,7 +55,7 @@ class AdvertisingSchema(VisualisableElementSchema, SearchableEntitySchema):
         validator=dates_validator,
         widget=DateIcalWidget(),
         title=_('Dates'),
-        )
+    )
 
 
 @implementer(IAdvertising)
@@ -95,7 +95,7 @@ class WebAdvertisingSchema(AdvertisingSchema):
 
     name = NameSchemaNode(
         editing=context_is_a_webadvertising,
-        )
+    )
 
     picture = colander.SchemaNode(
         ObjectData(File),
@@ -106,7 +106,7 @@ class WebAdvertisingSchema(AdvertisingSchema):
         title=_('Announcement file'),
         description=_("Only image and flash files are supported."),
         missing=None
-        )
+    )
 
     html_content = colander.SchemaNode(
         colander.String(),
@@ -114,25 +114,25 @@ class WebAdvertisingSchema(AdvertisingSchema):
                               css_class="html-content-text"),
         title=_("Or HTML content"),
         missing=""
-        )
+    )
 
     advertisting_url = colander.SchemaNode(
         colander.String(),
         title=_('URL'),
         missing="#"
-        )
+    )
 
     positions = colander.SchemaNode(
         colander.Set(),
         widget=advertisting_widget,
         title=_('Positions')
-        )
+    )
 
     @invariant
     def content_invariant(self, appstruct):
         if not(appstruct['html_content'] or appstruct['picture']):
             raise colander.Invalid(self, _
-                        ('Content must be defined.'))
+                                   ('Content must be defined.'))
 
     @invariant
     def banner_invariant(self, appstruct):
@@ -147,7 +147,7 @@ class WebAdvertisingSchema(AdvertisingSchema):
 @content(
     'webadvertising',
     icon='glyphicon glyphicon-align-left',
-    )
+)
 @implementer(IWebAdvertising)
 class WebAdvertising(Advertising):
     """WebAdvertising class"""

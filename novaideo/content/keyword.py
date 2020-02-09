@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -33,17 +33,17 @@ class KeywordSchema(VisualisableElementSchema):
 
     name = NameSchemaNode(
         editing=context_is_a_keyword,
-        )
+    )
 
 
 @content(
     'keyword',
     icon='glyphicon glyphicon-align-left',
-    )
+)
 @implementer(IKeyword)
 class Keyword(VisualisableElement, Entity):
     """Keyword class"""
-    
+
     name = renamer()
     referenced_elements = SharedMultipleProperty('referenced_elements',
                                                  'keywords')

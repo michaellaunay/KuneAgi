@@ -85,18 +85,18 @@ class NewsletterRecConf(Schema):
         description=_('Activate the automatic sending'),
         title='',
         missing=False
-        )
+    )
 
     sending_date = colander.SchemaNode(
         colander.Date(),
         title=_('Next sending date')
-        )
+    )
 
     recurrence_nb = colander.SchemaNode(
         colander.Int(),
         title=_('Frequency/days'),
         default=7
-        )
+    )
 
 
 class NewsletterWorkingParamConf(Schema):
@@ -109,7 +109,7 @@ class NewsletterWorkingParamConf(Schema):
         description=_('Automatic subscription at user registration'),
         title='',
         missing=True
-        )
+    )
 
     propose_to_registration = colander.SchemaNode(
         colander.Boolean(),
@@ -118,7 +118,7 @@ class NewsletterWorkingParamConf(Schema):
         description=_('Allow users to subscribe manually'),
         title='',
         missing=True
-        )
+    )
 
     allow_unsubscribing = colander.SchemaNode(
         colander.Boolean(),
@@ -127,7 +127,7 @@ class NewsletterWorkingParamConf(Schema):
         description=_('Allow users to unsubscribe'),
         title='',
         missing=True
-        )
+    )
 
     content_template = colander.SchemaNode(
         ObjectDataOrigine(File),
@@ -135,7 +135,7 @@ class NewsletterWorkingParamConf(Schema):
         title=_('Content template'),
         missing=None,
         description=_("Only HTML files are supported."),
-        )
+    )
 
 
 @colander.deferred
@@ -155,32 +155,32 @@ class NewsletterSchema(VisualisableElementSchema):
 
     name = NameSchemaNode(
         editing=context_is_a_newsletter,
-        )
+    )
 
     subject = colander.SchemaNode(
         colander.String(),
         title=_('Subject'),
         default=default_subject,
         description=_('The subject of the newsletter.')
-        )
+    )
 
     description = colander.SchemaNode(
         colander.String(),
         widget=deform.widget.TextAreaWidget(rows=4, cols=60),
         title=_("Description")
-        )
+    )
 
     content = colander.SchemaNode(
         colander.String(),
         validator=colander.All(
             content_validator,
-            ),
+        ),
         widget=RichTextWidget(),
         default=default_content,
         missing='',
         title=_("Content"),
         description=_("The content to be sent."),
-        )
+    )
 
     working_params_conf = omit(NewsletterWorkingParamConf(
         widget=SimpleMappingtWidget(
@@ -204,7 +204,7 @@ class NewsletterSchema(VisualisableElementSchema):
 @content(
     'newsletter',
     icon='glyphicon glyphicon-align-left',
-    )
+)
 @implementer(INewsletter)
 class Newsletter(VisualisableElement, Entity):
     """Newsletter class"""

@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -34,7 +34,7 @@ class CorrectionSchema(VisualisableElementSchema):
     """Schema for correction of a proposal"""
     name = NameSchemaNode(
         editing=context_is_a_correction,
-        )
+    )
 
     description = colander.SchemaNode(
         colander.String(),
@@ -43,19 +43,19 @@ class CorrectionSchema(VisualisableElementSchema):
                                      cols=30,
                                      limit=600),
         title=_("Abstract")
-        )
+    )
 
     text = colander.SchemaNode(
         colander.String(),
         widget=RichTextWidget(),
         title=_("Text")
-        )
+    )
 
 
 @content(
     'correction',
     icon='glyphicon glyphicon-align-left',
-    )
+)
 @implementer(ICorrection)
 class Correction(VisualisableElement, Entity):
     """Correction class"""
@@ -68,7 +68,7 @@ class Correction(VisualisableElement, Entity):
         super(Correction, self).__init__(**kwargs)
         self.set_data(kwargs)
         self.corrections = {}
-    
+
     def _adapt_correction(self, correction_tag, is_favour):
         """
         Add 'correction-favour-vote' css_class to the 'correction_tag'
@@ -84,7 +84,7 @@ class Correction(VisualisableElement, Entity):
 
     def _get_adapted_content(self, user, text):
         """Return the appropriate text to the user"""
-        
+
         user_ = self.proposal.working_group.get_member(user)
         user_ = user_ or user
         soup = BeautifulSoup(text)
@@ -92,17 +92,17 @@ class Correction(VisualisableElement, Entity):
         # if user is self.author:
         #     for correction in corrections:
         #         self._adapt_correction(correction, True)
-        # else:    
+        # else:
         for correction in corrections:
             correction_data = self.corrections[correction["data-item"]]
             voters_favour = any((get_obj(v) is user_
-                                for v in correction_data['favour']))
+                                 for v in correction_data['favour']))
             if voters_favour:
                 self._adapt_correction(correction, True)
                 continue
 
             voters_against = any((get_obj(v) is user_
-                                 for v in correction_data['against']))
+                                  for v in correction_data['against']))
             if voters_against:
                 self._adapt_correction(correction, False)
 

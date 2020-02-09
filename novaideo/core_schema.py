@@ -17,15 +17,16 @@ from novaideo import _
 from novaideo.widget import EmailInputWidget
 
 
-PHONE_PATTERN = re.compile(r'^(0|\+([0-9]{2,3})[-. ]?|00([0-9]{2,3})[-. ]?)[1-9]?([-. ]?([0-9]{2})){4}$')
+PHONE_PATTERN = re.compile(
+    r'^(0|\+([0-9]{2,3})[-. ]?|00([0-9]{2,3})[-. ]?)[1-9]?([-. ]?([0-9]{2})){4}$')
 
 
 @colander.deferred
 def phone_fax_validator(node, kw):
     if not PHONE_PATTERN.match(kw):
         raise colander.Invalid(node,
-                _('${phone} phone number not valid',
-                  mapping={'phone': kw}))
+                               _('${phone} phone number not valid',
+                                 mapping={'phone': kw}))
 
 
 @colander.deferred
@@ -40,14 +41,14 @@ class ContactSchema(Schema):
         colander.String(),
         title=_('Title', context='contact'),
         default=default_title
-        )
+    )
 
     address = colander.SchemaNode(
         colander.String(),
         widget=deform.widget.TextAreaWidget(rows=4, cols=60),
         title=_('Address'),
         missing=""
-        )
+    )
 
     email = colander.SchemaNode(
         colander.String(),
@@ -56,8 +57,8 @@ class ContactSchema(Schema):
         validator=colander.All(
             colander.Email(),
             colander.Length(max=100)
-            ),
-        )
+        ),
+    )
 
     phone = colander.SchemaNode(
         colander.String(),
@@ -65,7 +66,7 @@ class ContactSchema(Schema):
         missing="",
         widget=TextInputWidget(css_class="contact-phone"),
         title=_('Phone'),
-        )
+    )
 
     surtax = colander.SchemaNode(
         colander.String(),
@@ -73,20 +74,21 @@ class ContactSchema(Schema):
         widget=TextInputWidget(item_css_class="hide-bloc"),
         default="0",
         title=_('Surcharge'),
-        description=_('Indicate the amount of the surcharge (for the premium-rate number).'),
-        )
+        description=_(
+            'Indicate the amount of the surcharge (for the premium-rate number).'),
+    )
 
     fax = colander.SchemaNode(
         colander.String(),
         missing="",
         title=_('Fax'),
-        )
+    )
 
     website = colander.SchemaNode(
         colander.String(),
         missing="",
         title=_('Website'),
-        )
+    )
 
     @invariant
     def contact_invariant(self, appstruct):
@@ -101,7 +103,7 @@ class ContactSchema(Schema):
                                    _('One value must be entered.'))
 
         if 'phone' in appstruct and appstruct['phone'] and \
-            ('surtax' not in appstruct or \
+            ('surtax' not in appstruct or
              'surtax' in appstruct and not appstruct['surtax']):
             raise colander.Invalid(self,
                                    _('Surcharge field must be filled in.'))

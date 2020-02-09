@@ -15,9 +15,9 @@ from novaideo import _
 
 def days_hours_minutes(timed):
     return (timed.days,
-           timed.seconds//3600,
-           (timed.seconds//60) % 60,
-           timed.seconds % 60)
+            timed.seconds//3600,
+            (timed.seconds//60) % 60,
+            timed.seconds % 60)
 
 
 class StepsPanel(object):
@@ -175,7 +175,7 @@ class StepsPanel(object):
                 result['step2_message'] = self._get_step2_informations(
                     context, self.request)
             elif self.request.support_proposals and \
-                 'submitted_support' in context.state:
+                    'submitted_support' in context.state:
                 result['current_step'] = 4
                 result['step4_message'] = self._get_step4_informations(
                     context, self.request)
@@ -184,8 +184,8 @@ class StepsPanel(object):
                 result['current_step'] = 5
                 result['step5_message'] = self._get_step5_informations(
                     context, self.request)
-            elif not ('examined' in context.state or \
-                      'submitted_support' in context.state or\
+            elif not ('examined' in context.state or
+                      'submitted_support' in context.state or
                       'archived' in context.state):
                 result['current_step'] = 3
                 result['step3_message'] = self._get_step3_informations(
@@ -268,6 +268,7 @@ class StepsAmendmentPanel(object):
             #     context, self.request)
 
         return result
+
 
 steps_panels = StepsPanel()
 

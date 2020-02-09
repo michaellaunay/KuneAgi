@@ -1,7 +1,7 @@
 <div i18n:domain="novaideo" class="container-fluid" tal:define="accessible_to_anonymous request.accessible_to_anonymous">
     <div class="row clearfix">
       <div class="col-md-3"></div>
-      <div class="col-md-6 col-footer">   
+      <div class="col-md-6 col-footer">
             <div id="footer">
               <div tal:replace="structure navbar_body"/>
                 <div id="custom-footer">
@@ -11,10 +11,10 @@
                         <a id="logo" href="https://www.nova-ideo.com/"></a>
                         <a href="${request.resource_url(request.virtual_root.ml_file, '@@index')}" i18n:translate="">Legal notice</a>
                         - <a i18n:translate="" href="${request.resource_url(request.virtual_root, '@@novaideoconfig')}">Kuneagi parameters</a>
-                        - 
+                        -
                         <a href="http://www.pylonsproject.org/" title="" i18n:translate="">
                           Powered by Pyramid &amp; Python</a>
-                        -  Copyright © 2016-2017
+                        -  Copyright © 2019-2020
                           <a href="http://www.ecreall.com">Ecréall</a>
                       </span>
                    </div>

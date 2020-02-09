@@ -54,7 +54,7 @@ class QuitView(FormView):
     name='quit',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class QuitViewMultipleView(MultipleView):
     title = _('Quit the platform')
     name = 'quit'
@@ -68,7 +68,7 @@ class QuitViewMultipleView(MultipleView):
     name='resignationsubmitted',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class ResignationSubmittedView(BasicView):
     template = 'novaideo:views/user_management/templates/resignationsubmitted.pt'
     title = _('Please confirm your resignation')
@@ -82,6 +82,7 @@ class ResignationSubmittedView(BasicView):
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
         return result
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update(
     {Quit: QuitViewMultipleView})

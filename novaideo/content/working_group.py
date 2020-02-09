@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -36,13 +36,13 @@ class WorkingGroupSchema(VisualisableElementSchema):
 
     name = NameSchemaNode(
         editing=context_is_a_workinggroup,
-        )
+    )
 
 
 @content(
     'workinggroup',
     icon='glyphicon glyphicon-align-left',
-    )
+)
 @implementer(IWorkingGroup)
 class WorkingGroup(VisualisableElement, Entity):
     """Working group class"""
@@ -130,7 +130,7 @@ class WorkingGroup(VisualisableElement, Entity):
 
         if user in self.members:
             return user
-        
+
         mask = getattr(user, 'mask', None)
         if mask and mask in self.members:
             return mask
@@ -143,7 +143,7 @@ class WorkingGroup(VisualisableElement, Entity):
 
         if user in self.wating_list:
             return user
-        
+
         mask = getattr(user, 'mask', None)
         if mask and mask in self.wating_list:
             return mask
@@ -156,7 +156,7 @@ class WorkingGroup(VisualisableElement, Entity):
 
         if user in self.wating_list_participation:
             return user
-        
+
         mask = getattr(user, 'mask', None)
         if mask and mask in self.wating_list_participation:
             return mask

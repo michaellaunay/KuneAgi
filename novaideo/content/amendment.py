@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -78,7 +78,7 @@ class RelatedExplanationSchema(Schema):
         title=_('Re-use an existing explanation'),
         description=_('Choose the improvement to apply'),
         missing=None
-        )
+    )
 
 
 class NewIdeaSchema(Schema):
@@ -101,7 +101,7 @@ class IntentionItemSchema(Schema):
         widget=LimitedTextAreaWidget(rows=5,
                                      cols=30,
                                      limit=300),
-        )
+    )
 
     related_ideas = colander.SchemaNode(
         colander.Set(),
@@ -110,7 +110,7 @@ class IntentionItemSchema(Schema):
         description=_('Choose related ideas.'),
         missing=[],
         default=[],
-        )
+    )
 
     # add_new_idea = NewIdeaSchema(widget=add_new_idea_widget)
 
@@ -135,7 +135,7 @@ class Intention(object):
                             obj = get_obj(int(val), True)
                             if obj is None:
                                 raise Exception()
- 
+
                             listvalue.append(obj)
 
                         result[k] = listvalue
@@ -144,7 +144,7 @@ class Intention(object):
                         obj = get_obj(int(value), True)
                         if obj is None:
                             raise Exception()
-                       
+
                         result[k] = obj
 
                 except Exception:
@@ -173,7 +173,7 @@ class Intention(object):
         related_ideas1 = list(intention1['related_ideas'])
         related_ideas2 = list(intention2['related_ideas'])
         related_ideas_eq = (len(related_ideas1) == len(related_ideas2)) and \
-                     all((e in related_ideas2) for e in related_ideas1)
+            all((e in related_ideas2) for e in related_ideas1)
         if not related_ideas_eq:
             return False
 
@@ -198,14 +198,14 @@ class IntentionSchema(Schema):
     """Schema for Intention"""
 
     relatedexplanation = RelatedExplanationSchema(
-                         widget=SimpleMappingWidget(
-                                  css_class="explanations-bloc")
-                         )
+        widget=SimpleMappingWidget(
+            css_class="explanations-bloc")
+    )
 
     intention = IntentionItemSchema(
-                widget=SimpleMappingWidget(
-                       css_class="intention-bloc")
-                )
+        widget=SimpleMappingWidget(
+            css_class="intention-bloc")
+    )
 
 
 def context_is_a_amendment(context, request):
@@ -217,7 +217,7 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     name = NameSchemaNode(
         editing=context_is_a_amendment,
-        )
+    )
 
     description = colander.SchemaNode(
         colander.String(),
@@ -226,28 +226,28 @@ class AmendmentSchema(VisualisableElementSchema, SearchableEntitySchema):
                                      cols=30,
                                      limit=300),
         title=_("Abstract")
-        )
+    )
 
     text = colander.SchemaNode(
         colander.String(),
         widget=RichTextWidget(),
         title=_("Text")
-        )
+    )
 
     add_files = omit(AddFilesSchemaSchema(
-                    widget=SimpleMappingtWidget(
-                    mapping_css_class='controled-form'
-                                      ' object-well default-well hide-bloc',
-                    ajax=True,
-                    activator_icon="glyphicon glyphicon-file",
-                    activator_title=_('Add files'))),
-                        ["_csrf_token_"])
+        widget=SimpleMappingtWidget(
+            mapping_css_class='controled-form'
+            ' object-well default-well hide-bloc',
+            ajax=True,
+            activator_icon="glyphicon glyphicon-file",
+            activator_title=_('Add files'))),
+        ["_csrf_token_"])
 
 
 @content(
     'amendment',
     icon='icon novaideo-icon icon-amendment',
-    )
+)
 @implementer(IAmendment)
 class Amendment(CorrelableEntity,
                 SearchableEntity,
@@ -307,7 +307,7 @@ class Amendment(CorrelableEntity,
 
         return truncate_text(text, nb_characters)
 
-   # @region.cache_on_arguments() 
+   # @region.cache_on_arguments()
     def get_used_ideas(self):
         """Return used ideas"""
 
@@ -319,9 +319,9 @@ class Amendment(CorrelableEntity,
             if explanation['intention'] is not None:
                 try:
                     result.extend(
-                          Intention.get_explanation_ideas(
-                             explanation['intention'])
-                          )
+                        Intention.get_explanation_ideas(
+                            explanation['intention'])
+                    )
                 except Exception:
                     pass
 
@@ -338,7 +338,7 @@ class Amendment(CorrelableEntity,
                     result.extend(
                         Intention.get_explanation_data(
                             explanation['intention'])['related_ideas']
-                        )
+                    )
                 except Exception:
                     pass
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -7,6 +7,7 @@
 import os
 import transaction
 from ZODB.POSException import ConflictError
+from persistent.list import PersistentList
 
 from pyramid.events import subscriber, ApplicationCreated
 from pyramid.threadlocal import get_current_registry, get_current_request
@@ -56,7 +57,8 @@ def cocreation_conf(root):
 
 
 def coresolution_conf(root):
-    root.content_to_manage = PersistentList(['challenge', 'question', 'proposal'])
+    root.content_to_manage = PersistentList(
+        ['challenge', 'question', 'proposal'])
     root.content_to_support = PersistentList(['idea', 'proposal'])
     root.content_to_examine = PersistentList(['proposal'])
 
@@ -82,7 +84,7 @@ def _invite_first_user(root, request, title, first_name, last_name, email, phone
         email=email,
         phone=phone,
         roles=first_user_roles,
-        )
+    )
     mail_template = root.get_mail_template('invitation')
     novaideo_title = root.title
     invitation.state.append('pending')
@@ -109,7 +111,7 @@ def _invite_first_user(root, request, title, first_name, last_name, email, phone
               subject=subject, body=message)
 
     if phone:
-        #send sms
+        # send sms
         message = FIRST_INVITATION_SMS['template'].format(
             recipient_title='',
             recipient_first_name=invitation.first_name,
@@ -138,7 +140,7 @@ def mysubscriber(event):
     site_conf = CONFIGURATIONS.get(
         os.getenv('INITIAL_SITE_CONF', 'ideation'), ideation_conf)
     site_conf(root)
-    #invit initial user
+    # invit initial user
     root.first_invitation_to_add = True
     root.locale = settings.get('pyramid.default_locale_name')
     add_nia_bot(root)
@@ -259,20 +261,20 @@ def mysubscriber_object_modified(event):
 def mysubscriber_correlable_removed(event):
     root = getSite()
     removed_object = event.object
-    #get all versions. Versions will be removed
+    # get all versions. Versions will be removed
     all_versions = getattr(removed_object, 'history', [])
     if removed_object in all_versions:
         all_versions.remove(removed_object)
 
-    #recuperate all correlations
+    # recuperate all correlations
     source_correlations = removed_object.source_correlations
     [source_correlations.extend(getattr(version, 'source_correlations', []))
      for version in all_versions]
-    #destroy all versions
+    # destroy all versions
     if hasattr(removed_object, 'destroy'):
         removed_object.destroy()
 
-    #update correlations
+    # update correlations
     for correlation in source_correlations:
         for target in list(correlation.targets):
             correlation.delfromproperty('targets', target)
@@ -284,7 +286,7 @@ def mysubscriber_correlable_removed(event):
 def init_application(event):
     app = event.object
     registry = app.registry
-    request = Request.blank('/application_created') # path is meaningless
+    request = Request.blank('/application_created')  # path is meaningless
     request.registry = registry
     manager.push({'registry': registry, 'request': request})
     # Set up sms service backend

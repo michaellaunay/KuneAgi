@@ -44,13 +44,13 @@ class UserPasswordSchema(Schema):
         title=_('Your Current Password'),
         widget=deform.widget.PasswordWidget(redisplay=True),
         missing=''
-        )
+    )
     password = colander.SchemaNode(
         colander.String(),
         title=_('New Password'),
         widget=deform.widget.CheckedPasswordWidget(redisplay=False),
         missing=''
-        )
+    )
 
     changepassword = colander.SchemaNode(
         colander.Boolean(),
@@ -59,7 +59,7 @@ class UserPasswordSchema(Schema):
         title='',
         default=False,
         missing=False
-        )
+    )
 
 
 class EditPersonSchema(PersonSchema):
@@ -77,7 +77,7 @@ class EditPersonSchema(PersonSchema):
     name='edit',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class EditView(FormView):
 
     title = _('Edit the profile')

@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -67,7 +67,7 @@ def targets_choice(node, kw):
         ajax_url=ajax_url,
         multiple=True,
         title_getter=title_getter,
-        )
+    )
 
 
 @colander.deferred
@@ -88,33 +88,33 @@ class CorrelationSchema(VisualisableElementSchema):
 
     name = NameSchemaNode(
         editing=context_is_a_correlation,
-        )
+    )
 
     intention = colander.SchemaNode(
         colander.String(),
         widget=intention_choice,
         title=_('Intention'),
-        )
+    )
 
     comment = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(max=500),
         widget=deform.widget.TextAreaWidget(rows=4, cols=60),
         title=_("Message")
-        )
+    )
 
     targets = colander.SchemaNode(
         ObjectType(),
         widget=targets_choice,
         validator=colander.Length(min=1),
         title=_('Targets'),
-        )
+    )
 
 
 @content(
     'correlation',
     icon='glyphicon glyphicon-align-left',
-    )
+)
 @implementer(ICorrelation)
 class Correlation(Debatable):
     """Correlation class"""

@@ -1,5 +1,5 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
-# avalaible on http://www.gnu.org/licenses/agpl.html 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
+# avalaible on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
 # author: Amen Souissi
@@ -23,14 +23,14 @@ CONTENTS_MESSAGES = {
     '0': _(u"""No mark found"""),
     '1': _(u"""One mark found"""),
     '*': _(u"""${nember} marks found""")
-    }
+}
 
 
 @view_config(
     name='seenotations',
     context=Person,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class SeeNotationsView(BasicView):
     title = _('Marks')
     name = 'seenotations'
@@ -74,5 +74,6 @@ class SeeNotationsView(BasicView):
         item = self.adapt_item(body, self.viewid)
         result['coordinates'] = {self.coordinates: [item]}
         return result
+
 
 DEFAULTMAPPING_ACTIONS_VIEWS.update({SeeNotations: SeeNotationsView})

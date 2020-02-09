@@ -59,18 +59,20 @@ class RegistrationViewStudyReport(BasicView):
 class RegistrationForm(FormView):
     title = _('Your registration')
     schema = select(RegistrationSchema(
-                        factory=Preregistration,
-                        editable=True,            
-                        omit=['captcha']),
-                    ['user_title',
-                     'first_name',
-                     'last_name',
-                     'birth_date',
-                     'birthplace',
-                     'email',
-                     'pseudonym',
-                     'accept_conditions',
-                     'captcha'])
+        factory=Preregistration,
+        editable=True,
+        omit=['captcha']),
+        ['user_title',
+         'first_name',
+         'last_name',
+         'birth_date',
+         'birthplace',
+         'citizenship',
+         'email',
+         'pseudonym',
+         'password',
+         'accept_conditions',
+         'captcha'])
     behaviors = [Registration, Cancel]
     formid = 'formregistration'
     name = 'formregistration'
@@ -83,7 +85,7 @@ class RegistrationForm(FormView):
     name='registration',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class RegistrationView(MultipleView):
     title = _('Your registration')
     name = 'registration'
@@ -98,7 +100,7 @@ class RegistrationView(MultipleView):
     name='registrationsubmitted',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class RegistrationSubmittedView(BasicView):
     template = 'novaideo:views/user_management/templates/registrationsubmitted.pt'
     title = _('Please confirm your registration')

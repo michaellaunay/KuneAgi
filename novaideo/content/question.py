@@ -58,7 +58,7 @@ def context_is_a_question(context, request):
 class Options(colander.SequenceSchema):
     option = colander.SchemaNode(
         colander.String()
-        )
+    )
 
 
 class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
@@ -66,7 +66,7 @@ class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
 
     name = NameSchemaNode(
         editing=context_is_a_question,
-        )
+    )
 
     challenge = colander.SchemaNode(
         ObjectType(),
@@ -80,14 +80,14 @@ class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
     title = colander.SchemaNode(
         colander.String(),
         title=_("Question")
-        )
+    )
 
     options = colander.SchemaNode(
         colander.Sequence(),
         colander.SchemaNode(
             colander.String(),
             name=_("Option")
-            ),
+        ),
         widget=SequenceWidget(
             add_subitem_text_template='',
             orderable=True),
@@ -97,7 +97,7 @@ class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
                       "Statistics will be provided indicating the percentage "
                       "of each option."),
         missing=[]
-        )
+    )
 
     text = colander.SchemaNode(
         colander.String(),
@@ -110,7 +110,7 @@ class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
             placeholder=_('I have a question!')),
         title=_("Details"),
         missing=''
-        )
+    )
 
     attached_files = colander.SchemaNode(
         colander.Sequence(),
@@ -118,13 +118,13 @@ class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
             ObjectData(File),
             name=_("File"),
             widget=get_file_widget()
-            ),
+        ),
         widget=FilesWidget(
             add_subitem_text_template='',
             item_css_class='files-block'),
         missing=[],
         title=_('Attached files'),
-        )
+    )
 
     anonymous = colander.SchemaNode(
         colander.Boolean(),
@@ -134,13 +134,13 @@ class QuestionSchema(VisualisableElementSchema, SearchableEntitySchema):
         title='',
         missing=False,
         default=False
-        )
+    )
 
 
 @content(
     'question',
     icon='icon novaideo-icon icon-question',
-    )
+)
 @implementer(IQuestion)
 class Question(VersionableEntity, DuplicableEntity,
                SearchableEntity, CorrelableEntity, PresentableEntity,
@@ -160,7 +160,8 @@ class Question(VersionableEntity, DuplicableEntity,
     organization = SharedUniqueProperty('organization')
     attached_files = CompositeMultipleProperty('attached_files')
     url_files = CompositeMultipleProperty('url_files')
-    related_correlation = SharedUniqueProperty('related_correlation', 'targets')
+    related_correlation = SharedUniqueProperty(
+        'related_correlation', 'targets')
     answers = CompositeMultipleProperty('answers', 'question')
     answer = SharedUniqueProperty('answer')
     ballots = CompositeMultipleProperty('ballots')
@@ -299,13 +300,13 @@ class AnswerSchema(CommentSchema):
         title='',
         missing=False,
         default=False
-        )
+    )
 
 
 @content(
     'answer',
     icon='icon novaideo-icon icon-question',
-    )
+)
 @implementer(IAnswer)
 class Answer(CorrelableEntity, PresentableEntity,
              ExaminableEntity, Node, Emojiable,
@@ -323,7 +324,8 @@ class Answer(CorrelableEntity, PresentableEntity,
     author = SharedUniqueProperty('author')
     files = CompositeMultipleProperty('files')
     url_files = CompositeMultipleProperty('url_files')
-    related_correlation = SharedUniqueProperty('related_correlation', 'targets')
+    related_correlation = SharedUniqueProperty(
+        'related_correlation', 'targets')
     contextualized_correlations = SharedMultipleProperty(
         'contextualized_correlations', 'context')
     ballots = CompositeMultipleProperty('ballots')

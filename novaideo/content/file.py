@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -29,13 +29,13 @@ class FileSchema(VisualisableElementSchema, SearchableEntitySchema):
         colander.String(),
         widget=RichTextWidget(),
         title=_("Text")
-        )
+    )
 
 
 @content(
     'file',
     icon='icon novaideo-icon icon-user',
-    )
+)
 @implementer(IFile)
 class FileEntity(SearchableEntity):
     """ A file entity is an entity that can be searched"""

@@ -106,6 +106,7 @@ class advertising_banner_config(object):
 
     Advertising banner is a panel. See pyramid_layout.panel_config.
     """
+
     def __init__(self, name='', context=None, renderer=None, attr=None):
         self.name = name
         self.context = context
@@ -123,7 +124,7 @@ class advertising_banner_config(object):
                                                  'order': ob.order,
                                                  'validator': ob.validator,
                                                  'tags': ob.tags
-                                                 #TODO add validator ob.validator
+                                                 # TODO add validator ob.validator
                                                  }
 
         info = venusian.attach(wrapped, callback, category='pyramid_layout')
@@ -135,7 +136,7 @@ class advertising_banner_config(object):
             if settings['attr'] is None:
                 settings['attr'] = wrapped.__name__
 
-        settings['_info'] = info.codeinfo # fbo "action_method"
+        settings['_info'] = info.codeinfo  # fbo "action_method"
         return wrapped
 
 
@@ -278,7 +279,7 @@ class Debatable(VisualisableElement, Entity):
 @content(
     'channel',
     icon='icon novaideo-icon icon-idea',
-    )
+)
 @implementer(IChannel)
 class Channel(Commentable):
     """Channel class"""
@@ -333,10 +334,10 @@ class Emojiable(Entity):
         current_emoji = self.get_user_emoji(user)
         if current_emoji:
             self.remove_emoji(current_emoji, user)
-        
+
         if emoji:
             self.emojis.setdefault(emoji, PersistentList())
-            self.emojis[emoji].append(user_oid) 
+            self.emojis[emoji].append(user_oid)
             self.users_emoji[user_oid] = emoji
 
     def remove_emoji(self, emoji, user):
@@ -357,7 +358,7 @@ class Emojiable(Entity):
 @content(
     'privatechannel',
     icon='icon novaideo-icon icon-idea',
-    )
+)
 @implementer(IPrivateChannel)
 class PrivateChannel(Channel):
     """Channel class"""
@@ -458,8 +459,9 @@ class SearchableEntitySchema(Schema):
         widget=keyword_widget,
         default=DEFAULT_TREE,
         title=_('Keywords'),
-        description=_('Indicate keywords. You can specify a second keyword level for each keyword chosen.')
-        )
+        description=_(
+            'Indicate keywords. You can specify a second keyword level for each keyword chosen.')
+    )
 
 
 @implementer(ISearchableEntity)
@@ -492,7 +494,7 @@ class SearchableEntity(VisualisableElement, Entity):
     def set_source_data(self, source_data):
         if not hasattr(self, 'source_data'):
             self.source_data = PersistentDict({})
-        
+
         app_name = source_data.get('app_name')
         self.source_data.setdefault(app_name, {})
         self.source_data[app_name] = source_data
@@ -500,7 +502,7 @@ class SearchableEntity(VisualisableElement, Entity):
     def get_source_data(self, app_id):
         if not hasattr(self, 'source_data'):
             return {}
-        
+
         return self.source_data.get(app_id, {})
 
     def is_managed(self, root):
@@ -551,7 +553,7 @@ class PresentableEntity(Entity):
         result = []
         for email in self._email_persons_contacted:
             query = object_provides_index.any([IPerson.__identifier__]) &\
-                    identifier_index.any([email])
+                identifier_index.any([email])
             users = list(query.execute().all())
             user = users[0] if users else None
             if user is not None:
@@ -686,7 +688,8 @@ class Node(Entity):
         all_source_contents.extend(all_target_contents)
         newcalculated.append(oid)
         for r_content in all_source_contents:
-            sub_result, newcalculated = r_content[0].get_nodes_data(newcalculated)
+            sub_result, newcalculated = r_content[0].get_nodes_data(
+                newcalculated)
             result.update(sub_result)
 
         return result, newcalculated

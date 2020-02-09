@@ -1,4 +1,4 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014 by Ecreall under licence AGPL terms
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
@@ -23,7 +23,7 @@ from novaideo import _
     name='editinvitations',
     context=NovaIdeoApplication,
     renderer='pontus:templates/views_templates/grid.pt',
-    )
+)
 class EditInvitationsView(FormView):
 
     title = _('Edit the invitations')
@@ -34,6 +34,8 @@ class EditInvitationsView(FormView):
                                        'first_name',
                                        'last_name',
                                        'birth_date',
+                                       'birthplace',
+                                       'citizenship',
                                        'organization'])])
     behaviors = [EditInvitations, Cancel]
     formid = 'formeditinvitations'
