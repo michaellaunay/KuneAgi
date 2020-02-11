@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python@sha256:d0f068df622b07c06e7753a95fc826747c0e9668992c41f09d5c37ad48d4fb17
 
 ARG userid=1000
 ARG run_buildout=true
