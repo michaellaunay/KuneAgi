@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-02-08 22:59+0100\n"
+"POT-Creation-Date: 2020-02-14 22:58+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -43,51 +43,51 @@ msgstr "Drapeaux"
 msgid "Symbols"
 msgstr "Symboles"
 
-#: novaideo/core_schema.py:27
+#: novaideo/core_schema.py:28
 #, python-format
 msgid "${phone} phone number not valid"
 msgstr "Le numéro ${phone} est non valide"
 
-#: novaideo/core_schema.py:34
+#: novaideo/core_schema.py:35
 msgid "Administration service"
 msgstr "Service d'administration"
 
-#: novaideo/core_schema.py:41
+#: novaideo/core_schema.py:42
 msgctxt "contact"
 msgid "Title"
 msgstr "Titre"
 
-#: novaideo/core_schema.py:48
+#: novaideo/core_schema.py:49
 msgid "Address"
 msgstr "Adresse"
 
-#: novaideo/core_schema.py:67
+#: novaideo/core_schema.py:68
 msgid "Phone"
 msgstr "Téléphone"
 
-#: novaideo/core_schema.py:75
+#: novaideo/core_schema.py:76
 #: novaideo/views/templates/organization_result.pt:63
 #: novaideo/views/organization_management/templates/see_organization.pt:28
 msgid "Surcharge"
 msgstr "Surtaxe"
 
-#: novaideo/core_schema.py:76
+#: novaideo/core_schema.py:77
 msgid "Indicate the amount of the surcharge (for the premium-rate number)."
 msgstr "Indiquez le montant de la surtaxe (pour les numéros surtaxés)."
 
-#: novaideo/core_schema.py:82
+#: novaideo/core_schema.py:84
 msgid "Fax"
 msgstr "Fax"
 
-#: novaideo/core_schema.py:88
+#: novaideo/core_schema.py:90
 msgid "Website"
 msgstr "Site Internet"
 
-#: novaideo/core_schema.py:101
+#: novaideo/core_schema.py:103
 msgid "One value must be entered."
 msgstr "Une valeur doit être saisie."
 
-#: novaideo/core_schema.py:107
+#: novaideo/core_schema.py:109
 msgid "Surcharge field must be filled in."
 msgstr "Le champ surtaxe doit être rempli."
 
@@ -277,11 +277,11 @@ msgstr "Anonymat"
 msgid "Pseudonymity"
 msgstr "Pseudonymat"
 
-#: novaideo/core.py:286
+#: novaideo/core.py:287
 msgid "Channel"
 msgstr "Canal"
 
-#: novaideo/core.py:450 novaideo/content/site_configuration.py:518
+#: novaideo/core.py:451 novaideo/content/site_configuration.py:518
 msgid ""
 "Minimum one keyword required. You can specify a second keyword level for "
 "each keyword chosen."
@@ -289,7 +289,7 @@ msgstr ""
 "Au minimum un mot-clef requis, Vous pouvez préciser un second niveau de mot-"
 "clef pour chaque mot-clef choisi."
 
-#: novaideo/core.py:460 novaideo/content/site_configuration.py:528
+#: novaideo/core.py:461 novaideo/content/site_configuration.py:528
 #: novaideo/views/novaideo_view_manager/analytics.py:223
 #: novaideo/views/admin_process/manage_keywords.py:62
 #: novaideo/views/proposal_management/templates/diff_result.pt:8
@@ -300,7 +300,7 @@ msgstr ""
 msgid "Keywords"
 msgstr "Mots clés"
 
-#: novaideo/core.py:461 novaideo/content/person.py:215
+#: novaideo/core.py:462 novaideo/content/person.py:215
 #: novaideo/views/novaideo_view_manager/analytics.py:224
 msgid ""
 "Indicate keywords. You can specify a second keyword level for each keyword "
@@ -5341,17 +5341,27 @@ msgstr ""
 
 #: novaideo/views/user_management/templates/registrationsubmitted.pt:13
 msgid ""
-"The ${novaideo_title} platform will send you e-mails. In order for these e-"
-"mails not to be filtered out by your spam filter, we strongly recommend that "
-"you register immediately the e-mail address ${novaideo_email} in the "
-"contacts list of the webmail server of your Internet Access Provider / of "
-"your e-mail provider and of your e-mail client software"
+"The ${novaideo_title} platform has just sent you an e-mail to continue your "
+"registration procedure. We invite you to check the spam inbox of the webmail "
+"server of your Internet Access Provider or of your e-mail provider, as well "
+"as that of your e-mail client software, because this e-mail may "
+"unfortunately be there. In order for future e-mails from the platform not to "
+"be filtered out by your spam filter, we strongly recommend that you register "
+"immediately the e-mail address ${novaideo_email} in your contacts list on "
+"the webmail server of your Internet Access Provider or of your e-mail "
+"provider, as well as in the contacts list of your e-mail client software."
 msgstr ""
-"Pour éviter que les courriels qui vous sont adressés par la plate-forme "
-"${novaideo_title} ne soient retenus par votre filtre anti-spam, nous vous "
-"recommandons très vivement d'enregistrer dès maintenant l'adresse de "
-"courriel ${novaideo_email} dans la liste de contacts du serveur web-mail de "
-"votre fournisseur d'accès / de courriel et de votre client de messagerie"
+"Vous allez recevoir un courriel pour poursuivre votre procédure "
+"d'inscription. Nous vous invitons à vérifier dès à présent la boîte de "
+"réception des pourriels (\"spam\") de votre client de messagerie ou du "
+"serveur webmail de votre fournisseur d'accès Internet ou de courriel, car il "
+"pourrait malheureusement s'y trouver.\n"
+"Pour éviter que les courriels qui vous seront adressés par la plate-forme "
+"${novaideo_title} ne soient à l'avenir retenus par votre filtre anti-spam, "
+"nous vous recommandons très vivement d'enregistrer dès maintenant l'adresse "
+"de courriel ${novaideo_email}  dans votre liste de contacts sur le serveur "
+"webmail de votre fournisseur d'accès ou de courriel, ainsi que dans celle de "
+"votre client de messagerie."
 
 #: novaideo/views/user_management/templates/login.pt:4
 #: novaideo/views/user_management/templates/login.pt:22
@@ -12747,6 +12757,19 @@ msgstr "Examiné(e) le"
 #: novaideo/adapters/__init__.py:32
 msgid "Published on"
 msgstr "Publié(e) le"
+
+#~ msgid ""
+#~ "The ${novaideo_title} platform has just sent you an e-mail to continue "
+#~ "your registration procedure. We invite you to check the spam inbox of the "
+#~ "webmail server of your Internet Access Provider or of your e-mail "
+#~ "provider, as well as that of your e-mail client software, because this e-"
+#~ "mail may unfortunately be there."
+#~ msgstr ""
+#~ "Vous allez recevoir un courriel pour poursuivre votre procédure "
+#~ "d'inscription. Nous vous invitons à vérifier dès à présent la boîte de "
+#~ "réception des pourriels (\"spam\") de votre client de messagerie ou du "
+#~ "serveur webmail de votre fournisseur d'accès Internet ou de courriel, car "
+#~ "il pourrait malheureusement s'y trouver."
 
 #~ msgid "Mode"
 #~ msgstr "Mode de réunion"

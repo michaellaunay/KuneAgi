@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2020-02-08 22:59+0100\n"
+"POT-Creation-Date: 2020-02-14 22:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,51 +48,51 @@ msgstr ""
 msgid "Symbols"
 msgstr ""
 
-#: ./novaideo/core_schema.py:27
+#: ./novaideo/core_schema.py:28
 #, python-format
 msgid "${phone} phone number not valid"
 msgstr ""
 
-#: ./novaideo/core_schema.py:34
+#: ./novaideo/core_schema.py:35
 msgid "Administration service"
 msgstr ""
 
-#: ./novaideo/core_schema.py:41
+#: ./novaideo/core_schema.py:42
 msgctxt "contact"
 msgid "Title"
 msgstr ""
 
-#: ./novaideo/core_schema.py:48
+#: ./novaideo/core_schema.py:49
 msgid "Address"
 msgstr ""
 
-#: ./novaideo/core_schema.py:67
+#: ./novaideo/core_schema.py:68
 msgid "Phone"
 msgstr ""
 
-#: ./novaideo/core_schema.py:75
+#: ./novaideo/core_schema.py:76
 #: ./novaideo/views/templates/organization_result.pt:63
 #: ./novaideo/views/organization_management/templates/see_organization.pt:28
 msgid "Surcharge"
 msgstr ""
 
-#: ./novaideo/core_schema.py:76
+#: ./novaideo/core_schema.py:77
 msgid "Indicate the amount of the surcharge (for the premium-rate number)."
 msgstr ""
 
-#: ./novaideo/core_schema.py:82
+#: ./novaideo/core_schema.py:84
 msgid "Fax"
 msgstr ""
 
-#: ./novaideo/core_schema.py:88
+#: ./novaideo/core_schema.py:90
 msgid "Website"
 msgstr ""
 
-#: ./novaideo/core_schema.py:101
+#: ./novaideo/core_schema.py:103
 msgid "One value must be entered."
 msgstr ""
 
-#: ./novaideo/core_schema.py:107
+#: ./novaideo/core_schema.py:109
 msgid "Surcharge field must be filled in."
 msgstr ""
 
@@ -281,17 +281,17 @@ msgstr ""
 msgid "Pseudonymity"
 msgstr ""
 
-#: ./novaideo/core.py:286
+#: ./novaideo/core.py:287
 msgid "Channel"
 msgstr ""
 
-#: ./novaideo/core.py:450 ./novaideo/content/site_configuration.py:518
+#: ./novaideo/core.py:451 ./novaideo/content/site_configuration.py:518
 msgid ""
 "Minimum one keyword required. You can specify a second keyword level for each"
 " keyword chosen."
 msgstr ""
 
-#: ./novaideo/core.py:460 ./novaideo/content/site_configuration.py:528
+#: ./novaideo/core.py:461 ./novaideo/content/site_configuration.py:528
 #: ./novaideo/views/novaideo_view_manager/analytics.py:223
 #: ./novaideo/views/admin_process/manage_keywords.py:62
 #: ./novaideo/views/proposal_management/templates/diff_result.pt:8
@@ -302,7 +302,7 @@ msgstr ""
 msgid "Keywords"
 msgstr ""
 
-#: ./novaideo/core.py:461 ./novaideo/content/person.py:215
+#: ./novaideo/core.py:462 ./novaideo/content/person.py:215
 #: ./novaideo/views/novaideo_view_manager/analytics.py:224
 msgid ""
 "Indicate keywords. You can specify a second keyword level for each keyword "
@@ -5219,11 +5219,15 @@ msgstr ""
 
 #: ./novaideo/views/user_management/templates/registrationsubmitted.pt:13
 msgid ""
-"The ${novaideo_title} platform will send you e-mails. In order for these "
-"e-mails not to be filtered out by your spam filter, we strongly recommend "
-"that you register immediately the e-mail address ${novaideo_email} in the "
-"contacts list of the webmail server of your Internet Access Provider / of "
-"your e-mail provider and of your e-mail client software"
+"The ${novaideo_title} platform has just sent you an e-mail to continue your "
+"registration procedure. We invite you to check the spam inbox of the webmail "
+"server of your Internet Access Provider or of your e-mail provider, as well "
+"as that of your e-mail client software, because this e-mail may unfortunately"
+" be there. In order for future e-mails from the platform not to be filtered "
+"out by your spam filter, we strongly recommend that you register immediately "
+"the e-mail address ${novaideo_email} in your contacts list on the webmail "
+"server of your Internet Access Provider or of your e-mail provider, as well "
+"as in the contacts list of your e-mail client software."
 msgstr ""
 
 #: ./novaideo/views/user_management/templates/login.pt:4

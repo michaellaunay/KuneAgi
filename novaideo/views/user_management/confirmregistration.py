@@ -9,7 +9,6 @@ from pyramid.view import view_config
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
 from pontus.view import BasicView
 from pontus.view_operation import MultipleView
-from pontus.default_behavior import Cancel
 from pontus.form import FormView
 from pontus.schema import select
 
@@ -17,6 +16,7 @@ from novaideo.content.processes.user_management.behaviors import (
     ConfirmRegistration)
 from novaideo.content.person import Preregistration, PersonSchema
 from novaideo import _
+from .reset_password import Cancel
 
 
 class ConfirmRegistrationViewStudyReport(BasicView):
