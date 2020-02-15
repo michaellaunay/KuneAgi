@@ -633,7 +633,7 @@ def alert_user(request, preregistration, alert_data, reminder=False):
             subject=subject, body=message)
 
 
-def start_registration_alert(registration, ballot, alert_data, alert_date):
+def start_registration_alert(registration, ballot_proc, alert_data, alert_date):
     def_container = dace_find_service('process_definition_container')
     runtime = dace_find_service('runtime')
     pd = def_container.get_definition('registrationalert')
@@ -642,7 +642,7 @@ def start_registration_alert(registration, ballot, alert_data, alert_date):
     runtime.addtoproperty('processes', proc)
     proc.defineGraph(pd)
     proc.execution_context.add_created_entity('registration', registration)
-    proc.execution_context.add_created_entity('ballot', ballot)
+    proc.execution_context.add_created_entity('ballot', ballot_proc)
     proc.alert_data = alert_data
     proc.alert_date = alert_date
     proc.execute()
@@ -657,6 +657,14 @@ def alert_roles_validation(process, context):
     return has_role(role=('System',))
 
 
+def get_registration_ballot_report(ballot_proc):
+    ballot_actions = ballot_proc.get_actions('start_ballot')
+    ballot_action = ballot_actions[0] if len(ballot_actions) > 0 else None
+    ballot_process = ballot_action.sub_process if ballot_action else None
+    ballot = ballot_process.ballots[0] if ballot_process is not None and len(ballot_process.ballots) > 0 else None
+    return ballot.report if ballot is not None else None 
+
+
 class AlertRegistration(ElementaryAction):
     style = 'button'  # TODO add style abstract class
     style_descriminator = 'global-action'
@@ -668,11 +676,9 @@ class AlertRegistration(ElementaryAction):
     relation_validation = alert_relation_validation
 
     def start(self, context, request, appstruct, **kw):
-        ballot = self.process.execution_context.created_entity('ballot')
-        ballot_actions = ballot.get_actions('start_ballot')
-        ballot_action = ballot_actions[0] if len(ballot_actions) > 0 else None
-        ballot_process = ballot_action.sub_process if ballot_action else None
-        if ballot_process is not None and len(ballot_process.ballots[0].report.voters) == 0:
+        ballot_proc = self.process.execution_context.created_entity('ballot')
+        report = get_registration_ballot_report(ballot_proc)
+        if report.voters == 0:
             alert_user(request, context, self.process.alert_data, True)
 
         return {}
@@ -717,10 +723,11 @@ class Registration(InfiniteCardinality):
                 def before_start(b_proc):
                     b_proc.registration = preregistration
 
-                ballot = start_ballot(
+                ballot_proc = start_ballot(
                     preregistration, preregistration, request, root,
                     moderators, 'registrationmoderation',
                     before_start=before_start)
+                report = get_registration_ballot_report(ballot_proc)
                 alert_data = get_ballot_alert_data(
                     preregistration, request, root, moderators)
                 alert_data.update(get_user_data(
@@ -729,9 +736,10 @@ class Registration(InfiniteCardinality):
                     root, alert_data['duration'], request)
                 alert_data['date_send_id_data'] = date_send_id_data_obj['date_deadline_str']
                 nb_days_deadline = date_send_id_data_obj['nb_days_deadline'] - 1
+                report.date_send_id_data = date_send_id_data_obj['date_deadline']
                 if nb_days_deadline >= 1:
                     start_registration_alert(
-                        preregistration, ballot, alert_data, date_send_id_data_obj['date_deadline'])
+                        preregistration, ballot_proc, alert_data, date_send_id_data_obj['date_deadline'])
 
             alert_user(request, preregistration, alert_data)
 

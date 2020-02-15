@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2020-02-14 22:58+0100\n"
+"POT-Creation-Date: 2020-02-15 23:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -413,7 +413,7 @@ msgstr ""
 #: ./novaideo/connectors/twitter/content/behaviors.py:120
 #: ./novaideo/content/processes/user_management/behaviors.py:151
 #: ./novaideo/content/processes/user_management/behaviors.py:493
-#: ./novaideo/content/processes/user_management/behaviors.py:685
+#: ./novaideo/content/processes/user_management/behaviors.py:691
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:224
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:252
 #: ./novaideo/content/processes/admin_process/behaviors.py:42
@@ -486,7 +486,7 @@ msgstr ""
 #: ./novaideo/connectors/google/content/definition.py:58
 #: ./novaideo/connectors/twitter/content/behaviors.py:147
 #: ./novaideo/connectors/twitter/content/definition.py:58
-#: ./novaideo/content/processes/user_management/behaviors.py:979
+#: ./novaideo/content/processes/user_management/behaviors.py:987
 #: ./novaideo/content/processes/user_management/definition.py:203
 #: ./novaideo/content/processes/proposal_management/definition.py:568
 #: ./novaideo/content/processes/newsletter_management/definition.py:74
@@ -512,8 +512,8 @@ msgstr ""
 #: ./novaideo/connectors/twitter/content/behaviors.py:148
 #: ./novaideo/content/processes/user_management/behaviors.py:270
 #: ./novaideo/content/processes/user_management/behaviors.py:418
-#: ./novaideo/content/processes/user_management/behaviors.py:870
-#: ./novaideo/content/processes/user_management/behaviors.py:1324
+#: ./novaideo/content/processes/user_management/behaviors.py:878
+#: ./novaideo/content/processes/user_management/behaviors.py:1332
 #: ./novaideo/content/processes/admin_process/behaviors.py:103
 #: ./novaideo/content/processes/channel_management/behaviors.py:38
 #: ./novaideo/content/processes/channel_management/behaviors.py:68
@@ -1691,7 +1691,7 @@ msgstr ""
 #: ./novaideo/content/report.py:73 ./novaideo/content/question.py:111
 #: ./novaideo/content/event.py:79
 #: ./novaideo/content/processes/user_management/behaviors.py:553
-#: ./novaideo/content/processes/user_management/behaviors.py:934
+#: ./novaideo/content/processes/user_management/behaviors.py:942
 #: ./novaideo/content/processes/user_management/definition.py:104
 #: ./novaideo/content/processes/user_management/definition.py:105
 #: ./novaideo/content/processes/user_management/definition.py:193
@@ -2110,6 +2110,7 @@ msgstr ""
 
 #: ./novaideo/content/person.py:267
 #: ./novaideo/views/user_management/templates/see_registration.pt:30
+#: ./novaideo/views/templates/ballots/new_registration.pt:22
 msgid "Citizenship"
 msgstr ""
 
@@ -2715,7 +2716,7 @@ msgstr ""
 msgid "REMINDER"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:760
+#: ./novaideo/content/processes/user_management/behaviors.py:768
 #: ./novaideo/content/processes/question_management/definition.py:219
 #: ./novaideo/views/work_mode_processes/wiki_work_mode_process/correct_proposal.py:88
 #: ./novaideo/views/work_mode_processes/wiki_work_mode_process/correct_proposal.py:114
@@ -2726,7 +2727,7 @@ msgstr ""
 msgid "Validate"
 msgstr ""
 
-#: ./novaideo/content/processes/user_management/behaviors.py:1039
+#: ./novaideo/content/processes/user_management/behaviors.py:1047
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:61
 #: ./novaideo/content/processes/novaideo_abstract_process/behaviors.py:128
 #: ./novaideo/content/processes/reports_management/behaviors.py:260

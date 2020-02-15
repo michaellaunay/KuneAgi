@@ -5,7 +5,7 @@
 	<p i18n:translate="">
         If the majority of Verifiers confirms the identity of this account, the account of the person that has just registered will be validated. If not, the account will be suppressed.
 	</p>
-	<p i18n:translate="" tal:define="finish  ballot_report.ballot.finished_at">
+	<p i18n:translate="" tal:define="finish  getattr(ballot_report, 'date_send_id_data', ballot_report.ballot.finished_at)">
         Take great care! In order for you to validate the registration, ALL elements must be strictly IDENTICAL between the ID information received from the person upon his/her registration and those of the official ID document of which you received a copy. In all other cases, even if the difference bears on one character only, or if you have not received the copy of the official ID document upon the date of <span i18n:name="dynamic" tal:replace="layout.to_localized_time(finish)"/>, you MUST refuse the registration.
 	</p>
 	<p tal:define="registration process.registration">
@@ -19,6 +19,8 @@
 	        <dd><span tal:replace="layout.to_localized_time(registration.birth_date)"/></dd>
 	        <dt i18n:translate="">Birthplace</dt>
 	        <dd><span tal:replace="registration.birthplace"/></dd>
+			<dt i18n:translate="">Citizenship</dt>
+	        <dd><span tal:replace="registration.citizenship"/></dd>
       </dl>
     </p>
 </div>
