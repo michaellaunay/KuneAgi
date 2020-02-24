@@ -661,8 +661,9 @@ def get_registration_ballot_report(ballot_proc):
     ballot_actions = ballot_proc.get_actions('start_ballot')
     ballot_action = ballot_actions[0] if len(ballot_actions) > 0 else None
     ballot_process = ballot_action.sub_process if ballot_action else None
-    ballot = ballot_process.ballots[0] if ballot_process is not None and len(ballot_process.ballots) > 0 else None
-    return ballot.report if ballot is not None else None 
+    ballot = ballot_process.ballots[0] if ballot_process is not None and len(
+        ballot_process.ballots) > 0 else None
+    return ballot.report if ballot is not None else None
 
 
 class AlertRegistration(ElementaryAction):
@@ -677,8 +678,9 @@ class AlertRegistration(ElementaryAction):
 
     def start(self, context, request, appstruct, **kw):
         ballot_proc = self.process.execution_context.created_entity('ballot')
-        report = get_registration_ballot_report(ballot_proc)
-        if report.voters == 0:
+        report = get_registration_ballot_report(
+            ballot_proc) if ballot_proc is not None else None
+        if report is None or len(report.voters) == 0:
             alert_user(request, context, self.process.alert_data, True)
 
         return {}
