@@ -728,6 +728,29 @@ Vous recevrez le résultat de cette procédure de vérification d'identité à l
 
 """ + PORTAL_SIGNATURE
 
+
+REMINDER_ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""RAPPEL: Inscription à la plateforme participative {novaideo_title}"""
+
+
+REMINDER_ADMIN_PREREGISTRATION_SUB_MESSAGE = u"""
+Bonjour {recipient_first_name},
+
+Votre inscription a été soumise à vérification de votre identité.
+
+À chaque nouvelle inscription à la plateforme {novaideo_title} le système sélectionne aléatoirement trois membres existants afin de vérifier l'identité de la personne inscrite. En effet, il faut vérifier que chaque membre de la plate-forme correspond à une personne physique et une seule, et ainsi éviter qu'une même personne ne puisse voter plusieurs fois sous plusieurs identités différentes.
+
+Afin que votre identité puisse être ainsi vérifiée, nous vous demandons d'adresser à chacune des personnes suivantes, dans trois courriels séparés, avant le {date_end_vote}, la copie scannée d'un document d'identité officiel. Cette copie devra faire apparaître clairement votre(vos) prénom(s), votre(vos) nom(s) de famille, votre date de naissance et votre lieu de naissance. Au-delà du {date_end_vote}, si les Vérificateurs n'ont pas reçu de copie de votre document d'identité officiel, ils ont instruction de refuser votre inscription.
+
+Les modérateurs assignés à la vérification de votre inscription sont:
+{moderators}
+
+Vous recevrez le résultat de cette procédure de vérification d'identité à la fin de la période laissée aux Vérificateurs pour travailler, soit le {date_end_vote} au plus tard.
+
+Si vous avez déjà envoyé la copie de vos documents d'identité aux Vérificateurs, ne tenez pas commpte du présent courriel.
+
+""" + PORTAL_SIGNATURE
+
+
 PUBLISHEDCHALLENGE_SUBJECT = u"""Décision des modérateurs de publier le challenge « {subject_title} »"""
 
 
@@ -1050,6 +1073,10 @@ add_mail_template('moderate_preregistration_refused', {'locale': mail_locale,
 add_mail_template('preregistration_submit', {'locale': mail_locale,
                                              'subject': ADMIN_PREREGISTRATION_SUB_SUBJECT,
                                              'template': ADMIN_PREREGISTRATION_SUB_MESSAGE})
+
+add_mail_template('reminder_preregistration_submit', {'locale': mail_locale,
+                                                      'subject': REMINDER_ADMIN_PREREGISTRATION_SUB_SUBJECT,
+                                                      'template': REMINDER_ADMIN_PREREGISTRATION_SUB_MESSAGE})
 
 add_mail_template('close_proposal', {'locale': mail_locale,
                                      'subject': SYSTEM_CLOSE_PROPOSAL_SUBJECT,

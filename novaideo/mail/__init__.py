@@ -166,6 +166,10 @@ DEFAULT_SITE_MAILS = {
         'title': _("Registration submission"),
         'languages': {}
     },
+    'reminder_preregistration_submit': {
+        'title': _("Registration submission"),
+        'languages': {}
+    },
     'close_proposal': {
         'title': _("Close the proposal"),
         'languages': {}

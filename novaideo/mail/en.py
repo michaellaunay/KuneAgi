@@ -708,6 +708,27 @@ You will receive the result of this identity verification process at the end of 
 
 """ + PORTAL_SIGNATURE
 
+
+REMINDER_ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""REMINDER: Your registration on the {novaideo_title} on-line democracy platform is being processed"""
+
+REMINDER_ADMIN_PREREGISTRATION_SUB_MESSAGE = u"""
+Dear {recipient_first_name},
+
+Your registration on the {novaideo_title} on-line democracy platform is now subject to the verification of your identity.
+
+At each new registration on the {novaideo_title} platfom, the system randomly selects three existing members (the Verifiers of this specific registration), and requests them to verify the identity of the newly registered person. Indeed, it is important to check that each member on the platform is related to one natural person, and to one only. Thereby, we avoid that a given natural person vote several times on the platform under several different pseudonyms.
+
+In order for your identity to be verified, we kindly request you to send to each of the following persons, in separate e-mails, on or before the {date_end_vote}, a scanned copy of an official identity document. This copy must display clearly your family name(s), your given name(s), your birth date and your birth place, written in the Latin alphabet. Beyond the {date_end_vote}, if the Verifiers have not received a copy of  your official identity document, they are instructed to refuse your registration.
+
+The Verifiers assigned to the verification of your identity are:
+{moderators}
+
+You will receive the result of this identity verification process at the end of the time given for the Verifiers to process this verification, i.e. on {date_end_vote} at the latest.
+
+If you have already sent the copy of your identity documents to the Verifiers, do not keep this email.
+
+""" + PORTAL_SIGNATURE
+
 # INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
 # Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
 ADMIN_CONTENT_SUB_SUBJECT = u"""Your content on the {novaideo_title} on-line democracy platform is being moderated"""
@@ -1041,6 +1062,10 @@ add_mail_template('moderate_preregistration_refused', {'locale': mail_locale,
 add_mail_template('preregistration_submit', {'locale': mail_locale,
                                              'subject': ADMIN_PREREGISTRATION_SUB_SUBJECT,
                                              'template': ADMIN_PREREGISTRATION_SUB_MESSAGE})
+
+add_mail_template('reminder_preregistration_submit', {'locale': mail_locale,
+                                                      'subject': REMINDER_ADMIN_PREREGISTRATION_SUB_SUBJECT,
+                                                      'template': REMINDER_ADMIN_PREREGISTRATION_SUB_MESSAGE})
 
 add_mail_template('close_proposal', {'locale': mail_locale,
                                      'subject': SYSTEM_CLOSE_PROPOSAL_SUBJECT,

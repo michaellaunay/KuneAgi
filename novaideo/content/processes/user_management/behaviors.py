@@ -618,12 +618,10 @@ def get_date_send_id_data(root, vote_duration, request):
 
 def alert_user(request, preregistration, alert_data, reminder=False):
     root = request.root
-    mail_template = root.get_mail_template(
-        'preregistration_submit')
+    template_id = 'reminder_preregistration_submit' if reminder else 'preregistration_submit'
+    mail_template = root.get_mail_template(template_id)
     if mail_template:
-        reminder_subject = request.localizer.translate(
-            _('REMINDER')) + ': ' if reminder else ''
-        subject = reminder_subject + mail_template['subject'].format(
+        subject = mail_template['subject'].format(
             **alert_data)
         message = mail_template['template'].format(
             **alert_data)
