@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-02-15 23:27+0100\n"
+"POT-Creation-Date: 2020-02-27 00:48+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: SOUISSI <amensouissi@ecreall.com>\n"
 "Language-Team: \n"
@@ -300,7 +300,7 @@ msgstr ""
 msgid "Keywords"
 msgstr "Mots clés"
 
-#: novaideo/core.py:462 novaideo/content/person.py:215
+#: novaideo/core.py:462 novaideo/content/person.py:244
 #: novaideo/views/novaideo_view_manager/analytics.py:224
 msgid ""
 "Indicate keywords. You can specify a second keyword level for each keyword "
@@ -1385,7 +1385,7 @@ msgid "Maximum number of events per Member"
 msgstr "Nombre maximum d'événement de discussion par Membre"
 
 #: novaideo/content/site_configuration.py:343
-#: novaideo/content/newsletter.py:170 novaideo/content/person.py:205
+#: novaideo/content/newsletter.py:170 novaideo/content/person.py:234
 #: novaideo/content/smart_folder.py:134 novaideo/adapters/__init__.py:27
 msgid "Description"
 msgstr "Description"
@@ -1404,7 +1404,7 @@ msgid "Logo"
 msgstr "Logo"
 
 #: novaideo/content/site_configuration.py:364
-#: novaideo/content/site_configuration.py:399 novaideo/content/person.py:244
+#: novaideo/content/site_configuration.py:399 novaideo/content/person.py:273
 #: novaideo/content/smart_folder.py:150 novaideo/content/organization.py:146
 msgid "Only PNG and SVG files are supported."
 msgstr "Seuls les fichiers PNG et SVG sont supportés."
@@ -1490,7 +1490,7 @@ msgstr "Vous devez saisir au moins un mot clé."
 msgid "The title of the application"
 msgstr "Le titre de l'application"
 
-#: novaideo/content/site_configuration.py:561 novaideo/content/person.py:288
+#: novaideo/content/site_configuration.py:561 novaideo/content/person.py:317
 #: novaideo/content/smart_folder.py:139
 msgid "Locale"
 msgstr "Langue"
@@ -1990,7 +1990,7 @@ msgstr "Vous pouvez décrire en détail le challenge."
 msgid "Image"
 msgstr "Image"
 
-#: novaideo/content/challenge.py:144 novaideo/content/person.py:232
+#: novaideo/content/challenge.py:144 novaideo/content/person.py:261
 msgid ""
 "You see a square on the top left of the image if it exceeds the maximum size "
 "allowed. Move and enlarge it if necessary, to determine an area of interest. "
@@ -2100,63 +2100,67 @@ msgstr "Adresse de courriel ${email} déjà utilisée"
 msgid "${pseudonym} pseudonym already in use"
 msgstr "Pseudonyme ${pseudonym} déjà utilisé"
 
-#: novaideo/content/person.py:194
+#: novaideo/content/person.py:210
+msgid "User already exists"
+msgstr "L'utilisateur existe déjà"
+
+#: novaideo/content/person.py:223
 msgid "Function"
 msgstr "Fonction"
 
-#: novaideo/content/person.py:214 novaideo/views/templates/person_result.pt:60
+#: novaideo/content/person.py:243 novaideo/views/templates/person_result.pt:60
 msgid "Topics of interest"
 msgstr "Centres d'intérêt"
 
-#: novaideo/content/person.py:225
+#: novaideo/content/person.py:254
 #: novaideo/views/user_management/reset_password.py:105
 #: novaideo/views/user_management/templates/login.pt:13
 #: novaideo/views/invitation_management/accept_invitation.py:28
 msgid "Login (email)"
 msgstr "Identifiant (courriel)"
 
-#: novaideo/content/person.py:231
+#: novaideo/content/person.py:260
 msgid "Picture"
 msgstr "Portrait"
 
-#: novaideo/content/person.py:242 novaideo/content/smart_folder.py:148
+#: novaideo/content/person.py:271 novaideo/content/smart_folder.py:148
 #: novaideo/content/organization.py:144
 msgid "Cover picture"
 msgstr "Photos de couverture"
 
-#: novaideo/content/person.py:249
+#: novaideo/content/person.py:278
 msgid "Given name(s)"
 msgstr "Prénom(s)"
 
-#: novaideo/content/person.py:250
+#: novaideo/content/person.py:279
 #: novaideo/views/user_management/templates/alert_registration.pt:10
 msgid ""
 "Given name(s), as it(they) appear(s) on your official identity documents"
 msgstr ""
 "Prénom(s), tel(s) qu'apparaissant dans vos documents officiels d'identité"
 
-#: novaideo/content/person.py:255
+#: novaideo/content/person.py:284
 msgid "Family name(s)"
 msgstr "Nom(s)"
 
-#: novaideo/content/person.py:256
+#: novaideo/content/person.py:285
 #: novaideo/views/user_management/templates/alert_registration.pt:11
 msgid ""
 "Family name(s), as it(they) appear(s) on your official identity documents"
 msgstr "Nom(s), tel(s) qu'apparaissant dans vos documents officiels d'identité"
 
-#: novaideo/content/person.py:261
+#: novaideo/content/person.py:290
 #: novaideo/views/user_management/templates/alert_registration.pt:12
 msgid "Date of birth"
 msgstr "Date de naissance"
 
-#: novaideo/content/person.py:267
+#: novaideo/content/person.py:296
 #: novaideo/views/user_management/templates/see_registration.pt:30
 #: novaideo/views/templates/ballots/new_registration.pt:22
 msgid "Citizenship"
 msgstr "Nationalité"
 
-#: novaideo/content/person.py:268
+#: novaideo/content/person.py:297
 msgid ""
 "What is the Member State of the European Union of which you are a citizen? "
 "Only citizens of the European Union can be members of the CosmoPolitical "
@@ -2166,11 +2170,11 @@ msgstr ""
 "Seul(e)s les citoyen(ne)s de l'Union Européenne peuvent être membres de la "
 "Coopérative CosmoPolitique."
 
-#: novaideo/content/person.py:273
+#: novaideo/content/person.py:302
 msgid "Place of birth"
 msgstr "Lieu de naissance"
 
-#: novaideo/content/person.py:274
+#: novaideo/content/person.py:303
 #: novaideo/views/user_management/templates/alert_registration.pt:13
 msgid ""
 "Place of birth (city or municipality + country if relevant), as it appears "
@@ -2179,12 +2183,12 @@ msgstr ""
 "Lieu de naissance (commune + éventuellement pays), tel qu'apparaissant dans "
 "vos documents officiels d'identité"
 
-#: novaideo/content/person.py:281
+#: novaideo/content/person.py:310
 msgctxt "user"
 msgid "Title"
 msgstr "Civilité"
 
-#: novaideo/content/person.py:282
+#: novaideo/content/person.py:311
 msgid ""
 "Please do not select anything if you do not want to communicate this "
 "information."
@@ -2192,13 +2196,13 @@ msgstr ""
 "Veuillez ne rien sélectionner si vous ne souhaitez pas communiquer cette "
 "information."
 
-#: novaideo/content/person.py:298
+#: novaideo/content/person.py:327
 #: novaideo/views/user_management/templates/login.pt:17
 #: novaideo/views/invitation_management/accept_invitation.py:37
 msgid "Password"
 msgstr "Mot de passe"
 
-#: novaideo/content/person.py:305 novaideo/views/templates/person_bloc.pt:37
+#: novaideo/content/person.py:334 novaideo/views/templates/person_bloc.pt:37
 #: novaideo/views/templates/invitation_result.pt:28
 #: novaideo/views/templates/person_result.pt:46
 #: novaideo/views/templates/person_header.pt:37
@@ -2208,11 +2212,11 @@ msgstr "Mot de passe"
 msgid "Organization"
 msgstr "Organisation"
 
-#: novaideo/content/person.py:315
+#: novaideo/content/person.py:344
 msgid "Pseudonym"
 msgstr "Pseudonyme"
 
-#: novaideo/content/person.py:316
+#: novaideo/content/person.py:345
 msgid ""
 "Please choose the pseudonym that will identify you for the whole duration of "
 "your activity on the platform. We STRONGLY recommend that you select a "
@@ -2235,15 +2239,11 @@ msgstr ""
 "attention ! Une fois choisi, vous ne pourrez PLUS JAMAIS changer ce "
 "pseudonyme. Choisissez-le avec soin !"
 
-#: novaideo/content/person.py:329
+#: novaideo/content/person.py:358
 msgid "I have read and accept the terms and conditions of use"
 msgstr "J'ai lu et accepte les termes et conditions d'utilisation"
 
-#: novaideo/content/person.py:360
-msgid "User already exists"
-msgstr "L'utilisateur existe déjà"
-
-#: novaideo/content/person.py:371
+#: novaideo/content/person.py:376
 msgid "Person"
 msgstr "Personne"
 
@@ -2775,10 +2775,6 @@ msgstr "Assigner des rôles"
 #: novaideo/content/processes/user_management/behaviors.py:578
 msgid "See notations"
 msgstr "Voir les notes"
-
-#: novaideo/content/processes/user_management/behaviors.py:625
-msgid "REMINDER"
-msgstr ""
 
 #: novaideo/content/processes/user_management/behaviors.py:768
 #: novaideo/content/processes/question_management/definition.py:219
@@ -3578,7 +3574,7 @@ msgstr "Quitter"
 
 #: novaideo/content/processes/proposal_management/definition.py:364
 #: novaideo/content/processes/proposal_management/definition.py:366
-#: novaideo/mail/__init__.py:226
+#: novaideo/mail/__init__.py:230
 msgid "Exclude a participant"
 msgstr "Exclure un(e) participant(e)"
 
@@ -4966,87 +4962,91 @@ msgid "Registration submission"
 msgstr "Soumission de l'inscription"
 
 #: novaideo/mail/__init__.py:170
+msgid "Remider: Registration submission"
+msgstr "Rappel: Soumission de l'inscription"
+
+#: novaideo/mail/__init__.py:174
 msgid "Close the proposal"
 msgstr "Clôturer la proposition"
 
-#: novaideo/mail/__init__.py:174
+#: novaideo/mail/__init__.py:178
 msgid "Presentation of a question"
 msgstr "Présentation d'une question"
 
-#: novaideo/mail/__init__.py:178
+#: novaideo/mail/__init__.py:182
 msgid "Presentation of an answer"
 msgstr "Présentation d'une réponse"
 
-#: novaideo/mail/__init__.py:182
+#: novaideo/mail/__init__.py:186
 msgid "Warning: new answer"
 msgstr "Alerte : nouvelle réponse"
 
-#: novaideo/mail/__init__.py:186
+#: novaideo/mail/__init__.py:190
 msgid "Moderation: Archive the content"
 msgstr "Modération : Archiver le contenu"
 
-#: novaideo/mail/__init__.py:190
+#: novaideo/mail/__init__.py:194
 msgid "Moderation: Archive the challenge"
 msgstr "Modération : Archiver le challenge"
 
-#: novaideo/mail/__init__.py:194
+#: novaideo/mail/__init__.py:198
 msgid "Moderation: Publish the challenge"
 msgstr "Modération : Publier le challenge"
 
-#: novaideo/mail/__init__.py:198
+#: novaideo/mail/__init__.py:202
 msgid "Presentation of a challenge"
 msgstr "Présentation d'un challenge"
 
-#: novaideo/mail/__init__.py:202
+#: novaideo/mail/__init__.py:206
 msgid "Pre-registration of users with moderation"
 msgstr "Préinscription des utilisateurs avec modération"
 
-#: novaideo/mail/__init__.py:206
+#: novaideo/mail/__init__.py:210
 msgid "Exclusion from the working group"
 msgstr "Exclusion du groupe de travail"
 
-#: novaideo/mail/__init__.py:210
+#: novaideo/mail/__init__.py:214
 msgid "New content to moderate"
 msgstr "Nouveau contenu à modérer"
 
-#: novaideo/mail/__init__.py:214
+#: novaideo/mail/__init__.py:218
 msgid "Submission of a content"
 msgstr "Soumission d'un contenu"
 
-#: novaideo/mail/__init__.py:218
+#: novaideo/mail/__init__.py:222
 msgid "Report a content as potentially contrary to the Moderation rules"
 msgstr ""
 "Signaler un contenu comme potentiellement contraire aux règles de Modération"
 
-#: novaideo/mail/__init__.py:222
+#: novaideo/mail/__init__.py:226
 msgid "Alert the author of the reported content"
 msgstr "Alerter l'auteur du contenu signalé"
 
-#: novaideo/mail/__init__.py:230 novaideo/mail/__init__.py:234
+#: novaideo/mail/__init__.py:234 novaideo/mail/__init__.py:238
 msgid "New participation"
 msgstr "Nouvelle participation"
 
-#: novaideo/mail/__init__.py:238
+#: novaideo/mail/__init__.py:242
 msgid "Give a mark to a member's cooperative behaviour"
 msgstr "Donner une note au comportement coopératif d'un membre"
 
-#: novaideo/mail/__init__.py:242
+#: novaideo/mail/__init__.py:246
 msgid "Give a mark to a participant's cooperative behaviour"
 msgstr "Donner une note au comportement coopératif du participant"
 
-#: novaideo/mail/__init__.py:246
+#: novaideo/mail/__init__.py:250
 msgid "Give a mark to the cooperative behaviour of members"
 msgstr "Donner une note au comportement coopératif des membres"
 
-#: novaideo/mail/__init__.py:250
+#: novaideo/mail/__init__.py:254
 msgid "Resignation request"
 msgstr "Demande de démission"
 
-#: novaideo/mail/__init__.py:254
+#: novaideo/mail/__init__.py:258
 msgid "Resignation confirmation"
 msgstr "Confirmation de la démission"
 
-#: novaideo/mail/__init__.py:258
+#: novaideo/mail/__init__.py:262
 msgid "Resignation (user data deletion)"
 msgstr "Démission (suppression des données utilisateur)"
 
@@ -5087,20 +5087,20 @@ msgstr "Alerte"
 msgid "I have read and accept the terms and conditions."
 msgstr "J'ai lu et accepte les termes et conditions d'utilisation."
 
-#: novaideo/views/user_management/registration.py:42
+#: novaideo/views/user_management/registration.py:46
 msgid "Invalid captcha"
 msgstr "Captch non valide"
 
-#: novaideo/views/user_management/registration.py:60
-#: novaideo/views/user_management/registration.py:90
+#: novaideo/views/user_management/registration.py:64
+#: novaideo/views/user_management/registration.py:94
 msgid "Your registration"
 msgstr "Votre inscription"
 
-#: novaideo/views/user_management/registration.py:106
+#: novaideo/views/user_management/registration.py:110
 msgid "Please confirm your registration"
 msgstr "Veuillez confirmer votre inscription"
 
-#: novaideo/views/user_management/registration.py:114
+#: novaideo/views/user_management/registration.py:118
 msgid "Your registration is submitted to moderation"
 msgstr "Votre inscription est soumise à modération"
 
