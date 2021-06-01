@@ -35,7 +35,7 @@ RUN addgroup --quiet --gid $userid "u1000" && \
         --quiet \
         --home "/app" \
         "u1000"
-RUN pip3 install --disable-pip-version-check --no-cache-dir zc.buildout==2.9.5 setuptools==32.2.0 && pip3 uninstall -y six || true
+RUN pip3 install --disable-pip-version-check --no-cache-dir zc.buildout==2.13.3 setuptools==42.0.2 cryptacular==1.5.5 && pip3 uninstall -y six || true
 
 # grab gosu for easy step-down from root
 #RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -70,7 +70,8 @@ RUN mkdir -p -m 700 /app/.ssh && \
     echo "|1|VmfmXO+MNtehwEnpYIEHO7zfvm8=|ya5Yt/ILBv/gMHQLAfSu2tOWO2I= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNn6VI+Ekg/iOz3bZL6bb35tj6fOjmmMOvkw592XDXy+bSes+2qHhcA3uOg5/wEtmRaK583uZH/CJ4512BpLb7M=" >> /app/.ssh/known_hosts
 RUN buildout bootstrap -c heroku.cfg
 # bin/buildout -c heroku.cfg is done outside this build if do_buildout is false
-RUN $run_buildout && bin/buildout -c heroku.cfg || true
+RUN $run_buildout && bin/buildout -c heroku.cfg 
+# || true
 
 USER root
 
