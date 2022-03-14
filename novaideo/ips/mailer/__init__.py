@@ -1,8 +1,8 @@
-# Copyright (c) 2014 by Ecreall under licence AGPL terms 
+# Copyright (c) 2014-2022 by Ecreall under licence AGPL terms 
 # available on http://www.gnu.org/licenses/agpl.html
 
 # licence: AGPL
-# author: Amen Souissi
+# author: Amen Souissi, Michaël Launay
 
 import transaction
 from transaction._transaction import Status
@@ -20,14 +20,17 @@ def mailer_send(subject="!",
                 attachments=[]):
     try:
         request = get_current_request()
-        if sender is None:
-            sender = request.registry.settings['mail.default_sender']
+        postmaster = request.registry.settings['mail.default_sender']
+        #Due to spf restrictions we can't use sender email for the "From" field
+        # but only for the "Reply-To" one.
+        extra_headers = {"Reply-To":sender} if sender else None
 
         mailer = get_mailer(request)
         message = Message(subject=subject,
-                          sender=sender,
+                          sender=postmaster,
                           recipients=recipients,
                           body=body,
+                          extra_headers = extra_headers,
                           html=html)
         for attachment in attachments:
             attachment = Attachment(attachment.title,
