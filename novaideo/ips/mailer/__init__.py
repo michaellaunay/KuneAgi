@@ -11,6 +11,7 @@ from pyramid_mailer import get_mailer
 from pyramid_mailer.message import Attachment, Message
 from pyramid.threadlocal import get_current_request
 
+import sys
 
 def mailer_send(subject="!",
                 sender=None,
@@ -43,5 +44,5 @@ def mailer_send(subject="!",
         else:
             mailer.send(message)
 
-    except Exception:
-        pass
+    except Exception as exception:
+        print(f"Error {exception}", file=sys.stderr)
