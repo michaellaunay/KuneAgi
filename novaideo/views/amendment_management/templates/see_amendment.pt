@@ -33,7 +33,7 @@
               <span class="sr-only">Close</span>
             </button>
             <span class="glyphicon glyphicon-question-sign pull-right"></span>
-            <p i18n:translate="">In order for the other participants to decide on your improvements, you must explain them. You can provide the same explanation to several improvements at the same time. Once you have explained all your improvements, you can prepare your amendements and submit them to the other participants.</p>
+            <p i18n:translate="">In order for all Participants in the Working Group to decide on your improvements, you must explain them. You can provide the same explanation to several improvements at the same time. Once you have explained all your improvements, you can group them into amendements (i.e. groups of improvements justified by the same explanation). You finally submit your amendments to the vote of all Participants in the Working Group.</p>
             <p>
               <strong i18n:translate="">To explain each of your improvements, you can click on the corresponding number.</strong>
             </p>

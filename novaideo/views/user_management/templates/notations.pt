@@ -31,7 +31,7 @@
 		  The total mark, resulting from the accumulation of marks attributed over time, and fading away because of this "forgetfulness", indicates the trust that one can have in the future, when considering cooperating with this Member, e.g. when considering admitting him/her in a Working Group.
 		</p>
 		<p>
-		  <b i18n:translate="">Expressed in a mathematical form, the formula giving the global mark M at date t, based on marks Mk attributed at the dates Tk, is: M = Sigma (k=1 to n) Nk.2^[-(t-Tk)/Tau] = Sigma (k=1 to n) Nk.exp[-ln(2).(t-Tk)/Tau], with Tau the "half-life period".</b>
+		  <b i18n:translate="">Expressed in a mathematical form, the formula giving the global mark M at date t, based on marks Mk attributed at the dates Tk, is: M = Sigma (k=1 to n) Mk.2^[-(t-Tk)/Tau] = Sigma (k=1 to n) Mk.exp[-ln(2).(t-Tk)/Tau], with Tau the "half-life period".</b>
 		</p>
 		<p tal:condition="notes" i18n:translate="">
 		  Here are the marks received by <a i18n:name="dynamic" target="_blank" tal:attributes="href request.resource_url(member, '@@index')"

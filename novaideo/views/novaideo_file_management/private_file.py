@@ -34,7 +34,7 @@ class PrivateFileViewStudyReport(BasicView):
 
 
 class PrivateFileView(FormView):
-    title = _('Privatize')
+    title = _('Privatise')
     name = 'privatefileform'
     formid = 'formprivatefile'
     behaviors = [Private, Cancel]
@@ -55,7 +55,7 @@ class PrivateFileView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class PrivateFileMultipleView(MultipleView):
-    title = _('Privatize the document')
+    title = _('Privatise the document')
     name = 'privatefile'
     behaviors = [Private]
     viewid = 'privatefile'

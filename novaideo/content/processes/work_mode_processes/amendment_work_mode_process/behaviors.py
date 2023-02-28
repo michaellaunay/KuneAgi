@@ -40,9 +40,10 @@ from novaideo.utilities.alerts_utility import (
 from novaideo.utilities.util import diff_analytics
 
 
-VOTE_AMENDMENTS_MESSAGE = _("You are invited to vote on amendments. Each group of amendments opposes "
-                            "various submitted amendments to the original text, when they bear on the same "
-                            "segments of the text or on the same ideas.")
+VOTE_AMENDMENTS_MESSAGE = _("You are invited to vote on amendments. When several amendments bear on the same"
+				"segments of the text or on the same ideas, they are grouped together. In that case, the vote"
+				"selects the amendment within the group of amendments which is the most approved by the members"
+				"of the Working Group. The method being used is called 'Majority Judgement.")
 
 AMENDMENTS_VOTE_DEFAULT_DURATION = datetime.timedelta(days=1)
 

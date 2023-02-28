@@ -30,9 +30,9 @@ DURATION = datetime.timedelta(days=1000)
 
 NOTATION_GROUP = {
     'group_id': 'vote_notation',
-    'group_title': _('Mark the cooperative behaviour of Members'),
+    'group_title': _('Mark the cooperative behaviour of Participants in the Working Group'),
     'group_activate': False,
-    'group_activator_title': _('Mark the cooperative behaviour of Members'),
+    'group_activator_title': _('Mark the cooperative behaviour of Participants in the Working Group'),
     'group_activator_class_css': 'vote-action',
     'group_activator_style_picto': 'fa fa-gavel',
     'group_activator_order': 100

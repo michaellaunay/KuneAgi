@@ -948,7 +948,7 @@ def get_report_entity_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
         context, api,
-        _("The content has been reported as potentially contrary to the Moderation rules."),
+        _("The content has been reported as potentially contrary to the Moderation Charter."),
         **kwargs)
     if result.get('is_excuted'):
         context_id = str(get_oid(context, None))
@@ -982,7 +982,7 @@ def get_censor_entity_metadata(action, request, context, api, **kwargs):
     result = get_edit_entity_metadata(
         action, request,
         context, api,
-        _("The content has been censored."),
+        _("The content has been censored by the Distributed Moderation."),
         **kwargs)
     if result.get('is_excuted'):
         source_view_name = kwargs.get('view_name', '')
@@ -1852,7 +1852,7 @@ def component_navbar_myselections(action, request, context, api, **kwargs):
     result = {
         'component-navbar-myselections.item_nb': len_selections,
         'component-navbar-myselections.title': localizer.translate(
-            _('My followings')),
+            _('The items that I follow')),
         'component-navbar-myselections.icon': 'glyphicon glyphicon-star-empty',
         'component-navbar-myselections.url': request.resource_url(
             request.root, 'seemyselections'),

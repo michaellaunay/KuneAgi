@@ -130,7 +130,7 @@ class WorkParamsConfigurationSchema(Schema):
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
         label=_('Allow direct submission of proposal'),
-        description=_('Members can submit directly the proposal.'),
+        description=_('Members can submit the proposal directly.'),
         title='',
         missing=False
     )
@@ -184,16 +184,16 @@ class UserParamsConfigurationSchema(Schema):
     moderate_registration = colander.SchemaNode(
         colander.Boolean(),
         widget=deform.widget.CheckboxWidget(),
-        label=_('Moderate user registration'),
-        description=_('Moderate user registration.'),
+        label=_('Moderate the user registration'),
+        description=_('Moderate the user registration.'),
         title='',
         missing=False
     )
 
     duration_moderation_vote = colander.SchemaNode(
         colander.Int(),
-        title=_('Vote duration'),
-        description=_('The voting duration is defined by a number of days.'),
+        title=_('Duration of the vote'),
+        description=_('The duration of the vote is defined by a number of days.'),
         default=7,
         missing=7
     )
@@ -263,8 +263,8 @@ class UserParamsConfigurationSchema(Schema):
     anonymisation_kind = colander.SchemaNode(
         colander.String(),
         widget=anonymisation_kind_widget,
-        description=_('Choose the anonymization kind.'),
-        title=_('Anonymization kind'),
+        description=_('Choose the mode of anonymization.'),
+        title=_('Mode of anonymization'),
         default='anonymity'
     )
 

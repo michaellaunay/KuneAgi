@@ -1,6 +1,6 @@
 <div class="alert alert-success" i18n:domain="novaideo">
 	<p>
-		<span i18n:translate="">For transparency, we invite you to save the following data. These data will allow you to check the good conduct of the corresponding ballot.</span>
+		<span i18n:translate="">For the sake of transparency, we invite you to save the following data. These data will allow you to check the good conduct of the corresponding ballot.</span>
 	    <ul>
 		    <li i18n:translate=""><strong i18n:name="ballot_uid">${getattr(ballot, 'uid', '')}</strong>: The ballot identifier is unique. This identifier will allow you to retrieve the data associated with this ballot.</li>
 		    

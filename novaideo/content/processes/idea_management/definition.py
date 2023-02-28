@@ -147,7 +147,7 @@ class IdeaManagement(ProcessDefinition, VisualisableElement):
                                        title=_("Oppose"),
                                        groups=[]),
                 withdraw_token = ActivityDefinition(contexts=[WithdrawToken],
-                                       description=_("Withdraw token from idea"),
+                                       description=_("Withdraw the support token from the idea"),
                                        title=_("Withdraw my token"),
                                        groups=[]),
                 makeitsopinion = ActivityDefinition(contexts=[MakeOpinion],

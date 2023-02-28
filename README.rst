@@ -14,6 +14,7 @@ This product has been translated into
 
 - English
 - French
+- Deutsch
 
 
 Contribute

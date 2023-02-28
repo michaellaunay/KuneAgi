@@ -53,12 +53,12 @@ class SubscribeSchema(Schema):
 
     first_name = colander.SchemaNode(
         colander.String(),
-        title=_('First name'),
+        title=_('Given name'),
         )
 
     last_name = colander.SchemaNode(
         colander.String(),
-        title=_('Last name'),
+        title=_('Family name'),
         )
 
     email = colander.SchemaNode(

@@ -188,7 +188,7 @@ class EventsView(ContentView):
     viewid = 'home-events'
     view_icon = 'glyphicon glyphicon-calendar'
     counter_id = 'home-events-counter'
-    empty_message = _("No registered events")
+    empty_message = _("No registered discussion event")
     empty_icon = 'glyphicon glyphicon-calendar'
     display_state = False
 

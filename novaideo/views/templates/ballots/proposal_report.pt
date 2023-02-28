@@ -1,7 +1,7 @@
 <div tal:condition="process" i18n:domain="novaideo"
   tal:define="novaideo_title request.virtual_root.title">
 	<p i18n:translate="">
-      You are invited, with two other randomly chosen Verifiers, to verify the adequacy between this Proposal <a i18n:name="dynamic" target="_blank" href="${request.resource_url(context, '@@index')}" class="alert-link"><span class="${getattr(context, 'icon', '')}"></span> ${context.title}</a>, that was reported as potentially non-compliant, and the Charter of Moderation.
+      You are invited, with two other randomly chosen Moderators, to verify the adequacy between this Proposal <a i18n:name="dynamic" target="_blank" href="${request.resource_url(context, '@@index')}" class="alert-link"><span class="${getattr(context, 'icon', '')}"></span> ${context.title}</a>, that was reported as potentially non-compliant, and the Moderation Charter.
     </p>
     <div class="terms-of-use-scroll">
       ${structure:getattr(request.virtual_root.moderation_rules, 'text', '')}

@@ -1,0 +1,12 @@
+version: '2'
+services:
+  novaideo:
+    network_mode: host
+    environment:
+      - WORKERS=4
+      - SECRET=very_big_secret
+      - APPLICATION_URL=https://publicpolicies.cosmopoliticalcoop.site
+      - MAIL_DEFAULT_SENDER=CosmoPolitical Cooperative platform <postmaster@cosmopoliticalcoop.site>
+      - MAILER_HOST=127.0.0.1
+      - MAILER_PORT=25
+

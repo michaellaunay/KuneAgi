@@ -20,13 +20,13 @@
        The cycle of improvement of this proposal has just begun. A new version will be produced at the end of this cycle. Do not hesitate to discuss the content of the proposal as it is written. Your contributions can help the working group to write the proposal. If you are not already a participant, you can participate and make a concrete contribution by making your own improvements.
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'open_to_a_working_group'">
-       This proposal has just been published and is open to a working group. If you are interested in the proposal, you can participate and make a concrete contribution by making your own improvements.
+       This proposal has just been published and is open to a working group. If you are interested in the proposal, you can participate in the Working Group and make a concrete contribution by bringing your own improvements to the text.
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'exclusion_open_to_a_wg'">
-       This proposal is now open to a working group. If you are interested in the proposal, you can participate and make a concrete contribution by making your own improvements.
+       This proposal is now open to a working group. If you are interested in the proposal, you can participate in the Working Group and make a concrete contribution by bringing your own improvements to the text.
     </span>
     <span i18n:translate="" tal:condition="alert_kind == 'submitted_support'">
-      This proposal has just been submitted to the members for evaluation. You can either support or oppose it. Do not hesitate to discuss the content of the proposal, your opinions are helpful.
+      This proposal has just been submitted to all members of the platform for evaluation. You can either support or oppose it with one of your support tokens. Do not hesitate to discuss the content of the proposal, your opinions are helpful.
     </span>
   </div>
   <div tal:omit-tag=""  tal:condition="object.subject_type == 'idea'">
@@ -36,21 +36,21 @@
             proposal object.proposal;
          ">
          <span  tal:omit-tag="" i18n:translate="" tal:condition="object.proposal_state == 'amendable'">
-          This idea has just been used by the following proposition <a 
+          This idea has just been used by the following proposal <a 
             i18n:name="dynamic"
             data-oid="${getattr(proposal, '__oid__', '')}"
             class="alert-link toggle-popover"
             target="_blank" href="${request.resource_url(proposal, '@@index')}" class="alert-link"><span class="${getattr(proposal, 'icon', '')}"></span> ${proposal.title}</a>. Do not hesitate to discuss the content of the proposal and participate to it if you are interested in the subject. You can contribute to the proposal by making your own improvements.
          </span>
          <span  tal:omit-tag="" i18n:translate="" tal:condition="object.proposal_state == 'published'">
-          This idea has just been used by the following proposition <a 
+          This idea has just been used by the following proposal <a 
             i18n:name="dynamic" 
             data-oid="${getattr(proposal, '__oid__', '')}"
             class="alert-link toggle-popover"
             target="_blank" href="${request.resource_url(proposal, '@@index')}" class="alert-link"><span class="${getattr(proposal, 'icon', '')}"></span> ${proposal.title}</a>. Do not hesitate to discuss the content of the proposal.
          </span>
          <span  tal:omit-tag="" i18n:translate="" tal:condition="object.proposal_state == 'submitted_support'">
-          This idea has just been used by the following proposition <a 
+          This idea has just been used by the following proposal <a 
             i18n:name="dynamic" 
             data-oid="${getattr(proposal, '__oid__', '')}"
             class="alert-link toggle-popover"

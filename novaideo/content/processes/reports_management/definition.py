@@ -167,9 +167,9 @@ def proposal_title(process, context):
 
 PROPOSAL_MODERATION_GROUP = {
     'group_id': 'vote_moderation',
-    'group_title': _('Moderate the proposal'),
+    'group_title': _('Moderate the Proposal'),
     'group_activate': False,
-    'group_activator_title': _('Moderate the proposal'),
+    'group_activator_title': _('Moderate the Proposal'),
     'group_activator_class_css': 'vote-action',
     'group_activator_style_picto': 'octicon octicon-check',
     'group_activator_order': 100

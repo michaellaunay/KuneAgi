@@ -12,6 +12,8 @@ from . import add_mail_template
 PORTAL_SIGNATURE = """Kind regards,
 
 The {novaideo_title} platform.
+229, rue Solférino
+59000 Lille (France)
 """
 
 PORTAL_PRESENTATION = u"""{novaideo_title} is an on-line democracy platform with which any member can initiate ideas for public policy. These ideas can then be improved in spontaneous working groups as public policy proposals. Once improved and adopted by the working group, these public policy proposals are subject to the appreciation of all members.
@@ -21,11 +23,11 @@ PORTAL_PRESENTATION = u"""{novaideo_title} is an on-line democracy platform with
 INVITATION_SUBJECT = u"""Invitation to join the {novaideo_title} on-line democracy platform"""
 
 INVITATION_MESSAGE = u"""
-Dear,
+Dear {recipient_first_name} ,
 
-{recipient_first_name} your are invited to join the the {novaideo_title} on-line democracy platform as {roles}.
+You have been invited to join the the {novaideo_title} on-line democracy platform as {roles}.
 
-In order to validate your invitation, you must click on the following link {invitation_url} and follow the instructions.
+We would be very happy to count you among our active members! In order to validate your invitation, all you need is to click on the following link {invitation_url} and to follow the instructions. See you soon on the {novaideo_title} platform! 
 
 """ + PORTAL_SIGNATURE
 
@@ -42,15 +44,19 @@ Dear,
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
-CONFIRMATION_SUBJECT = u"""Confirmation of your registration on the {novaideo_title} on-line democracy platform"""
+CONFIRMATION_SUBJECT = u"""Confirmation of your registration on the {novaideo_title} deliberative democracy platform"""
 
 CONFIRMATION_MESSAGE = u"""
+Dear {recipient_first_name},
+
 Welcome on the {novaideo_title} platform!
 
-We confirm hereby that you are registered on the {novaideo_title} on-line democracy platform.
+We confirm hereby that you are registered on the {novaideo_title} deliberative democracy platform.
 
-Share your ideas with us by connecting to the {login_url} address!
 
+Kind regards,
+
+The {novaideo_title} platform.
 """ + PORTAL_SIGNATURE
 
 # INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
@@ -226,7 +232,7 @@ You can attempt at any time to join again the working group related to the propo
 
 """ + PORTAL_SIGNATURE
 
-PARTICIPATE_WL_SUBJECT = u"""Participation in the working group related to the proposal "{subject_title}"""
+PARTICIPATE_WL_SUBJECT = u"""You can now start participating in the working group related to the proposal "{subject_title}"""
 
 PARTICIPATE_WL_MESSAGE = u"""
 Dear {recipient_first_name},
@@ -237,7 +243,7 @@ As a participant in the working group, you can improve the proposal, and at the 
 
 """ + PORTAL_SIGNATURE
 
-PARTICIPATE_SUBJECT = u"""Your participation in the working group related to the proposal "{subject_title}"""
+PARTICIPATE_SUBJECT = u"""You can now start participating in the working group related to the proposal "{subject_title}"""
 
 PARTICIPATE_MESSAGE = u"""
 Dear {recipient_first_name},
@@ -262,7 +268,7 @@ Your request to participate in the working group related to the proposal "{subje
 
 At each request to participate, the participants in the groupe decide upon the acceptance or not of the request.
 
-The decision process lasts {duration} day(s). On {date_end_vote} at the latest, the ballot on including you or not in the group will be closed, and you will be informed of the result.
+The decision process lasts {duration} day(s). On {date_end_vote} at the latest, the ballot on your request will be closed, and you will be informed of the result.
 
 """ + PORTAL_SIGNATURE
 
@@ -563,52 +569,70 @@ You have asked for a new password on the platform {novaideo_title}. Please click
 """ + PORTAL_SIGNATURE
 
 
-PREREGISTRATION_SUBJECT = u"""Finalise your registration on the {novaideo_title} on-line democracy platform"""
+PREREGISTRATION_SUBJECT = u"""Please finalise your registration on the {novaideo_title} deliberative democracy platform"""
 
 
 PREREGISTRATION_MESSAGE = u"""
 Dear {recipient_first_name},
 
-You have registered on the {novaideo_title} on-line democracy platform.
 
-In order to finalise your registration, you must now click on the following link {url}. This link is valid for 48 hours. You must therefore complete your registration on or before {deadline_date}.
+Your registration on the {novaideo_title} deliberative democracy platform is almost completed. There is one last step to make.
 
-We are happy to count you among our members. We hope that your participation will be for you a positive and rewarding experience, in a fully democractic framework. Welcome!
+In order to finalise your registration, you must now click on the following link {url}. This link is valid for 48 hours, i.e. you must finalise your registration on or before {deadline_date}.
 
-""" + PORTAL_SIGNATURE
+We are happy to count you among our members. We hope that your participation will be for you a positive and rewarding experience, in a fully democratic framework. Welcome!
+
+Kind regards,
+
+The {novaideo_title} platform.""" + PORTAL_SIGNATURE
 
 
-PREREGISTRATION_MOD_SUBJECT = u"""Your registration on the {novaideo_title} on-line democracy platfom"""
+PREREGISTRATION_MOD_SUBJECT = u"""Please finalise your registration on the {novaideo_title} deliberative democracy platform"""
 
 
 PREREGISTRATION_MOD_MESSAGE = u"""
 Dear {recipient_first_name},
 
-The Verifiers that had been randomly selected upon your registration have validated the adequacy between the Identity Data that you had provided upon registration on the platform, and that of the official identity documents that you had sent them directly a copy of.
 
-We are now sure that you are the only person registered under this Identity Data on the {novaideo_title} on-line democracy platfom. Like all other members, you have only one account, and will contribute to upholding the democratic principle "1 person = 1 vote".
+The Verifiers that had been randomly selected upon your registration have validated the match between the Identity Data that you had provided upon registration on the platform, and that of the official identity documents that you had sent them directly a copy of or that you showed them upon the visoconference meetings.
 
-YIn order to finalise your registration, you must now click on the following link {url}. This link is valid for 48 hours. You must therefore complete your registration on or before {deadline_date}.
+We are now sure that you are the only person registered under this Identity Data on the {novaideo_title} deliberative democracy platform. Like all other members, you have only one account, and will contribute to upholding the democratic principle "1 person = 1 vote".
 
-We are happy to count you among our members. We hope that your participation will be for you a positive and rewarding experience, in a fully democractic framework. Welcome!
+There is just one operation left for you to finalise your registration: click on the following link {url}. This link is valid for 48 hours, i.e. you must finalise your registration on or before {deadline_date}.
 
+We are happy to count you among our members. We hope that your participation will be for you a positive and rewarding experience, in a fully democratic framework. Welcome!
+
+Kind regards,
+
+The {novaideo_title} platform.
 """ + PORTAL_SIGNATURE
 
 # Il faudra compléter avec le lieu de naissance
-ADMIN_PREREGISTRATION_SUBJECT = u"""Please contribute to verify a new registration on the {novaideo_title} on-line democracy platfom"""
+ADMIN_PREREGISTRATION_SUBJECT = u"""Please contribute to verify a new registration on the {novaideo_title} deliberative democracy platform"""
 
 
 ADMIN_PREREGISTRATION_MESSAGE = u"""
 Dear {recipient_first_name},
 
 
-You have been randomly selected by the {novaideo_title} on-line democracy platfom to act as a Verifier, whose task is to verify the identity of a person that has just registered on line.
+You have been randomly selected by the {novaideo_title} deliberative democracy platfom to act as a Verifier, whose task is to verify the identity of a person that has just registered on line.
 
-At each new registration on the {novaideo_title} platfom, the system randomly selects three existing members, and requests them to verify the identity of the newly registered person. Indeed, it is important to check that each member on the platform is related to one natural person, and to one only. Thereby, we avoid that a given natural person vote several times on the platform under several different pseudonyms.
+At each new registration on the {novaideo_title} platfom, the system randomly selects three existing members, and requests them to verify the identity of the newly registered person. Indeed, it is important to check that each natural person is related to one member on the platform and to one only. Thereby, we avoid that a given natural person vote several times on the platform under several different pseudonyms.
 
 In order to perform this verification of this person's identity, you just need to follow the following steps:
-1. you will receive on or before the {date_end_vote} an e-mail from the person that has just registered on the platform. The e-mail address of this person, from which s/he will send you his/her e-mail, is {subject_email}. This e-mail will contain the copy of an official identity document
-2. as soon as you have received this e-mail, or if you haven't received it by {date_end_vote}, connect on the platform at the following URL: {subject_url}. On this page, you will decide whether the Identity Data received from this person (which are reproduced below) match those present on the official identity document, a copy of which you will have received by e-mail. Be very careful! In order for you to accept the registration, ALL elements must be strictly IDENTICAL between the Identity Data received upon registration, and those on the copied official identity document. In all other cases, even with a single, minor difference, if you doubt the authenticity of the copied official identity document, or if you have not received the copy of the official identity document by {date_end_vote}, you MUST refuse the registration.
+1. you will receive on or before the {date_send_id_data} an e-mail from the person that has just registered on the platform. The e-mail address of this person, from which s/he will send you his/her e-mail, is {subject_email}. This e-mail will contain :
+   - either a scan of an official identity document. For security reasons, we advise the person who has just registered to hide his/her photograph and signature when scanning: the copy will be deliberately incomplete;
+   - or an invitation to a short video conference meeting (date, time, login link) in which the person will show you his/her identity document so that you can read its content.
+   
+2. You respond, if applicable, to the person by specifying which of the three proposed dates and times is most convenient for you for the videoconference meeting, and you participate in the meeting on the day and at the time specified. 
+
+3. Once you have received the email with the copy of the official identity document or held the videoconference meeting, or if you have not received a copy of the official identity document, or an invitation to a videoconference meeting, on {date_send_id_data}: 
+      (a) log in to the platform {novaideo_title} and then
+      (b) access the following URL: {subject_url}. On this page, you will decide whether the Identity Data received from this person (which are reproduced below) match those present on the official identity document, a copy of which you will have received by e-mail or that you have seen during the video conference meeting. Be very careful! In order for you to accept the registration, ALL elements must be strictly IDENTICAL between the Identity Data received upon registration, and those on the official identity document. In all other cases, even with a single, minor difference, if you doubt the authenticity of the official identity document, or if you have not received the copy of the official identity document or an invitation to a meeting by video conference by {date_send_id_data}, you MUST refuse the registration.
+      
+4. Once you have performed this operation, and whatever its outcome, we kindly request that you destroy, if applicable, from your computer all copies you may have of the official identity document that you have received from the newly registered person, and that you report to him/her about this destruction, by sending him/her an e-mail at {subject_email}.
+
+###
 
 The Identity Data received from the person upon his/her registration is the following:
 
@@ -618,8 +642,13 @@ The Identity Data received from the person upon his/her registration is the foll
   Place of birth: {birthplace}
   Citizenship: {citizenship}
 
+###
+
 The Verification process lasts {duration} day(s), i.e. it must be completed on or before {date_end_vote}. Beyond this date, the Verification process will be closed, and your decision will not be taken into account. By default, if no Verifier has voted upon this date, the registration will be refused.
 
+Kind regards,
+
+The {novaideo_title} platform.
 """ + PORTAL_SIGNATURE
 
 
@@ -648,7 +677,7 @@ ADMIN_REPORT_MESSAGE = u"""
 Dear {recipient_first_name},
 
 
-You have been randomly selected by the {novaideo_title} on-line democracy platfom to moderate a conten which has been signalled on the platform as potentially non-compliant with the Moderation Rules {url_moderation_rules}.
+You have been randomly selected by the {novaideo_title} on-line democracy platfom to moderate a conten which has been signalled on the platform as potentially non-compliant with the Moderation Rules {url_moderation_rules}. By randomly distributing the Moderation, we avoid that this important control function be concentrated in a few hands. We contribute thereby to the democratic nature of the platform.
 
 Each time a content is signalled as potentially non-compliant with the Moderation Rules on the {novaideo_title} platform, the system randomly selects three members, and requests them to verify the compliance of the content with the Moderation Rules. By randomly distributing the Moderation, we avoid that this important control function be concentrated in a few hands. We contribute thereby to the democratic nature of the platform.
 
@@ -675,58 +704,86 @@ The Moderation process lasts {duration} day(s). On {date_end_vote} at the latest
 """ + PORTAL_SIGNATURE
 
 
-ADMIN_PREREGISTRATION_REF_SUBJECT = u"""Your registration on the {novaideo_title} on-line democracy platform has been refused"""
+ADMIN_PREREGISTRATION_REF_SUBJECT = u"""Your registration on the {novaideo_title} deliberative democracy platform has been refused"""
 
 ADMIN_PREREGISTRATION_REF_MESSAGE = u"""
 Dear {recipient_first_name},
 
 
-The Verifiers that had been randomly selected upon your registration have NOT validated the adequacy between the Identity Data that you had provided on the platform and those on the official identity documents that you had sent them a copy of.
+The Verifiers that had been randomly selected upon your registration have NOT validated the match between the Identity Data that you had provided on the platform and those on the official identity documents that you had sent them a copy of or that you showed them in your videoconferening meetings.
 
-We therefore regret to inform you that your registration on the {novaideo_title} has been refused.
+We therefore regret to inform you that your registration on the {novaideo_title} has been refused. 
 
-We must be very rigorous in this verification. If we allowed even minor discrepancies between the two, a single natural person could register several times, each time with small variations in his/her Identity Data, open several accounts, and vote several times. This would breach the democratic principle "one person = one vote".
+We must be very rigorous in this verification. If we allowed even minor discrepancies between the two, a single natural person could register several times, each time with small variations in his/her Identity Data, open several accounts, and vote several times. This would breach the democratic principle "one person = one vote". 
 
-""" + PORTAL_SIGNATURE
+Kind regards,
 
-ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""Your registration on the {novaideo_title} on-line democracy platform is being processed"""
+The {novaideo_title} platform.""" + PORTAL_SIGNATURE
+
+ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""Your registration on the {novaideo_title} deliberative democracy platform: next steps"""
 
 ADMIN_PREREGISTRATION_SUB_MESSAGE = u"""
 Dear {recipient_first_name},
 
 
-Your registration on the {novaideo_title} on-line democracy platform is now subject to the verification of your identity.
+You just registered on the {novaideo_title} deliberative deliberative democracy platform. Thank you and congratulations! We look forward to welcoming you among our members.
 
-At each new registration on the {novaideo_title} platfom, the system randomly selects three existing members (the Verifiers of this specific registration), and requests them to verify the identity of the newly registered person. Indeed, it is important to check that each member on the platform is related to one natural person, and to one only. Thereby, we avoid that a given natural person vote several times on the platform under several different pseudonyms.
+As described in our registration form, your registration must be validated in a rather simple, but rigorous procedure. 
 
-In order for your identity to be verified, we kindly request you to send to each of the following persons, in separate e-mails, on or before the {date_end_vote}, a scanned copy of an official identity document. This copy must display clearly your family name(s), your given name(s), your birth date and your birth place, written in the Latin alphabet. Beyond the {date_end_vote}, if the Verifiers have not received a copy of  your official identity document, they are instructed to refuse your registration.
+At each new registration on the {novaideo_title} platfom, the system randomly selects three existing members (the Verifiers of this specific registration), and requests them to verify the identity of the newly registered person. Indeed, it is important to check that each natural person is related to one member on the platform, and to one only. Thereby, we avoid that a given natural person vote several times on the platform under several different pseudonyms. Thereby, we uphold the democratic principle "1 person = 1 vote".
+
+In order for your identity to be verified, we kindly request you to send to each of the following persons, in separate e-mails, on or before the  {date_send_id_data}:
+   - either a scanned copy (or smartphone photograph) of an official identity document. This copy or photograph must clearly show your first name(s), surname(s), date and place of birth and your nationality. For security reasons, we advise you to mask your photograph and signature when scanning or photographing your official identity document, so that the image is deliberately incomplete;
+   - or three proposals for a videoconference meeting including, for each proposal, the date in the format DD-mmm-YYYY (day in two digits, month in three letters, year in 4 digits), the time (specifying your place of residence) and the link to the videoconference, for example using the free and open platform https://meet.jit.si/. All the dates and times that you propose must be before {date_end_vote}, which is the end of the period allowed for the Verifiers to make their decision.
+
+After {date_send_id_data}, if the Verifiers have not received a copy of your official identity document or an invitation to a videoconference meeting, they are instructed to refuse your registration.
+
+During the video conference meeting with each of the Verifiers (if this is your choice), you will show him/her your official identity document, making your first names, surnames, date and place of birth and nationality visible, and hiding your photo and your signature if you wish. 
 
 The Verifiers assigned to the verification of your identity are:
 {moderators}
 
-You will receive the result of this identity verification process at the end of the time given for the Verifiers to process this verification, i.e. on {date_end_vote} at the latest.
+You will receive the result of this identity verification process at the end of the time given for the Verifiers to make their decision, i.e. on {date_end_vote} at the latest.
 
-""" + PORTAL_SIGNATURE
+The Verifiers have been instructed, if applicable, to destroy all files containing the copy of your official identity document once they have performed the verification of your identity data, and to report back to you once they have done so. 
+
+Kind regards,
+
+The {novaideo_title} platform.""" + PORTAL_SIGNATURE
 
 
-REMINDER_ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""REMINDER: Your registration on the {novaideo_title} on-line democracy platform is being processed"""
+REMINDER_ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""REMINDER - DEADLINE TOMORROW: Please enable the verification of your identity to register on the {novaideo_title} deliberative democracy platform"""
 
 REMINDER_ADMIN_PREREGISTRATION_SUB_MESSAGE = u"""
+## If you already sent the copy of your official ID document or proposed a videoconference meeting to the Verifiers, please disregard this e-mail and accept our apologies ##
+
 Dear {recipient_first_name},
 
-Your registration on the {novaideo_title} on-line democracy platform is now subject to the verification of your identity.
+As you may remember, your registration on the {novaideo_title} deliberative democracy platform is now subject to the verification of your identity. The deadline for you to send the Verifiers a copy of your official identity document or an invitation to a meeting by video conference is TOMORROW {date_send_id_data}.
 
-At each new registration on the {novaideo_title} platfom, the system randomly selects three existing members (the Verifiers of this specific registration), and requests them to verify the identity of the newly registered person. Indeed, it is important to check that each member on the platform is related to one natural person, and to one only. Thereby, we avoid that a given natural person vote several times on the platform under several different pseudonyms.
+Please find hereafter the reminder of the procedure to follow (including the e-mail addresses of the Verifiers) and of the rationale for this procedure.
 
-In order for your identity to be verified, we kindly request you to send to each of the following persons, in separate e-mails, on or before the {date_end_vote}, a scanned copy of an official identity document. This copy must display clearly your family name(s), your given name(s), your birth date and your birth place, written in the Latin alphabet. Beyond the {date_end_vote}, if the Verifiers have not received a copy of  your official identity document, they are instructed to refuse your registration.
+We look forward to welcoming you in our activities!
+
+Kind regards,
+
+The {novaideo_title} platform.
+
+## Reminder of the procedure and of its rationale ##
+At each new registration on the {novaideo_title} platfom, the system randomly selects three existing members (the Verifiers of this specific registration), and requests them to verify the identity of the newly registered person. Indeed, it is important to check that each natural person is related to one member on the platform, and to one only. Thereby, we avoid that a given natural person vote several times on the platform under several different pseudonyms.
+
+In order for your identity to be verified, we kindly request you to send to each of the following persons, in separate e-mails, on or before the {date_send_id_data}:
+   - either a scanned copy (or smartphone photograph) of an official identity document. This copy or photograph must clearly show your first name(s), surname(s), date of birth and place of birth and nationality. For security reasons, we advise you to mask your photograph and signature when scanning or photographing your official identity document, so that the image is deliberately incomplete;
+   - or three proposals for a videoconference meeting including, for each proposal, the date in the format DD-mmm-YYYY (day in two digits, month in three letters, year in 4 digits), the time (specifying your place of residence) and the link to the videoconference, for example using the free and open platform https://meet.jit.si/. All the dates and times that you propose must be before {date_end_vote}, which is the end of the period allowed for the Verifiers to make their decision.
+
+After {date_send_id_data}, if the Verifiers have not received a copy of your official identity document or an invitation to a videoconference meeting, they are instructed to refuse your registration.
+
+During the video conference meeting with each of the Verifiers (if this is your choice), you will show him/her your official identity document, making your first names, surnames, date and place of birth and nationality visible, and hiding your photograph and your signature if you wish. 
 
 The Verifiers assigned to the verification of your identity are:
 {moderators}
 
-You will receive the result of this identity verification process at the end of the time given for the Verifiers to process this verification, i.e. on {date_end_vote} at the latest.
-
-If you have already sent the copy of your identity documents to the Verifiers, do not keep this email.
-
+You will receive the result of this identity verification process at the end of the time given for the Verifiers to make their decision, i.e. on {date_end_vote} at the latest.
 """ + PORTAL_SIGNATURE
 
 # INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
@@ -738,7 +795,7 @@ Dear {recipient_first_name},
 
 Your content has been submitted to Moderation.
 
-Each time a new content (idea or proposal) is added to the {novaideo_title} platform, the system randomly selects three members, and requests them to verify the compliance of the content with the Moderation Rules {url_moderation_rules}. By randomly distributing the Moderation, we avoid that this important control function be concentrated in a few hands. We contribute thereby to the democratic nature of the platform.
+Each time a new content (idea or proposal) is added to the {novaideo_title} platform, the system randomly selects three members, and requests them to verify the compliance of the content with the Moderation Rules {url_moderation_rules}.
 
 The Moderation process lasts {duration} day(s). On {date_end_vote} at the latest, the Moderation process will be closed, and you will be informed of its result.
 
@@ -782,7 +839,7 @@ You can access it at the following URL {comment_url} and answer it.
 # BUG POTENTIEL: s'il s'agit d'une discussion avec une personne, pourquoi le contenu est-il désigné comme {subject_title}?
 # INFORMATION SANS QU'UNE ACTION SOIT REQUISE:
 # Pourrait faire l'objet d'une simple alerte interne, sans mobiliser un courriel spammant la boîte de l'utilisateur
-ALERTDISCUSS_SUBJECT = u"""New message added to your discussion with "subject_title}"""
+ALERTDISCUSS_SUBJECT = u"""New message added to your discussion on "subject_title}"""
 
 
 ALERTDISCUSS_MESSAGE = u"""

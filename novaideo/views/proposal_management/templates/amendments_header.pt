@@ -38,7 +38,7 @@
 		      </span>
 		    </div>
 			<span tal:omit-tag="" tal:condition="original is not None"><span  i18n:translate="">, duplicated from the proposal</span> <a tal:attributes="href request.resource_url(original, '@@index')">${original.title}</a></span>
-			<span tal:omit-tag="" tal:condition="current_version and not is_current"><span i18n:translate="">, previous version of the current version of the proposal</span> <a tal:attributes="href request.resource_url(current_version, '@@index')">${current_version.title}</a></span>
+			<span tal:omit-tag="" tal:condition="current_version and not is_current"><span i18n:translate="">, previous version of the proposal</span> <a tal:attributes="href request.resource_url(current_version, '@@index')">${current_version.title}</a></span>
 		  </small>
 		</div>
 	</div>

@@ -78,7 +78,7 @@ class EventSchema(VisualisableElementSchema, SearchableEntitySchema):
         widget=deform.widget.TextAreaWidget(),
         title=_("Details"),
         description=_(
-            'The details of the event. Connexion mode or location, agenda, how to register, when appropriate, link to the external registration site...'),
+            'The details of the event. Connection mode or location, agenda, how to register, when appropriate, link to the external registration site...'),
     )
 
     date = colander.SchemaNode(

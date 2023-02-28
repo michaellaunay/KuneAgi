@@ -67,11 +67,11 @@ DEFAULT_SITE_MAILS = {
         'languages': {}
     },
     'publish_proposal': {
-        'title': _("Publication of the proposal"),
+        'title': _("Publication of the proposal for it to be submitted to the evaluation of all Members"),
         'languages': {}
     },
     'start_vote_publishing': {
-        'title': _("Start of the ballot (publication of the proposal)"),
+        'title': _("Start of the ballot (publication of the proposal for it to be submitted to the evaluation of all Members)"),
         'languages': {}
     },
     'start_vote_amendments': {
@@ -203,7 +203,7 @@ DEFAULT_SITE_MAILS = {
         'languages': {}
     },
     'preregistration_moderation': {
-        'title': _("Pre-registration of users with moderation"),
+        'title': _("Registration of users with verification of their identity"),
         'languages': {}
     },
     'wg_exclude': {
@@ -239,7 +239,7 @@ DEFAULT_SITE_MAILS = {
         'languages': {}
     },
     'member_notation': {
-        'title': _("Give a mark to a member's cooperative behaviour"),
+        'title': _("Give a mark to a participant's cooperative behaviour"),
         'languages': {}
     },
     'member_notation_excluded': {
@@ -247,7 +247,7 @@ DEFAULT_SITE_MAILS = {
         'languages': {}
     },
     'members_notation': {
-        'title': _("Give a mark to the cooperative behaviour of members"),
+        'title': _("Give a mark to the cooperative behaviour of participants"),
         'languages': {}
     },
     'quit_request': {

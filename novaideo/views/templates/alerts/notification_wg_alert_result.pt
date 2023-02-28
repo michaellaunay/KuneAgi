@@ -41,7 +41,7 @@
 
     <span i18n:translate="" tal:condition="alert_kind == 'resign_to_wg_open'">The Working Group related to this proposal is under the quorum, i.e. the minimum number of Participants necessary for it to be considered as active. This is why the Group cannot continue improving the proposal, as long as it has not again reached this quorum.</span>
 
-    <span i18n:translate="" tal:condition="alert_kind == 'amendable'">The Workng Group related to this Proposal has reached the minimum number of Participants for it to be considered as active. It can improve the Proposal.</span>
+    <span i18n:translate="" tal:condition="alert_kind == 'amendable'">The Workng Group related to this Proposal has reached the quorum, i.e. the minimum number of Participants for it to be considered as active. It can improve the Proposal.</span>
 
     <span i18n:translate="" tal:condition="alert_kind == 'add_files'">Files have been added to the work space related to this Proposal.</span>
     
@@ -82,10 +82,10 @@
      The request of <span i18n:name="dynamic">${object.participant_title}</span> to participate in the Working Group related to this Proposal <span i18n:name="subject">${subject.title}</span> has been refused following the vote of the Participants.</span>
 
   <span i18n:translate="" tal:condition="alert_kind == 'refuse_exclusion'">
-    The request to exclude you out of the Working Group related to the Proposal <span i18n:name="subject">${subject.title}</span> has been refused following the vote by the Participants in the Group. You are therefore maintained in the Working Group.</span>
+    The request to exclude you out of the Working Group related to the Proposal <span i18n:name="subject">${subject.title}</span> has been refused following the vote by the Participants in the Working Group. You are therefore maintained in the Working Group.</span>
 
   <span i18n:translate="" tal:condition="alert_kind == 'refuse_exclusion_members'">
-    The request to exclude <span i18n:name="dynamic">${object.participant_title}</span>  out of the Working Group related to this Proposal has been refused following the vote by the Participants in the Group. <span i18n:name="title">${object.participant_title}</span> is therefore maintained in the Working Group.</span>
+    The request to exclude <span i18n:name="dynamic">${object.participant_title}</span>  out of the Working Group related to this Proposal has been refused following the vote by the Participants in the Working Group. <span i18n:name="title">${object.participant_title}</span> is therefore maintained in the Working Group.</span>
 
   <span i18n:translate="" tal:condition="alert_kind == 'member_notation'">
     You are invited to evaluate the quality of the cooperative behaviour of <span i18n:name="dynamic">${object.user_title}</span> in the framework of the Working Group related to the Proposal <span i18n:name="subject">${subject.title}</span>.</span>

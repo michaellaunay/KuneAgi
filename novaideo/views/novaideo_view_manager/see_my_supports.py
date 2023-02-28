@@ -22,9 +22,9 @@ from novaideo.views.core import asyn_component_config
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""You have evaluated no content so far. You have ${tokens} remaining evaluation tokens"""),
-    '1': _(u"""You have evaluated one content so far. You have ${tokens} remaining evaluation tokens"""),
-    '*': _(u"""You have evaluated ${number} contents so far. You have ${tokens} remaining evaluation tokens""")
+    '0': _(u"""You have supported no content so far. You have ${tokens} remaining support tokens"""),
+    '1': _(u"""You have supported one content so far. You have ${tokens} remaining support tokens"""),
+    '*': _(u"""You have supported ${number} contents so far. You have ${tokens} remaining support tokens""")
 }
 
 

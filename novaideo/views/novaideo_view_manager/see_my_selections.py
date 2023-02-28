@@ -22,9 +22,9 @@ from novaideo.views.core import asyn_component_config
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""No followed element was found"""),
-    '1': _(u"""One followed element was found"""),
-    '*': _(u"""${number} followed elements were found""")}
+    '0': _(u"""No followed item was found"""),
+    '1': _(u"""One followed item was found"""),
+    '*': _(u"""${number} followed items were found""")}
 
 
 @asyn_component_config(id='novaideoapp_seemyselections')
@@ -34,7 +34,7 @@ CONTENTS_MESSAGES = {
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeMySelectionsView(SeeMyContentsView):
-    title = _('My followings')
+    title = _('The items that I follow')
     name = 'seemyselections'
     behaviors = [SeeMySelections]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'

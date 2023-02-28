@@ -60,17 +60,17 @@ class CssSchema(Schema):
     usual_color = colander.SchemaNode(
         colander.String(),
         widget=CssWidget(),
-        title=_('Usual color'),
+        title=_('Usual colour'),
         # description=('Choisir la couleur du texte et du fond de la section de menu.'),
-        description=_('Choose the text and background color of the menu section.'),
+        description=_('Choose the text and background colour of the menu section.'),
         )
 
     hover_color = colander.SchemaNode(
         colander.String(),
         widget=CssWidget(),
-        title=_('Hover color'),
+        title=_('Hover colour'),
         # description=('Choisir la couleur du texte et du fond de la section de menu au survol de la souris.'),
-        description=_('Choose the text and background color of the menu section on mouse-over.')
+        description=_('Choose the text and background colour of the menu section on mouse-over.')
         )
 
 

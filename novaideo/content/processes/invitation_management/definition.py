@@ -44,7 +44,7 @@ class InvitationManagement(ProcessDefinition, VisualisableElement):
                 start = StartEventDefinition(),
                 pg = ParallelGatewayDefinition(),
                 add = ActivityDefinition(contexts=[UploadUsers],
-                                       description=_("Upload invitations from an xl file"),
+                                       description=_("Upload invitations from an .xls spreadsheet file"),
                                        title=_("Upload invitations"),
                                        groups=['More']),
                 invite = ActivityDefinition(contexts=[InviteUsers],

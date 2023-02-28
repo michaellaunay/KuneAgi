@@ -23,9 +23,9 @@ from novaideo import _
 BATCH_DEFAULT_SIZE = 8
 
 EVENTS_MESSAGES = {
-    '0': _(u"""No organized event"""),
-    '1': _(u"""One organized event"""),
-    '*': _(u"""${number} organized events""")}
+    '0': _(u"""No organised event"""),
+    '1': _(u"""One organised event"""),
+    '*': _(u"""${number} organised events""")}
 
 
 @view_config(
@@ -87,7 +87,7 @@ class SeeRelatedEventsView(BasicView):
         values = {
             'bodies': result_body,
             'batch': batch,
-            'empty_message': _("No organized event"),
+            'empty_message': _("No organised event"),
             'empty_icon': 'glyphicon glyphicon-calendar'
         }
         body = self.content(args=values, template=self.template)['body']

@@ -23,7 +23,7 @@ from novaideo import _
 
 
 class AddOrganizationsStudyReport(BasicView):
-    title = _('Alert for organization import')
+    title = _('Alert for organisation import')
     name = 'alertfororganizationimport'
     template = 'novaideo:views/organization_management/templates/alert_import.pt'
 
@@ -42,13 +42,13 @@ class AddOrganizationsSchema(Schema):
         ObjectData(File),
         widget=FileWidget(),
         title=_('The xls file'),
-        description=_("The xls file containing organizations data.")
+        description=_("The xls file containing organisations data.")
     )
 
 
 class AddOrganizationsForm(FormView):
 
-    title = _('Upload organizations')
+    title = _('Upload organisations')
     schema = AddOrganizationsSchema(editable=True)
     behaviors = [AddOrganizations, Cancel]
     formid = 'formaddorganizationform'

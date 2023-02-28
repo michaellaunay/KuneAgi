@@ -34,8 +34,8 @@ class MemberNotationProcess(ProcessDefinition, VisualisableElement):
 
     def __init__(self, **kwargs):
         super(MemberNotationProcess, self).__init__(**kwargs)
-        self.title = _('Process of marking the cooperative behaviour of Members')
-        self.description = _('Process of marking the cooperative behaviour of Members')
+        self.title = _('Process of marking the cooperative behaviour of Participants in the Working Group')
+        self.description = _('Process of marking the cooperative behaviour of Participants in the Working Group')
 
     def _init_definition(self):
         self.defineNodes(

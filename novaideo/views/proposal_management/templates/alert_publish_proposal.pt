@@ -25,7 +25,7 @@
   </div>
   <div tal:omit-tag="" tal:condition="not can_submit_directly">
     <div>
-      <p i18n:translate="">As soon as your proposal has been accepted and published by the moderators, you must improve it with other Members in a Working Group, and then submit it to the evaluation of all Members.</p>
+      <p i18n:translate="">As soon as your proposal has been accepted and published by the moderators, you must improve it with other Members in a Working Group, agree on it, in order to then submit it to the evaluation of all Members.</p>
     </div>
     <p i18n:translate="">
       To improve the proposal, you must specify the duration of the improvement cycle. The default value for this duration is one week.

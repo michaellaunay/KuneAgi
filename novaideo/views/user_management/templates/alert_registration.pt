@@ -1,6 +1,18 @@
 <div class="alert alert-info"  i18n:domain="novaideo">
 	<p i18n:translate="">
-	 Identity information = given name(s), family name(s), date and place of birth. This information is meant to verify that a given natural person registers once, and once only, and that therefore the platform maintains the principle "1 person = 1 vote". This Identity Information will be kept strictly confidential, and will be disclosed only to three existing members of the platform, randomly selected upon your registration (the Verifiers). Their duty will be (1) to verify the correspondence between the Identity Information that you are about to write below, and those of one of your official ID documents, of which you will send them a copy directly by e-mail, without using the present on-line platform, (2) once this verification is performed, to destroy all copies of this official identity document from their computer, and to report to you accordingly. In compliance with our Terms of Use, your Identity Information will never be made visible to the other members on the platform. It will never be transmitted nor sold to anyone, except following a legal requirement.
+	 We thank you for your interest in the CosmoPolitical Cooperative, and congratulate you on your desire to get involved with us. Welcome!
+	</p>
+    <p>
+        <span i18n:translate="">
+		To register as a full Cooperator, you need to do three things:
+		</span>
+       <ol>
+       <li i18n:translate="">have your identity verified, so that we can prevent the same person from registering several times with a different email address. In this way, we preserve the democratic principle of "1 person = 1 vote"; </li>
+       <li i18n:translate="">buy at least one share in the Cooperative, at a unit price of 10 EUR. This share(s) will be refunded to you if you decide to leave the Co-operative one day, which we would regret;</li>
+       <li i18n:translate="">pay your annual membership fee to the Cooperative, according to the following rate: 5 EUR / month (60 EUR // year) for persons of a nationality of the European Union from before 2004 and aged 26 years or older, 2 EUR / month (24 EUR / year) for the others.</li>
+    </ol>
+	</p>
+	<p i18n:translate=""> For identity verification, Identity Information means: first name(s), last name(s), date of birth. This Identity Information will be kept strictly confidential, and will only be revealed to 3 existing members of the Cooperative, drawn at random during your registration (the Verifiers). The Verifiers will be responsible for (1) verifying that the Identity Information you enter below matches a copy of your official identity document that you email directly to them or that you show to them in a virtual videoconference meeting, without using this platform, and (2) once verified, destroying any copy of that identity document from their computer and reporting back to you. In accordance with our Terms of Use, your Identity Information will never be made visible to other Cooperators. It will never be passed on or sold to anyone, except to fulfil a legal obligation.
     </p>
     <p>
         <span i18n:translate="">
@@ -10,7 +22,11 @@
 			<li i18n:translate="">Given name(s), as it(they) appear(s) on your official identity documents</li>
 			<li i18n:translate="">Family name(s), as it(they) appear(s) on your official identity documents</li>
 			<li i18n:translate="">Date of birth</li>
-			<li i18n:translate="">Place of birth (city or municipality + country if relevant), as it appears on your official identity documents</li>
 	    </ul>
     </p>
+
+	<p i18n:translate="">This identity verification, and then the whole democratic life of the Cooperative, generates emails from our platform. Check your spam box! If our emails are there, tell your email client (Thunderbird, Outlook...) and your webmail service (GMail, Orange,...) that they are not spam and indicate our URL (CosmoPoliticalCoop.site) as trusted.
+	</p>
+    <p i18n:translate="">A separate email from our platform will tell you how to make the payment of your shares and annual fee (amount, IBAN bank account details).
+	</p>
 </div>

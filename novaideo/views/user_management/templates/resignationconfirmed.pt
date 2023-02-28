@@ -1,5 +1,5 @@
 <div i18n:domain="novaideo">
 	<p i18n:translate="" >
-		Your account has been deactivated! your data will be destroyed within a period of <strong i18n:name="tquarantaine">${getattr(request.root, 'tquarantaine', 180)}</strong> days.
+		Your account has been deactivated! your data will be destroyed after a period of <strong i18n:name="tquarantaine">${getattr(request.root, 'tquarantaine', 180)}</strong> days. It is kept in our records for that duration in order to avoid that you re-register immediately with a new pseudonym, and a new, virgin, reputation.
 	</p>
 </div>

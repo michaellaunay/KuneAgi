@@ -87,7 +87,7 @@ class WikiWorkMode(WorkMode):
 
     work_mode_process_id = 'wikiworkmodeprocess'
     participants_mini = 1
-    title = _('Change without validation')
+    title = _('Change without validation (wiki)')
     work_id = 'wiki'
     order = 0
 

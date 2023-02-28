@@ -21,7 +21,7 @@
         </div>
         <div tal:condition="censored">
          <div class="alert-terms-of-use">
-          <span i18n:translate="">This content does not respect the Use Charter.</span>
+          <span i18n:translate="">This content does not respect the Moderation Charter.</span>
          </div>
         </div>
       </div>

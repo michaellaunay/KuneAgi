@@ -10,20 +10,22 @@ from . import add_mail_template
 PORTAL_SIGNATURE = """Cordialement,
 
 La Plateforme {novaideo_title}
+229, rue Solférino
+59000 Lille (France)
 """
 
-PORTAL_PRESENTATION = u"""{novaideo_title} est une plateforme participative qui permet à tout membre d'initier des idées pouvant être utilisées dans des propositions améliorées par des groupes de travail. Une fois améliorées, ces propositions peuvent être soumises à l'appréciation des membres et faire l'objet d'une décision d'un comité d'examen.
+PORTAL_PRESENTATION = u"""{novaideo_title} est une plateforme de démocratie délibérative qui permet à tout membre d'initier des idées pouvant être utilisées dans des propositions améliorées par des groupes de travail. Une fois améliorées, ces propositions peuvent être soumises à l'appréciation des membres et faire l'objet d'une décision d'un comité d'examen.
 
 """
 
-FIRST_INVITATION_SUBJECT = u"""Invitation à rejoindre la plateforme participative {novaideo_title}"""
+FIRST_INVITATION_SUBJECT = u"""Invitation à rejoindre la plateforme de démocratie délibérative {novaideo_title}"""
 
 FIRST_INVITATION_MESSAGE = u"""
 Bonjour,
 
 Nous vous remercions de l'intérêt que vous portez à Nova-Ideo.
 
-{recipient_first_name} vous êtes invité à rejoindre la plateforme participative Nova-Ideo en tant que administrateur du site.
+{recipient_first_name} vous êtes invité à rejoindre la plateforme de démocratie délibérative Nova-Ideo en tant que administrateur du site.
 
 Pour valider votre invitation, vous devez cliquer sur le lien {invitation_url} et suivre les instructions.
 
@@ -72,7 +74,7 @@ Bonjour,
 
 Nous vous remercions de l'intérêt que vous portez à Nova-Ideo.
 
-{recipient_first_name} vous êtes invité à rejoindre la plateforme participative Nova-Ideo en tant que administrateur du site.
+{recipient_first_name} vous êtes invité à rejoindre la plateforme de démocratie délibérative Nova-Ideo en tant que administrateur du site.
 
 Pour valider votre invitation, vous devez cliquer sur le lien {invitation_url} et suivre les instructions.
 
@@ -80,14 +82,14 @@ Cordialement
 L'équipe d'Ecréall
 """
 
-INVITATION_SUBJECT = u"""Invitation à rejoindre la plateforme participative {novaideo_title}"""
+INVITATION_SUBJECT = u"""Invitation à rejoindre la plateforme de démocratie délibérative {novaideo_title}"""
 
 INVITATION_MESSAGE = u"""
-Bonjour,
+Bonjour {recipient_first_name}, 
 
-{recipient_first_name} vous êtes invité à rejoindre la plateforme participative {novaideo_title} en tant que {roles}.
+Vous avez été invité(e) à rejoindre la plateforme participative {novaideo_title} en tant que {roles}.
 
-Pour valider votre invitation, vous devez cliquer sur le lien {invitation_url} et suivre les instructions.
+Nous serions très heureux de vous compter parmi nos membres actif(ve)s ! Pour valider votre invitation, il vous suffit de cliquer sur le lien {invitation_url} et de suivre les instructions. À très bientôt sur la plate-forme {novaideo_title} !
 
 """ + PORTAL_SIGNATURE
 
@@ -103,13 +105,16 @@ Bonjour,
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
-CONFIRMATION_SUBJECT = u"""Confirmation de votre inscription à la plateforme participative {novaideo_title}"""
+CONFIRMATION_SUBJECT = u"""Confirmation de votre inscription à la plateforme de démocratie délibérative {novaideo_title}"""
 
 CONFIRMATION_MESSAGE = u"""
-Bienvenue sur la plateforme {novaideo_title}, nous vous confirmons votre inscription à la plateforme participative {novaideo_title}.
+Bonjour {recipient_first_name},
 
-Faites-nous part de vos idées en vous connectant à l'adresse {login_url}.
+Nous vous confirmons votre inscription à la plateforme de démocratie délibérative {novaideo_title}. Bienvenue !
 
+Cordialement,
+                                                                                
+La plateforme de démocratie délibérative {novaideo_title}
 """ + PORTAL_SIGNATURE
 
 
@@ -223,18 +228,18 @@ Bonjour {recipient_first_name},
 
 Le groupe de travail sur la proposition « {subject_title} » qui se trouve sous {subject_url} a voté à la majorité pour soumettre la proposition à l'appréciation des membres de la plateforme.
 
-Chaque membre de la plateforme peut dorénavant soutenir ou s'opposer à la proposition et le Comité d'examen peut l'examiner.
+Chaque membre de la plateforme peut dorénavant soutenir ou s'opposer à la proposition.
 
 """ + PORTAL_SIGNATURE
 
 
-SYSTEM_CLOSE_PROPOSAL_SUBJECT = u"""Décision de cloturer la proposition « {subject_title} » à l'appréciation des membres de la plateforme"""
+SYSTEM_CLOSE_PROPOSAL_SUBJECT = u"""Décision de cloturer la proposition « {subject_title} »"""
 
 SYSTEM_CLOSE_PROPOSAL_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
 Le groupe de travail sur la proposition « {subject_title} » qui se trouve sous {subject_url} n'est plus actif depuis quelques cycles de plus d'une semaine.
-Pour cette raison, le groupe de travail a été dissout et la proposition est maintenant ouverte à un groupe de travail.
+Pour cette raison, le groupe de travail a été dissout et la proposition est maintenant revenue à l'état "en attente d'atteinte du quorum".
 
 """ + PORTAL_SIGNATURE
 
@@ -271,7 +276,7 @@ Vous pourrez à tout moment chercher à rejoindre à nouveau le groupe de travai
 
 """ + PORTAL_SIGNATURE
 
-PARTICIPATE_WL_SUBJECT = u"""Participation au groupe de travail de la proposition « {subject_title} »"""
+PARTICIPATE_WL_SUBJECT = u"""Vous pouvez maintenant participer au groupe de travail de la proposition « {subject_title} »"""
 
 PARTICIPATE_WL_MESSAGE = u"""
 Bonjour {recipient_first_name},
@@ -282,7 +287,7 @@ Vous pouvez en tant que participant au groupe de travail améliorer la propositi
 
 """ + PORTAL_SIGNATURE
 
-PARTICIPATE_SUBJECT = u"""Votre participation au groupe de travail de la proposition « {subject_title} »"""
+PARTICIPATE_SUBJECT = u"""Vous pouvez maintenant participer au groupe de travail de la proposition « {subject_title} »"""
 
 PARTICIPATE_MESSAGE = u"""
 Bonjour {recipient_first_name},
@@ -304,7 +309,7 @@ Votre demande de participation au groupe de travail de la proposition « {subjec
 
 À chaque nouvelle demande de participation, les membres du groupe statuent sur l'acceptation ou pas de la demande.
 
-La durée de la vérification est de {duration} jour(s). Au-delà de la date du {date_end_vote}, la vérification sera clôturée, et vous serez informé(e) de son résultat.
+La durée du vote sur votre demande est de {duration} jour(s). Au-delà de la date du {date_end_vote}, le vote sur votre demande sera clôturé, et vous serez informé(e) de son résultat.
 
 """ + PORTAL_SIGNATURE
 
@@ -581,46 +586,69 @@ Vous souhaitez avoir un nouveau votre mot de passe sur la plateforme {novaideo_t
 """ + PORTAL_SIGNATURE
 
 
-PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
+PREREGISTRATION_SUBJECT = u"""Veuillez finaliser votre inscription sur la plateforme de démocratie délibérative {novaideo_title}"""
 
 
 PREREGISTRATION_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
+
+Votre inscription à la plateforme de démocratie délibérative {novaideo_title} est presque finie ! Il ne vous reste plus qu'une étape.
+
 Vous devez à présent cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant le {deadline_date}.
 Nous nous réjouissons de vous compter parmi nos membres, et espérons que votre participation sera pour vous une expérience positive et enrichissante, dans un cadre pleinement démocratique. Bienvenue !
 
+Cordialement,
+                                                                                
+La plateforme de démocratie délibérative {novaideo_title}
 """ + PORTAL_SIGNATURE
 
 
-PREREGISTRATION_MOD_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
+PREREGISTRATION_MOD_SUBJECT = u"""Veuillez finaliser votre inscription sur la plateforme de démocratie délibérative {novaideo_title}"""
 
 
 PREREGISTRATION_MOD_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Les Vérificateurs tirés au sort lors de votre inscription ont validé la concordance entre les Informations d'Identité que vous avez saisies sur la plate-forme et celles des documents officiels d'identité dont vous leur avez transmis la copie en direct.
-Nous sommes à présents sûrs que vous êtes la seule personne inscrite sous ces Informations d'Identité sur la plateforme participative {novaideo_title}, et donc que, comme tou(te)s les autres participant(e)s, vous n'avez qu'un seul compte, et contribuerez donc à respecter le principe démocratique "1 personne = 1 voix".
-Vous devez à présent cliquer sur le lien {url} pour finaliser votre inscription. Ce lien a une durée de validité de 48 heures, votre inscription doit se faire avant le {deadline_date}.
+
+Les Vérificateurs tirés au sort lors de votre inscription ont validé la concordance entre les Informations d'Identité que vous avez saisies sur la plate-forme et celles du document officiel d'identité dont vous leur avez transmis la copie en direct ou que vous leur avez montré lors de votre réunion en visioconférence.
+
+Nous sommes à présents sûrs que vous êtes la seule personne inscrite sous ces Informations d'Identité sur la plateforme de démocratie délibérative {novaideo_title}, et donc que, comme tou(te)s les autres participant(e)s, vous n'avez qu'un seul compte, et contribuerez donc à respecter le principe démocratique "1 personne = 1 voix".
+
+Il ne vous reste plus qu'une étape à franchir pour finaliser votre inscription : cliquer sur le lien {url}. Ce lien a une durée de validité de 48 heures, c'est-à-dire que vous devez faire cette opération avant le {deadline_date}.
+
+
 Nous nous réjouissons de vous compter parmi nos membres, et espérons que votre participation sera pour vous une expérience positive et enrichissante, dans un cadre pleinement démocratique. Bienvenue !
 
+Cordialement,
+                                                                                
+La plateforme de démocratie délibérative {novaideo_title}
 """ + PORTAL_SIGNATURE
 
 
-ADMIN_PREREGISTRATION_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
+ADMIN_PREREGISTRATION_SUBJECT = u"""Contribuez à vérifier une inscription à la plateforme de démocratie délibérative {novaideo_title}"""
 
 
 ADMIN_PREREGISTRATION_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Vous avez été choisi(e) par la plateforme {novaideo_title} comme Vérificateur, afin de vérifier l'identité d'une personne qui vient de s'inscrire.
+Vous avez été choisi(e) par la plateforme de démocratie délibérative {novaideo_title} comme Vérificateur, afin de vérifier l'identité d'une personne qui vient de s'inscrire.
 
-À chaque nouvelle inscription à la plateforme {novaideo_title} le système sélectionne aléatoirement trois membres existants afin de vérifier l'identité de la personne inscrite. En effet, il faut vérifier que chaque membre de la plate-forme correspond à une personne physique et une seule, et ainsi éviter qu'une même personne ne puisse voter plusieurs fois sous plusieurs identités différentes.
+À chaque nouvelle inscription à la plateforme de démocratie délibérative {novaideo_title} le système sélectionne aléatoirement trois membres existants afin de vérifier l'identité de la personne inscrite. En effet, il faut vérifier que chaque personne physique correspond à un membre de la plate-forme et un seul, et ainsi éviter qu'une même personne ne puisse voter plusieurs fois sous plusieurs identités différentes.
 
 Pour procéder à cette vérification de l'identité de cette personne, il vous suffit de suivre les étapes suivantes:
 
-- Vous recevrez avant le {date_end_vote} de la part de la personne qui vient de s'inscrire, et dont l'adresse de courriel est {subject_email}, un courriel comprenant une copie de document d'identité officiel
-- Lorsque vous aurez reçu ce courriel, ou, si vous ne l'avez pas reçu le {date_end_vote}, connectez-vous à la plateforme à l'adresse suivante {subject_url}. Sur cette page, vous devrez décider si les informations reçues ci-dessous de cette personne lors de son inscription correspondent à celles présentes sur le document d'identité officiel dont vous aurez reçu une copie par courriel. Soyez très attentif(ve) ! Pour que vous approuviez l'inscription, TOUS les éléments doivent être strictement IDENTIQUES entre les informations reçues lors de l'inscription et celles du document d'identité officiel. Dans tous les autres cas, même avec une seule petite différence, ou si vous n'avez pas reçu la copie des documents d'identité à la date du {date_end_vote}, vous devez refuser l'inscription.
+1. Vous recevrez avant le {date_send_id_data} de la part de la personne qui vient de s'inscrire, et dont l'adresse de courriel est {subject_email}, un courriel comprenant:
+   - ou bien une copie de document d'identité officiel. Pour des raisons de sécurité, nous conseillons à la personne venant de s'inscrire de masquer sa photographie lors du scan : la copie sera délibérément incomplète;
+   - ou bien une invitation à une courte réunion en visioconférence (lien de connexion et 3 propositions de date et heure) au cours de laquelle la personne vous montrera son document d'identité pour que vous puissiez en lire le contenu.
+   
+2. Vous répondez, le cas échéant, à la personne en précisant, parmi ses trois propositions de date et heure, celle qui vous convient pour la réunion par visioconférence, et vous y participez au jour et à l'heure dite. 
+
+3. Lorsque vous aurez reçu le courriel avec la copie du document d'identité officiel, ou tenu la réunion en visioconférence, ou si vous n'avez reçu ni copie de document d'identité, ni invitation à une réunion par visioconférence, le {date_send_id_data}, 
+          (a) connectez-vous à la plateforme de démocratie délibérative  {novaideo_title}, puis 
+           (b) accédez à l'adresse suivante {subject_url}. Sur cette page, vous devrez décider si les informations reçues ci-dessous de cette personne lors de son inscription correspondent à celles présentes sur le document d'identité officiel dont vous aurez reçu une copie par courriel ou que vous aurez vues lors de la visioconférence. Soyez très attentif(ve) ! Pour que vous approuviez l'inscription, TOUS les éléments doivent être strictement IDENTIQUES entre les informations reçues lors de l'inscription et celles du document d'identité officiel. Dans tous les autres cas, même avec une seule petite différence, si vous doutez de l'authenticité du document officiel, ou si vous n'avez pas reçu la copie du document d'identité officiel ou une invitation à une visioconférence à la date du {date_send_id_data}, vous devez refuser l'inscription.
+          
+4. Une fois que vous aurez fait cette vérification, et quel qu'en soit le résultat, nous vous demandons, le cas échéant, de détruire de votre ordinateur toutes les copies du document officiel d'identité en votre possession, et d'en rendre compte à la personne venant de s'inscrire, en lui envoyant un courriel à {subject_email}.
 
 Les informations reçues de la personne lors de son inscription sont:
   Nom(s): {subject_last_name}
@@ -629,12 +657,15 @@ Les informations reçues de la personne lors de son inscription sont:
   Lieu de naissance: {birthplace}
   Nationalité: {citizenship}
 
-La durée de la vérification est de {duration} jour(s), soit jusqu'au {date_end_vote}. Au-delà de cette durée, la vérification sera clôturée, et votre avis ne sera pas pris en compte. Si aucun Vérificateur n'a voté à cette date, l'inscription sera refusée.
+La durée de la vérification est de {duration} jour(s), soit jusqu'au {date_end_vote}. Au-delà de cette date, la vérification sera clôturée, et votre avis ne sera pas pris en compte. Si aucun Vérificateur n'a voté à cette date, l'inscription sera refusée. 
 
+Cordialement,
+                                                                                
+La plateforme de démocratie délibérative {novaideo_title}
 """ + PORTAL_SIGNATURE
 
 
-ADMIN_CONTENT_SUBJECT = u"""Nouveau contenu sur la plateforme participative {novaideo_title}"""
+ADMIN_CONTENT_SUBJECT = u"""Nouveau contenu sur la plateforme de démocratie délibérative {novaideo_title}"""
 
 
 ADMIN_CONTENT_MESSAGE = u"""
@@ -642,7 +673,7 @@ Bonjour {recipient_first_name},
 
 Vous avez été choisi par la plateforme {novaideo_title} afin de modérer un nouveau contenu ajouté à la plateforme.
 
-À chaque nouvel ajout à la plateforme {novaideo_title} d'un contenu (idée ou proposition), le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération {url_moderation_rules}.
+À chaque nouvel ajout à la plateforme {novaideo_title} d'un contenu (idée ou proposition), le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération {url_moderation_rules}. En distribuant la modération de manière aléatoire, nous évitons que cette importante fonction de contrôle ne soit concentrée entre quelques mains. Nous contribuons ainsi à la nature démocratique de la plate-forme.
 
 Pour exercer votre rôle de Modérateur sur ce nouveau contenu, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et d'y donner votre avis sur la conformité de ce contenu avec la Charte de Modération.
 
@@ -664,15 +695,15 @@ Vous pouvez le retrouver sous {comment_url} et lui apporter une réponse.
 
 """ + PORTAL_SIGNATURE
 
-ADMIN_REPORT_SUBJECT = u"""Nouvelle signalisation sur la plateforme participative {novaideo_title}"""
+ADMIN_REPORT_SUBJECT = u"""Nouvelle signalisation sur la plateforme de démocratie délibérative {novaideo_title}"""
 
 
 ADMIN_REPORT_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Vous avez été choisi par la plateforme {novaideo_title} afin de modérer un contenu signalé sur la plateforme comme étant potentiellement non conforme à la Charte de Modération {url_moderation_rules}.
+Vous avez été choisi par la plateforme {novaideo_title} afin de modérer un contenu signalé sur la plateforme comme étant potentiellement non conforme à la Charte de Modération {url_moderation_rules}. 
 
-À chaque signalement d'un contenu sur la plateforme {novaideo_title} d'un contenu comme étant potentiellement non conforme à la Charte de Modération, le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération.
+À chaque signalement d'un contenu sur la plateforme {novaideo_title} d'un contenu comme étant potentiellement non conforme à la Charte de Modération, le système tire au sort trois membres afin que ceux-ci vérifient la conformité de ce contenu avec la Charte de Modération. En distribuant la modération de manière aléatoire, nous évitons que cette importante fonction de contrôle ne soit concentrée entre quelques mains. Nous contribuons ainsi à la nature démocratique de la plate-forme.
 
 Pour exercer votre rôle de Modérateur sur ce contenu, il vous suffit de vous connecter à la plateforme à l'adresse suivante {subject_url} et d'y donner votre avis sur la conformité de ce contenu avec la Charte de Modération.
 
@@ -681,7 +712,7 @@ La durée de la Modération est de {duration} jour(s). Au-delà de la date du {d
 """ + PORTAL_SIGNATURE
 
 
-AUTHOR_REPORT_SUBJECT = u"""Nouvelle signalisation sur la plateforme participative {novaideo_title}"""
+AUTHOR_REPORT_SUBJECT = u"""Nouvelle signalisation sur la plateforme de démocratie délibérative {novaideo_title}"""
 
 
 AUTHOR_REPORT_MESSAGE = u"""
@@ -697,7 +728,7 @@ La durée de la vérification est de {duration} jour(s). Au-delà de la date du 
 """ + PORTAL_SIGNATURE
 
 
-ADMIN_PREREGISTRATION_REF_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
+ADMIN_PREREGISTRATION_REF_SUBJECT = u"""Votre inscription à la plateforme de démocratie délibérative {novaideo_title} a été refusée"""
 
 
 ADMIN_PREREGISTRATION_REF_MESSAGE = u"""
@@ -705,49 +736,78 @@ Bonjour {recipient_first_name},
 
 Les Vérificateurs tirés au sort lors de votre inscription N'ont PAS validé la concordance entre les Informations d'Identité que vous avez saisies sur la plate-forme et celles des documents officiels d'identité dont vous leur avez transmis la copie.
 
-Nous regrettons de devoir donc refuser votre inscription sur la plateforme {novaideo_title}, car une même personne physique pourrait s'inscrire plusieurs fois, à chaque fois avec de petites variations dans ses Informations d'Identité, et ainsi avoir plusieurs comptes, et voter plusieurs fois. Ce serait contraire au principe démocratique "1 personne = 1 voix".
+Nous regrettons de devoir donc refuser votre inscription sur la plateforme de démocratie délibérative {novaideo_title}, car une même personne physique pourrait s'inscrire plusieurs fois, à chaque fois avec de petites variations dans ses Informations d'Identité, et ainsi avoir plusieurs comptes, et voter plusieurs fois. Ce serait contraire au principe démocratique "1 personne = 1 voix". 
 
+Cordialement,
+                                                                                
+La plateforme de démocratie délibérative {novaideo_title}
 """ + PORTAL_SIGNATURE
 
-ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""Inscription à la plateforme participative {novaideo_title}"""
+ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""Votre inscription à la plateforme de démocratie délibérative {novaideo_title}: prochaines étapes"""
 
 
 ADMIN_PREREGISTRATION_SUB_MESSAGE = u"""
 Bonjour {recipient_first_name},
 
-Votre inscription a été soumise à vérification de votre identité.
+Vous vous êtes inscrit(e) à la plate-forme de démocratie délibérative {novaideo_title}. Bravo et merci ! Nous nous réjouissons de la perspective de vous compter parmi nos membres.
 
-À chaque nouvelle inscription à la plateforme {novaideo_title} le système sélectionne aléatoirement trois membres existants afin de vérifier l'identité de la personne inscrite. En effet, il faut vérifier que chaque membre de la plate-forme correspond à une personne physique et une seule, et ainsi éviter qu'une même personne ne puisse voter plusieurs fois sous plusieurs identités différentes.
+Comme nous vous l'avons indiqué sur le formulaire d'inscription en ligne, votre inscription doit être validée au terme d'une procédure assez simple, mais rigoureuse.
 
-Afin que votre identité puisse être ainsi vérifiée, nous vous demandons d'adresser à chacune des personnes suivantes, dans trois courriels séparés, avant le {date_end_vote}, la copie scannée d'un document d'identité officiel. Cette copie devra faire apparaître clairement votre(vos) prénom(s), votre(vos) nom(s) de famille, votre date de naissance et votre lieu de naissance. Au-delà du {date_end_vote}, si les Vérificateurs n'ont pas reçu de copie de votre document d'identité officiel, ils ont instruction de refuser votre inscription.
+À chaque nouvelle inscription à la plateforme de démocratie délibérative {novaideo_title} le système sélectionne aléatoirement trois membres existants afin de vérifier l'identité de la personne inscrite. En effet, il faut vérifier que chaque personne physique correspond à un membre de la plate-forme et un seul, et ainsi éviter qu'une même personne ne puisse voter plusieurs fois sous plusieurs pseudonymes différents. Nous maintenons ainsi le principe démocratique "1 personne = 1 voix".
+
+Afin que votre identité puisse être ainsi vérifiée, nous vous demandons d'adresser à chacune des personnes suivantes, dans trois courriels séparés, avant le  {date_send_id_data}:
+   - ou bien la copie scannée (ou la photographie faite sur smartphone) d'un document d'identité officiel. Cette copie ou cette photo devra faire apparaître clairement votre(vos) prénom(s), votre(vos) nom(s) de famille, votre date de naissance, votre lieu de naissance et votre nationalité. Pour des raisons de sécurité, nous vous conseillons de masquer votre photographie et votre signature lors du scan ou de la photo de votre document d'identité officiel, afin que l'image soit délibérément incomplète;
+   - ou bien trois propositions de réunion par visioconférence comprenant, pour chaque proposition, la date au format JJ-mmm-AAAA (jour en deux chiffres, mois en trois lettres, années en 4 chiffres), l'heure (en précisant votre lieu de résidence) et le lien vers la visioconférence, par exemple en utilisant la plate-forme libre et gratuite https://meet.jit.si/. Toutes les dates et heures que vous proposez doivent être avant avant le {date_end_vote}, correspondant à la fin de la période laissée aux Vérificateurs pour prendre leur décision.
+
+Au-delà du  {date_send_id_data}, si les Vérificateurs n'ont pas reçu de copie de votre document d'identité officiel ou d'invitation à une visioconférence, ils ont instruction de refuser votre inscription.
+
+Lors de la visioconférence avec chacun des Vérficateurs (si tel est votre choix), vous lui montrerez votre document d'identité officiel, en rendant apparents vos prénoms, noms, date et lieu de naissance et votre nationalité, et en cachant si vous le souhaitez votre photo et votre signature.
 
 Les modérateurs assignés à la vérification de votre inscription sont:
 {moderators}
 
-Vous recevrez le résultat de cette procédure de vérification d'identité à la fin de la période laissée aux Vérificateurs pour travailler, soit le {date_end_vote} au plus tard.
+Vous recevrez le résultat de cette procédure de vérification d'identité à la fin de la période laissée aux Vérificateurs pour prendre leur décision, soit le {date_end_vote} au plus tard.
 
-""" + PORTAL_SIGNATURE
+Les Vérificateurs ont instruction de détruire, le cas échéant, toutes les copies de votre document d'identité officiel une fois qu'ils ont procédé à la vérification de votre identité, et de vous rendre compte dès qu'ils l'ont fait.
+
+Cordialement,
+                                                                                
+La plateforme de démocratie délibérative {novaideo_title}""" + PORTAL_SIGNATURE
 
 
-REMINDER_ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""RAPPEL: Inscription à la plateforme participative {novaideo_title}"""
+REMINDER_ADMIN_PREREGISTRATION_SUB_SUBJECT = u"""RAPPEL - DATE LIMITE DEMAIN: Vérfication de votre identité pour finaliser votre inscription à la plateforme de démocratie délibérative {novaideo_title}"""
 
 
 REMINDER_ADMIN_PREREGISTRATION_SUB_MESSAGE = u"""
+## Si vous avez déjà envoyé une copie de votre document officiel d'identité ou proposé une réunion par visioconférence aux Vérificateurs, veuillez ne pas prendre en compte le présent courriel et accepter nos excuses ##
+
 Bonjour {recipient_first_name},
 
-Votre inscription a été soumise à vérification de votre identité.
+Comme vous vous en souvenez sans doute, votre inscription sur la plate-forme de démocratie délibérative {novaideo_title}  a été soumise à vérification de votre identité. La date limite pour que vous envoyiez aux Vérificateurs la copie de votre document officiel d'identité ou une invitation à une réunion par visioconférence est DEMAIN {date_send_id_data}.
 
-À chaque nouvelle inscription à la plateforme {novaideo_title} le système sélectionne aléatoirement trois membres existants afin de vérifier l'identité de la personne inscrite. En effet, il faut vérifier que chaque membre de la plate-forme correspond à une personne physique et une seule, et ainsi éviter qu'une même personne ne puisse voter plusieurs fois sous plusieurs identités différentes.
+Nous vous prions de trouver ci-après le rappel de la procédure à suivre (y compris les adresses de courriel des Vérificateurs), ainsi que de la justification de celle-ci.
 
-Afin que votre identité puisse être ainsi vérifiée, nous vous demandons d'adresser à chacune des personnes suivantes, dans trois courriels séparés, avant le {date_end_vote}, la copie scannée d'un document d'identité officiel. Cette copie devra faire apparaître clairement votre(vos) prénom(s), votre(vos) nom(s) de famille, votre date de naissance et votre lieu de naissance. Au-delà du {date_end_vote}, si les Vérificateurs n'ont pas reçu de copie de votre document d'identité officiel, ils ont instruction de refuser votre inscription.
+Nous nous réjouissons de la perspective de vous accueillir parmi nous !
+
+Très cordialement à vous,
+
+La plateforme de démocratie délibérative {novaideo_title}
+
+## Rappel de la procédure et de sa justification ##
+À chaque nouvelle inscription à la plateforme de démocratie délibérative {novaideo_title} le système sélectionne aléatoirement trois membres existants afin de vérifier l'identité de la personne inscrite. En effet, il faut vérifier que chaque personne physique correspond à un membre de la plate-forme et un seul, et ainsi éviter qu'une même personne ne puisse voter plusieurs fois sous plusieurs identités différentes.
+
+Afin que votre identité puisse être ainsi vérifiée, nous vous demandons d'adresser à chacune des personnes suivantes, dans trois courriels séparés, avant le {date_send_id_data}:
+   - ou bien la copie scannée (ou la photographie faite sur smartphone) d'un document d'identité officiel. Cette copie ou cette photo devra faire apparaître clairement votre(vos) prénom(s), votre(vos) nom(s) de famille, votre date de naissance, votre lieu de naissance et votre nationalité. Pour des raisons de sécurité, nous vous conseillons de masquer votre photographie et votre signature lors du scan ou de la photo de votre document d'identité officiel, afin que l'image soit délibérément incomplète;
+   - ou bien trois propositions de réunion par visioconférence comprenant, pour chaque proposition, la date au format JJ-mmm-AAAA (jour en deux chiffres, mois en trois lettres, années en 4 chiffres), l'heure (en précisant votre lieu de résidence) et le lien vers la visioconférence, par exemple en utilisant la plate-forme libre et gratuite https://meet.jit.si/. Toutes les dates et heures que vous proposez doivent être avant avant le {date_end_vote}, correspondant à la fin de la période laissée aux Vérificateurs pour prendre leur décision.
+
+Au-delà du  {date_send_id_data}, si les Vérificateurs n'ont pas reçu de copie de votre document d'identité officiel ou d'invitation à une visioconférence, ils ont instruction de refuser votre inscription.
+
+Lors de la visioconférence avec chacun des Vérficateurs (si tel est votre choix), vous lui montrerez votre document d'identité officiel, en rendant apparents vos prénoms, noms, date et lieu de naissance et nationalité, et en cachant si vous le souhaitez votre photo et votre signature.
 
 Les modérateurs assignés à la vérification de votre inscription sont:
 {moderators}
 
-Vous recevrez le résultat de cette procédure de vérification d'identité à la fin de la période laissée aux Vérificateurs pour travailler, soit le {date_end_vote} au plus tard.
-
-Si vous avez déjà envoyé la copie de vos documents d'identité aux Vérificateurs, ne tenez pas commpte du présent courriel.
-
+Vous recevrez le résultat de cette procédure de vérification d'identité à la fin de la période laissée aux Vérificateurs pour prendre leur décision, soit le {date_end_vote} au plus tard.
 """ + PORTAL_SIGNATURE
 
 
@@ -787,7 +847,7 @@ Bonjour,
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
-ADMIN_CONTENT_SUB_SUBJECT = u"""Nouveau contenu sur la plateforme participative {novaideo_title}"""
+ADMIN_CONTENT_SUB_SUBJECT = u"""Nouveau contenu sur la plateforme de démocratie délibérative {novaideo_title}"""
 
 
 ADMIN_CONTENT_SUB_MESSAGE = u"""
@@ -816,7 +876,7 @@ Vous pouvez le retrouver sous {comment_url} et lui apporter une réponse.
 
 """ + PORTAL_SIGNATURE
 
-ALERTDISCUSS_SUBJECT = u"""Nouveau message ajouté à votre discussion avec « {subject_title} »"""
+ALERTDISCUSS_SUBJECT = u"""Nouveau message ajouté à votre discussion sur « {subject_title} »"""
 
 
 ALERTDISCUSS_MESSAGE = u"""

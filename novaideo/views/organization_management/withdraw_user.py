@@ -33,7 +33,7 @@ class WithdrawViewStudyReport(BasicView):
 
 
 class WithdrawForm(FormView):
-    title = _('Withdraw user from the organization')
+    title = _('Withdraw user from the organisation')
     name = 'withdrawuserform'
     behaviors = [WithdrawUser, Cancel]
     viewid = 'withdrawuserform'
@@ -54,7 +54,7 @@ class WithdrawForm(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class WithdrawView(MultipleView):
-    title = _('Withdraw user from the organization')
+    title = _('Withdraw user from the organisation')
     name = 'withdrawuser'
     behaviors = [WithdrawUser]
     viewid = 'withdrawuser'

@@ -19,9 +19,9 @@
       <div class="content-view-body-container">
         <div>
           <dl class="dl-horizontal">
-            <dt i18n:translate="">First names</dt>
+            <dt i18n:translate="">Given name(s)</dt>
               <dd><span tal:replace="registration.first_name"/></dd>
-              <dt i18n:translate="">Last names</dt>
+              <dt i18n:translate="">Family name(s)</dt>
               <dd><span tal:replace="registration.last_name"/></dd>
               <dt i18n:translate="">Birth date</dt>
               <dd><span tal:replace="layout.to_localized_time(registration.birth_date)"/></dd>

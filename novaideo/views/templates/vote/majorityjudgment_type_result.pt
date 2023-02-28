@@ -20,7 +20,7 @@
           <th i18n:translate="" tal:repeat="option options">
             ${option}
           </th>
-          <th i18n:translate="" class="info">The median note</th>
+          <th i18n:translate="" class="info">The median mark</th>
         </tr>
       </thead>
       <tbody>

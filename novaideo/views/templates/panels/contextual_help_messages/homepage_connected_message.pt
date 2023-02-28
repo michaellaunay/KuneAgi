@@ -1,13 +1,13 @@
 <div class="contextual-help-item principal-help"  i18n:domain="novaideo">
       <div  tal:omit-tag="" tal:condition="'proposal' in request.content_to_manage">
         <p i18n:translate="" tal:condition="request.support_ideas or request.support_proposals">
-            As a member connected to the platform, you can access your content, your working groups, your favourites and your evaluations, note an idea perform a search, see the registered members or intervene on ideas or proposals.
+            As a member connected to the platform, you can access your content, your working groups, your favourites and your evaluations, initiate a proposal, perform a search, see the registered members or intervene on existing proposals.
         </p>
         <p i18n:translate="" tal:condition="not (request.support_ideas or request.support_proposals)">
-            As a member connected to the platform, you can access your content, your working groups, and your favourites, note an idea, perform a search, see the registered members or intervene on ideas or proposals.
+            As a member connected to the platform, you can access your content, your working groups, and your favourites, initiate a proposal, perform a search, see the registered members or intervene on existing proposals.
         </p>
         <p i18n:translate="">
-            An idea is a short, spontaneous personal note. A proposal is a complete, collectively written document, based on thorough work.
+            A proposal is a complete, structured, collectively written document, based on thorough work. It can nevertheless start by a rough sketch, to be improved over time, first by its creator, then by a dedicated Working Group.
         </p>
         <p >
             <span i18n:translate="">An idea can either be archived, or "To be further worked upon",</span> 

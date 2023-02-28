@@ -38,7 +38,7 @@ class ProposalHeaderView(BasicView):
     validate_behaviors = False
     template = 'novaideo:views/proposal_management/templates/header_proposal.pt'
     wrapper_template = 'pontus:templates/views_templates/simple_view_wrapper.pt'
-    title = _('Proposla header')
+    title = _('Proposal header')
 
     def _cant_participate(self, actions, user, root):
         cant_participate = not any(a.behavior_id == 'participate'

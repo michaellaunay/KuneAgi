@@ -503,9 +503,9 @@ class ProposalImprovementCycle(ProcessDefinition, VisualisableElement):
             pg=ParallelGatewayDefinition(),
             votingpublication=SubProcessDefinition(pd='ballotprocess', contexts=[VotingPublication],
                                                    description=_(
-                                                       "Start voting for publication"),
+                                                       "Start voting on publishing or not the proposal, which will submit it to the evaluation of the other participants of the platform"),
                                                    title=_(
-                                                       "Start voting for publication"),
+                                                       "Start voting on publishing the proposal for evaluation"),
                                                    groups=[]),
             timer_alert=IntermediateCatchEventDefinition(
                 TimerEventDefinition(time_date=alert_end_cycle_duration)),

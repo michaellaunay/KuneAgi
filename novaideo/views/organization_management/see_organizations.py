@@ -24,9 +24,9 @@ from novaideo import _
 
 
 CONTENTS_MESSAGES = {
-    '0': _(u"""No organization found"""),
-    '1': _(u"""One organization found"""),
-    '*': _(u"""${number} organizations found""")
+    '0': _(u"""No organisation found"""),
+    '1': _(u"""One organisation found"""),
+    '*': _(u"""${number} organisations found""")
     }
 
 
@@ -36,7 +36,7 @@ CONTENTS_MESSAGES = {
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SeeOrganizationsView(BasicView):
-    title = _('The Organizations')
+    title = _('The Organisations')
     name = 'seeorganizations'
     behaviors = [SeeOrganizations]
     template = 'novaideo:views/novaideo_view_manager/templates/search_result.pt'

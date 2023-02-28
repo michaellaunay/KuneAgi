@@ -231,7 +231,7 @@ class SearchView(FormView):
     renderer='pontus:templates/views_templates/grid.pt',
     )
 class SearchResultView(BasicView):
-    title = _('Nova-Ideo contents')
+    title = _('KuneAgi contents')
     name = ''
     viewid = 'search_result'
     behaviors = [Search]

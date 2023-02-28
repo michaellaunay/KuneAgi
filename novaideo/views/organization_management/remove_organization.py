@@ -33,7 +33,7 @@ class RemoveViewStudyReport(BasicView):
 
 
 class RemoveForm(FormView):
-    title = _('Remove organization')
+    title = _('Remove organisation')
     name = 'removeorganizationform'
     behaviors = [RemoveOrganization, Cancel]
     viewid = 'removeorganizationform'

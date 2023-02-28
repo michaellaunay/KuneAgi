@@ -127,14 +127,14 @@ class ChallengeSchema(VisualisableElementSchema, SearchableEntitySchema):
                                      cols=30,
                                      limit=300),
         title=_("Abstract"),
-        description=_("Describe in a few words the challenge.")
+        description=_("Describe the challenge in a few words.")
     )
 
     text = colander.SchemaNode(
         colander.String(),
         widget=RichTextWidget(),
         title=_("Text"),
-        description=_("You can describe in detail the challenge.")
+        description=_("You can describe the challenge in detail.")
     )
 
     image = colander.SchemaNode(
@@ -167,17 +167,17 @@ class ChallengeSchema(VisualisableElementSchema, SearchableEntitySchema):
         label=_('Is restricted'),
         title='',
         description=_('Check this box if the challenge is restricted to a set of members. '
-                      'Only concerned members can add and see the contents created in this challenge.'),
+                      'Only targeted members can add and see the contents created in this challenge.'),
         missing=False
     )
 
     invited_users = colander.SchemaNode(
         colander.Set(),
         widget=users_to_invite,
-        title=_('Concerned users'),
-        description=_('Find and select the concerned members or organizations. '
-                      'If you want to see the members or organizations... already '
-                      'registered on the platform, enter a *'),
+        title=_('Targeted users'),
+        description=_('Find and select the targeted members or organisations. '
+                      'If you want to see the members or organisations that already '
+                      'are registered on the platform, enter a *'),
         missing=[],
     )
 
@@ -185,7 +185,7 @@ class ChallengeSchema(VisualisableElementSchema, SearchableEntitySchema):
         colander.Date(),
         title=_('Deadline'),
         description=_(
-            "If your challenge is punctual, you can add a deadline for participation."),
+            "If your challenge occurs once only, you can add a deadline for participation."),
         missing=None
     )
 

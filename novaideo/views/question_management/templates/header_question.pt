@@ -53,7 +53,7 @@
   </div>
   <div tal:condition="is_censored">
    <div class="alert-terms-of-use" i18n:translate="">
-    This content does not respect the Use Charter.
+    This content does not respect the Moderation Charter.
    </div>
   </div>
 </div>

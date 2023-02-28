@@ -1,19 +1,19 @@
 <div tal:condition="process" i18n:domain="novaideo">
 	<p i18n:translate="">
-		You are invited, with two other randomly chosen Verifiers, to verify the adequacy between: (1) the ID Information that the person has recorded upon his/her registration on the platform <span i18n:name="dynamic">${request.root.title}</span>, and (2) those from the official ID document that this person will have sent to you a copy of by e-mail. Thereby, you will guarantee that the person registered only once, and that we respect the democratic principle "1 person = 1 vote".
+		You are invited, with two other randomly chosen Verifiers, to verify the adequacy between: (1) the ID Information that the person has recorded upon his/her registration on the platform <span i18n:name="dynamic">${request.root.title}</span>, and (2) those from the official ID document that this person will have sent to you a copy of by e-mail, or that you will see during a dedicated video meeting. Thereby, you will guarantee that the person registered only once, and that we respect the democratic principle "1 person = 1 vote".
 	</p>
 	<p i18n:translate="">
         If the majority of Verifiers confirms the identity of this account, the account of the person that has just registered will be validated. If not, the account will be suppressed.
 	</p>
 	<p i18n:translate="" tal:define="finish  getattr(ballot_report, 'date_send_id_data', ballot_report.ballot.finished_at)">
-        Take great care! In order for you to validate the registration, ALL elements must be strictly IDENTICAL between the ID information received from the person upon his/her registration and those of the official ID document of which you received a copy. In all other cases, even if the difference bears on one character only, or if you have not received the copy of the official ID document upon the date of <span i18n:name="dynamic" tal:replace="layout.to_localized_time(finish)"/>, you MUST refuse the registration.
+        Take great care! In order for you to validate the registration, ALL elements must be strictly IDENTICAL between the ID information received from the person upon his/her registration and those of the official ID document of which you received a copy or that you saw during the video meeting. In all other cases, even if the difference bears on one character only, or if you have not received the copy of the official ID document, or held the video meeting, upon the date of <span i18n:name="dynamic" tal:replace="layout.to_localized_time(finish)"/>, you MUST refuse the registration.
 	</p>
 	<p tal:define="registration process.registration">
 		<span i18n:translate="">The ID information received from the person upon his/her registration are:</span>
 		<dl class="dl-horizontal">
-	        <dt i18n:translate="">First names</dt>
+	        <dt i18n:translate="">Given name(s)</dt>
 	        <dd><span tal:replace="registration.first_name"/></dd>
-	        <dt i18n:translate="">Last names</dt>
+	        <dt i18n:translate="">Famlily name(s)</dt>
 	        <dd><span tal:replace="registration.last_name"/></dd>
 	        <dt i18n:translate="">Birth date</dt>
 	        <dd><span tal:replace="layout.to_localized_time(registration.birth_date)"/></dd>

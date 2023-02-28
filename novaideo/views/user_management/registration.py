@@ -111,7 +111,7 @@ class RegistrationSubmittedView(BasicView):
         moderate_registration = getattr(
             self.context, 'moderate_registration', False)
         if moderate_registration:
-            self.title = _('Your registration is submitted to moderation')
+            self.title = _('Your registration is submitted to the process of verifying your identity')
 
     def update(self):
         result = {}

@@ -36,14 +36,14 @@
     <span i18n:translate="" tal:condition="alert_kind == 'first_start_work'">The Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has reached the quorum, i.e. the minimum number of Participants required to be considered as active. It can now improve the Proposal.</span>
     
     <span tal:condition="alert_kind == 'submit_proposal'">
-      <span i18n:translate="">The Working Group has voted to submit the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> as is to the Members of the platform.</span>
+      <span i18n:translate="">The Working Group has voted to submit the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> as is to the Members of the platform for evaluation.</span>
       <span tal:condition="getattr(object, 'ballot', '')">
         <span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
       </span>
     </span>
 
     <span i18n:translate="" tal:condition="alert_kind == 'end_work'">
-        The improvement cycle of the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> is now closed. You must now vote to decide whether you want to continue improving it, or to submit it as is to the Members of the platform.
+        The improvement cycle of the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> is now closed. You must now vote to decide whether you want to continue improving it, or to submit it as is to the Members of the platform for evaluation.
     </span>
 
     <span i18n:translate="" tal:condition="alert_kind == 'voting_amendment'">
@@ -75,17 +75,17 @@
      <span i18n:translate="" tal:condition="alert_kind == 'correction_added'">The Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has received suggestions for improvement and must be re-read.</span>
 
     <span tal:condition="alert_kind == 'participate'">
-      <span i18n:translate="" >One Member has joined the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+      <span i18n:translate="" >One new Participant has joined the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
       <span tal:condition="getattr(object, 'ballot', '')">
         <span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
       </span>
     </span>
 
-    <span i18n:translate="" tal:condition="alert_kind == 'wg_wating_list_participation'">One Member, which was on the waiting list, joined the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+    <span i18n:translate="" tal:condition="alert_kind == 'wg_wating_list_participation'">One new Participant, which was on the waiting list, joined the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
 
-    <span i18n:translate="" tal:condition="alert_kind == 'resign'">One Member has left the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+    <span i18n:translate="" tal:condition="alert_kind == 'resign'">One Participant has left the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
 
-    <span i18n:translate="" tal:condition="alert_kind == 'resign_to_wg_open'">The Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> is below the quorum, i.e. the minimum number of Participants required to be considered as active. It can therefore not continue improving the Proposal until is has reached again the quorum.</span>
+    <span i18n:translate="" tal:condition="alert_kind == 'resign_to_wg_open'">The Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> is below the quorum, i.e. the minimum number of Participants required to be considered as active. It can therefore not continue improving the Proposal until is has reached  the quorum again.</span>
 
     <span i18n:translate="" tal:condition="alert_kind == 'amendable'">The Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has reached the quorum, i.e. the minimum number of Participants required to be considered as active. It can now improve the Proposal.</span>
     
@@ -110,7 +110,7 @@
       </span>
 
     <span i18n:translate="" tal:condition="alert_kind == 'exclude_to_wg_open'">
-      Following the exclusion of one Participant, the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> is now below the quorum, i.e. the minimum number of Participants for it to be considered as active. It cannot improve the Proposal as long as it has not reached again the quorum.</span>
+      Following the exclusion of one Participant, the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> is now below the quorum, i.e. the minimum number of Participants for it to be considered as active. It cannot improve the Proposal as long as it has not reached the quorum again.</span>
 
     <span i18n:translate="" tal:condition="alert_kind == 'exclude_participant'">
       A request to exclude the Participant <a i18n:name="dynamic" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> out of the Working Group related to the Proposal <a i18n:name="subject" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been filed. You are invited to vote to decide whether you want to exclude him/her or not.
@@ -148,7 +148,7 @@
       </span>
 
       <span tal:condition="alert_kind == 'refuse_exclusion_members'">
-        <span i18n:translate="" >The request to exclude <a i18n:name="dynamic" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> out of the Working Group related to the Proposal <a i18n:name="subject" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been refused, following the vote of the Participants in this Working Group. <a i18n:name="participant" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> is maintained in the Working Group. No further requests for exclusion from the Working Group may be requested in respect of <span i18n:name="member" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</span> before the <span tal:replace="layout.to_localized_time(getattr(object, 'period_date', None))"/></span>
+        <span i18n:translate="" >The request to exclude <a i18n:name="dynamic" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> out of the Working Group related to the Proposal <a i18n:name="subject" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been refused, following the vote of the Participants in this Working Group. <a i18n:name="participant" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</a> is maintained in the Working Group. No further requests for exclusion from the Working Group may be requested regarding <span i18n:name="member" href="${object.participant_url}"><span class="${object.participant_icon}"></span> ${object.participant_title}</span> before the <span tal:replace="layout.to_localized_time(getattr(object, 'period_date', None))"/></span>
         <span tal:condition="getattr(object, 'ballot', '')">
           <span i18n:translate="">The results of the ballot are available</span> <a i18n:translate="" href="${getattr(object, 'ballot', '')}">here</a>
         </span>
@@ -158,10 +158,10 @@
          You are invited to evaluate the quality of the cooperative behaviour of <a i18n:name="dynamic" href="${object.user_url}"><span class="${object.user_icon}"></span> ${object.user_title}</a> in the framework of the Working Group related to the Proposal <a i18n:name="subject" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
 
       <span i18n:translate="" tal:condition="alert_kind == 'members_notation'">
-         You are invited to evaluate the quality of the cooperative behaviour of the Members in the framework of the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+         You are invited to evaluate the quality of the cooperative behaviour of the other Participants in the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
 
       <span i18n:translate="" tal:condition="alert_kind == 'member_notation_excluded'">
-         You are invited to evaluate the quality of the cooperative behaviour of the Members in the framework of the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
+         You are invited to evaluate the quality of the cooperative behaviour of the other Participants in the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>.</span>
 
       <span i18n:translate="" tal:condition="alert_kind == 'wg_exclude'">
         The request to exclude you out of the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been accepted, following the vote of the Participants in this Working Group. You are excluded out of the Working Group. You can not participate again to the Working Group before the <span tal:replace="layout.to_localized_time(getattr(object, 'period_date', None))"/>.</span>
@@ -174,15 +174,15 @@
       </span>
 
       <span i18n:translate="" tal:condition="alert_kind == 'member_exclusion'">
-        A request to exclude you out of the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been filed. The existing Participants in this Working Group are now invited to vote on your admission. You will be informed of the result of this vote at the latest on <span i18n:name="date">${object.date_end_vote}</span>, end date of the vote.
+        A request to exclude you out of the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been filed. The other existing Participants in this Working Group are now invited to vote on your exclusion. You will be informed of the result of this vote at the latest on <span i18n:name="date">${object.date_end_vote}</span>, end date of the vote.
       </span>
 
       <span i18n:translate="" tal:condition="alert_kind == 'accepted_participation' and composition_control">
-        Your application to participate in the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been accepted, following the vote of the Participants in this Working Group.
+        Your application to participate in the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been accepted, following the vote of the Participants in this Working Group. You are now a full Participant in this Working Group. You have the right to propose amendments to the proposal, and to vote on all decisions.
       </span>
 
       <span i18n:translate="" tal:condition="alert_kind == 'accepted_participation' and not composition_control">
-        Your application to participate in the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been accepted.
+        Your application to participate in the Working Group related to the Proposal <a i18n:name="dynamic" href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> has been accepted. You are now a full Participant in this Working Group. You have the right to propose amendments to the proposal, and to vote on all decisions.
       </span>
   </div>
   <span tal:condition="object.is_to_alert(current_user)" style="color: red; margin:5px" class="pull-right glyphicon glyphicon-bell"></span>

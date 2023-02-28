@@ -41,8 +41,8 @@ class WikiWorkModeProcess(ProcessDefinition, VisualisableElement):
 
     def __init__(self, **kwargs):
         super(WikiWorkModeProcess, self).__init__(**kwargs)
-        self.title = _('Change without validation')
-        self.description = _('Change without validation')
+        self.title = _('Change without validation (wiki)')
+        self.description = _('Change without validation (any change made is immediately integrated in the file, as in a wiki)')
 
     def _init_definition(self):
         self.defineNodes(

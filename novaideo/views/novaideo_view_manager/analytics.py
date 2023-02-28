@@ -1,4 +1,3 @@
-
 import datetime
 import colander
 import deform
@@ -505,7 +504,7 @@ class EvaluationsByOrganizations(BasicView):
             'charts': [
                 {
                     'id': 'bar_stacked',
-                    'title': _('Total des soutiens classé par organizations')
+                    'title': _('Total number of support tokens classified per organisation')
                 }
             ]
         }
