@@ -261,9 +261,9 @@ U heeft 24 uur de tijd om te stemmen, waarna de stem wordt geteld rekening houde
 """ + PORTAL_SIGNATURE
 
 
-VOTINGAMENDEMENTS_SUBJECT = u"""De stemming over amendementen op het voorstel {subject_title} begint ."""
+VOTINGAMENDMENTS_SUBJECT = u"""De stemming over amendementen op het voorstel {subject_title} begint ."""
 
-VOTINGAMENDEMENTS_MESSAGE = u"""
+VOTINGAMENDMENTS_MESSAGE = u"""
 Hallo {recipient_first_name},
 
 De stemming over de amendementen op het voorstel "{subject_title}" onder {subject_url} is begonnen. Neem deel aan de stemming.
@@ -303,7 +303,7 @@ Als deelnemer aan de werkgroep kunt u het voorstel verbeteren, als het wordt ver
 
 """ + PORTAL_SIGNATURE
 
-PARTICIPATE_SUBJECT = u"""Dien uw deelname in aan de voorstelwerkgroep" {subject_title} """
+PARTICIPATE_SUB_SUBJECT = u"""Dien uw deelname in aan de voorstelwerkgroep" {subject_title} """
 
 
 PARTICIPATE_SUB_MESSAGE = u"""

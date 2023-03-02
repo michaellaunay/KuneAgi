@@ -298,7 +298,7 @@ Come partecipante al gruppo di lavoro può migliorare la proposta, se viene migl
 
 """ + PORTAL_SIGNATURE
 
-PARTICIPATE_SUBJECT = u"""Invia la tua partecipazione al gruppo di lavoro sulle proposte" {subject_title} """
+PARTICIPATE_SUB_SUBJECT = u"""Invia la tua partecipazione al gruppo di lavoro sulle proposte" {subject_title} """
 
 
 PARTICIPATE_SUB_MESSAGE = u"""
@@ -863,7 +863,7 @@ Salve,
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
-ADMIN_CONTENT_SUBJECT = u"""Nuovo contenuto sulla piattaforma partecipativa {novaideo_title}"""
+ADMIN_CONTENT_SUB_SUBJECT = u"""Nuovo contenuto sulla piattaforma partecipativa {novaideo_title}"""
 
 
 ADMIN_CONTENT_SUB_MESSAGE = u"""

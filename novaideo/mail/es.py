@@ -137,7 +137,7 @@ Hola,
 {my_first_name} {my_last_name} desea presentar la enmienda "{subject_title}" que aparece en la plataforma {novaideo_title} bajo {subject_url}.
 
 """ + \
-    PORTAL_PRESENTACION + PORTAL_SIGNATURE
+    PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
 PRESENTATION_AMENDMENT_SUBJECT = u""" {subject_title} """
@@ -303,7 +303,7 @@ Como participante en el grupo de trabajo puede mejorar la propuesta, si es que s
 
 """ + PORTAL_SIGNATURE
 
-PARTICIPATE_SUBJECT = u"""Envíe su participación en el grupo de trabajo de propuestas" {subject_title} """
+PARTICIPATE_SUB_SUBJECT = u"""Envíe su participación en el grupo de trabajo de propuestas" {subject_title} """
 
 
 PARTICIPATE_SUB_MESSAGE = u"""
@@ -454,7 +454,7 @@ Hola {recipient_first_name},
 CONTENTMODIFIEF_SUBJECT = u"""{subject_type} " {subject_title} " que forma parte de sus favoritos acaba de cambiar de estado"""
 
 
-CONTENTMODIF_MESSAGE = u"""
+CONTENTMODIFIEF_MESSAGE = u"""
 Hola {recipient_first_name},
 
 {subject_type} "{subject_title}" que forma parte de sus favoritos acaba de cambiar de {state_source} a {state_target}. Puede verlo en {subject_url}.
@@ -864,7 +864,7 @@ Hola,
 """ + PORTAL_PRESENTATION + PORTAL_SIGNATURE
 
 
-ADMIN_CONTENT_SUBJECT = u"""Nuevo contenido en la plataforma participativa {novaideo_title}"""
+ADMIN_CONTENT_SUB_SUBJECT = u"""Nuevo contenido en la plataforma participativa {novaideo_title}"""
 
 
 ADMIN_CONTENT_SUB_MESSAGE = u"""
