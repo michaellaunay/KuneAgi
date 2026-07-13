@@ -1,0 +1,771 @@
+diff --git a/.github/workflows/smoke.yml b/.github/workflows/smoke.yml
+new file mode 100644
+index 0000000..8407fad
+--- /dev/null
++++ b/.github/workflows/smoke.yml
+@@ -0,0 +1,23 @@
++name: smoke-legacy
++
++# Packaging/syntax smoke check for the legacy application (Python 3.6 era).
++# The application's full legacy build (buildout + ZEO + test suite) is the
++# Phase 1 deliverable ("golden master") of the modernisation roadmap and
++# will get its own workflow then — see README.md.
++
++on:
++  push:
++  pull_request:
++  workflow_dispatch:
++
++jobs:
++  smoke:
++    runs-on: ubuntu-latest
++    steps:
++      - uses: actions/checkout@v4
++      - name: Syntax and packaging smoke check in a Python 3.6 container
++        run: |
++          docker run --rm -v "$PWD":/src -w /src python:3.6-buster bash -ec "
++            python -m compileall -q novaideo &&
++            python setup.py --version
++          "
+diff --git a/.gitignore b/.gitignore
+index 558d635..0195f2f 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -15,3 +15,15 @@ parts/
+ src/
+ tmp/
+ var/
++
++# Delivery artifacts (patches, archives) — apply/extract them, never commit them
++*.patch
++*.diff
++*.zip
++*.tar
++*.tar.*
++*.tgz
++
++# git apply / merge leftovers
++*.rej
++*.orig
+diff --git a/CHANGES.md b/CHANGES.md
+new file mode 100644
+index 0000000..115a0c2
+--- /dev/null
++++ b/CHANGES.md
+@@ -0,0 +1,44 @@
++# Changelog
++
++## Unreleased
++
++### Fork maintenance — 2026-07-13 (`michaellaunay/KuneAgi`)
++
++- Repository forked from `ecreall/KuneAgi`; maintenance resumed by Michaël Launay (Logikascium), with KuneAgi as the reference trunk of the Nova-Ideo modernisation. Intellectual property: KuneAgi-specific developments are copyright Cosmopolitical.coop (rights transferred by Laurent Zibell); the underlying Nova-Ideo base is copyright Logikascium (Ecréall's IP, acquired in 2024). License unchanged (AGPL v3+).
++- `README.rst` and `CHANGES.rst` converted to Markdown (`README.md`, `CHANGES.md`); README retitled from "Nova Ideo" to "KuneAgi" and rewritten with the repository status, converted operating instructions (annotated where outdated: Google "less secure apps" removed, historical Docker Hub release images unmaintained) and the modernisation roadmap.
++- Build metadata updated: fork URLs, maintainer field, Markdown `long_description`, Python 3.6 classifier; minimal `pyproject.toml` added (PEP 518 `[build-system]` only — metadata stays in `setup.py` until the Phase 3 packaging migration); `MANIFEST.in` updated for Markdown files. The Python package name (`novaideo`) and all module paths are unchanged, to keep existing ZODB databases loadable.
++- Buildout `sources.cfg`: `ecreall_dace`, `ecreall_pontus` and `ecreall_daceui` repointed to their maintained forks (`michaellaunay/{dace,pontus,daceui}`). Known remaining issue for Phase 1: the `cryptacular` source still references a Mercurial Bitbucket URL (service discontinued in 2020).
++- Added a GitHub Actions **smoke** workflow (`python:3.6-buster` container: `compileall` over the `novaideo` package plus a packaging metadata check). The full legacy build (buildout + ZEO + test suite) is the Phase 1 "golden master" deliverable and will get its own workflow then.
++- `.gitignore` extended to exclude delivery artifacts (patches, diffs, archives) and `git apply` leftovers.
++- Bilingual documentation structure added (`docs/en/`, `docs/fr/`), including the worklog / fil de l'eau and the documentation policy (`docs/README.md`).
++
++### Planned (modernisation roadmap → 2.0.0)
++
++- Phase 1: reproducible legacy build + green CI (golden master).
++- Phase 2: exhaustive documentation (architecture, auto-generated BPMN catalogue of the business processes, docstrings, glossary).
++- Phase 3: Python 3.12, Pyramid 2.x, ZODB 6, maintained substanced fork; removal of dead dependencies (velruse → OIDC, yampy2 removed, xlrd → openpyxl, graphene 3); pytest; PEP 621 packaging with `uv`; ruff; gradual typing.
++- Phase 4: frontend rebuilt on SolidJS + TypeScript + Vite over the GraphQL API (strangler-fig strategy).
++- Phase 5: ZODB data-migration tooling, modern Docker images and CI/CD. Module dotted names (including the `novaideo` package) frozen to preserve ZODB pickles.
++- Reunification with the nova-ideo lineage into a single trunk (KuneAgi specifics as configuration profiles), in coordination with Cosmopolitical.coop.
++
++### Inherited unreleased changes (upstream `1.4.dev`, 2017–2023)
++
++- No entries were recorded upstream for this version; the repository nevertheless contains the whole 2017–2019 Nova-Ideo development plus the KuneAgi-specific work up to 2023-03-02 — notably the cooperative-governance features (ballots, citizenship), German translations, mailer/SPF work and Docker updates.
++
++## 1.3 — 2017-02-25
++
++- When anonymous, use the browser language for the language of the user interface.
++- Add Challenges feature.
++- Add Questions feature.
++
++## 1.2 — 2017-01-06
++
++- Remove runtime pyramid_robot dependency, this avoids a dependency on robotsuite that depends on lxml. Add optional lxml dependency in `buildout:eggs`.
++
++## 1.1 — 2016-09-15
++
++- Improved ergonomics and fix some issues.
++
++## 1.0 — 2016-06-28
++
++- Initial version.
+diff --git a/CHANGES.rst b/CHANGES.rst
+deleted file mode 100644
+index e924ced..0000000
+--- a/CHANGES.rst
++++ /dev/null
+@@ -1,38 +0,0 @@
+-Changelog
+-=========
+-
+-1.4 (unreleased)
+-----------------
+-
+-- Nothing changed yet.
+-
+-
+-1.3 (2017-02-25)
+-----------------
+-
+-- When anonymous, use the browser language for the language of the user
+-  interface.
+-
+-- Add Challenges feature.
+-
+-- Add Questions feature.
+-
+-
+-1.2 (2017-01-06)
+-----------------
+-
+-- Remove runtime pyramid_robot dependency, this avoid a dependency on
+-  robotsuite that depends on lxml. Add optional lxml dependency in
+-  buildout:eggs
+-
+-
+-1.1 (2016-09-15)
+-----------------
+-
+-- Improved ergonomics and fix some issues.
+-
+-
+-1.0 (2016-06-28)
+-----------------
+-
+--  Initial version
+diff --git a/MANIFEST.in b/MANIFEST.in
+index 75701e1..1ae0ba1 100644
+--- a/MANIFEST.in
++++ b/MANIFEST.in
+@@ -1,4 +1,4 @@
+-include *.txt *.ini *.cfg *.rst
++include *.txt *.ini *.cfg *.md
+ recursive-include novaideo *.ico *.png *.css *.gif *.jpg *.pt *.txt *.mak *.mako *.js *.html *.xml
+ include *.bash
+ include *.conf
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000..fca581d
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1,203 @@
++# KuneAgi
++
++KuneAgi is a free (AGPL) participatory-innovation and cooperative-governance platform, a variant of [Nova-Ideo](https://github.com/ecreall/nova-ideo) — the merger of the ideas box and the collaborative portal. Members post ideas and questions, organise idea challenges, form working groups that co-write proposals through short timeboxed iterations (wiki, validation or amendment modes), vote using majority judgment, and support or reject published content with a limited number of tokens. KuneAgi extends this base with cooperative-governance features (ballots, citizenship processes) and German translations.
++
++The Python package inside this repository is still named `novaideo`: module paths are **frozen** to keep existing ZODB databases loadable (see the roadmap).
++
++## Repository status
++
++This repository is a **maintained fork** of [`ecreall/KuneAgi`](https://github.com/ecreall/KuneAgi) (Nova-Ideo lineage developed by Ecréall from 2014, KuneAgi-specific development until 2023), forked in July 2026 and maintained by Michaël Launay ([Logikascium](https://github.com/michaellaunay)). Per the Nova-Ideo modernisation audit (Logikascium, July 2026), **KuneAgi is the reference trunk** of the modernisation effort.
++
++Intellectual property: the KuneAgi-specific developments are copyright **Cosmopolitical.coop** (rights transferred by Laurent Zibell); the underlying Nova-Ideo base is copyright **Logikascium** (Ecréall's intellectual property, acquired in 2024). The whole remains under the **AGPL v3+**, unchanged.
++
++The `master` branch currently reflects the **legacy state** of the application (Python 3.6-era stack); see the [roadmap](#roadmap--planned-updates) below and `CHANGES.md`.
++
++## Translations
++
++This product has been translated into: English, French, Deutsch.
++
++## Documentation
++
++Documentation lives in [`docs/`](docs/):
++
++- [`docs/en/`](docs/en/) — primary documentation, in English
++- [`docs/fr/`](docs/fr/) — documentation in French
++
++Audits, design documents and the worklog are maintained in both languages. See [`docs/README.md`](docs/README.md) for the documentation policy. Dependency pins for the legacy build live in [`versions.cfg`](versions.cfg) (buildout).
++
++## Getting started for development
++
++### Without docker
++
++To run in development mode without docker:
++
++```bash
++sudo apt-get install python3 python3-dev libxml2-dev libxslt1-dev \
++  libjpeg-dev zlib1g-dev libfreetype6-dev libtiff5-dev libzmq3-dev \
++  libyaml-dev git  # this was working on debian jessie and ubuntu xenial
++python3 bootstrap.py
++mkdir -p var/{filestorage,blobstorage,log}
++bin/buildout  # It takes a long time...
++bin/runzeo -C etc/zeo.conf  # Starts in foreground, no output. Ctrl+C to stop.
++bin/pserve development.ini  # in another terminal
++```
++
++The application is on <http://127.0.0.1:6543>.
++
++I'll use `$DOMAIN` for `http://127.0.0.1:6543` in the rest of the documentation.
++
++To send emails with gmail smtp, you need to uncomment some lines and configure the mail and password in `development.ini`.
++
++> **Note (2026):** the legacy build targets Python 3.6 on a Debian jessie-era system and is being repaired as Phase 1 of the roadmap ("golden master"). On this fork, `sources.cfg` already points `ecreall_dace`, `ecreall_pontus` and `ecreall_daceui` to their maintained forks; the `cryptacular` source still references a Mercurial Bitbucket URL (service discontinued in 2020) and will be fixed during Phase 1.
++
++### With docker
++
++You first need to install the [docker engine](https://docs.docker.com/engine/installation/linux/) and [docker-compose](https://docs.docker.com/compose/install/).
++
++There is a current limitation for the `run.sh` script: the folder needs to be named `nova-ideo` or `novaideo`. And your user needs to be in the docker group:
++
++```bash
++usermod -a -G docker your_user
++```
++
++You need to log out and log in again for this to take effect.
++
++To run in development mode with docker, as your regular user:
++
++```bash
++./run.sh rebuild
++./run.sh
++```
++
++The app is deployed on <https://local.ecreall.com:8443> (`local.ecreall.com` resolves to 127.0.0.1 and is necessary for nginx).
++
++I'll use `$DOMAIN` for `https://local.ecreall.com:8443` in the rest of the documentation.
++
++The default configuration in `docker-compose-dev.yml` is used to connect with a postfix via a ssh tunnel like this:
++
++```bash
++ssh -L 172.17.0.1:9025:localhost:25 myserver.example.com
++```
++
++To send emails with gmail smtp instead, you need to configure the MAILER variables in `docker-compose.override.yml`: copy the file `docker-compose.override.yml.templ` to `docker-compose.override.yml` and edit it. This overrides the configuration in `docker-compose-dev.yml`.
++
++To stop the application, do a Ctrl-C, and to stop the other containers (nginx), run:
++
++```bash
++./run.sh down
++```
++
++To execute the tests:
++
++```bash
++./run.sh test -s novaideo
++```
++
++## Allow your gmail account to be used to send emails
++
++> **Note (2026):** Google has since removed the "less secure apps" option this section relied on. Use an app password or another SMTP provider; this section will be reworked in Phase 1.
++
++To allow your gmail account to be used to send emails, you historically needed to enable [less secure apps](https://support.google.com/accounts/answer/6010255) (less secure means we use a login and password and not OAuth 2.0) and do maybe the [captcha](https://support.google.com/accounts/answer/6009563). Look at the logs in the terminal if you have an error when sending a mail.
++
++If you have a G suite account, to be able to enable less secure apps for a specific account, the G suite administrator needs to first [enable it](https://support.google.com/a/answer/6260879).
++
++Be careful to not commit your gmail password! The ini file doesn't support the use of the `%` character in your password — it thinks it's the beginning of a variable. If you use this character in your password, you will need to change it!
++
++## How to assign roles to a person
++
++If you want to give a person some additional roles, you need to have the *Administrator* or *Site administrator* role. The first time, you will need to do it with the special super administrator account. Go to `$DOMAIN/manage` (there is no accessible link from the home page) and authenticate with login `admin` and the password you have in the `SECRET` environment variable (it's the `substanced.initial_password` key in `development.ini` if you use the install without docker). Return to `$DOMAIN` and go to the hamburger menu on the top left, select *See/Members*, go to a person's profile, click on the *Assign roles* button and give her the *Site administrator*, *Examiner* or *Moderator* role.
++
++## Deployment with docker
++
++> **Note (2026):** the historical release images on Docker Hub (`ecreall/novaideo:release-VERSION`) are no longer maintained. Rebuilding the image locally (`./run.sh rebuild` or `docker-compose build`) is the supported path until Phase 1 re-establishes releases.
++
++Clone a specific version:
++
++```bash
++git clone -b VERSION https://github.com/michaellaunay/KuneAgi.git
++cd KuneAgi
++```
++
++(replace VERSION with the latest release)
++
++docker-compose runs a nginx container on port 80 and 443. You need to edit the `nginx-app-prod.conf` file to replace `mynovaideo.example.com` by your domain and add certificates (`server.key` and `server.crt`) to the `tls` directory.
++
++Be sure that in `docker-compose.yml` it uses the correct version. Edit it if it's not the case.
++
++You need to configure some environment variables: copy the file `docker-compose.override.yml.templ` to `docker-compose.override.yml` and edit it.
++
++- `SECRET`: the initial admin password
++- `APPLICATION_URL`: your domain, same as you put in `nginx-app-prod.conf`
++- `MAIL_DEFAULT_SENDER`: the sender of the mails that the application uses
++- `MAILER_HOST`: SMTP host
++- `MAILER_PORT`: SMTP port
++- `MAILER_USERNAME`: SMTP username
++- `MAILER_PASSWORD`: SMTP password
++- `MAILER_TLS`: use TLS
++- `MAILER_SSL`: use SSL
++- `LOGO_FILENAME`: empty by default to use the Nova-Ideo logo. You can set the variable to `marianne.svg` or other images included in the `novaideo/static/images/` directory to configure the logo when the application is created.
++
++If you want to connect to a postfix container, there is a commented example in `docker-compose.override.yml.templ` that uses an external postfix container connected on a `mybridge` bridge network. You need to create a `mybridge` bridge network and start a postfix container yourself (not documented here).
++
++To deploy:
++
++```bash
++sudo docker-compose up -d
++```
++
++To connect with the super administrator (for the evolve steps and to create another admin account only), go to `https://mynovaideo.example.com/manage` and log in with `admin`; the password is the one you gave in the `SECRET` environment variable.
++
++After the initial connection, you can increase the number of workers that are used to handle the requests in `docker-compose.override.yml` and run again `sudo docker-compose up -d` (`WORKERS=3` is a good default).
++
++To see the logs:
++
++```bash
++docker-compose logs -f
++```
++
++## How to upgrade your install
++
++For each release, a docker image is built and the `docker-compose.yml` is modified accordingly.
++
++If you previously cloned the repository with version 1.1, to upgrade to 1.2 for example, do:
++
++```bash
++git checkout 1.2
++sudo docker-compose up -d
++```
++
++After that, be sure to execute the evolve steps by connecting with the super administrator at `https://mynovaideo.example.com/manage`, going to the *Database* tab, and clicking on the *Evolve* red button. You can see the evolve steps with the *Summarize* button.
++
++## Backup and maintenance of your database
++
++Your data is in the `var` folder, be sure to back it up.
++
++The database is a ZODB filestorage, you should pack it regularly (every week) to reduce its size. Example of cron for user root run at 1am sunday:
++
++```
++0 1 * * 0 docker exec novaideo_novaideo_1 /app/bin/zeopack -d 1 -u /app/var/zeo.sock
++```
++
++Be sure that the container name is `novaideo_novaideo_1` in your case. You can verify it with `docker ps`.
++
++## Roadmap — planned updates
++
++The plan follows the Nova-Ideo modernisation audit (Logikascium, July 2026); KuneAgi is its reference trunk.
++
++1. **Phase 1 — Reproducible legacy build ("golden master").** Repair and freeze the buildout/Docker build, green CI replaying the existing test suite: the non-regression baseline. Until then, this repository's CI is a packaging/syntax smoke check only.
++2. **Phase 2 — Exhaustive documentation.** Architecture documentation, catalogue of the business processes (auto-generated BPMN diagrams from the DaCE definitions), docstring pass, glossary.
++3. **Phase 3 — Backend modernisation.** Python 3.12; Pyramid 2.x; ZODB 6; maintained substanced fork; removal or replacement of dead dependencies (velruse → standard OIDC, yampy2 → removed with the discontinued Yammer connector, xlrd → openpyxl, graphene 1.4 → graphene 3); pytest; PEP 621 packaging with `uv`; ruff; gradual typing. The server-rendered UI is kept unchanged in this phase.
++4. **Phase 4 — Frontend.** Progressive rebuild on **SolidJS + TypeScript + Vite** over the GraphQL API (strangler-fig strategy: the Chameleon server-rendered UI stays in place while screens migrate one by one).
++5. **Phase 5 — Data and operations.** Migration tooling for existing ZODB databases (evolve steps, `zodbupdate`); modern Docker images and CI/CD. Python module names (dotted paths, including the `novaideo` package name) are **frozen** to preserve existing ZODB pickles.
++
++Reunification with the nova-ideo lineage into a single trunk (KuneAgi specifics as configuration profiles) is planned in coordination with Cosmopolitical.coop. Versioning: `1.4.dev` = legacy maintenance on this fork; `2.0.0` = the modernised application.
++
++## Contribute
++
++- Issue tracker: <https://github.com/michaellaunay/KuneAgi/issues>
++- Source code: <https://github.com/michaellaunay/KuneAgi>
++- Historical upstreams: <https://github.com/ecreall/KuneAgi> and <https://github.com/ecreall/nova-ideo>
++
++## License
++
++The project is licensed under the AGPL v3 or later (AGPLv3+). See [`LICENSE`](LICENSE) and the [Repository status](#repository-status) section for the copyright holders.
+diff --git a/README.rst b/README.rst
+deleted file mode 100644
+index bcced12..0000000
+--- a/README.rst
++++ /dev/null
+@@ -1,227 +0,0 @@
+-Nova Ideo
+-=========
+-
+-Features
+---------
+-
+-See `nova-ideo.com <https://www.nova-ideo.com/>`__
+-
+-
+-Translations
+-------------
+-
+-This product has been translated into
+-
+-- English
+-- French
+-- Deutsch
+-
+-
+-Contribute
+-----------
+-
+-- Issue Tracker: https://github.com/ecreall/nova-ideo/issues
+-- Source Code: https://github.com/ecreall/nova-ideo
+-
+-
+-License
+--------
+-
+-The project is licensed under the AGPLv3+.
+-
+-
+-Getting Started for development
+--------------------------------
+-
+-without docker
+-~~~~~~~~~~~~~~
+-
+-To run in development mode without docker::
+-
+-    sudo apt-get install python3 python3-dev libxml2-dev libxslt1-dev \
+-      libjpeg-dev zlib1g-dev libfreetype6-dev libtiff5-dev libzmq3-dev \
+-      libyaml-dev git  # this is working on debian jessie and ubuntu xenial
+-    python3 bootstrap.py
+-    mkdir -p var/{filestorage,blobstorage,log}
+-    bin/buildout  # It takes a long time...
+-    bin/runzeo -C etc/zeo.conf  # It starts in foreground, there is no output.  Use Ctrl+C to stop it.
+-    bin/pserve development.ini  # in another terminal
+-
+-The application is on http://127.0.0.1:6543
+-
+-I'll use $DOMAIN for http://127.0.0.1:6543 in the rest of the documentation.
+-
+-To send emails with gmail smtp, you need to uncomment some lines and configure
+-the mail and password in development.ini
+-
+-
+-with docker
+-~~~~~~~~~~~
+-
+-You first need to install the `docker engine
+-<https://docs.docker.com/engine/installation/linux/>`__ and
+-`docker-compose <https://docs.docker.com/compose/install/>`__.
+-
+-There is a current limitation for the `run.sh` script,
+-The folder needs to be named nova-ideo or novaideo.
+-And your user needs to be in the docker group::
+-
+-    usermod -a -G docker your_user
+-
+-You need to log out and log in again for this to take effect.
+-
+-To run in development mode with docker, as your regular user::
+-
+-    ./run.sh rebuild
+-    ./run.sh
+-
+-The app is deployed on https://local.ecreall.com:8443
+-(local.ecreall.com resolves to 127.0.0.1 and is necessary for nginx)
+-
+-I'll use $DOMAIN for https://local.ecreall.com:8443 in the rest of the documentation.
+-
+-The default configuration in **docker-compose-dev.yml** is used to connect
+-with a postfix via a ssh tunnel like this::
+-
+-    ssh -L 172.17.0.1:9025:localhost:25 myserver.example.com
+-
+-To send emails with gmail smtp instead, you need to configure the MAILER
+-variables in **docker-compose.override.yml**, copy the file
+-**docker-compose.override.yml.templ** to **docker-compose.override.yml** and
+-edit it. This will overrides the configuration in **docker-compose-dev.yml**.
+-
+-To stop the application, do a Ctrl-c, and to stop the other containers (nginx),
+-run::
+-
+-    ./run.sh down
+-
+-To execute the tests::
+-
+-    ./run.sh test -s novaideo
+-
+-
+-Allow your gmail account to be used to send emails
+---------------------------------------------------
+-
+-To allow your gmail account to be used to send emails, you need to enable
+-`less secure apps <https://support.google.com/accounts/answer/6010255>`__ (
+-less secure means we use a login and password and not OAuth 2.0) and
+-do maybe the `captcha <https://support.google.com/accounts/answer/6009563>`__.
+-Look at the logs in the terminal if you have an error when sending a mail.
+-
+-If you have a G suite account, to be able to enable less secure apps for a
+-specific account, the G suite administrator needs to first `enable it
+-<https://support.google.com/a/answer/6260879>`__
+-
+-Be careful to not commit your gmail password!
+-The ini file doesn't support the use of % character in your password.
+-It thinks it's the beginning of a variable.
+-If you use this character in your password, you will need to change it!
+-
+-How to assign roles to a person
+--------------------------------
+-
+-If you want to give a person some additional roles, you need to have the
+-*Administrator* or *Site administrator* role. The first time, you will need to
+-do it with the special super administrator account.
+-Go to $DOMAIN/manage (there is no accessible link from the home page)
+-and authenticate with login admin and the password
+-you have in SECRET environment variable
+-(It's substanced.initial_password key in development.ini if you use the
+-install without docker).
+-Return to $DOMAIN and go the hamburger menu on the top left, select
+-See/Members, go to a person's profile, click on *Assign
+-roles* button and give her the *Site administrator*, *Examiner* or *Moderator*
+-role.
+-
+-
+-Deployment with docker
+-----------------------
+-
+-Clone a specific version::
+-
+-    git clone -b VERSION git@github.com:ecreall/nova-ideo.git
+-    cd nova-ideo
+-
+-(replace VERSION with the latest release, 1.2 for example)
+-
+-docker-compose runs a nginx container on port 80 and 443.
+-You need to edit the **nginx-app-prod.conf** file to replace mynovaideo.example.com
+-by your domain and add certificates (**server.key** and **server.crt**) to the
+-**tls** directory.
+-
+-Be sure that in **docker-compose.yml** it uses the correct version
+-ecreall/novaideo:release-VERSION. Edit it if it's not the case.
+-
+-You need to configure some environment variables, copy the file
+-**docker-compose.override.yml.templ** to **docker-compose.override.yml** and edit it.
+-
+-- SECRET: the initial admin password
+-- APPLICATION_URL: your domain, same as you put in nginx-app-prod.conf
+-- MAIL_DEFAULT_SENDER: the sender of the mails that the application use
+-- MAILER_HOST: SMTP host
+-- MAILER_PORT: SMTP port
+-- MAILER_USERNAME: SMTP username
+-- MAILER_PASSWORD: SMTP password
+-- MAILER_TLS: Use TLS
+-- MAILER_SSL: Use SSL
+-- LOGO_FILENAME: empty by default to use the Nova-Ideo logo. You can
+-  set the variable to 'marianne.svg' or other images included in the
+-  novaideo/static/images/ directory to configure the logo when the application
+-  is created.
+-
+-If you want to connect to a postfix container, there is a commented example
+-in **docker-compose.override.yml.templ** that use an external postfix container
+-connected on a mybridge bridge network. You need to create a mybridge bridge
+-network and start a postfix container yourself. (not documented here)
+-
+-To deploy::
+-
+-    sudo docker-compose up -d
+-
+-To connect with the super administrator (for the evolve steps and to create
+-an other admin account only), go to
+-https://mynovaideo.example.com/manage
+-and log in with "admin" and the password is the one you gave in the SECRET
+-environment variable.
+-
+-After the initial connection, you can increase the number of workers that are
+-used to handle the requests in **docker-compose.override.yml** and run again
+-**sudo docker-compose up -d** (WORKERS=3 is a good default).
+-
+-To see the logs::
+-
+-    docker-compose logs -f
+-
+-
+-How to upgrade your install
+----------------------------
+-
+-For each release, a docker image is built and the **docker-compose.yml** is
+-modified accordingly.
+-
+-If you previously cloned the repository with version 1.1, to upgrade to 1.2 for
+-example, do::
+-
+-    git checkout 1.2
+-    sudo docker-compose up -d
+-
+-After that, be sure to execute the evolve steps by connecting with the super
+-administrator at https://mynovaideo.example.com/manage
+-and going to *Database* tab, and click on *Evolve* red button. You can see
+-the evolve steps with the *Summarize* button.
+-
+-
+-Backup and maintainance of your database
+-----------------------------------------
+-
+-Your data is in the var folder, be sure to backup it.
+-
+-The database is a ZODB filestorage, you should pack it regularly (every week)
+-to reduce its size. Example of cron for user root run at 1am sunday:
+-
+-    0 1 * * 0 docker exec novaideo_novaideo_1 /app/bin/zeopack -d 1 -u /app/var/zeo.sock
+-
+-Be sure that the container name is novaideo_novaideo_1 in your case. You can
+-verify it with **docker ps**.
+-
+diff --git a/docs/README.md b/docs/README.md
+new file mode 100644
+index 0000000..3fdcef3
+--- /dev/null
++++ b/docs/README.md
+@@ -0,0 +1,21 @@
++# Documentation
++
++Documentation policy for this repository (and, by extension, for the other
++repositories of the Nova-Ideo modernisation effort):
++
++- **Code, comments, commit messages and repository files** are written in
++  **English** by default.
++- [`en/`](en/) holds the **primary documentation, in English**.
++- [`fr/`](fr/) holds the **French documentation**.
++- **Audits, design documents and the worklog** are maintained **in both
++  languages**, under the same relative path and filename in `en/` and `fr/`
++  (e.g. `en/worklog.md` ↔ `fr/worklog.md`), so that each document can link to
++  its counterpart.
++- Whenever practical, translations are updated in the same change set as the
++  original.
++
++## Current contents
++
++| Document | English | French |
++|---|---|---|
++| Worklog / Fil de l'eau | [`en/worklog.md`](en/worklog.md) | [`fr/worklog.md`](fr/worklog.md) |
+diff --git a/docs/en/worklog.md b/docs/en/worklog.md
+new file mode 100644
+index 0000000..05f4864
+--- /dev/null
++++ b/docs/en/worklog.md
+@@ -0,0 +1,30 @@
++# Worklog
++
++Running log of the work on this repository, newest first.
++Version française : [`../fr/worklog.md`](../fr/worklog.md).
++
++## 2026-07-13
++
++- Forked `ecreall/KuneAgi` to `michaellaunay/KuneAgi`; maintenance resumed by
++  Michaël Launay (Logikascium). KuneAgi is the reference trunk of the
++  Nova-Ideo modernisation (audit of July 2026).
++- Converted `README.rst` and `CHANGES.rst` to Markdown; README retitled from
++  "Nova Ideo" to "KuneAgi", rewritten with the repository status (copyright:
++  Cosmopolitical.coop for the KuneAgi-specific work, Logikascium for the
++  Nova-Ideo base; AGPL v3+ for the whole) and the modernisation roadmap;
++  outdated operating instructions annotated (Google "less secure apps",
++  historical Docker Hub images).
++- Updated build metadata (`setup.py`: fork URLs, maintainer field, Markdown
++  long description, Python 3.6 classifier); added a minimal PEP 518
++  `pyproject.toml`; updated `MANIFEST.in`. Package name `novaideo` and module
++  paths unchanged (ZODB pickles).
++- `sources.cfg`: `ecreall_dace`, `ecreall_pontus`, `ecreall_daceui` repointed
++  to their maintained forks. Known Phase 1 issue: `cryptacular` still points
++  to a Mercurial Bitbucket URL (service discontinued in 2020).
++- Added a smoke CI workflow (`python:3.6-buster`: `compileall` on `novaideo`
++  + packaging metadata check); the full legacy build is the Phase 1
++  deliverable.
++- Ignored delivery artifacts (`*.patch`, `*.diff`, archives) and `git apply`
++  leftovers in `.gitignore`.
++- Established the bilingual documentation structure (`docs/en`, `docs/fr`)
++  and this worklog.
+diff --git a/docs/fr/worklog.md b/docs/fr/worklog.md
+new file mode 100644
+index 0000000..0ddcf08
+--- /dev/null
++++ b/docs/fr/worklog.md
+@@ -0,0 +1,30 @@
++# Fil de l'eau
++
++Journal au fil de l'eau des travaux sur ce dépôt, du plus récent au plus ancien.
++English version: [`../en/worklog.md`](../en/worklog.md).
++
++## 2026-07-13
++
++- Fork de `ecreall/KuneAgi` vers `michaellaunay/KuneAgi` ; reprise de la
++  maintenance par Michaël Launay (Logikascium). KuneAgi est le tronc de
++  référence de la modernisation de Nova-Ideo (audit de juillet 2026).
++- Conversion de `README.rst` et `CHANGES.rst` en Markdown ; README rebaptisé
++  de « Nova Ideo » en « KuneAgi », réécrit avec le statut du dépôt (droits :
++  Cosmopolitical.coop pour les développements propres à KuneAgi, Logikascium
++  pour le socle Nova-Ideo ; AGPL v3+ pour l'ensemble) et la feuille de route ;
++  instructions d'exploitation obsolètes annotées (« less secure apps » de
++  Google, images Docker Hub historiques).
++- Mise à jour des métadonnées de build (`setup.py` : URLs du fork, champ
++  mainteneur, description longue en Markdown, classifieur Python 3.6) ; ajout
++  d'un `pyproject.toml` minimal (PEP 518) ; mise à jour du `MANIFEST.in`. Nom
++  du paquet `novaideo` et chemins de modules inchangés (pickles ZODB).
++- `sources.cfg` : `ecreall_dace`, `ecreall_pontus`, `ecreall_daceui` repointés
++  vers leurs forks maintenus. Point connu pour la phase 1 : `cryptacular`
++  référence encore une URL Mercurial Bitbucket (service arrêté en 2020).
++- Ajout d'un workflow de CI « smoke » (`python:3.6-buster` : `compileall` sur
++  `novaideo` + vérification des métadonnées de packaging) ; le build legacy
++  complet est le livrable de la phase 1.
++- Exclusion des artefacts de livraison (`*.patch`, `*.diff`, archives) et des
++  résidus de `git apply` via `.gitignore`.
++- Mise en place de la structure de documentation bilingue (`docs/en`,
++  `docs/fr`) et de ce fil de l'eau.
+diff --git a/pyproject.toml b/pyproject.toml
+new file mode 100644
+index 0000000..8839318
+--- /dev/null
++++ b/pyproject.toml
+@@ -0,0 +1,11 @@
++# Minimal build configuration for the michaellaunay/dace fork.
++#
++# Deliberately limited to the PEP 518 [build-system] table so that the
++# legacy toolchain (Python 3.6, zc.buildout, older pip) keeps working:
++# package metadata stays in setup.py until Phase 3 of the modernisation
++# roadmap (see README.md), when it will migrate here as a full PEP 621
++# [project] table managed with uv.
++
++[build-system]
++requires = ["setuptools>=40.8.0", "wheel"]
++build-backend = "setuptools.build_meta"
+diff --git a/setup.py b/setup.py
+index 866cb2d..ce3fac5 100644
+--- a/setup.py
++++ b/setup.py
+@@ -3,8 +3,8 @@ import os
+ from setuptools import setup, find_packages
+ 
+ here = os.path.abspath(os.path.dirname(__file__))
+-README = open(os.path.join(here, 'README.rst')).read()
+-CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
++README = open(os.path.join(here, 'README.md')).read()
++CHANGES = open(os.path.join(here, 'CHANGES.md')).read()
+ 
+ requires = [
+     'babel',
+@@ -49,9 +49,10 @@ setup(name='novaideo',
+       version='1.4.dev0',
+       description='Nova-Ideo is a participatory innovation tool, the merger of the box ideas and collaborative portal.',
+       long_description=README + '\n\n' +  CHANGES,
++      long_description_content_type='text/markdown',
+       classifiers=[
+         "Programming Language :: Python",
+-        "Programming Language :: Python :: 3.4",
++        "Programming Language :: Python :: 3.6",
+         "Framework :: Pyramid",
+         "Topic :: Internet :: WWW/HTTP",
+         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+@@ -59,7 +60,14 @@ setup(name='novaideo',
+         ],
+       author='Amen Souissi',
+       author_email='amensouissi@ecreall.com',
+-      url='https://nova-ideo.com',
++      maintainer='Michaël Launay (Logikascium)',
++      url='https://github.com/michaellaunay/KuneAgi/',
++      project_urls={
++          'Source': 'https://github.com/michaellaunay/KuneAgi',
++          'Tracker': 'https://github.com/michaellaunay/KuneAgi/issues',
++          'Historical upstream (KuneAgi)': 'https://github.com/ecreall/KuneAgi',
++          'Historical upstream (nova-ideo)': 'https://github.com/ecreall/nova-ideo',
++      },
+       keywords='web pyramid substanced',
+       license="AGPLv3+",
+       packages=find_packages(),
+diff --git a/sources.cfg b/sources.cfg
+index 8dd8b7d..e08712e 100644
+--- a/sources.cfg
++++ b/sources.cfg
+@@ -6,9 +6,9 @@ collective_push = https://github.com/collective
+ cryptacular = hg https://bitbucket.org/dholth/cryptacular rev=cb96fb3
+ deform = git https://github.com/amensouissi/deform.git
+ html_diff_wrapper = git https://github.com/ecreall/html_diff_wrapper.git
+-ecreall_dace = git https://github.com/ecreall/dace.git
+-ecreall_pontus = git https://github.com/ecreall/pontus.git
+-ecreall_daceui = git https://github.com/ecreall/daceui.git
++ecreall_dace = git https://github.com/michaellaunay/dace.git
++ecreall_pontus = git https://github.com/michaellaunay/pontus.git
++ecreall_daceui = git https://github.com/michaellaunay/daceui.git
+ deform_treepy = git https://github.com/ecreall/deform_treepy.git
+ pyramid_robot = git https://github.com/vincentfretin/pyramid_robot.git
+ robotsuite = git https://github.com/vincentfretin/robotsuite.git
