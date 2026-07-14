@@ -23,7 +23,10 @@ do_buildout() {
     test "$(docker wait "$id")" -eq 0
     docker commit "$id" "$IMAGE" > /dev/null
     # copy cache in docker image
-    id=$(cd $CACHE_PATH/.. && tar -c cache | docker run -i -a stdin -u u1000 "$IMAGE" /bin/bash -c "mkdir -p /app/cache && tar -xC /app")
+    # (modern docker no longer prints the container id for `run -a stdin`
+    # without -d, which left $id empty: use an explicit create/start pair)
+    id=$(docker create -i -u u1000 "$IMAGE" /bin/bash -c "mkdir -p /app/cache && tar -xC /app")
+    (cd "$CACHE_PATH/.." && tar -c cache) | docker start -i -a "$id" > /dev/null
     test "$(docker wait "$id")" -eq 0
     docker commit --change 'USER root' --change='CMD ["/start"]' "$id" "$IMAGE"
 }

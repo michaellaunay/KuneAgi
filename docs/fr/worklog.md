@@ -79,3 +79,13 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   workflow golden-master). Correction du piège suivant dans
   `do_buildout()` : le nom d'image par défaut utilisait encore le nommage
   v1 à tiret bas (`kuneagi_novaideo`) — v2 construit `kuneagi-novaideo`.
+- Itération 3 du golden master, et le jalon qui va avec : **le buildout
+  complet de l'application est passé** — 194 épinglages, checkouts
+  mr.developer, cryptacular 2.0 — première reconstruction intégrale depuis
+  mars 2023. L'échec restant était dans l'étape de copie du cache de
+  `run.sh`, un idiome docker de 2016 : `docker run -i -a stdin` (sans `-d`)
+  imprimait l'id du conteneur sur stdout ; le docker moderne n'imprime rien
+  dans ce mode, laissant `$id` vide (« invalid container name or ID: value
+  is empty », puis l'erreur bash `test` ligne 27). Remplacé par une paire
+  explicite `docker create` / `docker start -i -a`, sémantique identique
+  (tar streamé vers un conteneur u1000, propriété des fichiers préservée).

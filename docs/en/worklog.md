@@ -75,3 +75,13 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   next trap in `do_buildout()`: the default image name still used the
   Compose v1 underscore naming (`kuneagi_novaideo`) — v2 builds
   `kuneagi-novaideo`.
+- Golden-master iteration 3, and the milestone with it: **the full buildout
+  of the application completed** — 194 pins, mr.developer checkouts,
+  cryptacular 2.0 — the first complete rebuild since March 2023. The
+  remaining failure was in `run.sh`'s cache-copy step, a 2016 docker idiom:
+  `docker run -i -a stdin` (without `-d`) used to print the container id on
+  stdout; modern docker prints nothing in that mode, leaving `$id` empty
+  ("invalid container name or ID: value is empty", then the bash `test`
+  error on line 27). Replaced by an explicit `docker create` /
+  `docker start -i -a` pair, same semantics (tar streamed to a u1000
+  container, ownership preserved).
