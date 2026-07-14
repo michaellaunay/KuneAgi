@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-options=${options:-"-f docker-compose-dev.yml"}
+options=${options:-"-f docker compose-dev.yml"}
 
 do_buildout() {
     CACHE_PATH=${CACHE_PATH:-$PWD/cache}
@@ -33,8 +33,8 @@ case "$1" in
   rebuild)
     mkdir -p cache
     chmod o+rwx cache
-    docker-compose $options pull
-    docker-compose $options build #--pull # don't pull because we may have a custom base image
+    docker compose $options pull
+    docker compose $options build #--pull # don't pull because we may have a custom base image
     do_buildout
     ;;
   buildout) # used by dokku post-build-dockerfile
@@ -43,14 +43,14 @@ case "$1" in
   test|coverage-test|coverage-report)
     cmd=$1
     shift
-    docker-compose $options run --rm novaideo bin/$cmd $@
+    docker compose $options run --rm novaideo bin/$cmd $@
     ;;
   *)
     if [ -z "$1" ]; then
-      docker-compose $options up -d
+      docker compose $options up -d
       docker attach kuneagi_novaideo_1
     else
-      docker-compose $options $@
+      docker compose $options $@
     fi
    ;;
 esac

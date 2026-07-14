@@ -51,3 +51,10 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   image used for 1.5.5 — with `bcrypt`/`cffi`/`pycparser` pinned in
   `versions.cfg`; the dead Mercurial Bitbucket source replaced by the
   maintained repository. Expected to be iterative, like the library CIs.
+- Golden-master iteration 1 (local build): apt on the archived stretch
+  fetched fine but `upgrade -y` refused the packages — the stretch signing
+  keys have *expired* (EXPKEYSIG), and Check-Valid-Until only bypasses the
+  Release date check, not signature verification. Archive sources are now
+  marked `[trusted=yes]` (accepted, documented trade-off for a frozen
+  legacy CI). Preemptively upgraded pip to <22 inside the image: stretch's
+  pip 19 predates the manylinux2014 tags of the bcrypt/cffi wheels.

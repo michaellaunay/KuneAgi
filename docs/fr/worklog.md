@@ -53,3 +53,11 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   avec `bcrypt`/`cffi`/`pycparser` épinglés dans `versions.cfg` ; la source
   Mercurial Bitbucket morte remplacée par le dépôt maintenu. Chantier
   itératif attendu, comme pour les CI des bibliothèques.
+- Itération 1 du golden master (build local) : apt sur la stretch archivée
+  télécharge bien mais `upgrade -y` refuse les paquets — les clés de
+  signature de stretch ont *expiré* (EXPKEYSIG), et Check-Valid-Until ne
+  neutralise que le contrôle de date du Release, pas la vérification de
+  signature. Les sources d'archive sont désormais marquées `[trusted=yes]`
+  (compromis assumé et documenté pour une CI legacy figée). Montée
+  préventive de pip en <22 dans l'image : le pip 19 de stretch est
+  antérieur aux tags manylinux2014 des wheels bcrypt/cffi.

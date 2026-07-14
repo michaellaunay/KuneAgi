@@ -5,7 +5,12 @@
 FROM python@sha256:d0f068df622b07c06e7753a95fc826747c0e9668992c41f09d5c37ad48d4fb17
 
 # Era fixes (2026, golden-master work — see docs/*/worklog.md):
-# - Debian stretch was archived: apt repointed to archive.debian.org.
+# - Debian stretch was archived: apt repointed to archive.debian.org and
+#   the sources marked [trusted=yes] — the stretch signing keys expired,
+#   and Check-Valid-Until alone only covers the Release date, not the
+#   signature. Accepted and documented trade-off for a frozen legacy CI.
+# - pip upgraded to <22 first: the image's pip 19 predates the
+#   manylinux2014 wheel tags used by bcrypt 3.2.2 / cffi 1.15.1.
 # - varnish 4.1 packagecloud repo made best-effort, distro varnish as
 #   fallback (the test suite does not use varnish).
 # - cryptacular preinstalled from its maintained 2.x rewrite
@@ -22,6 +27,7 @@ ARG run_buildout=true
 ARG DEBIAN_FRONTEND noninteractive
 RUN sed -i 's|deb.debian.org|archive.debian.org|g; s|security.debian.org|archive.debian.org|g' /etc/apt/sources.list && \
     sed -i '/stretch-updates/d' /etc/apt/sources.list && \
+    sed -i 's|^deb |deb [trusted=yes] |' /etc/apt/sources.list && \
     echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99archive && \
     apt-get update && apt-get upgrade -y && apt-get install -y apt-utils && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y curl git libzmq3-dev libyaml-dev apt-transport-https lsb-release && \
@@ -51,6 +57,7 @@ RUN addgroup --quiet --gid $userid "u1000" && \
         "u1000"
 
 
+RUN pip3 install --disable-pip-version-check --no-cache-dir --upgrade 'pip<22'
 RUN pip3 install --disable-pip-version-check --no-cache-dir zc.buildout==2.13.3 setuptools==42.0.2 bcrypt==3.2.2 cffi==1.15.1 pycparser==2.21 'git+https://github.com/michaellaunay/cryptacular.git@main#egg=cryptacular' && pip3 uninstall -y six || true
 
 # grab gosu for easy step-down from root
