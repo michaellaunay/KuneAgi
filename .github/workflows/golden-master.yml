@@ -1,0 +1,23 @@
+name: golden-master
+
+# Phase 1 deliverable: the application's reproducible legacy build.
+# Reuses the historical Dockerfile (full buildout inside `docker build`,
+# with the era pins the project already carried: setuptools 42,
+# zc.buildout 2.13.3), then replays the novaideo test suite.
+# Expected to be ITERATIVE — see docs/*/worklog.md for the era fixes.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  golden-master:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build the historical image (full buildout inside)
+        run: docker build --build-arg run_buildout=true -t kuneagi-golden .
+      - name: Run the novaideo test suite
+        run: docker run --rm kuneagi-golden bin/test -s novaideo

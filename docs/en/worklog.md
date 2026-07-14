@@ -34,3 +34,20 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   the repository, so the `&&` chain stopped at `--check` and the stray file
   was committed alone. The patch content is now applied and the stray file
   removed (and ignored from now on).
+
+
+## 2026-07-14
+
+- Started the Phase 1 "golden master" of the application: a new
+  `golden-master` workflow rebuilds the historical Docker image (the
+  Dockerfile runs the full buildout inside `docker build`, with the era pins
+  the project already carried: setuptools 42, zc.buildout 2.13.3) and
+  replays `bin/test -s novaideo`.
+- Era fixes applied to the Dockerfile: Debian stretch apt sources repointed
+  to archive.debian.org (stretch archived); the varnish 4.1 packagecloud
+  repository made best-effort with the distro varnish as fallback (the test
+  suite does not use varnish); `cryptacular` preinstalled from its
+  maintained 2.x rewrite — same pip-preinstall mechanism the historical
+  image used for 1.5.5 — with `bcrypt`/`cffi`/`pycparser` pinned in
+  `versions.cfg`; the dead Mercurial Bitbucket source replaced by the
+  maintained repository. Expected to be iterative, like the library CIs.

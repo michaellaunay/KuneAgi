@@ -35,3 +35,21 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   le dépôt ; la chaîne `&&` s'est arrêtée au `--check` et le fichier orphelin
   a été commité seul. Le contenu du patch est désormais appliqué et le
   fichier orphelin supprimé (et ignoré à l'avenir).
+
+
+## 2026-07-14
+
+- Lancement du « golden master » applicatif (phase 1) : un nouveau workflow
+  `golden-master` reconstruit l'image Docker historique (le Dockerfile
+  exécute le buildout complet pendant le `docker build`, avec les
+  épinglages d'époque que le projet portait déjà : setuptools 42,
+  zc.buildout 2.13.3) puis rejoue `bin/test -s novaideo`.
+- Correctifs d'époque appliqués au Dockerfile : sources apt de Debian
+  stretch repointées vers archive.debian.org (stretch archivée) ; dépôt
+  packagecloud varnish 4.1 rendu best-effort avec le varnish de la
+  distribution en repli (la suite de tests n'utilise pas varnish) ;
+  `cryptacular` préinstallé depuis sa réécriture 2.x maintenue — même
+  mécanisme de préinstallation pip que l'image historique pour la 1.5.5 —
+  avec `bcrypt`/`cffi`/`pycparser` épinglés dans `versions.cfg` ; la source
+  Mercurial Bitbucket morte remplacée par le dépôt maintenu. Chantier
+  itératif attendu, comme pour les CI des bibliothèques.

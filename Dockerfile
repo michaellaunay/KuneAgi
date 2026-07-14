@@ -4,6 +4,13 @@
 # This gives an error with the varnish repository, keep the old image based on stretch for now and do an apt-get upgrade
 FROM python@sha256:d0f068df622b07c06e7753a95fc826747c0e9668992c41f09d5c37ad48d4fb17
 
+# Era fixes (2026, golden-master work — see docs/*/worklog.md):
+# - Debian stretch was archived: apt repointed to archive.debian.org.
+# - varnish 4.1 packagecloud repo made best-effort, distro varnish as
+#   fallback (the test suite does not use varnish).
+# - cryptacular preinstalled from its maintained 2.x rewrite
+#   (github.com/michaellaunay/cryptacular) instead of 1.5.5.
+
 ARG userid=1000
 ARG run_buildout=true
 
@@ -13,16 +20,19 @@ ARG run_buildout=true
 #RUN update-grub
 #RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 ARG DEBIAN_FRONTEND noninteractive
-RUN apt-get update && apt-get upgrade -y && apt-get install -y apt-utils && \
+RUN sed -i 's|deb.debian.org|archive.debian.org|g; s|security.debian.org|archive.debian.org|g' /etc/apt/sources.list && \
+    sed -i '/stretch-updates/d' /etc/apt/sources.list && \
+    echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99archive && \
+    apt-get update && apt-get upgrade -y && apt-get install -y apt-utils && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y curl git libzmq3-dev libyaml-dev apt-transport-https lsb-release && \
-    curl -L https://packagecloud.io/varnishcache/varnish41/gpgkey | apt-key add - && \
+    (curl -fsSL https://packagecloud.io/varnishcache/varnish41/gpgkey | apt-key add - || echo 'varnish41 packagecloud key unavailable: distro varnish will be used') && \
     oslower=$(lsb_release -s -i | tr '[:upper:]' '[:lower:]') && \
     oscodename=$(lsb_release -s -c) && \
     echo "Package: varnish" >/etc/apt/preferences.d/varnish && \
     echo "Pin: release l=varnish41" >>/etc/apt/preferences.d/varnish && \
     echo "Pin-Priority: 999" >>/etc/apt/preferences.d/varnish && \
     (test $oscodename != 'zesty' && echo "deb https://packagecloud.io/varnishcache/varnish41/${oslower}/ ${oscodename} main" > /etc/apt/sources.list.d/varnishcache_varnish41.list || true) && \
-    apt-get update && \
+    (apt-get update || (rm -f /etc/apt/sources.list.d/varnishcache_varnish41.list && apt-get update)) && \
     apt-get install -y varnish && \
     rm -rf /var/lib/apt/lists/*
 
@@ -41,7 +51,7 @@ RUN addgroup --quiet --gid $userid "u1000" && \
         "u1000"
 
 
-RUN pip3 install --disable-pip-version-check --no-cache-dir zc.buildout==2.13.3 setuptools==42.0.2 cryptacular==1.5.5 && pip3 uninstall -y six || true
+RUN pip3 install --disable-pip-version-check --no-cache-dir zc.buildout==2.13.3 setuptools==42.0.2 bcrypt==3.2.2 cffi==1.15.1 pycparser==2.21 'git+https://github.com/michaellaunay/cryptacular.git@main#egg=cryptacular' && pip3 uninstall -y six || true
 
 # grab gosu for easy step-down from root
 #RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
