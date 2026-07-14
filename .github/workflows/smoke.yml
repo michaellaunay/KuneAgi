@@ -1,0 +1,23 @@
+name: smoke-legacy
+
+# Packaging/syntax smoke check for the legacy application (Python 3.6 era).
+# The application's full legacy build (buildout + ZEO + test suite) is the
+# Phase 1 deliverable ("golden master") of the modernisation roadmap and
+# will get its own workflow then — see README.md.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax and packaging smoke check in a Python 3.6 container
+        run: |
+          docker run --rm -v "$PWD":/src -w /src python:3.6-buster bash -ec "
+            python -m compileall -q novaideo &&
+            python setup.py --version
+          "

@@ -3,8 +3,8 @@ import os
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.rst')).read()
-CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
+README = open(os.path.join(here, 'README.md')).read()
+CHANGES = open(os.path.join(here, 'CHANGES.md')).read()
 
 requires = [
     'babel',
@@ -49,9 +49,10 @@ setup(name='novaideo',
       version='1.4.dev0',
       description='Nova-Ideo is a participatory innovation tool, the merger of the box ideas and collaborative portal.',
       long_description=README + '\n\n' +  CHANGES,
+      long_description_content_type='text/markdown',
       classifiers=[
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.6",
         "Framework :: Pyramid",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
@@ -59,7 +60,14 @@ setup(name='novaideo',
         ],
       author='Amen Souissi',
       author_email='amensouissi@ecreall.com',
-      url='https://nova-ideo.com',
+      maintainer='Michaël Launay (Logikascium)',
+      url='https://github.com/michaellaunay/KuneAgi/',
+      project_urls={
+          'Source': 'https://github.com/michaellaunay/KuneAgi',
+          'Tracker': 'https://github.com/michaellaunay/KuneAgi/issues',
+          'Historical upstream (KuneAgi)': 'https://github.com/ecreall/KuneAgi',
+          'Historical upstream (nova-ideo)': 'https://github.com/ecreall/nova-ideo',
+      },
       keywords='web pyramid substanced',
       license="AGPLv3+",
       packages=find_packages(),

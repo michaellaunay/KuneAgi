@@ -1,4 +1,4 @@
-include *.txt *.ini *.cfg *.rst
+include *.txt *.ini *.cfg *.md
 recursive-include novaideo *.ico *.png *.css *.gif *.jpg *.pt *.txt *.mak *.mako *.js *.html *.xml
 include *.bash
 include *.conf
