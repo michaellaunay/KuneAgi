@@ -1,7 +1,9 @@
 #!/bin/bash
 set -e
 
-options=${options:-"-f docker compose-dev.yml"}
+# docker compose v2 (plugin); the compose *file names* keep their
+# historical dashes.
+options=${options:-"-f docker-compose-dev.yml"}
 
 do_buildout() {
     CACHE_PATH=${CACHE_PATH:-$PWD/cache}
@@ -48,7 +50,7 @@ case "$1" in
   *)
     if [ -z "$1" ]; then
       docker compose $options up -d
-      docker attach kuneagi_novaideo_1
+      docker attach $(docker compose $options ps -q novaideo)
     else
       docker compose $options $@
     fi

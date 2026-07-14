@@ -61,3 +61,11 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   (compromis assumé et documenté pour une CI legacy figée). Montée
   préventive de pip en <22 dans l'image : le pip 19 de stretch est
   antérieur aux tags manylinux2014 des wheels bcrypt/cffi.
+- Alignement complet sur Docker Compose v2 (`docker compose`) : correction
+  de `run.sh`, où un remplacement global antérieur avait aussi mangé le
+  *nom de fichier* (`-f docker compose-dev.yml`), cassant toutes les
+  commandes enveloppées ; cible de l'attach rendue indépendante du nommage
+  via `docker compose ps -q` (v2 nomme les conteneurs avec des tirets, pas
+  des tirets bas) ; conversion des commandes `docker-compose` restantes du
+  README ; suppression de l'attribut obsolète `version: '2'` des quatre
+  fichiers compose (v2 le signale en avertissement).

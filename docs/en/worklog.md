@@ -58,3 +58,10 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   marked `[trusted=yes]` (accepted, documented trade-off for a frozen
   legacy CI). Preemptively upgraded pip to <22 inside the image: stretch's
   pip 19 predates the manylinux2014 tags of the bcrypt/cffi wheels.
+- Aligned everything on Docker Compose v2 (`docker compose`): fixed
+  `run.sh`, where an earlier global replace had also mangled the *file
+  name* (`-f docker compose-dev.yml`), breaking every wrapped command;
+  made the attach target naming-agnostic via `docker compose ps -q`
+  (v2 names containers with dashes, not underscores); converted the
+  remaining `docker-compose` commands in the README; removed the obsolete
+  `version: '2'` attribute from the four compose files (v2 warns on it).

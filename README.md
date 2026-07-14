@@ -52,7 +52,7 @@ To send emails with gmail smtp, you need to uncomment some lines and configure t
 
 ### With docker
 
-You first need to install the [docker engine](https://docs.docker.com/engine/installation/linux/) and [docker-compose](https://docs.docker.com/compose/install/).
+You first need to install the [docker engine](https://docs.docker.com/engine/install/) with the [Compose plugin](https://docs.docker.com/compose/install/) (the `docker compose` command).
 
 There is a current limitation for the `run.sh` script: the folder needs to be named `nova-ideo` or `novaideo`. And your user needs to be in the docker group:
 
@@ -109,7 +109,7 @@ If you want to give a person some additional roles, you need to have the *Admini
 
 ## Deployment with docker
 
-> **Note (2026):** the historical release images on Docker Hub (`ecreall/novaideo:release-VERSION`) are no longer maintained. Rebuilding the image locally (`./run.sh rebuild` or `docker-compose build`) is the supported path until Phase 1 re-establishes releases.
+> **Note (2026):** the historical release images on Docker Hub (`ecreall/novaideo:release-VERSION`) are no longer maintained. Rebuilding the image locally (`./run.sh rebuild` or `docker compose build`) is the supported path until Phase 1 re-establishes releases.
 
 Clone a specific version:
 
@@ -120,7 +120,7 @@ cd KuneAgi
 
 (replace VERSION with the latest release)
 
-docker-compose runs a nginx container on port 80 and 443. You need to edit the `nginx-app-prod.conf` file to replace `mynovaideo.example.com` by your domain and add certificates (`server.key` and `server.crt`) to the `tls` directory.
+The compose configuration runs an nginx container on ports 80 and 443. You need to edit the `nginx-app-prod.conf` file to replace `mynovaideo.example.com` by your domain and add certificates (`server.key` and `server.crt`) to the `tls` directory.
 
 Be sure that in `docker-compose.yml` it uses the correct version. Edit it if it's not the case.
 
@@ -142,17 +142,17 @@ If you want to connect to a postfix container, there is a commented example in `
 To deploy:
 
 ```bash
-sudo docker-compose up -d
+sudo docker compose up -d
 ```
 
 To connect with the super administrator (for the evolve steps and to create another admin account only), go to `https://mynovaideo.example.com/manage` and log in with `admin`; the password is the one you gave in the `SECRET` environment variable.
 
-After the initial connection, you can increase the number of workers that are used to handle the requests in `docker-compose.override.yml` and run again `sudo docker-compose up -d` (`WORKERS=3` is a good default).
+After the initial connection, you can increase the number of workers that are used to handle the requests in `docker-compose.override.yml` and run again `sudo docker compose up -d` (`WORKERS=3` is a good default).
 
 To see the logs:
 
 ```bash
-docker-compose logs -f
+docker compose logs -f
 ```
 
 ## How to upgrade your install
@@ -163,7 +163,7 @@ If you previously cloned the repository with version 1.1, to upgrade to 1.2 for 
 
 ```bash
 git checkout 1.2
-sudo docker-compose up -d
+sudo docker compose up -d
 ```
 
 After that, be sure to execute the evolve steps by connecting with the super administrator at `https://mynovaideo.example.com/manage`, going to the *Database* tab, and clicking on the *Evolve* red button. You can see the evolve steps with the *Summarize* button.
@@ -175,10 +175,10 @@ Your data is in the `var` folder, be sure to back it up.
 The database is a ZODB filestorage, you should pack it regularly (every week) to reduce its size. Example of cron for user root run at 1am sunday:
 
 ```
-0 1 * * 0 docker exec novaideo_novaideo_1 /app/bin/zeopack -d 1 -u /app/var/zeo.sock
+0 1 * * 0 docker exec kuneagi-novaideo-1 /app/bin/zeopack -d 1 -u /app/var/zeo.sock
 ```
 
-Be sure that the container name is `novaideo_novaideo_1` in your case. You can verify it with `docker ps`.
+Be sure that the container name matches in your case (Compose v2 uses dashes, e.g. `kuneagi-novaideo-1`). You can verify it with `docker ps`.
 
 ## Roadmap — planned updates
 
