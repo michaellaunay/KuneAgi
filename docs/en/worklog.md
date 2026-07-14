@@ -65,3 +65,13 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   (v2 names containers with dashes, not underscores); converted the
   remaining `docker-compose` commands in the README; removed the obsolete
   `version: '2'` attribute from the four compose files (v2 warns on it).
+- Golden-master iteration 2: `./run.sh rebuild` builds the image with
+  `run_buildout=false` (the buildout is meant to run afterwards, outside
+  the build, with the cache volume mounted), but the historical
+  `RUN $run_buildout && bin/buildout` short-circuits to exit 1 when the
+  arg is false — the `|| true` that made it pass had been commented out.
+  Replaced by an explicit `if`, which also keeps real buildout failures
+  fatal when the arg is true (the golden-master workflow path). Fixed the
+  next trap in `do_buildout()`: the default image name still used the
+  Compose v1 underscore naming (`kuneagi_novaideo`) — v2 builds
+  `kuneagi-novaideo`.

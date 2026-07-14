@@ -8,7 +8,7 @@ options=${options:-"-f docker-compose-dev.yml"}
 do_buildout() {
     CACHE_PATH=${CACHE_PATH:-$PWD/cache}
     # The CACHE_PATH cache directory is created via the dokku pre-receive-app hook in the stop-and-start plugin
-    IMAGE=${IMAGE:-"kuneagi_novaideo:latest"}
+    IMAGE=${IMAGE:-"kuneagi-novaideo:latest"}  # Compose v2 image naming (dashes)
     # do the buildout
     # "-m 100m --memory-swappiness 0" options are used to prevent a fork bomb
     # when buildout restart itself infinitely because of setuptools upgrade,

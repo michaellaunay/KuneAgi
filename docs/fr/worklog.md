@@ -69,3 +69,13 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   des tirets bas) ; conversion des commandes `docker-compose` restantes du
   README ; suppression de l'attribut obsolète `version: '2'` des quatre
   fichiers compose (v2 le signale en avertissement).
+- Itération 2 du golden master : `./run.sh rebuild` construit l'image avec
+  `run_buildout=false` (le buildout doit tourner ensuite, hors build, avec
+  le volume de cache monté), mais la ligne historique
+  `RUN $run_buildout && bin/buildout` court-circuite en exit 1 quand
+  l'argument vaut false — le `|| true` qui la rendait viable avait été
+  commenté. Remplacée par un `if` explicite, qui garde aussi fatals les
+  vrais échecs de buildout quand l'argument vaut true (le chemin du
+  workflow golden-master). Correction du piège suivant dans
+  `do_buildout()` : le nom d'image par défaut utilisait encore le nommage
+  v1 à tiret bas (`kuneagi_novaideo`) — v2 construit `kuneagi-novaideo`.

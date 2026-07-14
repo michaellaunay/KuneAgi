@@ -93,8 +93,11 @@ RUN mkdir -p -m 700 /app/.ssh && \
     echo "|1|VmfmXO+MNtehwEnpYIEHO7zfvm8=|ya5Yt/ILBv/gMHQLAfSu2tOWO2I= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNn6VI+Ekg/iOz3bZL6bb35tj6fOjmmMOvkw592XDXy+bSes+2qHhcA3uOg5/wEtmRaK583uZH/CJ4512BpLb7M=" >> /app/.ssh/known_hosts
 RUN buildout bootstrap -c heroku.cfg
 # bin/buildout -c heroku.cfg is done outside this build if do_buildout is false
-RUN $run_buildout && bin/buildout -c heroku.cfg 
-# || true
+# When run_buildout=false (the run.sh path), the buildout runs outside
+# this build, in a container with the cache volume mounted (do_buildout).
+# An explicit `if` keeps real buildout failures fatal when true —
+# unlike the historical `$run_buildout && ... || true` pattern.
+RUN if [ "$run_buildout" = "true" ]; then bin/buildout -c heroku.cfg; fi
 
 USER root
 
