@@ -85,3 +85,16 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   error on line 27). Replaced by an explicit `docker create` /
   `docker start -i -a` pair, same semantics (tar streamed to a u1000
   container, ownership preserved).
+
+- BPMN-to-mermaid extractor (`tools/bpmn2mermaid.py`, stdlib `ast`, runs
+  on 3.6 and 3.12): statically parses every `definition.py`
+  (no engine import needed) and generates one Markdown page per
+  definition module — mermaid flowchart per process (BPMN-ish shapes:
+  events as circles, XOR/AND gateways as diamonds, sub-processes as
+  subroutines with their target definition, timers/conditionals with
+  their deadline/predicate callable, conditions and `sync` as edge
+  labels) plus a node/behaviors table. 38 definition modules,
+  43 processes extracted under `docs/en/processes/` and
+  `docs/fr/processes/` (indexes included). Diagrams show the graphs as
+  authored; the engine normalisation may add synthetic wiring. The
+  runtime-composed work sub-process is labelled `(dynamic)`.

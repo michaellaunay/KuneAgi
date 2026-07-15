@@ -19,3 +19,4 @@ repositories of the Nova-Ideo modernisation effort):
 | Document | English | French |
 |---|---|---|
 | Worklog / Fil de l'eau | [`en/worklog.md`](en/worklog.md) | [`fr/worklog.md`](fr/worklog.md) |
+| Process diagrams / Diagrammes des processus (generated) | [`en/processes/`](en/processes/README.md) | [`fr/processes/`](fr/processes/README.md) |

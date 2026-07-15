@@ -89,3 +89,17 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   is empty », puis l'erreur bash `test` ligne 27). Remplacé par une paire
   explicite `docker create` / `docker start -i -a`, sémantique identique
   (tar streamé vers un conteneur u1000, propriété des fichiers préservée).
+
+- Extracteur BPMN→mermaid (`tools/bpmn2mermaid.py`, `ast` de la stdlib,
+  tourne en 3.6 et 3.12) : analyse statiquement tous les
+  `definition.py` (aucun import du moteur nécessaire) et génère une page
+  Markdown par module de définition — flowchart mermaid par processus
+  (formes façon BPMN : événements en cercles, passerelles XOR/AND en
+  losanges, sous-processus en sous-routines avec leur définition cible,
+  timers/conditionnels avec leur callable d'échéance/prédicat,
+  conditions et `sync` en étiquettes d'arêtes) plus une table
+  nœuds/behaviors. 38 modules de définition, 43 processus extraits sous
+  `docs/en/processes/` et `docs/fr/processes/` (index compris). Les
+  diagrammes montrent les graphes tels qu'écrits ; la normalisation du
+  moteur peut ajouter un câblage synthétique. Le sous-processus de
+  travail composé à l'exécution est étiqueté `(dynamic)`.
