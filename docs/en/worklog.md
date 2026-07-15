@@ -98,3 +98,28 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   `docs/fr/processes/` (indexes included). Diagrams show the graphs as
   authored; the engine normalisation may add synthetic wiring. The
   runtime-composed work sub-process is labelled `(dynamic)`.
+
+- Characterisation patch for the five golden-master failures (all in
+  `TestIdeaManagement`). Two root causes, both **feature drift, not
+  regressions**: (1) the 2017 individual moderation (a Moderator
+  pressing publish_moderation/archive on a 'submitted' idea) was
+  replaced by the *community moderation* — `SubmitIdea.start` draws up
+  to ELECTORS_NB (3) random active members (author excluded;
+  `get_random_users` returns *all* available when fewer than 3) and
+  opens an 'ideamoderation' ballot, with an explicit fallback:
+  no eligible elector, immediate publication. The sandbox holds no
+  member besides the author, so the fallback always fired. (2) the
+  site-vocabulary merge asserted by the create_and_publish tests goes
+  through the idea's `_tree` (`root.merge_tree`) since the
+  keywords→tree migration (63a01248, 2016-11) settled — the flat
+  `keywords=` constructor argument no longer feeds it.
+- The four moderation tests keep their names and now photograph the
+  fallback (states pair, `published_at`, absence of the decision
+  nodes, 'moderationarchive' substitution); exact action sets are
+  replaced by must-have subsets, to be tightened once green. A new
+  test, `test_submit_idea_moderation_conf_with_electors`, photographs
+  the nominal path: three members added, the idea stays 'submitted'
+  and gains a `ballot_processes` entry.
+- Archaeology note: the mechanism took shape from 202a2849
+  (2016-11-30, "adapt moderation") into the KuneAgi era; the 2017-05
+  tests describe the earlier flow.

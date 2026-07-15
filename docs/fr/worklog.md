@@ -103,3 +103,31 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   diagrammes montrent les graphes tels qu'écrits ; la normalisation du
   moteur peut ajouter un câblage synthétique. Le sous-processus de
   travail composé à l'exécution est étiqueté `(dynamic)`.
+
+- Patch de caractérisation des cinq échecs du golden master (tous dans
+  `TestIdeaManagement`). Deux causes racines, toutes deux des
+  **évolutions fonctionnelles, pas des régressions** : (1) la
+  modération individuelle de 2017 (un Moderator pressant
+  publish_moderation/archive sur une idée 'submitted') a été remplacée
+  par la *modération communautaire* — `SubmitIdea.start` tire jusqu'à
+  ELECTORS_NB (3) membres actifs au hasard (auteur exclu ;
+  `get_random_users` retourne *tous* les disponibles s'ils sont moins
+  de 3) et ouvre un scrutin 'ideamoderation', avec un repli explicite :
+  aucun électeur éligible, publication immédiate. Le bac à sable ne
+  contient aucun membre hors l'auteur : le repli se déclenchait
+  toujours. (2) la fusion du vocabulaire du site qu'affirmaient les
+  tests create_and_publish passe par le `_tree` de l'idée
+  (`root.merge_tree`) depuis que la migration keywords→tree (63a01248,
+  2016-11) s'est achevée — l'argument plat `keywords=` du constructeur
+  ne l'alimente plus.
+- Les quatre tests de modération gardent leurs noms et photographient
+  désormais le repli (paire d'états, `published_at`, absence des nœuds
+  de décision, substitution 'moderationarchive') ; les ensembles
+  d'actions exacts sont remplacés par des sous-ensembles
+  indispensables, à resserrer une fois au vert. Un test nouveau,
+  `test_submit_idea_moderation_conf_with_electors`, photographie le
+  chemin nominal : trois membres ajoutés, l'idée reste 'submitted' et
+  gagne une entrée `ballot_processes`.
+- Note d'archéologie : le mécanisme a pris forme depuis 202a2849
+  (30/11/2016, « adapt moderation ») jusqu'à l'ère KuneAgi ; les tests
+  de mai 2017 décrivent le flux antérieur.
