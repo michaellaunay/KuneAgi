@@ -123,3 +123,15 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
 - Archaeology note: the mechanism took shape from 202a2849
   (2016-11-30, "adapt moderation") into the KuneAgi era; the 2017-05
   tests describe the earlier flow.
+
+- Characterisation, iteration 2 (26/29 green on the first run — the
+  ballot path itself worked, the error hit *after* ``start_ballot``):
+  the action sets are now pinned to the observed reality — the 2017
+  'moderationarchive' node **no longer exists anywhere in the code
+  base** (published-content moderation moved to the reports process),
+  so the published idea offers the six-action set the failure message
+  displayed, asserted exactly in the four concerned tests. The
+  with-electors test now authors the idea as a *Person*: the ballot
+  branch mails the author (``author.user_locale``), which the
+  substanced admin User of the sandbox does not have — a
+  harness-reality gap, documented in the test.

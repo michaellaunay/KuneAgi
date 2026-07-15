@@ -131,3 +131,16 @@ English version: [`../en/worklog.md`](../en/worklog.md).
 - Note d'archéologie : le mécanisme a pris forme depuis 202a2849
   (30/11/2016, « adapt moderation ») jusqu'à l'ère KuneAgi ; les tests
   de mai 2017 décrivent le flux antérieur.
+
+- Caractérisation, itération 2 (26/29 verts au premier run — le chemin
+  du scrutin lui-même a fonctionné, l'erreur frappait *après*
+  ``start_ballot``) : les ensembles d'actions sont désormais épinglés
+  sur la réalité observée — le nœud 'moderationarchive' de 2017
+  **n'existe plus nulle part dans la base de code** (la modération des
+  contenus publiés est passée au processus des signalements), l'idée
+  publiée offre donc l'ensemble de six actions que le message d'échec
+  affichait, affirmé exactement dans les quatre tests concernés. Le
+  test à électeurs crée désormais l'idée avec un auteur *Person* : la
+  branche scrutin envoie un mail à l'auteur (``author.user_locale``),
+  ce que le User admin substanced du bac à sable n'a pas — un écart
+  harnais/réalité, documenté dans le test.

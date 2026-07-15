@@ -143,14 +143,13 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             idea_result, self.request,
             process_id='ideamanagement')
         # User == sd Admin (No tokens, he can't support)
+        # Observed 2026-07: the 2017 'moderationarchive' node no
+        # longer exists in the code base.
         expected_actions = [
-            'seeworkinggroups', 'duplicate',
-            'comment', 'present', 'associate',
-            'see', 'moderationarchive']
+            'associate', 'comment', 'duplicate',
+            'present', 'see', 'seeworkinggroups']
         actions_ids = [a.node_id for a in actions]
-        self.assertEqual(len(actions_ids), 7)
-        self.assertTrue(all(a in expected_actions
-                            for a in actions_ids))
+        self.assertEqual(sorted(actions_ids), expected_actions)
         # Other member actions
         alice = add_user({
             'first_name': 'Alice',
@@ -318,16 +317,18 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         self.assertIn('submitted_support', idea_result.state)
         self.assertNotIn('submitted', idea_result.state)
         # The moderation decisions left with the 'submitted' state; the
-        # published-idea actions are offered instead. (Subset assertion,
-        # to be tightened to the exact set once green.)
+        # published-idea actions are offered instead (exact set
+        # observed 2026-07).
         actions = getAllBusinessAction(
             idea_result, self.request,
             process_id='ideamanagement')
         actions_ids = [a.node_id for a in actions]
         self.assertNotIn('publish_moderation', actions_ids)
         self.assertNotIn('archive', actions_ids)
-        self.assertTrue({'see', 'associate', 'duplicate'}.issubset(
-            set(actions_ids)))
+        expected_actions = [
+            'associate', 'comment', 'duplicate',
+            'present', 'see', 'seeworkinggroups']
+        self.assertEqual(sorted(actions_ids), expected_actions)
         # Publication opened the idea to the other members.
         alice = add_user({
             'first_name': 'Alice',
@@ -351,6 +352,14 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         granted the ('LocalModerator', idea) role (``start_ballot``).
         """
         self.moderation_novaideo_config()
+        # The author must be a Person: the ballot branch mails the
+        # author (``author.user_locale``), which the substanced admin
+        # User of the sandbox does not have.
+        author = add_user({
+            'first_name': 'Author',
+            'last_name': 'Author'
+        }, self.request)
+        self.request.user = author
         for i in range(3):
             add_user({
                 'first_name': 'Elector%d' % i,
@@ -405,9 +414,10 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         The manual 'archive' moderation decision of 2017 is gone with
         the 'submitted' state (no-elector fallback, see
         ``test_submit_idea_moderation_conf``); the published idea
-        offers 'moderationarchive' instead. This test photographs the
-        substitution. (Executing 'moderationarchive' is a follow-up:
-        its appstruct contract is pinned once this suite is green.)
+        offers the standard published set — the 2017
+        'moderationarchive' node no longer exists anywhere in the code
+        base (content moderation of published items moved to the
+        reports process).
         """
         self.moderation_novaideo_config()
         idea_result = self.create_idea()
@@ -425,12 +435,16 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
             process_id='ideamanagement',
             node_id='archive')
         self.assertEqual(len(actions), 0)
-        # ... 'moderationarchive' takes over on the published idea.
+        # The published idea offers the standard published set
+        # (observed 2026-07; 'moderationarchive' is a 2017 relic).
         actions = getAllBusinessAction(
             idea_result, self.request,
             process_id='ideamanagement')
         actions_ids = [a.node_id for a in actions]
-        self.assertIn('moderationarchive', actions_ids)
+        expected_actions = [
+            'associate', 'comment', 'duplicate',
+            'present', 'see', 'seeworkinggroups']
+        self.assertEqual(sorted(actions_ids), expected_actions)
 
     def test_create_and_publish_idea_moderation_conf(self):
         # SetUp the 'moderation' Nova-Ideo configuration
@@ -473,8 +487,10 @@ class TestIdeaManagement(FunctionalTests): #pylint: disable=R0904
         actions_ids = [a.node_id for a in actions]
         self.assertNotIn('publish_moderation', actions_ids)
         self.assertNotIn('archive', actions_ids)
-        self.assertTrue({'see', 'associate', 'duplicate'}.issubset(
-            set(actions_ids)))
+        expected_actions = [
+            'associate', 'comment', 'duplicate',
+            'present', 'see', 'seeworkinggroups']
+        self.assertEqual(sorted(actions_ids), expected_actions)
     
     def test_support_no_support_novaideo_config(self):
         # SetUp the 'no_support' Nova-Ideo configuration
