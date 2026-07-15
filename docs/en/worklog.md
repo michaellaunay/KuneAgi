@@ -135,3 +135,14 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   branch mails the author (``author.user_locale``), which the
   substanced admin User of the sandbox does not have — a
   harness-reality gap, documented in the test.
+
+- **Golden master certified**: `./run.sh test -s novaideo` → 29 tests,
+  0 failures, 0 errors, 0 skipped on the rebuilt 2017 stack. The suite
+  now tells the current truth of the software: the 23 original tests,
+  four characterised ones (community moderation with its no-elector
+  fallback; tree-based vocabulary merge), and the new nominal-ballot
+  test. The untouched Alice block passed as-is: member support/oppose
+  semantics are stable since 2017. Next: trigger the `golden-master`
+  GitHub workflow (workflow_dispatch) for the reproducible CI
+  certificate; Phase 3 (Python 3.12 port, asyncio reactor, substanced
+  fork) opens, measured against this suite.

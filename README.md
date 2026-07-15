@@ -1,5 +1,12 @@
 # KuneAgi
 
+[![golden-master](https://github.com/michaellaunay/KuneAgi/actions/workflows/golden-master.yml/badge.svg)](https://github.com/michaellaunay/KuneAgi/actions/workflows/golden-master.yml)
+
+**Golden master certified (2026-07):** the full 2017 stack rebuilds from
+scratch and the test suite runs **29/29 green** — the behavioural
+reference every modernisation step is measured against
+(see [`docs/en/worklog.md`](docs/en/worklog.md)).
+
 KuneAgi is a free (AGPL) participatory-innovation and cooperative-governance platform, a variant of [Nova-Ideo](https://github.com/ecreall/nova-ideo) — the merger of the ideas box and the collaborative portal. Members post ideas and questions, organise idea challenges, form working groups that co-write proposals through short timeboxed iterations (wiki, validation or amendment modes), vote using majority judgment, and support or reject published content with a limited number of tokens. KuneAgi extends this base with cooperative-governance features (ballots, citizenship processes) and German translations.
 
 The Python package inside this repository is still named `novaideo`: module paths are **frozen** to keep existing ZODB databases loadable (see the roadmap).

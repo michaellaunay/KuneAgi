@@ -144,3 +144,15 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   branche scrutin envoie un mail à l'auteur (``author.user_locale``),
   ce que le User admin substanced du bac à sable n'a pas — un écart
   harnais/réalité, documenté dans le test.
+
+- **Golden master certifié** : `./run.sh test -s novaideo` → 29 tests,
+  0 échec, 0 erreur, 0 sauté sur la pile 2017 reconstruite. La suite
+  dit désormais la vérité actuelle du logiciel : les 23 tests
+  d'origine, quatre caractérisés (modération communautaire et son repli
+  sans électeurs ; fusion du vocabulaire par l'arbre), et le nouveau
+  test du scrutin nominal. Le bloc Alice, intouché, est passé tel
+  quel : la sémantique support/oppose des membres est stable depuis
+  2017. Suite : déclencher le workflow GitHub `golden-master`
+  (workflow_dispatch) pour le certificat CI reproductible ; la phase 3
+  (portage Python 3.12, réacteur asyncio, fork substanced) s'ouvre,
+  mesurée contre cette suite.
