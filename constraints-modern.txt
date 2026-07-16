@@ -12,8 +12,12 @@
 #
 # The graphene-1 era stack (the GraphQL schema is written for it) is
 # ported in place after install: tools/patch_graphql1_py312.py.
-# promise is force-upgraded past graphene 1's <2.1 pin: 2.3 carries the
-# collections.abc fix and keeps the era API.
+# promise stays on the era pin (<2.1): 2.3 was withdrawn from PyPI and
+# graphene 1.4.2 hard-pins promise<2.1 anyway — the collections.abc fix
+# is applied in place by tools/patch_graphql1_py312.py (pass the promise
+# site-packages dir too). Upstream drift note (2026-07-16): substanced
+# 1.0.post1 hit PyPI and pulls pyramid 2.x — BOTH pip lines must run
+# under these constraints.
 BTrees==6.4
 Chameleon==4.6.0
 Genshi==0.7.11
@@ -70,7 +74,7 @@ plaster-pastedeploy==1.0.1
 plaster==1.1.2
 plone.event==3.0.0
 profilehooks==1.13.0
-promise==2.3
+promise==2.0.2
 pycparser==3.0
 pycryptodome==3.23.0
 pyramid-mailer==0.15.1

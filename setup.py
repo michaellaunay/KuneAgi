@@ -30,14 +30,14 @@ requires = [
     'html_diff_wrapper',
     'Genshi',
     'beautifulsoup4',
+    'lxml',  # bs4 parser used by html_to_text (root init); was only
+              # hand-installed during M4 — now a declared requirement
     'profilehooks',
     'metadata_parser',
     'deform_treepy',
     'numpy',
     'randomcolor',
     'graphene',
-    # graphql-wsgi: withdrawn from PyPI; installed from its source
-    # (faassen/graphql-wsgi) by tox and the CI — see constraints-modern.txt
     'keas.kmi',
     'cipher.encryptingstorage',
     'yampy2',
@@ -45,6 +45,15 @@ requires = [
     'pyramid-sms',
     'velruse'
     ]
+
+import sys
+if sys.version_info < (3, 7):
+    # graphql-wsgi was withdrawn from PyPI. The legacy buildout still
+    # resolves it from the era egg cache THROUGH this requirement —
+    # removing it (Phase 3 / M4) silently dropped the egg and broke the
+    # golden-master suite at scan time. The modern stack installs it
+    # from source instead (see constraints-modern.txt).
+    requires.append('graphql-wsgi')
 
 setup(name='novaideo',
       version='2.0.0.dev0',

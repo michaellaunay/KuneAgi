@@ -283,3 +283,29 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   KeyError sur un format inconnu ; `truncate_text` coupe en pleine
   URL. Un cycle d'import historique documenté (pseudo_react ↔
   views/__init__) : les tests l'amorcent dans l'ordre applicatif.
+
+- **Réparation CI, pilotée par les preuves (triage via token GitHub).**
+  L'incendie tenait en UN lieu : KuneAgi (dace/pontus/daceui tous
+  verts). Deux causes racines, prouvées sur pièces et corrigées :
+  (1) **golden-master rouge depuis le commit M4** : retirer
+  `graphql-wsgi` des requires l'a aussi retiré de ce que le buildout
+  legacy installe depuis le cache d'eggs d'époque — crash d'import au
+  scan. Correctif : le requirement revient **conditionnellement**
+  (`sys.version_info < (3,7)`) ; la pile moderne continue de
+  l'installer depuis la source.
+  (2) **py312-tests jamais vert** : un résolveur à froid a exposé ce
+  que le venv au long cours masquait — dérive amont (substanced
+  `1.0.post1` tirant pyramid 2.1), conflit d'époque insoluble
+  (graphene 1.4.2 épingle promise<2.1 contre notre contrainte ==2.3)
+  et tir ami (demande URL-sans-sha contre contrainte URL-avec-sha).
+  Correctifs : CHAQUE ligne pip tourne désormais sous
+  `constraints-modern.txt` ; promise reste au pin d'époque (2.0.2) et
+  `tools/patch_graphql1_py312.py` le porte aussi ; `graphql-wsgi` est
+  demandé par nom nu (la contrainte porte l'URL épinglée).
+  Deux bogues latents sont tombés de la reproduction : l'outil de
+  portage était localisé en IMPORTANT les paquets mêmes qui crashent
+  avant portage (paradoxe d'amorçage) — les appelants localisent
+  désormais via `sysconfig` sans importer ; et `lxml`, installé à la
+  main pendant M4, est maintenant un requirement déclaré. Preuve
+  d'or : depuis un venv vierge, la séquence CI exacte installe vert et
+  passe **65/65** en 1 min 37.

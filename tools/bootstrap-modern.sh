@@ -26,27 +26,30 @@ PY="$VENV/bin/python"
 for name in dace pontus daceui; do
     if [ -d "../$name" ]; then
         echo "== $name: editable sibling (../$name)"
-        "$PIP" -q install -e "../$name"
+        "$PIP" -q install -c constraints-modern.txt -e "../$name"
     else
         echo "== $name: git master"
-        "$PIP" -q install "ecreall_$name @ git+https://github.com/michaellaunay/$name.git"
+        "$PIP" -q install -c constraints-modern.txt "ecreall_$name @ git+https://github.com/michaellaunay/$name.git"
     fi
 done
 
 # --- git-sourced dependencies (see constraints-modern.txt header)
-"$PIP" -q install \
+"$PIP" -q install -c constraints-modern.txt \
     "deform_treepy @ git+https://github.com/ecreall/deform_treepy.git" \
     "html_diff_wrapper @ git+https://github.com/michaellaunay/html_diff_wrapper.git" \
-    "graphql_wsgi @ git+https://github.com/faassen/graphql-wsgi.git"
+    "graphql-wsgi"   # pinned by URL in constraints-modern.txt
 
 # --- the application, under the certified pins
+"$PIP" -q install -c constraints-modern.txt \
+    "graphene==1.4.2" "graphql-core==1.1" "graphql-relay==0.4.5"
 "$PIP" -q install -c constraints-modern.txt zope.testrunner -e .
 
 # --- port the graphene-1 era stack in place (idempotent)
+# locate WITHOUT importing: the era stack crashes on import until
+# this very tool has patched it (bootstrap paradox)
+SP=$("$PY" -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")
 "$PY" tools/patch_graphql1_py312.py \
-    "$("$PY" -c 'import graphql, os; print(os.path.dirname(graphql.__file__))')" \
-    "$("$PY" -c 'import graphene, os; print(os.path.dirname(graphene.__file__))')" \
-    "$("$PY" -c 'import graphql_relay, os; print(os.path.dirname(graphql_relay.__file__))')"
+    "$SP/graphql" "$SP/graphene" "$SP/graphql_relay" "$SP/promise"
 
 echo
 echo "Modern harness ready: $VENV"

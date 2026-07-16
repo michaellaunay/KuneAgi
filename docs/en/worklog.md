@@ -263,3 +263,27 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   and raises KeyError on unknown format ids; `truncate_text` cuts
   mid-URL. One historical import cycle documented (pseudo_react ↔
   views/__init__): tests prime it in application order.
+
+- **CI repair, evidence-driven (GitHub token triage).** The fire was in
+  ONE place: KuneAgi (dace/pontus/daceui all green). Two root causes,
+  both proven on pieces and both fixed:
+  (1) **golden-master red since the M4 commit**: removing `graphql-wsgi`
+  from the requires also removed it from what the legacy buildout
+  installs from the era egg cache — import crash at scan. Fix: the
+  requirement returns **conditionally** (`sys.version_info < (3,7)`);
+  the modern stack keeps installing it from source.
+  (2) **py312-tests never green**: a fresh resolver exposed what the
+  long-lived venv masked — upstream drift (substanced `1.0.post1`
+  pulling pyramid 2.1) plus an unsolvable era conflict (graphene 1.4.2
+  hard-pins promise<2.1 against our promise==2.3 constraint) plus a
+  self-conflict (URL-without-sha request vs URL-with-sha constraint).
+  Fixes: EVERY pip line now runs under `constraints-modern.txt`;
+  promise stays on the era pin (2.0.2) and
+  `tools/patch_graphql1_py312.py` also ports it; `graphql-wsgi` is
+  requested by bare name (the constraint carries the pinned URL).
+  Two latent bugs fell out of the reproduction: the porting tool was
+  located by IMPORTING the very packages that crash before porting
+  (bootstrap paradox) — callers now locate via `sysconfig` without
+  importing; and `lxml`, hand-installed during M4, is now a declared
+  requirement. Gold proof: from a clean venv, the exact CI sequence
+  installs green and runs **65/65** in 1:37.
