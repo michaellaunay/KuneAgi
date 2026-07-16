@@ -194,3 +194,21 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   `docs/{en,fr}/modern-harness.md`, which also names the two layers
   already versioned: the dual-stack `testing.py` files and the
   tox/constraints/CI triplet of every repo.
+
+- **Phase 3 / M5: the data-migration rehearsal PASSED on a real
+  production copy.** Full chain proven on 2026-07-16: server-side
+  decrypt (ZConfig-assembled era stack, keys never leaving the host),
+  79,269 records 100 % plain; full load sweep — **381 classes, 0
+  broken, 0 unloadable** (a decade of pickles, engine state included);
+  the real `novaideo.main` boots on the data reactor-less
+  (`dace.wosystem`, DummyMailer); the evolution chain is a **no-op**
+  (73 finished, 0 unfinished on the modern code); era-index queries
+  answer; the full 61-index reindex leaves every count identical;
+  pack and final sweep stable. Deliverables: `tools/m5_rehearsal.py`
+  (phased, aggregates-only, hard exit codes), `tools/decrypt_copy.py`
+  (the server-side extractor and its two paid-for lessons: transform
+  storages decrypt on load, not on iteration; the era wrapper is a
+  patched checkout — let ZConfig build it), and the bilingual runbook
+  `docs/{en,fr}/m5-migration-rehearsal.md`. Production-side finding
+  recorded: encryption-config drift (64,987 encrypted vs 14,282 plain
+  records; blobs never encrypted) — an audit is advisable.

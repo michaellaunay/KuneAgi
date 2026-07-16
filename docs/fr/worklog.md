@@ -207,3 +207,24 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   `docs/{en,fr}/modern-harness.md`, qui nomme aussi les deux étages
   déjà versionnés : les `testing.py` bi-pile et le triplet
   tox/constraints/CI de chaque dépôt.
+
+- **Phase 3 / M5 : la répétition de migration de données RÉUSSIT sur
+  une vraie copie de production.** Chaîne complète prouvée le
+  16/07/2026 : déchiffrement côté serveur (pile d'époque assemblée par
+  ZConfig, clés jamais sorties de l'hôte), 79 269 enregistrements
+  100 % en clair ; balayage intégral — **381 classes, 0 broken, 0
+  inchargeable** (dix ans de pickles, état du moteur compris) ; le
+  vrai `novaideo.main` démarre sur les données sans réacteur
+  (`dace.wosystem`, DummyMailer) ; la chaîne d'évolution est un
+  **no-op** (73 finies, 0 non finie sur le code moderne) ; les
+  requêtes sur index d'époque répondent ; la réindexation intégrale
+  des 61 index laisse chaque compte identique ; pack et balayage final
+  stables. Livrables : `tools/m5_rehearsal.py` (phasé, agrégats
+  seulement, codes de sortie durs), `tools/decrypt_copy.py`
+  (l'extracteur côté serveur et ses deux leçons payées : les transform
+  storages déchiffrent sur load, pas à l'itération ; le wrapper
+  d'époque est un checkout patché — laisser ZConfig l'assembler), et
+  le mode opératoire bilingue `docs/{en,fr}/m5-migration-rehearsal.md`.
+  Constat côté production consigné : dérive de la configuration de
+  chiffrement (64 987 enregistrements chiffrés contre 14 282 en
+  clair ; blobs jamais chiffrés) — un audit est recommandé.
