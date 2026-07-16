@@ -249,3 +249,17 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   2016 repro only exposed the opening half (its closing day was a
   Thursday). Pinned as-is; fixing the parser must flip those asserts
   consciously.
+
+- **T1b: the pure vein of `utilities/util` is pinned** (18 tests) plus
+  the two pure helpers of `pseudo_react` (2 tests; the metadata
+  composers need the functional harness — moved to a dedicated batch).
+  Coverage: utilities/util **22 % → 32 %**; full suite **65/65** green.
+  Pinned contract oddities: `combinaisons` concatenates strings;
+  `word_frequencies` yields `(count, word)` tuples; `guess_extension`
+  answers dot-less for built-ins ('png') but WITH the dot for
+  custom-registered types ('.kat'), falling back to 'file';
+  `get_files_data` keeps images only; `to_localized_time` returns the
+  untranslated `${...}` templates (deterministic format-branch pinning)
+  and raises KeyError on unknown format ids; `truncate_text` cuts
+  mid-URL. One historical import cycle documented (pseudo_react ↔
+  views/__init__): tests prime it in application order.

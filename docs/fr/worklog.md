@@ -268,3 +268,18 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   le repro de 2016 n'en exposait que la moitié ouvrante (sa clôture
   tombait un jeudi). Épinglé tel quel ; corriger le parseur devra
   retourner ces assertions consciemment.
+
+- **T1b : la veine pure d'`utilities/util` est épinglée** (18 tests)
+  plus les deux helpers purs de `pseudo_react` (2 tests ; les
+  composeurs de métadonnées exigent le harnais fonctionnel — reportés
+  en batch dédié). Couverture : utilities/util **22 % → 32 %** ; suite
+  complète **65/65** verte. Bizarreries de contrat épinglées :
+  `combinaisons` concatène des chaînes ; `word_frequencies` produit
+  des tuples `(compte, mot)` ; `guess_extension` répond sans point
+  pour les types natifs ('png') mais AVEC le point pour les types
+  enregistrés ('.kat'), repli 'file' ; `get_files_data` ne garde que
+  les images ; `to_localized_time` retourne les gabarits `${...}` non
+  traduits (épinglage déterministe du choix de branche) et lève
+  KeyError sur un format inconnu ; `truncate_text` coupe en pleine
+  URL. Un cycle d'import historique documenté (pseudo_react ↔
+  views/__init__) : les tests l'amorcent dans l'ordre applicatif.
