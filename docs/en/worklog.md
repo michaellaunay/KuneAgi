@@ -160,3 +160,12 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   code bases already compile on 3.12.3; the substanced import surface
   is inventoried; one confirmed py2 remnant
   (pontus `view_operation.py:724`) is scheduled at M2.
+
+- Phase 3 / M1 side-effect, applied here for the golden master's
+  protection: the three library checkouts are now **pinned by
+  revision** in `sources.cfg` (dace/pontus/daceui at their certified
+  SHAs). dace's `master` moves to Python 3.12 (asyncio reactor,
+  88/88 green on the modern stack — see dace's worklog); the 3.6 proof
+  lives on dace's `legacy-golden-master` tag. Operation order matters:
+  tag dace's pre-M1 master first, then push dace M1, then this pin —
+  re-running the golden-master workflow is the check.

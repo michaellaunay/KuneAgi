@@ -170,3 +170,13 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   aujourd'hui : les quatre bases compilent déjà en 3.12.3 ; la surface
   d'import substanced est inventoriée ; un reliquat py2 confirmé
   (pontus `view_operation.py:724`) est planifié à M2.
+
+- Effet de bord de la phase 3 / M1, appliqué ici pour protéger le
+  golden master : les trois checkouts de bibliothèques sont désormais
+  **épinglés par révision** dans `sources.cfg` (dace/pontus/daceui à
+  leurs SHAs certifiés). Le `master` de dace passe à Python 3.12
+  (réacteur asyncio, 88/88 verts sur la pile moderne — voir le fil de
+  l'eau de dace) ; la preuve 3.6 vit sur le tag `legacy-golden-master`
+  de dace. L'ordre des opérations compte : taguer d'abord le master
+  pré-M1 de dace, puis pousser dace M1, puis cet épinglage — la
+  relance du workflow golden-master est le contrôle.
