@@ -1,0 +1,38 @@
+name: py312-tests
+
+# Phase 3 / M4: the golden-master suite (29 tests) on the modern stack.
+# The certified 2017 behaviour lives in the golden-master workflow
+# (docker, pinned checkouts); both must stay green.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  py312-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the modern stack
+        run: |
+          pip install \
+            "ecreall_dace @ git+https://github.com/michaellaunay/dace.git" \
+            "ecreall_pontus @ git+https://github.com/michaellaunay/pontus.git" \
+            "ecreall_daceui @ git+https://github.com/michaellaunay/daceui.git" \
+            "deform_treepy @ git+https://github.com/ecreall/deform_treepy.git" \
+            "html_diff_wrapper @ git+https://github.com/michaellaunay/html_diff_wrapper.git" \
+            "graphql_wsgi @ git+https://github.com/faassen/graphql-wsgi.git"
+          pip install -c constraints-modern.txt zope.testrunner -e .
+      - name: Port the graphene-1 era stack in place
+        run: |
+          python tools/patch_graphql1_py312.py \
+            $(python -c "import graphql, os; print(os.path.dirname(graphql.__file__))") \
+            $(python -c "import graphene, os; print(os.path.dirname(graphene.__file__))") \
+            $(python -c "import graphql_relay, os; print(os.path.dirname(graphql_relay.__file__))")
+      - name: Run the golden-master suite on Python 3.12
+        run: |
+          python -m zope.testrunner --test-path=. -s novaideo

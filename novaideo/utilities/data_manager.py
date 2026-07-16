@@ -4,7 +4,9 @@ import io
 import venusian
 import datetime
 import random
-from deform.compat import uppercase, string
+# deform 3 removed deform.compat; local py3 equivalents (Phase 3 / M4):
+import string
+uppercase = string.ascii_uppercase
 from persistent.list import PersistentList
 from persistent.dict import PersistentDict
 from zope.interface import providedBy

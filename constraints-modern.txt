@@ -1,0 +1,134 @@
+# Known-good modern pins for the Python 3.12 stack (Phase 3, M4).
+# Frozen from the first fully green 29/29 run on 2026-07-16.
+#
+# Git-sourced packages (installed explicitly by tox and the py312 CI —
+# pip constraints cannot carry URLs for all pip versions):
+#   ecreall_dace / ecreall_pontus / ecreall_daceui:
+#       git+https://github.com/michaellaunay/<name>.git  (masters, M1-M3)
+#   deform_treepy @ git+https://github.com/ecreall/deform_treepy.git@fa8606207b7b783fda4054654ce843663241283f
+#   html_diff_wrapper @ git+https://github.com/michaellaunay/html_diff_wrapper.git
+#       (fork carrying the py3.11 regex-flags fix)
+#   graphql_wsgi @ git+https://github.com/faassen/graphql-wsgi.git@19a586427075b2a029e11ba8c20cf17106a18ce6
+#
+# The graphene-1 era stack (the GraphQL schema is written for it) is
+# ported in place after install: tools/patch_graphql1_py312.py.
+# promise is force-upgraded past graphene 1's <2.1 pin: 2.3 carries the
+# collections.abc fix and keeps the era API.
+BTrees==6.4
+Chameleon==4.6.0
+Genshi==0.7.11
+Mako==1.3.12
+MarkupSafe==3.0.3
+PasteDeploy==3.1.0
+PyYAML==6.0.3
+Pygments==2.20.0
+Rx==1.6.3
+Unidecode==1.4.0
+WebOb==1.8.10
+WebTest==3.0.7
+ZConfig==4.3
+ZEO==6.2
+ZODB3==3.11.0
+ZODB==6.3
+aniso8601==7.0.0
+anykeystore==0.2
+babel==2.18.0
+bcrypt==5.0.0
+beautifulsoup4==4.13.5
+certifi==2026.6.17
+cffi==2.1.0
+charset-normalizer==3.4.9
+cipher.encryptingstorage==1.1
+colander==2.0
+decorator==5.3.1
+deform==3.0.1
+defusedxml==0.7.1
+diff-match-patch==20241021
+dogpile.cache==1.5.0
+filelock==3.30.0
+graphene==1.4.2
+graphql-core==1.1
+graphql-relay==0.4.5
+graphql-wsgi @ git+https://github.com/faassen/graphql-wsgi.git@19a586427075b2a029e11ba8c20cf17106a18ce6
+html2text==2025.4.15
+html5lib==1.1
+hupper==1.12.1
+hypatia==0.5
+idna==3.18
+iso8601==2.1.0
+keas.kmi==3.3.0
+lxml==6.1.1
+metadata_parser==1.0.0
+mock==5.2.0
+numpy==2.5.1
+oauthlib==3.3.1
+ovh==1.2.0
+peppercorn==0.6
+persistent==6.7
+pillow==12.3.0
+plaster-pastedeploy==1.0.1
+plaster==1.1.2
+plone.event==3.0.0
+profilehooks==1.13.0
+promise==2.3
+pycparser==3.0
+pycryptodome==3.23.0
+pyramid-mailer==0.15.1
+pyramid-mako==1.1.0
+pyramid-retry==2.1.1
+pyramid-zcml==1.2.0
+pyramid-zodbconn==0.8.1
+pyramid==1.10.8
+pyramid_chameleon==0.3
+pyramid_debugtoolbar==4.12.1
+pyramid_layout==1.0
+pyramid_sms==0.1.4
+pyramid_tm==2.6
+python-dateutil==2.9.0.post0
+python-magic==0.4.27
+python3-openid==3.2.0
+pytz==2026.2
+pyzmq==27.1.0
+randomcolor==0.4.4.6
+repoze-sendmail==4.5
+requests-file==3.0.1
+requests-oauthlib==2.0.0
+requests-toolbelt==1.0.0
+requests==2.34.2
+setuptools==80.10.2
+six==1.17.0
+soupsieve==2.8.4
+statsd==4.0.1
+stevedore==5.9.0
+substanced @ git+https://github.com/Pylons/substanced.git@f4eca94ae37aef342d3683161f73aef84db453db
+tldextract==5.3.1
+transaction==5.1
+translationstring==1.4
+typing==3.7.4.3
+typing_extensions==4.16.0
+urllib3==2.7.0
+velruse==1.1.1
+venusian==3.1.1
+waitress==3.0.2
+walkabout==0.10
+webencodings==0.5.1
+xlrd==2.0.2
+yampy2==2.8.0
+zc.lockfile==4.0
+zdaemon==5.2.1
+zodbpickle==4.4
+zodburi==3.0.0
+zope.component==7.1
+zope.configuration==7.1
+zope.copy==6.0
+zope.deferredimport==6.1.1
+zope.deprecation==6.0
+zope.event==6.2
+zope.exceptions==6.0
+zope.hookable==8.2
+zope.i18nmessageid==8.2
+zope.interface==8.5
+zope.processlifetime==4.0
+zope.proxy==7.2
+zope.schema==8.1
+zope.testrunner==8.2

@@ -36,7 +36,8 @@ requires = [
     'numpy',
     'randomcolor',
     'graphene',
-    'graphql-wsgi',
+    # graphql-wsgi: withdrawn from PyPI; installed from its source
+    # (faassen/graphql-wsgi) by tox and the CI — see constraints-modern.txt
     'keas.kmi',
     'cipher.encryptingstorage',
     'yampy2',
@@ -46,12 +47,13 @@ requires = [
     ]
 
 setup(name='novaideo',
-      version='1.4.dev0',
+      version='2.0.0.dev0',
       description='Nova-Ideo is a participatory innovation tool, the merger of the box ideas and collaborative portal.',
       long_description=README + '\n\n' +  CHANGES,
       long_description_content_type='text/markdown',
       classifiers=[
         "Programming Language :: Python",
+        "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.6",
         "Framework :: Pyramid",
         "Topic :: Internet :: WWW/HTTP",

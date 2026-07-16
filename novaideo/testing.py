@@ -29,6 +29,10 @@ class BaseFunctionalTests(object):
         dbpath = os.path.join(self.tmpdir, 'test.db')
         uri = 'file://' + dbpath + '?blobstorage_dir=' + self.tmpdir
         settings = {'zodbconn.uri': uri,
+                    # pyramid_tm reads authenticated_userid before
+                    # traversal; substanced 1.0b1's groupfinder needs
+                    # request.context (Phase 3 / M4 note, see pontus M2)
+                    'tm.annotate_user': 'false',
                     'sms.service': 'pyramid_sms.ovh.OvhService',
                     'substanced.secret': 'sosecret',
                     'substanced.initial_login': 'admin',
@@ -49,7 +53,32 @@ class BaseFunctionalTests(object):
 
         testing.setUp()
         from novaideo import main
-        self.app = app = main({}, **settings)
+        try:
+            # legacy stack (substanced 1.0a1): the historical include
+            # provides request.mailer and the DummyMailer.
+            self.app = app = main({}, **settings)
+        except Exception as error:
+            if type(error).__name__ != 'ConfigurationConflictError':
+                raise
+            # modern stack (Phase 3 / M4): substanced >= 1.0b1 registers
+            # request.mailer itself and the include conflicts. Same
+            # override, directly on the registry.
+            settings['pyramid.includes'] = [
+                include for include in settings['pyramid.includes']
+                if include != 'pyramid_mailer.testing']
+            # the failed attempt already opened (and locked) the file
+            # storage through pyramid_zodbconn: retry on a fresh file
+            # inside the same tmpdir (tearDown removes everything)
+            retry_db = os.path.join(self.tmpdir, 'test-retry.db')
+            retry_blobs = os.path.join(self.tmpdir, 'retry-blobs')
+            settings['zodbconn.uri'] = \
+                'file://' + retry_db + '?blobstorage_dir=' + retry_blobs
+            testing.tearDown()
+            testing.setUp()
+            self.app = app = main({}, **settings)
+            from pyramid_mailer.testing import DummyMailer
+            from pyramid_mailer.interfaces import IMailer
+            app.registry.registerUtility(DummyMailer(), IMailer)
         self.db = app.registry._zodb_databases['']
         self.request = request = testing.DummyRequest()
         self.request.invalidate_cache = True

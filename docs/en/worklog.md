@@ -169,3 +169,19 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   lives on dace's `legacy-golden-master` tag. Operation order matters:
   tag dace's pre-M1 master first, then push dace M1, then this pin —
   re-running the golden-master workflow is the check.
+
+- **Phase 3 / M4: the golden-master suite is green on Python 3.12 —
+  the same 29 tests, 0 failures, 0 errors** (1 min 57 on the modern
+  stack), while the harness stays dual-stack so the legacy container
+  keeps its 29/29 on the very same working tree. Application changes:
+  two one-line shims. The rest was dependency archaeology, all
+  documented in `constraints-modern.txt`: the seven "fossils" (velruse,
+  keas.kmi, cipher.encryptingstorage, yampy2, ovh, pyramid-sms,
+  pyramid_retry) all still install; `graphql-wsgi` was withdrawn from
+  PyPI and comes from its source (faassen); `html_diff_wrapper` gets a
+  maintained fork (py3.11 forbids the mid-pattern `(?u)` flag); the
+  GraphQL schema is graphene-1-era, and `tools/patch_graphql1_py312.py`
+  ports the installed era stack (collections.abc) — 10 files,
+  mechanical, idempotent — used by tox and the new `py312-tests`
+  workflow. Acceptance closes when the golden-master workflow re-run
+  confirms the legacy side.

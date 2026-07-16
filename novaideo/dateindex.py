@@ -9,7 +9,7 @@ from ZODB.broken import Broken
 from hypatia.keyword import KeywordIndex
 from hypatia.field import FieldIndex
 from hypatia.query import InRange
-from hypatia._compat import string_types
+string_types = (str,)   # hypatia 0.5 dropped _compat (Phase 3 / M4)
 from plone.event.recurrence import recurrence_sequence_ical
 
 from substanced.catalog.factories import IndexFactory

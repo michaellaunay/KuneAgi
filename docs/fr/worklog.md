@@ -180,3 +180,20 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   de dace. L'ordre des opérations compte : taguer d'abord le master
   pré-M1 de dace, puis pousser dace M1, puis cet épinglage — la
   relance du workflow golden-master est le contrôle.
+
+- **Phase 3 / M4 : la suite du golden master est verte sur
+  Python 3.12 — les mêmes 29 tests, 0 échec, 0 erreur** (1 min 57 sur
+  la pile moderne), le harnais restant bi-pile pour que le conteneur
+  legacy garde ses 29/29 sur le même arbre de travail. Modifications
+  applicatives : deux shims d'une ligne. Le reste fut de l'archéologie
+  de dépendances, documentée dans `constraints-modern.txt` : les sept
+  « fossiles » (velruse, keas.kmi, cipher.encryptingstorage, yampy2,
+  ovh, pyramid-sms, pyramid_retry) s'installent tous encore ;
+  `graphql-wsgi` a été retiré de PyPI et vient de sa source
+  (faassen) ; `html_diff_wrapper` reçoit un fork maintenu (py3.11
+  interdit le drapeau `(?u)` en cours de motif) ; le schéma GraphQL est
+  d'ère graphene 1, et `tools/patch_graphql1_py312.py` porte la pile
+  d'époque installée (collections.abc) — 10 fichiers, mécanique,
+  idempotent — utilisé par tox et le nouveau workflow `py312-tests`.
+  L'acceptation se clôt quand la relance du workflow golden-master
+  confirme le côté legacy.

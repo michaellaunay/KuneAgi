@@ -2,6 +2,27 @@
 
 ## Unreleased
 
+### Phase 3 / M4 — 2026-07-16 (Python 3.12)
+
+- **The golden-master suite is green on Python 3.12: the same 29
+  tests, 0 failures, 0 errors** — on dace/pontus/daceui 2.0.0.dev0,
+  substanced 1.0b1, deform 3, Chameleon 4 (`constraints-modern.txt`).
+  The legacy container keeps running the same working tree: the test
+  harness is dual-stack (it first takes the historical path, and only
+  falls back — mailer override, fresh storage — on the modern
+  configuration conflict).
+- Application changes are two one-line shims (``deform.compat`` in
+  ``data_manager``, ``hypatia._compat`` in ``dateindex``); everything
+  else is dependency archaeology: ``graphql-wsgi`` was withdrawn from
+  PyPI (installed from its source, faassen/graphql-wsgi);
+  ``html_diff_wrapper`` needs the maintained fork (py3.11 regex-flags
+  fix); the GraphQL schema is graphene-1-era and the era stack
+  (graphene 1.4.2, graphql-core 1.1, graphql-relay 0.4.5, promise 2.3
+  override) is ported in place by ``tools/patch_graphql1_py312.py``.
+- Version bumped to 2.0.0.dev0; a ``py312-tests`` workflow runs the
+  suite on the modern stack alongside the golden-master workflow.
+
+
 ### Fork maintenance — 2026-07-13 (`michaellaunay/KuneAgi`)
 
 - Repository forked from `ecreall/KuneAgi`; maintenance resumed by Michaël Launay (Logikascium), with KuneAgi as the reference trunk of the Nova-Ideo modernisation. Intellectual property: KuneAgi-specific developments are copyright Cosmopolitical.coop (rights transferred by Laurent Zibell); the underlying Nova-Ideo base is copyright Logikascium (Ecréall's IP, acquired in 2024). License unchanged (AGPL v3+).
