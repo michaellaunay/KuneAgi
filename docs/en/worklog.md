@@ -232,3 +232,20 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   pseudo_react 15 %, ical_date_utility 18 %, utilities/util 22 %).
   First pass targets the pure modules (no heavy harness), then the
   pontus widget/view-operation branches.
+
+- **T1 (unit-test campaign): the French dates parser is pinned.** Two
+  new plain-unittest modules (no functional harness, 16 tests, run on
+  both stacks): `test_french_dates_parser.py` and
+  `test_ical_date_utility.py` — characterisation under the module's
+  own frozen reference (`mockLocalTime`, 2006-05-15). Coverage:
+  french_dates_parser **16 % → 57 %**, ical_date_utility
+  **18 % → 41 %**; full suite 45/45 green. Contract facts pinned: the
+  capitalised article anchors the grammar (`Du`/`Le`; lowercase →
+  None), explicit years are outside the `Du..au..` form, `getRangJour`
+  captures the day but not the rank, the `occurences_*` helpers are
+  lazy and `is_ints` means integer timestamps. And the probes
+  **sharpened the 2006 header bug**: 'sauf le <jour>' excludes every
+  interior occurrence but BOTH boundary days escape the filter — the
+  2016 repro only exposed the opening half (its closing day was a
+  Thursday). Pinned as-is; fixing the parser must flip those asserts
+  consciously.

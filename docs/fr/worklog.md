@@ -250,3 +250,21 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   ical_date_utility 18 %, utilities/util 22 %). La première passe vise
   les modules purs (sans harnais lourd), puis les branches
   widget/view-operation de pontus.
+
+- **T1 (campagne de tests unitaires) : le parseur de dates françaises
+  est épinglé.** Deux nouveaux modules unittest purs (sans harnais
+  fonctionnel, 16 tests, exécutés sur les deux piles) :
+  `test_french_dates_parser.py` et `test_ical_date_utility.py` —
+  caractérisation sous la référence figée du module lui-même
+  (`mockLocalTime`, 15/05/2006). Couverture : french_dates_parser
+  **16 % → 57 %**, ical_date_utility **18 % → 41 %** ; suite complète
+  45/45 verte. Faits de contrat épinglés : l'article majuscule ancre
+  la grammaire (`Du`/`Le` ; minuscule → None), les années explicites
+  sont hors de la forme `Du..au..`, `getRangJour` capture le jour mais
+  pas le rang, les helpers `occurences_*` sont paresseux et `is_ints`
+  signifie timestamps entiers. Et les sondes **ont affûté le bug
+  d'en-tête de 2006** : « sauf le <jour> » exclut toutes les
+  occurrences intérieures mais LES DEUX BORNES échappent au filtre —
+  le repro de 2016 n'en exposait que la moitié ouvrante (sa clôture
+  tombait un jeudi). Épinglé tel quel ; corriger le parseur devra
+  retourner ces assertions consciemment.
