@@ -228,3 +228,25 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   Constat côté production consigné : dérive de la configuration de
   chiffrement (64 987 enregistrements chiffrés contre 14 282 en
   clair ; blobs jamais chiffrés) — un audit est recommandé.
+
+- **Mode opératoire de migration de production livré** (demande
+  utilisateur) : gel + repozo + extraction-déchiffrement sur l'ancien
+  hôte, porte de répétition (`REHEARSAL PASSED` exigé sur la copie
+  même qu'on promeut), environnement cible via `bootstrap-modern.sh`,
+  puis le **réveil contrôlé** : les premiers boots font tourner le
+  vrai réacteur avec les sorties *écrites sur disque*
+  (`pyramid_mailer.debug` → `var/mail-out/` ; `DummySMSService`) pour
+  qu'un humain dépouille ce que dix ans de timers expirés déclenchent
+  avant d'écrire au moindre membre. Fournit
+  `etc/production-modern.ini.example` (profils réveil et réel,
+  `tm.annotate_user=false` obligatoire) et
+  `novaideo/utilities/dummy_sms.py`. Retour arrière = l'ancien
+  conteneur intact.
+- **Campagne de tests unitaires ouverte, mesurée d'abord** : baseline
+  de couverture — dace 91 %, pontus 63 % (widget.py 38 %,
+  view_operation.py 51 %, file/*), daceui 67 % (util 56 %, views
+  54 %), novaideo **56 %** (39 172 instructions ; gisement de
+  fonctions pures : french_dates_parser 16 %, pseudo_react 15 %,
+  ical_date_utility 18 %, utilities/util 22 %). La première passe vise
+  les modules purs (sans harnais lourd), puis les branches
+  widget/view-operation de pontus.

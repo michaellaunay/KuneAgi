@@ -1,0 +1,49 @@
+###
+# KuneAgi on the modern stack — production template (Phase 3).
+# Copy to etc/production.ini and EDIT: secrets, URL, mail profile.
+# See docs/en/production-migration.md (fr mirror available).
+###
+
+[app:main]
+use = egg:novaideo
+
+zodbconn.uri = file://%(here)s/../var/filestorage/Data.fs?blobstorage_dir=%(here)s/../var/blobstorage
+
+# NOT optional on the modern stack: pyramid_tm reads the userid before
+# traversal and substanced's groupfinder needs request.context.
+tm.annotate_user = false
+
+substanced.secret = CHANGE-ME
+novaideo.secret = CHANGE-ME
+substanced.uploads_tempdir = %(here)s/../var/tmp_uploads
+mail.default_sender = kuneagi@example.org
+available_languages = en fr de
+
+pyramid.includes =
+    substanced
+    pyramid_chameleon
+    pyramid_layout
+    pyramid_tm
+    dace
+    pontus
+    daceui
+# --- WAKE-UP PROFILE (first boots: outbound written to disk) --------
+    pyramid_mailer.debug
+# pyramid_mailer.debug writes every message under var/mail-out/:
+mail.debug_include_bcc = true
+mail.top_level_directory = %(here)s/../var/mail-out
+sms.service = novaideo.utilities.dummy_sms.DummySMSService
+# --- LIVE PROFILE (after the backlog review) ------------------------
+# replace 'pyramid_mailer.debug' above with 'pyramid_mailer' and set:
+# mail.host = smtp.example.org
+# mail.port = 587
+# mail.tls = true
+# mail.username = ...
+# mail.password = ...
+# sms.service = pyramid_sms.ovh.OvhService
+# ovh.application_key = ...
+
+[server:main]
+use = egg:waitress#main
+listen = 127.0.0.1:6543
+threads = 4

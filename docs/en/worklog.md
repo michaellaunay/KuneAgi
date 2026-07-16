@@ -212,3 +212,23 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   `docs/{en,fr}/m5-migration-rehearsal.md`. Production-side finding
   recorded: encryption-config drift (64,987 encrypted vs 14,282 plain
   records; blobs never encrypted) — an audit is advisable.
+
+- **Production-migration runbook delivered** (user request): freeze +
+  repozo + decrypt-extract on the old host, rehearsal gate
+  (`REHEARSAL PASSED` required on the very copy being promoted),
+  target env via `bootstrap-modern.sh`, then the **controlled
+  wake-up**: first boots run the real reactor with outbound *written
+  to disk* (`pyramid_mailer.debug` → `var/mail-out/`;
+  `DummySMSService`) so a human reviews what a decade of expired
+  timers fires before any member is mailed. Ships
+  `etc/production-modern.ini.example` (wake-up and live profiles,
+  `tm.annotate_user=false` mandatory) and
+  `novaideo/utilities/dummy_sms.py`. Rollback = the untouched old
+  container.
+- **Unit-test campaign opened, measured first**: coverage baseline —
+  dace 91 %, pontus 63 % (widget.py 38 %, view_operation.py 51 %,
+  file/*), daceui 67 % (util 56 %, views 54 %), novaideo **56 %**
+  (39,172 stmts; pure-function goldmine: french_dates_parser 16 %,
+  pseudo_react 15 %, ical_date_utility 18 %, utilities/util 22 %).
+  First pass targets the pure modules (no heavy harness), then the
+  pontus widget/view-operation branches.

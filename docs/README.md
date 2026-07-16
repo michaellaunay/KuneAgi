@@ -22,4 +22,5 @@ repositories of the Nova-Ideo modernisation effort):
 | Phase 3 porting plan / Plan de portage | [`en/phase3-porting-plan.md`](en/phase3-porting-plan.md) | [`fr/phase3-porting-plan.md`](fr/phase3-porting-plan.md) |
 | Modern harness / Harnais moderne | [`en/modern-harness.md`](en/modern-harness.md) | [`fr/modern-harness.md`](fr/modern-harness.md) |
 | M5 migration rehearsal / Répétition de migration | [`en/m5-migration-rehearsal.md`](en/m5-migration-rehearsal.md) | [`fr/m5-migration-rehearsal.md`](fr/m5-migration-rehearsal.md) |
+| Production migration / Migration de production | [`en/production-migration.md`](en/production-migration.md) | [`fr/production-migration.md`](fr/production-migration.md) |
 | Process diagrams / Diagrammes des processus (generated) | [`en/processes/`](en/processes/README.md) | [`fr/processes/`](fr/processes/README.md) |
