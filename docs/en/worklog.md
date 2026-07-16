@@ -287,3 +287,16 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   importing; and `lxml`, hand-installed during M4, is now a declared
   requirement. Gold proof: from a clean venv, the exact CI sequence
   installs green and runs **65/65** in 1:37.
+
+- **T2a: the `pseudo_react` metadata composers are pinned
+  functionally** — one real application (the M4 harness), payload
+  asserts behind: the two dispatch registries (121 metadata getters,
+  16 counters — all callable, key format checked), the no-action
+  branch, and the payload contract of four idea-action families
+  (`abandon` with its alert and its exact `objects_to_hide` computed
+  from the oid; `duplicate`'s minimal shape; `edit`/`publish` with
+  `is_excuted` — the historical spelling is part of the contract) plus
+  three counters ('Ideas (0)', item_nb, empty proposals). Convention
+  pinned: in the composers' signature `api` is the calling *view* —
+  only `params(name)` is consumed. 7 tests, first run green thanks to
+  the probe-then-pin method.

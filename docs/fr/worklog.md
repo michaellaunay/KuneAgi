@@ -309,3 +309,17 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   main pendant M4, est maintenant un requirement déclaré. Preuve
   d'or : depuis un venv vierge, la séquence CI exacte installe vert et
   passe **65/65** en 1 min 37.
+
+- **T2a : les composeurs de métadonnées de `pseudo_react` sont
+  épinglés en fonctionnel** — une seule application réelle (le harnais
+  M4), des asserts de payloads derrière : les deux tables de dispatch
+  (121 getters, 16 compteurs — tous appelables, format des clés
+  vérifié), la branche sans action, et le contrat de payload de quatre
+  familles d'actions d'idée (`abandon` avec son alerte et son
+  `objects_to_hide` exact calculé sur l'oid ; la forme minimale de
+  `duplicate` ; `edit`/`publish` avec `is_excuted` — la graphie
+  historique fait partie du contrat) plus trois compteurs
+  ('Ideas (0)', item_nb, propositions vides). Convention épinglée :
+  dans la signature des composeurs, `api` est la *vue* appelante —
+  seul `params(name)` est consommé. 7 tests, verts au premier run
+  grâce à la méthode sonder-puis-épingler.
