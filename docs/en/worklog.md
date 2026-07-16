@@ -146,3 +146,17 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   GitHub workflow (workflow_dispatch) for the reproducible CI
   certificate; Phase 3 (Python 3.12 port, asyncio reactor, substanced
   fork) opens, measured against this suite.
+
+- **Phase 3 opens.** The porting plan is written
+  (`docs/en/phase3-porting-plan.md`): Python 3.12 on maintained
+  dependencies, measured against the certified 29/29 suite on both
+  stacks; ZODB continuity as a hard rule (a persistent class never
+  moves — the once-considered `Transaction` rename is rejected on
+  evidence: it derives from `Persistent` and is stored on every
+  process); substanced forked to its measured used-surface; the
+  reactor moved to asyncio behind the same public API; bottom-up
+  milestones M0–M5 (dace → pontus → daceui → KuneAgi 29/29 →
+  data-migration rehearsal). Grounding facts measured today: the four
+  code bases already compile on 3.12.3; the substanced import surface
+  is inventoried; one confirmed py2 remnant
+  (pontus `view_operation.py:724`) is scheduled at M2.

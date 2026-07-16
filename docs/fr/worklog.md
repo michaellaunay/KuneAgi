@@ -156,3 +156,17 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   (workflow_dispatch) pour le certificat CI reproductible ; la phase 3
   (portage Python 3.12, réacteur asyncio, fork substanced) s'ouvre,
   mesurée contre cette suite.
+
+- **La phase 3 s'ouvre.** Le plan de portage est écrit
+  (`docs/fr/phase3-porting-plan.md`) : Python 3.12 sur dépendances
+  maintenues, mesuré contre la suite certifiée 29/29 sur les deux
+  piles ; continuité ZODB en règle dure (une classe persistante ne
+  bouge jamais — le renommage un temps envisagé de `Transaction` est
+  rejeté sur preuve : elle dérive de `Persistent` et est stockée sur
+  chaque processus) ; substanced forké à sa surface d'usage mesurée ;
+  le réacteur porté sur asyncio derrière la même API publique ; jalons
+  de bas en haut M0–M5 (dace → pontus → daceui → KuneAgi 29/29 →
+  répétition de migration de données). Faits d'ancrage mesurés
+  aujourd'hui : les quatre bases compilent déjà en 3.12.3 ; la surface
+  d'import substanced est inventoriée ; un reliquat py2 confirmé
+  (pontus `view_operation.py:724`) est planifié à M2.
