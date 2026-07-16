@@ -185,3 +185,12 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   mechanical, idempotent — used by tox and the new `py312-tests`
   workflow. Acceptance closes when the golden-master workflow re-run
   confirms the legacy side.
+
+- The harness configuration is now fully versioned (user request): the
+  integrated Python 3.12 development environment M1-M4 were certified
+  in is rebuilt by `tools/bootstrap-modern.sh` — editable sibling
+  checkouts when present, git masters otherwise, the certified pins,
+  and the graphene-1 era port applied. Documented in
+  `docs/{en,fr}/modern-harness.md`, which also names the two layers
+  already versioned: the dual-stack `testing.py` files and the
+  tox/constraints/CI triplet of every repo.

@@ -197,3 +197,13 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   idempotent — utilisé par tox et le nouveau workflow `py312-tests`.
   L'acceptation se clôt quand la relance du workflow golden-master
   confirme le côté legacy.
+
+- La configuration du harnais est désormais entièrement versionnée
+  (demande utilisateur) : l'environnement de développement intégré
+  Python 3.12 dans lequel M1-M4 ont été certifiés se reconstruit par
+  `tools/bootstrap-modern.sh` — checkouts frères en editable s'ils sont
+  présents, masters git sinon, les pins certifiés, et le portage de
+  l'ère graphene 1 appliqué. Documenté dans
+  `docs/{en,fr}/modern-harness.md`, qui nomme aussi les deux étages
+  déjà versionnés : les `testing.py` bi-pile et le triplet
+  tox/constraints/CI de chaque dépôt.
