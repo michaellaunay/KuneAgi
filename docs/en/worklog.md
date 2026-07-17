@@ -441,3 +441,23 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   vote sub-process is timer-closed by the custom `SubProcess.stop`);
   the tests invoke the node's `after_execution` after the last vote —
   the very code path the deadline runs.
+
+- **The `moderate_registration` variant is pinned — and latent bug #4
+  joins the register**: the no-electors fallback has NEVER been able
+  to complete — it forces `['accepted']` and sends the mail, then
+  dies on the shared `alert_user(...)` line whose `alert_data` only
+  the ballot branch binds (`UnboundLocalError`, present in the
+  imported historical source; the TORN WRITE is pinned too — the
+  state is `['accepted']` after the crash). Moderated sites therefore
+  require an available member pool. 6 tests; full suite **128/128**
+  (two halves: 78 + 50); user_management behaviours **50 % → 61 %**.
+  Pinned contracts: under moderation the candidacy stays `['pending']`
+  with a `registrationmoderation` ballot attached (random draw among
+  ALL members), electors granted `('LocalModerator', preregistration)`
+  and voting ON the preregistration, the anonymous
+  `confirmregistration` gate CLOSED while pending; acceptance replaces
+  the state with `['accepted']`, opens the gate, and the entry path
+  completes through moderation (the Person is created); refusal
+  REMOVES the candidacy outright; and SILENT electors refuse —
+  `ballot_result(self)` defaults to False here, the asymmetry of
+  mercy with the report decision whose silence defaults to ignore.

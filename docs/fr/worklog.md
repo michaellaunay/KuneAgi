@@ -475,3 +475,25 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   minuterie via le `SubProcess.stop` sur mesure) ; les tests invoquent
   l'`after_execution` du nœud après le dernier bulletin — le chemin de
   code exact que l'échéance exécute.
+
+- **La variante `moderate_registration` est épinglée — et le bug
+  latent n°4 rejoint le registre** : le repli sans-électeurs n'a
+  JAMAIS pu aboutir — il force `['accepted']` et envoie le courriel,
+  puis meurt sur la ligne partagée `alert_user(...)` dont seule la
+  branche scrutin lie `alert_data` (`UnboundLocalError`, présent dans
+  la source historique importée ; l'ÉCRITURE DÉCHIRÉE est épinglée
+  aussi — l'état est `['accepted']` après le crash). Les sites
+  modérés exigent donc un vivier de membres disponible. 6 tests ;
+  suite complète **128/128** (deux moitiés : 78 + 50) ; behaviors
+  d'user_management **50 % → 61 %**. Contrats épinglés : sous
+  modération la candidature reste `['pending']` avec un scrutin
+  `registrationmoderation` attaché (tirage aléatoire parmi TOUS les
+  membres), électeurs dotés de `('LocalModerator', préinscription)`
+  et votant SUR la préinscription, la garde anonyme
+  `confirmregistration` FERMÉE pendant l'attente ; l'acceptation
+  remplace l'état par `['accepted']`, ouvre la garde, et le parcours
+  d'entrée s'achève à travers la modération (la Person est créée) ;
+  le refus SUPPRIME la candidature purement et simplement ; et les
+  électeurs muets refusent — `ballot_result(self)` prend False par
+  défaut ici, l'asymétrie de miséricorde avec la décision de
+  signalement dont le silence vaut absolution.
