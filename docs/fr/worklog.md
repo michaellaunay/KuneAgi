@@ -408,3 +408,22 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   jumeau asymétrique — conservée au root, marquée `['refused']`, les
   actions anonymes s'effondrant sur `seeinvitation` ; le `remove`
   admin supprime une invitation en attente purement et simplement.
+
+- **L'arc Registration est épinglé — et une RÉGRESSION DE
+  MODERNISATION corrigée** : l'API mot de passe de substanced a dérivé
+  (`pwd_manager` → staticmethod `hash_new_password`), crashant le
+  constructeur de `Preregistration` sur 3.12 ; `person.py` honore
+  désormais l'un ou l'autre, prouvé par `check_password` sur toute la
+  chaîne. 7 tests ; suite complète **110/110** verte. Épinglés : la
+  `registration` anonyme au root, fermée par `only_invitation` (et
+  l'override SiteAdmin de niveau dace qui montre toutes les actions,
+  épinglé au passage) ; le constructeur encode le mot de passe
+  immédiatement (bcrypt, jamais le clair) ; l'estampillage (état
+  `['pending']`, nom-jeton, échéance = création + 4 jours) ; les
+  gardes (l'anonyme ne tient QUE `confirmregistration` ; l'admin le
+  quintette avec remind/remove) ; la confirmation créant la Person
+  (clé `name_chooser` `'Bob-B'`, active, Member+Owner, redirection
+  auto-login) et retirant la préinscription ; l'expiration fermant
+  toute garde anonyme ; le `remove` admin net. Idiome de harnais
+  consigné : l'abonné d'audit substanced (LoggedIn) lit
+  `request.context` — le poser sur la requête de test.

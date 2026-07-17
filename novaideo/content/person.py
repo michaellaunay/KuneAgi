@@ -816,7 +816,16 @@ class Preregistration(VisualisableElement, Entity):
         super(Preregistration, self).__init__(**kwargs)
         initial_password = kwargs.pop('password', None)
         if initial_password:
-            initial_password = User.pwd_manager.encode(initial_password)
+            # substanced's password API drifted across the stacks: the
+            # era class exposed ``pwd_manager``, the modern one a
+            # ``hash_new_password`` staticmethod. Honour whichever is
+            # present so the registration arc runs on both.
+            pwd_manager = getattr(User, 'pwd_manager', None)
+            if pwd_manager is not None:
+                initial_password = pwd_manager.encode(initial_password)
+            else:
+                initial_password = User.hash_new_password(
+                    initial_password)
 
         self.initial_password = initial_password
         self.set_data(kwargs)

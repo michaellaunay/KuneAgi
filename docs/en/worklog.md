@@ -378,3 +378,21 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   asymmetric twin — kept at the root, marked `['refused']`, anonymous
   actions collapsing to `seeinvitation`; the admin's `remove` deletes
   a pending invitation outright.
+
+- **The Registration arc is pinned — and a MODERNISATION REGRESSION
+  fixed**: substanced's password API drifted (`pwd_manager` →
+  `hash_new_password` staticmethod), crashing the `Preregistration`
+  constructor on 3.12; `person.py` now honours whichever is present,
+  proven by `check_password` across the whole chain. 7 tests; full
+  suite **110/110** green. Pinned: the anonymous `registration` on the
+  root, closed by `only_invitation` (and the dace-level SiteAdmin
+  override that shows every action pinned in passing); the constructor
+  encodes the password immediately (bcrypt, never the clear text);
+  stamping (state `['pending']`, token name, deadline = creation +
+  4 days); the gates (anonymous holds `confirmregistration` ALONE;
+  the admin the quintet with remind/remove); confirmation creating the
+  Person (`name_chooser` key `'Bob-B'`, active, Member+Owner,
+  auto-login redirect) and removing the preregistration; expiry
+  closing every anonymous gate; the admin's outright `remove`.
+  Harness idiom recorded: substanced's audit subscriber (LoggedIn)
+  reads `request.context` — set it on the test request.

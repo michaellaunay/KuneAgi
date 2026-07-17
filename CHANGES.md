@@ -1,6 +1,14 @@
 # Changelog
 
 ## Unreleased
+### Fix — 2026-07-17
+- **Modernisation regression** (caught by the Registration-arc tests):
+  substanced's password API drifted across the stacks — the era class
+  exposed ``pwd_manager``, the modern one a ``hash_new_password``
+  staticmethod — which crashed the ``Preregistration`` constructor on
+  Python 3.12. ``person.py`` now honours whichever is present; the
+  encode → store → verify chain is proven end to end by the new tests.
+
 ### Unit-test campaign, first batches — 2026-07-16
 - The suite grows from 29 to 78 tests, all green on BOTH stacks:
   T1 pins the 2006 French dates parser (16 tests — including the
