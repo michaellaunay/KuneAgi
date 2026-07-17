@@ -497,3 +497,11 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   électeurs muets refusent — `ballot_result(self)` prend False par
   défaut ici, l'asymétrie de miséricorde avec la décision de
   signalement dont le silence vaut absolution.
+
+- **Le bug latent n°4 est réparé, son test retourné en conscience.**
+  La notification de mise-à-l'étude (`alert_data` liée au scrutin)
+  rejoint la seule branche scrutin : le repli sans-électeurs de
+  `moderate_registration` accepte désormais d'office et le parcours
+  d'entrée s'achève jusqu'à la Person
+  (`test_no_electors_fallback_accepts_at_once` garde la réparation).
+  Suite complète **128/128** (deux moitiés : 78 + 50).

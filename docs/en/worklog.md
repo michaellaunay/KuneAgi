@@ -461,3 +461,10 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   REMOVES the candidacy outright; and SILENT electors refuse —
   `ballot_result(self)` defaults to False here, the asymmetry of
   mercy with the report decision whose silence defaults to ignore.
+
+- **Latent bug #4 is repaired, its test flipped in conscience.** The
+  under-review notification (ballot-bound `alert_data`) moved into the
+  ballot branch: the no-electors fallback of `moderate_registration`
+  now accepts outright and the entry path completes to the Person
+  (`test_no_electors_fallback_accepts_at_once` guards it). Full suite
+  **128/128** (two halves: 78 + 50).

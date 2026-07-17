@@ -741,7 +741,10 @@ class Registration(InfiniteCardinality):
                     start_registration_alert(
                         preregistration, ballot_proc, alert_data, date_send_id_data_obj['date_deadline'])
 
-            alert_user(request, preregistration, alert_data)
+                # under-review notification: ballot branch only — the
+                # no-electors fallback already sent the confirmation
+                # through accept() (alert_data is ballot-bound)
+                alert_user(request, preregistration, alert_data)
 
         request.registry.notify(ActivityExecuted(
             self, [preregistration], None))

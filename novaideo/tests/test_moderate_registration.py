@@ -22,14 +22,11 @@ The candidacy is judged before the door opens. Pinned contracts:
 - SILENT electors refuse: ``ballot_result(self)`` defaults to False
   here — the asymmetry of mercy with the report decision, whose
   silence defaults to ignore;
-- **latent bug, pinned as-is**: the no-electors fallback has never
-  been able to complete — it forces ``['accepted']`` and sends the
-  mail, then dies on the shared ``alert_user(...)`` line whose
-  ``alert_data`` only the ballot branch binds
-  (``UnboundLocalError``, present in the imported historical
-  source). The torn write is pinned too: the state IS ``['accepted']``
-  after the crash. Moderated sites therefore require an available
-  member pool.
+- the no-electors fallback accepts outright and the entry path
+  completes (FIXED 2026-07-17, was latent bug #4: the under-review
+  notification — ballot-bound ``alert_data`` — moved into the ballot
+  branch, ending the ``UnboundLocalError`` torn write of the imported
+  historical source).
 
 The decision node completes at the ballot deadline in production; the
 tests invoke its ``after_execution`` after the last vote — the very
@@ -98,19 +95,18 @@ class TestModerateRegistration(FunctionalTests):
         self._decision_action(preregistration).after_execution(
             preregistration, self.request)
 
-    def test_no_electors_fallback_is_broken(self):
-        """Latent bug, pinned: with no member to draw, the fallback
-        forces ``['accepted']`` and sends the mail, then dies on the
-        ballot branch's ``alert_data`` — a torn write."""
-        self.request.user = None
-        preregistration = Preregistration(
-            first_name='Bob', last_name='B',
-            email='bob@example.com', password='pass')
-        self.assertRaises(UnboundLocalError, self._run,
-                          self.root, 'registration',
-                          {'_object_data': preregistration})
-        preregistration = self.root.preregistrations[-1]
+    def test_no_electors_fallback_accepts_at_once(self):
+        """FIXED (2026-07-17, was latent bug #4): the under-review
+        notification moved into the ballot branch — with no member to
+        draw, the fallback accepts outright and the whole entry path
+        completes."""
+        preregistration = self._register()
         self.assertEqual(preregistration.state, ['accepted'])
+        # the anonymous confirmation gate is OPEN at once
+        self.assertIn('registrationmanagement.confirmregistration',
+                      self._uids(preregistration))
+        self._run(preregistration, 'confirmregistration', {})
+        self.assertIn('Bob-B', self.root['principals']['users'])
 
     def test_ballot_path_gates_the_confirmation(self):
         self._members()

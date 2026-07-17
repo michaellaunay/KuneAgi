@@ -1,6 +1,16 @@
 # Changelog
 
 ## Unreleased
+### Fix — 2026-07-17: latent bug #4 (moderated-registration fallback)
+- The no-electors fallback of ``moderate_registration`` could never
+  complete: it forced ``['accepted']`` and sent the confirmation, then
+  died on the shared ``alert_user(...)`` line whose ballot-bound
+  ``alert_data`` only the ballot branch defines (``UnboundLocalError``
+  in the imported historical source — a torn write). The under-review
+  notification now lives in the ballot branch alone; the fallback
+  accepts outright and the whole entry path completes. The pinning
+  test was flipped in conscience and guards the repair.
+
 ### Unit-test campaign, process-family batches — 2026-07-17
 - The suite grows from 78 to 116 tests, all green on BOTH stacks: the
   QUESTION lifecycle (9 tests — behaviours 81 %, the closing cascade
