@@ -390,3 +390,21 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   et pose un jeton de 32 caractères derrière un HTTPFound ; `quit` est
   une DEMANDE, pas l'acte (l'état reste `['active']` jusqu'à la
   confirmation par courriel).
+
+- **T4c : le cycle de vie des invitations est épinglé** — le parcours
+  d'entrée (360 instructions de behaviors, jusqu'ici sans test)
+  atteint **76 %** par 7 tests de niveau behavior
+  (content/invitation.py 80 %) ; suite complète **103/103** verte.
+  Contrats épinglés : `invite` prend
+  `{'invitations': [{'_object_data': Invitation}]}` et estampille
+  chacune (état `['pending']`, manager = l'invitant, `__name__`
+  jeton aléatoire, rôles par défaut `['Member']`) ; les gardes
+  S'INVERSENT de part et d'autre du lien de courriel (admin :
+  `{edit, remind, remove, seeinvitation}` ; anonyme :
+  `{accept, refuse, seeinvitation}`) ; `accept` exige le mot de
+  passe, crée la Person DEPUIS les données de l'invitation (active,
+  rôles de l'invitation plus Owner), RETIRE l'invitation du root et
+  la relie en retour par `invitation.person` ; `refuse` est le
+  jumeau asymétrique — conservée au root, marquée `['refused']`, les
+  actions anonymes s'effondrant sur `seeinvitation` ; le `remove`
+  admin supprime une invitation en attente purement et simplement.

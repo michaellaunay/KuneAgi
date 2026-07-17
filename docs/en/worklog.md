@@ -362,3 +362,19 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   `get_api_token` requires the password and installs a 32-character
   token behind an HTTPFound; `quit` is a REQUEST, not the act (the
   state stays `['active']` until the mailed confirmation).
+
+- **T4c: the invitation lifecycle is pinned** — the entry path
+  (360 behaviour statements, previously untested) reaches **76 %**
+  through 7 behaviour-level tests (content/invitation.py 80 %); full
+  suite **103/103** green. Pinned contracts: `invite` takes
+  `{'invitations': [{'_object_data': Invitation}]}` and stamps each
+  one (state `['pending']`, manager = the inviter, a random-token
+  `__name__`, default roles `['Member']`); the gates INVERT across the
+  mail link (admin: `{edit, remind, remove, seeinvitation}`;
+  anonymous: `{accept, refuse, seeinvitation}`); `accept` requires the
+  password, creates the Person FROM the invitation's data (active,
+  invitation roles plus Owner), REMOVES the invitation from the root
+  and links back through `invitation.person`; `refuse` is the
+  asymmetric twin — kept at the root, marked `['refused']`, anonymous
+  actions collapsing to `seeinvitation`; the admin's `remove` deletes
+  a pending invitation outright.
