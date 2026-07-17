@@ -355,3 +355,20 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   poussés ; la référence de l'en-tête du ini résout désormais).
   Bilingue, conditionné à REHEARSAL PASSED, profil de réveil d'abord,
   observation en agrégats seulement, rollback par construction.
+
+- **T4 (première tranche) : le cycle de vie du processus question est
+  épinglé** — le plus gros ensemble de règles non testé (1 049 lignes
+  de behaviors) désormais à **81 %** par 9 tests de niveau behavior
+  (content/question.py 74 %, les vues de la famille entraînées en
+  effet de bord). Contrats épinglés : `creat` publie avec l'état
+  DOUBLE `['pending', 'published']` ; gardes par rôle exactes (extras
+  auteur/admin `{edit, archive, seehistory}` sur la question ;
+  `{archive}` seul sur la réponse d'autrui) ; répondre lève une alerte
+  AU ROOT (magasin central) ; soutenir ne consomme AUCUN jeton
+  personnel et bascule `support` en `withdraw_token` (retrait
+  symétrique épinglé) ; VALIDER une réponse ferme la question (cascade
+  inter-objets `['validated', 'published']` /
+  `['closed', 'published']`) ; `archive` EXIGE une `explanation`
+  (KeyError sinon), alerte, et effondre les gardes (membres : ensemble
+  vide ; admin : le quintette avec `delquestion` qui apparaît). Suite
+  complète **87/87** verte.

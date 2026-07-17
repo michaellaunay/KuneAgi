@@ -329,3 +329,19 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   pushed; the ini header's reference now resolves). Bilingual, gated
   on REHEARSAL PASSED, wake-up profile first, aggregate-only
   observation, rollback by construction.
+
+- **T4 (first slice): the question-process lifecycle is pinned** — the
+  largest untested rule set (1 049 behaviour lines) now at **81 %**
+  through 9 behaviour-level tests (content/question.py 74 %, the
+  family's views dragged along as side effects). Pinned contracts:
+  `creat` publishes with the DUAL state `['pending', 'published']`;
+  exact role gates (author/admin extras `{edit, archive, seehistory}`
+  on the question; `{archive}` alone on someone else's answer);
+  answering raises one alert AT THE ROOT (central store); supporting
+  consumes NO personal token and flips `support` to `withdraw_token`
+  (symmetric withdrawal pinned); VALIDATING an answer closes the
+  question (cross-object cascade `['validated', 'published']` /
+  `['closed', 'published']`); `archive` REQUIRES an `explanation`
+  (KeyError without), alerts, and collapses the gates (members: empty
+  set; admin: the quintet with `delquestion` appearing). Full suite
+  **87/87** green.
