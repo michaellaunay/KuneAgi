@@ -447,3 +447,8 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   harnais consignés : l'auteur du contenu doit être une vraie Person
   (`user_locale`), et l'import du module de behaviors exige l'amorçage
   du cycle historique (`import novaideo.views` d'abord).
+
+- **Pause documentaire (post-campagne).** Le README porte la réalité
+  des 116 tests et les cinq familles épinglées ; CHANGES consolide les
+  lots familles-de-processus ; le document du harnais moderne gagne
+  les idiomes de tests de niveau behavior fixés par la campagne.

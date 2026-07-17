@@ -1,6 +1,20 @@
 # Changelog
 
 ## Unreleased
+### Unit-test campaign, process-family batches — 2026-07-17
+- The suite grows from 78 to 116 tests, all green on BOTH stacks: the
+  QUESTION lifecycle (9 tests — behaviours 81 %, the closing cascade
+  of a validated answer pinned), the PERSON lifecycle (9 tests — the
+  user_management security core at 50 %, role replacement and the
+  nested password-change contract pinned), the INVITATION lifecycle
+  (7 tests — 76 %, the gates inverting across the mail link), the
+  REGISTRATION arc (7 tests — the anonymous entry path, its 4-day
+  expiry, and the modernisation regression below), and the
+  REPORT/MODERATION cycle (6 tests — 85 %, censor replacing the whole
+  state, moderator-gated restore, the closed reason referential).
+- Test-harness idioms are consolidated in
+  `docs/en/modern-harness.md` (behaviour-level testing section).
+
 ### Fix — 2026-07-17
 - **Modernisation regression** (caught by the Registration-arc tests):
   substanced's password API drifted across the stacks — the era class

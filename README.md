@@ -6,9 +6,12 @@
 stack rebuilds from scratch and its certified suite stays green — and
 the same working tree now runs on **Python 3.12** (phase 3, milestones
 M0→M5 complete, including a migration rehearsal on a real production
-copy). The suite has since grown from 29 to **78 tests** through a
-characterisation campaign; both CI pipelines (legacy golden master and
-`py312-tests`) are green on every push
+copy). The suite has since grown from 29 to **116 tests** through a
+characterisation campaign that pinned the five process families of the
+platform's social contract (question, person, invitation, registration,
+report/moderation) — and caught and fixed one modernisation regression
+(substanced's password-API drift) along the way; both CI pipelines
+(legacy golden master and `py312-tests`) are green on every push
 (see [`docs/en/worklog.md`](docs/en/worklog.md) and
 [`docs/en/phase3-porting-plan.md`](docs/en/phase3-porting-plan.md)).
 

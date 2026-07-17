@@ -55,3 +55,30 @@ cours masquaient ; la discipline d'installation est désormais :
 - côté legacy, `graphql-wsgi` figure aux requires
   **conditionnellement** (`sys.version_info < (3,7)`) : ce requirement
   est ce qui fait trouver au buildout son egg d'époque dans le cache.
+
+## Écrire des tests de niveau behavior (idiomes de campagne)
+
+La campagne de caractérisation de juillet 2026 a fixé ces idiomes — à
+réutiliser pour épingler de nouvelles familles de processus :
+
+- **Piloter les actions par node id** via `getAllBusinessAction`, et
+  FILTRER par `process_id` quand le nom de nœud est commun (`creat`
+  existe sur plusieurs familles au root).
+- **Les actions créatrices de contenu** prennent
+  `{'_object_data': <instance de contenu>}` ; les clés requises
+  affleurent en `KeyError` — les épingler (`explanation`, `roles`, le
+  mapping imbriqué `change_password`, `password`).
+- **Épingler les ensembles d'actions exactement** (égalité d'ensembles
+  de `process_id + '.' + node_id`) par rôle et par état — les gardes
+  SONT le modèle de sécurité. Se souvenir de l'override SiteAdmin de
+  niveau dace : l'admin voit toutes les actions, donc les pins
+  négatifs exigent un membre simple ou l'anonyme.
+- **Les auteurs doivent être de vraies Persons** : les flux d'alerte
+  lisent `user_locale`, absent de l'admin substanced brut.
+- **L'abonné d'audit de substanced** (LoggedIn) lit
+  `request.context` — le poser (le root) sur la requête de test.
+- **Importer un module de behaviors** depuis un test exige l'amorçage
+  du cycle historique : `import novaideo.views` d'abord.
+- **Couverture** : mesurer avec `--source=novaideo` (forme module) sur
+  le seul module de tests — viser un sous-paquet de processus casse la
+  collecte ; lancer la suite complète nue, dans sa propre invocation.

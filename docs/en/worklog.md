@@ -415,3 +415,8 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   author must be a real Person (`user_locale`), and the behaviours
   module import needs the historical cycle primed
   (`import novaideo.views` first).
+
+- **Documentation pause (post-campaign).** README carries the 116-test
+  reality and the five pinned families; CHANGES consolidates the
+  process-family batches; the modern-harness document gains the
+  behaviour-level testing idioms settled by the campaign.

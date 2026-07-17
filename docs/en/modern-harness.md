@@ -55,3 +55,30 @@ the install discipline is now:
 - on the legacy side, `graphql-wsgi` sits in the requires
   **conditionally** (`sys.version_info < (3,7)`): that requirement is
   how the buildout finds the era egg in its cache.
+
+## Writing behaviour-level tests (campaign idioms)
+
+The 2026-07 characterisation campaign settled these idioms — use them
+when pinning new process families:
+
+- **Drive actions by node id** through `getAllBusinessAction`, and
+  FILTER by `process_id` when the node name is common (`creat` exists
+  on several families at the root).
+- **Content-creating actions** take
+  `{'_object_data': <content instance>}`; required extra keys surface
+  as `KeyError` — pin them (`explanation`, `roles`, the nested
+  `change_password` mapping, `password`).
+- **Pin action sets exactly** (set equality of
+  `process_id + '.' + node_id`) per role and per state — the gates ARE
+  the security model. Remember the dace-level SiteAdmin override: the
+  admin sees every action, so negative pins need a plain member or the
+  anonymous user.
+- **Authors must be real Persons**: alert flows read `user_locale`,
+  which the raw substanced admin lacks.
+- **Substanced's audit subscriber** (LoggedIn) reads
+  `request.context` — set it (the root) on the test request.
+- **Importing a behaviours module** from a test primes the historical
+  import cycle: `import novaideo.views` first.
+- **Coverage**: measure with `--source=novaideo` (module form) on the
+  single test module — pointing coverage at a process sub-package
+  breaks collection; run the full suite bare, in its own invocation.
