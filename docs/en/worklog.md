@@ -396,3 +396,22 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   closing every anonymous gate; the admin's outright `remove`.
   Harness idiom recorded: substanced's audit subscriber (LoggedIn)
   reads `request.context` — set it on the test request.
+
+- **The report/moderation cycle is pinned** — the social-safety
+  machinery of `reports_management` (207 behaviour statements) reaches
+  **85 %** through 6 behaviour-level tests (content/report.py 80 %,
+  the report adapters dragged to ~47 %); full suite **116/116** green.
+  Pinned contracts: `report` is MEMBER-gated (no anonymous) and
+  state-gated on `published` content; reporting appends `'reported'`,
+  files the report (`['pending']`, reporter as author) and STARTS the
+  `contentreportdecision` ballot (the moderator draw excludes the
+  content author), reporting staying available while no finished valid
+  ballot exists; `censor()` REPLACES the whole content state with
+  `['censored']` (the `ISignalableObject` adapter) and processes the
+  pending reports; `restor` is MODERATOR-gated from `censored` and
+  restores the original publication states; `ignore()` removes
+  `'reported'` and processes the reports; the reason referential is
+  closed (unknown keys KeyError). Harness facts recorded: the content
+  author must be a real Person (`user_locale`), and the behaviours
+  module import needs the historical cycle primed
+  (`import novaideo.views` first).

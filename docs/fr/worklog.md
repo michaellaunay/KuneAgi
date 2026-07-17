@@ -427,3 +427,23 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   toute garde anonyme ; le `remove` admin net. Idiome de harnais
   consigné : l'abonné d'audit substanced (LoggedIn) lit
   `request.context` — le poser sur la requête de test.
+
+- **Le cycle signalement/modération est épinglé** — la machinerie de
+  sûreté sociale de `reports_management` (207 instructions de
+  behaviors) atteint **85 %** par 6 tests de niveau behavior
+  (content/report.py 80 %, les adaptateurs de signalement entraînés à
+  ~47 %) ; suite complète **116/116** verte. Contrats épinglés :
+  `report` est réservé aux MEMBRES (pas d'anonyme) et gardé sur l'état
+  `published` ; signaler ajoute `'reported'`, dépose le rapport
+  (`['pending']`, signaleur en auteur) et DÉMARRE le scrutin
+  `contentreportdecision` (le tirage des modérateurs exclut l'auteur
+  du contenu), le signalement restant disponible tant qu'aucun scrutin
+  fini valide n'existe ; `censor()` REMPLACE tout l'état du contenu
+  par `['censored']` (l'adaptateur `ISignalableObject`) et traite les
+  rapports en attente ; `restor` est réservé aux MODÉRATEURS depuis
+  `censored` et restaure les états de publication d'origine ;
+  `ignore()` retire `'reported'` et traite les rapports ; le
+  référentiel des motifs est fermé (clé inconnue → KeyError). Faits de
+  harnais consignés : l'auteur du contenu doit être une vraie Person
+  (`user_locale`), et l'import du module de behaviors exige l'amorçage
+  du cycle historique (`import novaideo.views` d'abord).
