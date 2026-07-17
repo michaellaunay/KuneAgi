@@ -323,3 +323,19 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   dans la signature des composeurs, `api` est la *vue* appelante —
   seul `params(name)` est consommé. 7 tests, verts au premier run
   grâce à la méthode sonder-puis-épingler.
+
+- **T2a élargi : le cycle de vie a ouvert six familles de plus** —
+  piloter la publication, un second membre (alice) et un vrai
+  commentaire/une vraie question a dévoilé ce que le sandbox neuf
+  cachait. Épinglés : les ensembles d'actions EXACTS dépendant du rôle
+  (un membre simple gagne support/oppose ; seul l'auteur du
+  commentaire a edit/remove) ; la famille `footer_action`
+  (comment/present : titres, icônes, compteurs d'items, et
+  l'identifiant de composant bâti sur l'oid de L'ACTION — pas du
+  canal, comme une première dérivation fausse l'a enseigné) ; la
+  famille `support_action` (alertes interpolées au titre,
+  `counters-to-update: mysupports`) ; `select` minimal ; le quatuor
+  commentmanagement (edit porte `status`, pin rejoint la famille
+  redirect, respond compte 1) ; le flux question (creat → ensemble de
+  9 getters, answer/archive en famille redirect). 13 tests dans le
+  module ; suite complète **78/78** verte.

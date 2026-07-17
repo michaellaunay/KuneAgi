@@ -300,3 +300,17 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   pinned: in the composers' signature `api` is the calling *view* —
   only `params(name)` is consumed. 7 tests, first run green thanks to
   the probe-then-pin method.
+
+- **T2a widened: the lifecycle unlocked six more families** — driving
+  publish, a second member (alice) and a real comment/question opened
+  what the fresh sandbox hid. Pinned: the exact ROLE-DEPENDENT action
+  sets (a plain member additionally gets support/oppose; only the
+  comment's author gets edit/remove); the `footer_action` family
+  (comment/present: titles, icons, item counters, and the component id
+  built on the ACTION's own oid — not the channel's, as a first wrong
+  derivation taught); the `support_action` family (title-interpolated
+  alerts, `counters-to-update: mysupports`); minimal `select`; the
+  commentmanagement quartet (edit carries `status`, pin joins the
+  redirect family, respond counts 1); the question flow (creat →
+  9-getter set, answer/archive in the redirect family). 13 tests in
+  the module; full suite **78/78** green.
