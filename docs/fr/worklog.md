@@ -372,3 +372,21 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   (KeyError sinon), alerte, et effondre les gardes (membres : ensemble
   vide ; admin : le quintette avec `delquestion` qui apparaît). Suite
   complète **87/87** verte.
+
+- **T4b : le cycle de vie de la personne est épinglé** — le cœur
+  sécurité d'`user_management` (885 instructions de behaviors,
+  jusqu'ici sans test) atteint **50 %** par 9 tests de niveau behavior
+  (content/person.py 47 %) ; suite complète **96/96** verte. Contrats
+  épinglés : un membre neuf est `['active']` avec
+  `['Member', 'Owner']` ; gardes exactes (les extras admin incluent
+  `discuss` — on ne discute pas avec soi-même) ; `deactivate` effondre
+  les gardes au quatuor `{seehistory, activate, see, see_notations}`
+  et `activate` restaure ; `assign_roles` EXIGE `roles` et REMPLACE
+  l'ensemble assignable (Member disparaît, la relation Owner est
+  préservée) ; `Edit.start` exige le mapping IMBRIQUÉ
+  `change_password` — le mode sans-changement garde le mot de passe
+  mais tamponne `modified_at`, le mode changement avec le mot de passe
+  courant correct le bascule ; `get_api_token` exige le mot de passe
+  et pose un jeton de 32 caractères derrière un HTTPFound ; `quit` est
+  une DEMANDE, pas l'acte (l'état reste `['active']` jusqu'à la
+  confirmation par courriel).

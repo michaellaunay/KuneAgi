@@ -345,3 +345,20 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   (KeyError without), alerts, and collapses the gates (members: empty
   set; admin: the quintet with `delquestion` appearing). Full suite
   **87/87** green.
+
+- **T4b: the person lifecycle is pinned** — the security core of
+  `user_management` (885 behaviour statements, previously untested)
+  reaches **50 %** through 9 behaviour-level tests (content/person.py
+  47 %); full suite **96/96** green. Pinned contracts: a fresh member
+  is `['active']` with `['Member', 'Owner']`; exact gates (the admin
+  extras include `discuss` — one cannot discuss with oneself);
+  `deactivate` collapses the gates to the quartet
+  `{seehistory, activate, see, see_notations}` and `activate`
+  restores; `assign_roles` REQUIRES `roles` and REPLACES the
+  assignable set (Member disappears, the Owner relation is
+  preserved); `Edit.start` requires the NESTED `change_password`
+  mapping — no-change keeps the password yet bumps `modified_at`,
+  change mode with the correct current password switches it;
+  `get_api_token` requires the password and installs a 32-character
+  token behind an HTTPFound; `quit` is a REQUEST, not the act (the
+  state stays `['active']` until the mailed confirmation).
