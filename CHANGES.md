@@ -1,6 +1,31 @@
 # Changelog
 
 ## Unreleased
+### Unit-test campaign, first batches — 2026-07-16
+- The suite grows from 29 to 78 tests, all green on BOTH stacks:
+  T1 pins the 2006 French dates parser (16 tests — including the
+  sharpened header bug: both boundary days escape the « sauf le … »
+  filter); T1b pins the pure vein of `utilities/util` (18 tests) and
+  the two pure `pseudo_react` helpers; T2a pins the `pseudo_react`
+  metadata composers functionally (13 tests — dispatch registries,
+  payload families, exact role-dependent action sets).
+- Coverage: french_dates_parser 16 % → 57 %, ical_date_utility
+  18 % → 41 %, utilities/util 22 % → 32 %, pseudo_react 16 % → 26 %.
+
+### CI repair — 2026-07-16
+- golden-master (red since M4): `graphql-wsgi` returns to the requires
+  **conditionally** (`sys.version_info < (3,7)`) so the legacy
+  buildout finds its era egg again; the modern stack keeps installing
+  it from source.
+- py312-tests (never green before): every pip line now runs under
+  `constraints-modern.txt` (upstream drift caged — substanced
+  1.0.post1 pulling pyramid 2.1); the era graphene stack is installed
+  explicitly (promise stays on the era pin 2.0.2 and
+  `tools/patch_graphql1_py312.py` ports it too); `graphql-wsgi` is
+  requested by bare name (the constraint carries the pinned URL); the
+  porting tool is located via `sysconfig` without importing the
+  not-yet-ported packages; `lxml` becomes a declared requirement.
+
 
 ### Phase 3 / M4 — 2026-07-16 (Python 3.12)
 

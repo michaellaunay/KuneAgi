@@ -2,6 +2,16 @@
 
 *Adopted 2026-07-16, the day the golden master was certified (29/29 on the rebuilt 2017 stack). Every step of this plan is measured against that suite. French version: [`../fr/phase3-porting-plan.md`](../fr/phase3-porting-plan.md).*
 
+> **STATUS: EXECUTED — 2026-07-16.** M0→M5 complete in one campaign:
+> M1 dace 88/88 on 3.12 (asyncio reactor, step A), M2 pontus (deform 3),
+> M3 daceui (its first test suite), M4 the golden-master suite green on
+> 3.12 with legacy still green (acceptance met), M5 a full migration
+> rehearsal on a decrypted copy of a real production base
+> (79 269 records, 381 classes, zero broken — REHEARSAL PASSED, see
+> [`m5-migration-rehearsal.md`](m5-migration-rehearsal.md)). The plan
+> below is kept as adopted; execution details live in the
+> [worklog](worklog.md).
+
 ## 1. Goal and non-negotiables
 
 Bring the whole stack — `dace`, `pontus`, `daceui`, `novaideo`/KuneAgi — to **Python 3.12** on maintained dependencies, with the same behaviour.

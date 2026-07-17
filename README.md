@@ -2,10 +2,15 @@
 
 [![golden-master](https://github.com/michaellaunay/KuneAgi/actions/workflows/golden-master.yml/badge.svg)](https://github.com/michaellaunay/KuneAgi/actions/workflows/golden-master.yml)
 
-**Golden master certified (2026-07):** the full 2017 stack rebuilds from
-scratch and the test suite runs **29/29 green** — the behavioural
-reference every modernisation step is measured against
-(see [`docs/en/worklog.md`](docs/en/worklog.md)).
+**Golden master certified, port executed (2026-07):** the full 2017
+stack rebuilds from scratch and its certified suite stays green — and
+the same working tree now runs on **Python 3.12** (phase 3, milestones
+M0→M5 complete, including a migration rehearsal on a real production
+copy). The suite has since grown from 29 to **78 tests** through a
+characterisation campaign; both CI pipelines (legacy golden master and
+`py312-tests`) are green on every push
+(see [`docs/en/worklog.md`](docs/en/worklog.md) and
+[`docs/en/phase3-porting-plan.md`](docs/en/phase3-porting-plan.md)).
 
 KuneAgi is a free (AGPL) participatory-innovation and cooperative-governance platform, a variant of [Nova-Ideo](https://github.com/ecreall/nova-ideo) — the merger of the ideas box and the collaborative portal. Members post ideas and questions, organise idea challenges, form working groups that co-write proposals through short timeboxed iterations (wiki, validation or amendment modes), vote using majority judgment, and support or reject published content with a limited number of tokens. KuneAgi extends this base with cooperative-governance features (ballots, citizenship processes) and German translations.
 
@@ -17,7 +22,12 @@ This repository is a **maintained fork** of [`ecreall/KuneAgi`](https://github.c
 
 Intellectual property: the KuneAgi-specific developments are copyright **Cosmopolitical.coop** (rights transferred by Laurent Zibell); the underlying Nova-Ideo base is copyright **Logikascium** (Ecréall's intellectual property, acquired in 2024). The whole remains under the **AGPL v3+**, unchanged.
 
-The `master` branch currently reflects the **legacy state** of the application (Python 3.6-era stack); see the [roadmap](#roadmap--planned-updates) below and `CHANGES.md`.
+The `master` branch is **dual-stack**: the certified legacy container
+(Python 3.6-era buildout) and the modern Python 3.12 harness
+(`tox.ini`, `constraints-modern.txt`, `tools/bootstrap-modern.sh`)
+live in the same tree and are both exercised by the CI on every push;
+see [`docs/en/modern-harness.md`](docs/en/modern-harness.md), the
+[roadmap](#roadmap--planned-updates) below and `CHANGES.md`.
 
 ## Translations
 

@@ -32,3 +32,26 @@ graphene-1-era; the tool ports the installed era stack — idempotent).
 
 The legacy twin is unchanged: `./run.sh test -s novaideo` runs the
 certified 2017 container. Both must stay green.
+
+## Hardening (CI repair, 2026-07-16)
+
+A cold resolver on the runners exposed what long-lived venvs masked;
+the install discipline is now:
+
+- **every** pip line runs under `constraints-modern.txt` (upstream
+  drift caged — e.g. substanced `1.0.post1` pulling pyramid 2.1);
+- `graphql-wsgi` is requested **by bare name**: the constraint carries
+  the pinned source URL (requesting the URL directly conflicts with
+  the sha-pinned constraint);
+- the era graphene stack is installed explicitly
+  (`graphene==1.4.2 graphql-core==1.1 graphql-relay==0.4.5`,
+  promise on its era pin `2.0.2`), then
+  `tools/patch_graphql1_py312.py` ports it **in place — promise
+  included**;
+- the packages to port are located through `sysconfig` **without
+  importing them** (importing crashes before the port: the bootstrap
+  paradox);
+- `lxml` is a declared requirement of `novaideo` (bs4's parser);
+- on the legacy side, `graphql-wsgi` sits in the requires
+  **conditionally** (`sys.version_info < (3,7)`): that requirement is
+  how the buildout finds the era egg in its cache.

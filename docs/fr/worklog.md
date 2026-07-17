@@ -339,3 +339,13 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   redirect, respond compte 1) ; le flux question (creat → ensemble de
   9 getters, answer/archive en famille redirect). 13 tests dans le
   module ; suite complète **78/78** verte.
+
+- **Rafraîchissement documentaire (post-phase 3, post-campagne).** Le
+  README énonce la réalité bi-pile (legacy certifié + Python 3.12 dans
+  le même arbre, 78 tests, deux CI vertes) ; CHANGES consolide la
+  réparation CI et les premiers lots de la campagne de tests ; le plan
+  de portage porte un bandeau EXÉCUTÉ (M0→M5, répétition réussie) ; le
+  document du harnais moderne gagne la section de durcissement
+  post-réparation (contraintes partout, graphql-wsgi par nom nu, trio
+  graphene d'époque, localisation sysconfig, lxml déclaré, requirement
+  legacy conditionnel).

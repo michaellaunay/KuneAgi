@@ -2,6 +2,17 @@
 
 *Adopté le 16/07/2026, jour de la certification du golden master (29/29 sur la pile 2017 reconstruite). Chaque étape de ce plan se mesure contre cette suite. English version: [`../en/phase3-porting-plan.md`](../en/phase3-porting-plan.md).*
 
+> **STATUT : EXÉCUTÉ — 16/07/2026.** M0→M5 accomplis en une campagne :
+> M1 dace 88/88 sur 3.12 (réacteur asyncio, étape A), M2 pontus
+> (deform 3), M3 daceui (sa première suite de tests), M4 la suite du
+> golden master verte sur 3.12 avec le legacy toujours vert
+> (acceptation atteinte), M5 une répétition de migration complète sur
+> copie déchiffrée d'une vraie base de production (79 269
+> enregistrements, 381 classes, zéro broken — REHEARSAL PASSED, voir
+> [`m5-migration-rehearsal.md`](m5-migration-rehearsal.md)). Le plan
+> ci-dessous est conservé tel qu'adopté ; le détail d'exécution vit
+> dans le [fil de l'eau](worklog.md).
+
 ## 1. Objectif et non-négociables
 
 Porter toute la pile — `dace`, `pontus`, `daceui`, `novaideo`/KuneAgi — sur **Python 3.12** avec des dépendances maintenues, à comportement identique.

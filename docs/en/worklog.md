@@ -314,3 +314,12 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   redirect family, respond counts 1); the question flow (creat →
   9-getter set, answer/archive in the redirect family). 13 tests in
   the module; full suite **78/78** green.
+
+- **Documentation refresh (post-phase-3, post-campaign).** README now
+  states the dual-stack reality (certified legacy + Python 3.12 in the
+  same tree, 78 tests, both CIs green); CHANGES consolidates the CI
+  repair and the first test-campaign batches; the porting plan carries
+  an EXECUTED banner (M0→M5, rehearsal passed); the modern-harness
+  document gains the post-repair hardening section (constraints
+  everywhere, bare-name graphql-wsgi, era graphene trio, sysconfig
+  locate, declared lxml, conditional legacy requirement).
