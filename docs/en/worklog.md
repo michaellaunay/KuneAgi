@@ -420,3 +420,24 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   reality and the five pinned families; CHANGES consolidates the
   process-family batches; the modern-harness document gains the
   behaviour-level testing idioms settled by the campaign.
+
+- **The `contentreportdecision` ballot is conducted to its verdict** —
+  the deepening of the report cycle: 6 tests, full suite **122/122**
+  green (now certified in two halves — historical trunk + first
+  batches, then the six lifecycle suites — the single run has outgrown
+  one invocation). Coverage of the ballot machinery: referendum
+  behaviours **100 %**, content_ballot definition 99 %,
+  ballot_processes 83 %, reports behaviours **85 % → 91 %**. Pinned:
+  the elector draw excludes ONLY the content author (the reporter IS a
+  juror), each elector granted `('LocalModerator', content)` with one
+  Referendum ballot attached; the `referendumprocess.vote` action
+  appears on the content for electors only, disappears once cast, and
+  requires the `vote` key; majority AGAINST → censor (`['censored']`,
+  reports processed), majority FOR → ignore (publication untouched);
+  either verdict revokes the LocalModerator grants and a finished
+  valid ballot BLOCKS re-reporting — the second half of the
+  anti-re-report contract. Architecture fact recorded honestly: the
+  decision node completes at the BALLOT DEADLINE in production (the
+  vote sub-process is timer-closed by the custom `SubProcess.stop`);
+  the tests invoke the node's `after_execution` after the last vote —
+  the very code path the deadline runs.

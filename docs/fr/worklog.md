@@ -452,3 +452,26 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   des 116 tests et les cinq familles épinglées ; CHANGES consolide les
   lots familles-de-processus ; le document du harnais moderne gagne
   les idiomes de tests de niveau behavior fixés par la campagne.
+
+- **Le scrutin `contentreportdecision` est conduit jusqu'à son
+  verdict** — l'approfondissement du cycle de signalement : 6 tests,
+  suite complète **122/122** verte (désormais certifiée en deux
+  moitiés — tronc historique + premiers lots, puis les six suites de
+  cycles de vie — la passe unique a dépassé une invocation).
+  Couverture de la machinerie de scrutin : behaviors du référendum
+  **100 %**, définition content_ballot 99 %, ballot_processes 83 %,
+  behaviors des reports **85 % → 91 %**. Épinglés : le tirage des
+  électeurs n'exclut QUE l'auteur du contenu (la signaleuse EST
+  jurée), chaque électeur reçoit `('LocalModerator', contenu)` et un
+  scrutin Référendum est attaché ; l'action `referendumprocess.vote`
+  apparaît sur le contenu pour les seuls électeurs, disparaît une fois
+  le bulletin déposé, et exige la clé `vote` ; majorité CONTRE →
+  censure (`['censored']`, rapports traités), majorité POUR → ignore
+  (publication intacte) ; chaque verdict révoque les rôles
+  LocalModerator et un scrutin fini valide BLOQUE le re-signalement —
+  la seconde moitié du contrat anti-récidive. Fait d'architecture
+  consigné honnêtement : le nœud de décision se termine à l'ÉCHÉANCE
+  du scrutin en production (le sous-processus de vote est fermé par
+  minuterie via le `SubProcess.stop` sur mesure) ; les tests invoquent
+  l'`after_execution` du nœud après le dernier bulletin — le chemin de
+  code exact que l'échéance exécute.
