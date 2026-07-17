@@ -323,3 +323,9 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   document gains the post-repair hardening section (constraints
   everywhere, bare-name graphql-wsgi, era graphene trio, sysconfig
   locate, declared lxml, conditional legacy requirement).
+
+- **The production-migration runbook joins the repository** (its code
+  companions — the wake-up template and the SMS sink — were already
+  pushed; the ini header's reference now resolves). Bilingual, gated
+  on REHEARSAL PASSED, wake-up profile first, aggregate-only
+  observation, rollback by construction.

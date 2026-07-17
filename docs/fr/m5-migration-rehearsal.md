@@ -95,3 +95,5 @@ configuration de chiffrement a dérivé à une période — et les blobs
 (pièces jointes, avatars) ne sont jamais chiffrés par ce wrapper. Un
 audit de la configuration de chiffrement de la production est
 recommandé.
+
+*Étape suivante une fois la répétition passée : le runbook de production — [`production-migration.md`](production-migration.md).*

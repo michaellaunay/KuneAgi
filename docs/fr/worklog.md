@@ -349,3 +349,9 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   post-réparation (contraintes partout, graphql-wsgi par nom nu, trio
   graphene d'époque, localisation sysconfig, lxml déclaré, requirement
   legacy conditionnel).
+
+- **Le runbook de migration de production rejoint le dépôt** (ses
+  compagnons de code — gabarit de réveil et puits SMS — étaient déjà
+  poussés ; la référence de l'en-tête du ini résout désormais).
+  Bilingue, conditionné à REHEARSAL PASSED, profil de réveil d'abord,
+  observation en agrégats seulement, rollback par construction.

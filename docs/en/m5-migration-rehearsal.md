@@ -89,3 +89,5 @@ encrypted records against 14,282 plain ones** — the encryption
 configuration drifted at some period — and blobs (attachments, avatars)
 are never encrypted by this wrapper. An audit of the production
 encryption setup is advisable.
+
+*Next step once the rehearsal has passed: the production runbook — [`production-migration.md`](production-migration.md).*
