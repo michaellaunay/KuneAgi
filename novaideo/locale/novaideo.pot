@@ -5060,7 +5060,7 @@ msgstr ""
 
 #: ./novaideo/views/user_management/see_notations.py:25
 #, python-format
-msgid "${nember} marks found"
+msgid "${number} marks found"
 msgstr ""
 
 #: ./novaideo/views/user_management/see_notations.py:35

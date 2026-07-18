@@ -505,3 +505,11 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   d'entrée s'achève jusqu'à la Person
   (`test_no_electors_fallback_accepts_at_once` garde la réparation).
   Suite complète **128/128** (deux moitiés : 78 + 50).
+
+- **Fenêtre des renommages.** Les appels `pseudo_react` passent à
+  l'`action_informations` de daceui ; `${nember}` devient `${number}`
+  dans `see_notations` et à travers les catalogues (pot, fr, de — le
+  `.mo` fr compilé patché en place par remplacement à longueur égale,
+  le nouveau msgid vérifié résolvant sa traduction) ;
+  `get_random_users(nember)` devient `number`. Suite complète 128/128
+  (deux moitiés : 78 + 50).

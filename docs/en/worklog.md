@@ -468,3 +468,11 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   now accepts outright and the entry path completes to the Person
   (`test_no_electors_fallback_accepts_at_once` guards it). Full suite
   **128/128** (two halves: 78 + 50).
+
+- **Rename window.** The `pseudo_react` callers move to daceui's
+  `action_informations`; `${nember}` becomes `${number}` in
+  `see_notations` and across the catalogues (pot, fr, de — the
+  compiled fr `.mo` patched in place with a same-length replacement,
+  the new msgid verified resolving to its translation);
+  `get_random_users(nember)` becomes `number`. Full suite 128/128
+  (two halves: 78 + 50).

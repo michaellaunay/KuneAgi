@@ -5558,8 +5558,8 @@ msgstr "Eine Markierung gefunden"
 
 #: novaideo/views/user_management/see_notations.py:25
 #, fuzzy, python-format
-msgid "${nember} marks found"
-msgstr "${nember} Zeichen gefunden"
+msgid "${number} marks found"
+msgstr "${number} Zeichen gefunden"
 
 #: novaideo/views/user_management/see_notations.py:35
 #: novaideo/views/member_notation_management/note.py:76

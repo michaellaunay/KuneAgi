@@ -22,7 +22,7 @@ from novaideo import _
 CONTENTS_MESSAGES = {
     '0': _(u"""No mark found"""),
     '1': _(u"""One mark found"""),
-    '*': _(u"""${nember} marks found""")
+    '*': _(u"""${number} marks found""")
 }
 
 
@@ -61,7 +61,7 @@ class SeeNotationsView(BasicView):
             index = '*'
 
         self.title = _(CONTENTS_MESSAGES[index],
-                       mapping={'nember': len_result})
+                       mapping={'number': len_result})
         values = {
             'notes': notes,
             'member': self.context,

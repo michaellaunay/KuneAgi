@@ -425,7 +425,7 @@ def get_subscribtion_metadata(action, request, context, api, **kwargs):
         opposit_action = opposit_actions[0]
         dace_ui_api = get_current_registry().getUtility(
             IDaceUIAPI, 'dace_ui_api')
-        opposit_action_inf = dace_ui_api.action_infomrations(
+        opposit_action_inf = dace_ui_api.action_informations(
             opposit_action, context, request)
         actionoid = str(getattr(action, '__oid__', 'entityoid'))
         oppositactionoid = str(getattr(
@@ -484,7 +484,7 @@ def get_selection_metadata(action, request, context, api, **kwargs):
         opposit_action = opposit_actions[0]
         dace_ui_api = get_current_registry().getUtility(
             IDaceUIAPI, 'dace_ui_api')
-        opposit_action_inf = dace_ui_api.action_infomrations(
+        opposit_action_inf = dace_ui_api.action_informations(
             opposit_action, context, request)
         actionoid = str(getattr(action, '__oid__', 'entityoid'))
         oppositactionoid = str(getattr(

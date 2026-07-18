@@ -5156,8 +5156,8 @@ msgstr "Une note trouvée"
 # python-format
 #: novaideo/views/user_management/see_notations.py:25
 #, python-format
-msgid "${nember} marks found"
-msgstr "${nember} notes trouvées"
+msgid "${number} marks found"
+msgstr "${number} notes trouvées"
 
 #: novaideo/views/user_management/see_notations.py:35
 #: novaideo/views/member_notation_management/note.py:76

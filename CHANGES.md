@@ -1,6 +1,16 @@
 # Changelog
 
 ## Unreleased
+### Rename — 2026-07-17
+- The historical typos leave the code (nothing persisted): the
+  ``pseudo_react`` callers move to daceui's ``action_informations``
+  (the typo alias remains on the daceui side — apply the daceui rename
+  first); the ``${nember}`` i18n variable becomes ``${number}`` in
+  ``see_notations`` AND across the catalogues (pot, fr, de — the
+  compiled fr ``.mo`` patched in place, same-length replacement, new
+  msgid verified resolving); ``get_random_users(nember)`` becomes
+  ``number`` (all callers positional).
+
 ### Fix — 2026-07-17: latent bug #4 (moderated-registration fallback)
 - The no-electors fallback of ``moderate_registration`` could never
   complete: it forced ``['accepted']`` and sent the confirmation, then
