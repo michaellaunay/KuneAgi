@@ -482,3 +482,11 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   and one regression — all fixed and guarded); CHANGES consolidates
   the deepening; modern-harness gains the ballot-conduct idiom and
   the two-halves suite doctrine.
+
+- **Production runbook updated to the latest line.** The target is now
+  PINNED (four shas recorded, both CI floors green, the 128-test suite
+  passing in its two halves on the fresh build — before any data); the
+  admin-login gate is documented as the era-hash proof (the
+  password-API fix honours both generations); and a new step 8 ties
+  the operational event to the release milestone (v2.0.0 tags on the
+  deployed shas, then the ecreall merge-backs).

@@ -45,6 +45,16 @@ Les artefacts d'appui référencés ici sont dans le dépôt :
    cd KuneAgi && tools/bootstrap-modern.sh
    ```
 
+   **Épingler la cible.** Consigner les quatre shas de commit au
+   journal de migration — la construction n'est une cible valide que
+   si les deux étages de CI sont verts à ces commits ET si la suite de
+   caractérisation complète (128 tests) passe localement sur la
+   construction fraîche, en ses deux moitiés (les filtres `-m` exacts
+   sont dans [`modern-harness.md`](modern-harness.md)). Cela prouve la
+   cible AVANT toute donnée de production. Après le merge-back vers
+   l'organisation `ecreall`, substituer les URLs `ecreall/...` — les
+   histoires avancent en fast-forward, les arbres sont identiques.
+
 2. `cp etc/production-modern.ini.example etc/production.ini`, puis
    éditer : secrets, URL publique, `mail.default_sender`, langues.
    Garder `tm.annotate_user = false` (non optionnel sur la pile
@@ -74,7 +84,11 @@ blobs sous `var/blobstorage/` ; créer `var/mail-out/` et
 
 ## 5. Portes de vérification
 
-- L'application boote et sert ; le login admin fonctionne.
+- L'application boote et sert ; le login admin fonctionne — cette
+  porte prouve aussi que les hachés de mots de passe D'ÉPOQUE
+  (`$2a`, cryptacular) se vérifient sous la pile moderne : le
+  correctif d'API mot de passe de la campagne honore les deux
+  générations (compatibles bcrypt).
 - Le recensement en agrégats colle aux chiffres de répétition pour
   cette base (enregistrements, classes, zéro broken).
 - Les requêtes de catalogue répondent ; les listes clés se rendent.
@@ -98,3 +112,21 @@ Tant que la bascule n'est pas validée : rebasculer DNS/proxy vers
 l'instance legacy — elle n'a jamais été écrite. Conserver la
 sauvegarde repozo et les copies extraites jusqu'à ce que la nouvelle
 instance ait survécu à son premier vrai cycle de production.
+
+## 8. Jalon de version (après coup)
+
+Survivre au premier vrai cycle de production EST l'événement de
+version. Ensuite :
+
+1. Taguer les quatre dépôts aux shas déployés :
+
+   ```bash
+   for r in dace pontus daceui KuneAgi; do
+     (cd $r && git tag -a v2.0.0 -m "First production cycle survived on the modern stack" && git push origin v2.0.0)
+   done
+   ```
+
+2. Exécuter les merge-backs vers l'organisation `ecreall` : simples
+   pushes fast-forward pour les trois bibliothèques, coutures
+   d'adoption (`-s ours`, tip historique en parent) pour KuneAgi et
+   nova-ideo — une seule annonce cohérente pour les deux foyers.

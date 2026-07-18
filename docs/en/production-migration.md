@@ -45,6 +45,16 @@ The supporting artifacts referenced here are in the repository:
    cd KuneAgi && tools/bootstrap-modern.sh
    ```
 
+   **Pin the target.** Record the four commit shas in the migration
+   journal — the build is a valid target only when both CI floors are
+   green at those commits AND the full characterisation suite (128
+   tests) passes locally on the fresh build, in its two halves (the
+   exact `-m` filters are in
+   [`modern-harness.md`](modern-harness.md)). This proves the target
+   BEFORE any production data is involved. After the merge-back to the
+   `ecreall` organisation, substitute the `ecreall/...` URLs — the
+   histories fast-forward, the trees are identical.
+
 2. `cp etc/production-modern.ini.example etc/production.ini`, then
    edit: secrets, public URL, `mail.default_sender`, languages. Keep
    `tm.annotate_user = false` (not optional on the modern stack) and
@@ -73,7 +83,10 @@ blobs under `var/blobstorage/`; create `var/mail-out/` and
 
 ## 5. Verification gates
 
-- The application boots and serves; admin login works.
+- The application boots and serves; admin login works — this gate
+  also proves that the ERA password hashes (`$2a`, cryptacular)
+  verify under the modern stack: the campaign's password-API fix
+  honours both generations (bcrypt-compatible).
 - Aggregate census matches the rehearsal figures for this base
   (records, classes, zero broken).
 - Catalog queries answer; key listings render.
@@ -96,3 +109,20 @@ Until the switch is validated: flip DNS/proxy back to the legacy
 instance — it was never written to. Keep the repozo backup and the
 extracted copies until the new instance has survived its first real
 production cycle.
+
+## 8. Release milestone (aftermath)
+
+Surviving the first real production cycle IS the release event. Then:
+
+1. Tag the four repositories at the deployed shas:
+
+   ```bash
+   for r in dace pontus daceui KuneAgi; do
+     (cd $r && git tag -a v2.0.0 -m "First production cycle survived on the modern stack" && git push origin v2.0.0)
+   done
+   ```
+
+2. Execute the merge-backs to the `ecreall` organisation: plain
+   fast-forward pushes for the three libraries, the adoption merges
+   (`-s ours`, historical tip as parent) for KuneAgi and nova-ideo —
+   one coherent announcement for both homes.

@@ -520,3 +520,12 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   gardés) ; CHANGES consolide l'approfondissement ; le harnais
   moderne gagne l'idiome de conduite de scrutin et la doctrine de la
   suite en deux moitiés.
+
+- **Runbook de production mis au niveau de la dernière ligne.** La
+  cible est désormais ÉPINGLÉE (quatre shas consignés, deux étages de
+  CI verts, la suite de 128 tests passant en ses deux moitiés sur la
+  construction fraîche — avant toute donnée) ; la porte du login admin
+  est documentée comme preuve des hachés d'époque (le correctif d'API
+  mot de passe honore les deux générations) ; et une étape 8 relie
+  l'événement opérationnel au jalon de version (tags v2.0.0 aux shas
+  déployés, puis les merge-backs ecreall).
