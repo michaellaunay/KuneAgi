@@ -21,6 +21,22 @@
   accepts outright and the whole entry path completes. The pinning
   test was flipped in conscience and guards the repair.
 
+### Unit-test campaign, deepening — 2026-07-17
+- The suite grows from 116 to 128 tests: the `contentreportdecision`
+  ballot is CONDUCTED to its verdict (6 tests — elector draw excluding
+  only the author, per-elector `referendumprocess.vote` on the
+  content, majority-against → censor / majority-for → ignore, either
+  verdict revoking `LocalModerator` and blocking re-reporting;
+  referendum behaviours 100 %, reports behaviours 91 %), and the
+  `moderate_registration` variant is pinned (6 tests — the candidacy
+  judged before the door opens, refusal and elector silence both
+  removing it; user_management behaviours 61 %). The decision nodes
+  complete at the BALLOT DEADLINE in production; the tests invoke the
+  node's `after_execution` after the last vote — the very code path
+  the deadline runs.
+- The full suite is now certified in TWO HALVES (78 + 50): the single
+  run has outgrown one invocation — see the modern-harness document.
+
 ### Unit-test campaign, process-family batches — 2026-07-17
 - The suite grows from 78 to 116 tests, all green on BOTH stacks: the
   QUESTION lifecycle (9 tests — behaviours 81 %, the closing cascade

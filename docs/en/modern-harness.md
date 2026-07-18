@@ -82,3 +82,24 @@ when pinning new process families:
 - **Coverage**: measure with `--source=novaideo` (module form) on the
   single test module — pointing coverage at a process sub-package
   breaks collection; run the full suite bare, in its own invocation.
+
+### Conducting a ballot in a test
+
+The decision node of a moderation ballot completes at the BALLOT
+DEADLINE in production (the vote sub-process is timer-closed). After
+the last vote, invoke the node's completion directly — the very code
+path the deadline runs:
+
+    action = subject.ballot_processes[0].get_actions('start_ballot')[0]
+    action.after_execution(subject, request)
+
+Read the REAL electors from the ballot report (the draw is random and
+every member is in the urn — including freshly created ones).
+
+### Running the suite (two halves)
+
+The full run has outgrown one invocation; certify in two passes whose
+counts must sum:
+
+    zope.testrunner ... -m '!novaideo.tests.test_(question_lifecycle|user_lifecycle|invitation_lifecycle|registration_lifecycle|reports_lifecycle|ballot_conduct|moderate_registration)'
+    zope.testrunner ... -m 'novaideo.tests.test_(question_lifecycle|user_lifecycle|invitation_lifecycle|registration_lifecycle|reports_lifecycle|ballot_conduct|moderate_registration)'

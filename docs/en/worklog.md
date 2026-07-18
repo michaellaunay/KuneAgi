@@ -476,3 +476,9 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   the new msgid verified resolving to its translation);
   `get_random_users(nember)` becomes `number`. Full suite 128/128
   (two halves: 78 + 50).
+
+- **Documentation update (post-deepening).** README carries the final
+  campaign state (128 tests, both ballots conducted, four latent bugs
+  and one regression — all fixed and guarded); CHANGES consolidates
+  the deepening; modern-harness gains the ballot-conduct idiom and
+  the two-halves suite doctrine.

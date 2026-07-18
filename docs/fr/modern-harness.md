@@ -82,3 +82,26 @@ réutiliser pour épingler de nouvelles familles de processus :
 - **Couverture** : mesurer avec `--source=novaideo` (forme module) sur
   le seul module de tests — viser un sous-paquet de processus casse la
   collecte ; lancer la suite complète nue, dans sa propre invocation.
+
+### Conduire un scrutin dans un test
+
+Le nœud de décision d'un scrutin de modération se termine à
+l'ÉCHÉANCE en production (le sous-processus de vote est fermé par
+minuterie). Après le dernier bulletin, invoquer directement
+l'achèvement du nœud — le chemin de code exact que l'échéance
+exécute :
+
+    action = sujet.ballot_processes[0].get_actions('start_ballot')[0]
+    action.after_execution(sujet, request)
+
+Lire les électeurs RÉELS dans le report du scrutin (le tirage est
+aléatoire et tout membre est dans l'urne — y compris les fraîchement
+créés).
+
+### Lancer la suite (deux moitiés)
+
+La passe unique a dépassé une invocation ; certifier en deux passes
+dont les comptes doivent s'additionner :
+
+    zope.testrunner ... -m '!novaideo.tests.test_(question_lifecycle|user_lifecycle|invitation_lifecycle|registration_lifecycle|reports_lifecycle|ballot_conduct|moderate_registration)'
+    zope.testrunner ... -m 'novaideo.tests.test_(question_lifecycle|user_lifecycle|invitation_lifecycle|registration_lifecycle|reports_lifecycle|ballot_conduct|moderate_registration)'

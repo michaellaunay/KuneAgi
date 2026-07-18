@@ -513,3 +513,10 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   le nouveau msgid vérifié résolvant sa traduction) ;
   `get_random_users(nember)` devient `number`. Suite complète 128/128
   (deux moitiés : 78 + 50).
+
+- **Mise à jour documentaire (post-approfondissement).** Le README
+  porte l'état final de campagne (128 tests, les deux scrutins
+  conduits, quatre bugs latents et une régression — tous corrigés et
+  gardés) ; CHANGES consolide l'approfondissement ; le harnais
+  moderne gagne l'idiome de conduite de scrutin et la doctrine de la
+  suite en deux moitiés.
