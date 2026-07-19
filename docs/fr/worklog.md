@@ -529,3 +529,16 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   mot de passe honore les deux générations) ; et une étape 8 relie
   l'événement opérationnel au jalon de version (tags v2.0.0 aux shas
   déployés, puis les merge-backs ecreall).
+
+- **L'audit fondateur entre au dépôt (révision 5, bilingue).**
+  `docs/fr/audit.md` + `docs/en/audit.md` : le document du 13 juillet
+  est conservé intégralement — inventaire, architecture, constats,
+  registre des risques, plan, calendrier, le glossaire de 41 termes
+  pour le lecteur non informaticien — et chaque constat, risque et
+  phase porte désormais son statut d'exécution (résolu / contourné /
+  partiel / ouvert), avec un §4.7 nouveau sur les données de
+  production (recensement + dérive du chiffrement at-rest), un
+  neuvième risque, la note réalisé-vs-estimé, les prochaines actions,
+  et cinq termes de glossaire ajoutés en révision 5 (bi-pile, avance
+  rapide, couture d'adoption, répétition, test retourné en
+  conscience).

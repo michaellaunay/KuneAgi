@@ -490,3 +490,14 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   password-API fix honours both generations); and a new step 8 ties
   the operational event to the release milestone (v2.0.0 tags on the
   deployed shas, then the ecreall merge-backs).
+
+- **The founding audit enters the repository (revision 5,
+  bilingual).** `docs/en/audit.md` + `docs/fr/audit.md`: the 13 July
+  document is kept in full — inventory, architecture, findings, risk
+  register, plan, calendar, the 41-term glossary for the non-technical
+  reader — and every finding, risk and phase now carries its
+  execution status (resolved / bypassed / partial / open), with a new
+  §4.7 on the production data (census + at-rest encryption drift), a
+  ninth risk, the achieved-vs-estimated note, the next actions, and
+  five revision-5 glossary terms (dual-stack, fast-forward, adoption
+  merge, rehearsal, consciously flipped test).
