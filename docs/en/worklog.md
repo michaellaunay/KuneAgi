@@ -501,3 +501,14 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   ninth risk, the achieved-vs-estimated note, the next actions, and
   five revision-5 glossary terms (dual-stack, fast-forward, adoption
   merge, rehearsal, consciously flipped test).
+
+- **The 2021 presentation article enters the repository (bilingual,
+  with its twenty screenshots).** `docs/{en,fr}/presentation.md` is
+  the faithful markdown transcription of the edition-57 article (the
+  functional reference named by the audit), its twenty illustrations
+  extracted from the PDF under STABLE SEMANTIC NAMES
+  (`docs/images/presentation/fig-NN-<subject>`), each with its
+  original caption. `tools/docshots.py` (Playwright scaffold) makes
+  the figures regenerable against a running instance — same names, so
+  the documents update without a text edit; the SHOTS table is the
+  contract to refine on the first run.

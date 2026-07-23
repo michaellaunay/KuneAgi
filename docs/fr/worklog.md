@@ -542,3 +542,14 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   et cinq termes de glossaire ajoutés en révision 5 (bi-pile, avance
   rapide, couture d'adoption, répétition, test retourné en
   conscience).
+
+- **L'article de présentation de 2021 entre au dépôt (bilingue, avec
+  ses vingt captures).** `docs/{fr,en}/presentation.md` est la
+  transcription markdown fidèle de l'article édition 57 (la référence
+  fonctionnelle nommée par l'audit), ses vingt illustrations extraites
+  du PDF sous NOMS SÉMANTIQUES STABLES
+  (`docs/images/presentation/fig-NN-<sujet>`), chacune avec sa légende
+  d'origine. `tools/docshots.py` (échafaudage Playwright) rend les
+  figures régénérables contre une instance en marche — mêmes noms,
+  donc les documents se mettent à jour sans toucher au texte ; la
+  table SHOTS est le contrat à affiner au premier passage.
