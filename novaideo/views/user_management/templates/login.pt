@@ -27,6 +27,13 @@
                 >Forgot your password?</a>
          </p>
        </form>
+       <div class="text-center" style="margin-top: 12px;"
+            tal:condition="oidc_sso | nothing">
+         <a class="btn btn-default" href="${oidc_sso['url']}">
+           <span i18n:translate="">Log in with</span>
+           ${oidc_sso['title']}
+         </a>
+       </div>
 
         <div tal:condition="logins">
           <div class="or-logins" i18n:translate="" >Or</div>

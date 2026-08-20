@@ -553,3 +553,15 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   figures régénérables contre une instance en marche — mêmes noms,
   donc les documents se mettent à jour sans toucher au texte ; la
   table SHOTS est le contrat à affiner au premier passage.
+
+- **Authentification unique Keycloak.** `novaideo/oidc_sso.py` apporte
+  OpenID Connect (code d'autorisation) à KuneAgi pour les déploiements
+  AlirPunkto + Keycloak : découverte, state/nonce, validation des
+  claims et recoupement UserInfo, recherche par courriel via la
+  requête catalogue du formulaire de connexion, et provisionnement à
+  la première connexion calqué sur `ConfirmRegistration` — pseudonyme
+  d'abord (`preferred_username`, le pseudonyme AlirPunkto),
+  Member+Owner, actif, mot de passe local indevinable via
+  `set_password`. Inerte sans configuration ; bouton gardé sur la page
+  de connexion ; neuf tests (suite 128 -> 137, passe A 78 -> 87) ;
+  guide bilingue `docs/{fr,en}/sso-keycloak.md`.

@@ -512,3 +512,14 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   the figures regenerable against a running instance — same names, so
   the documents update without a text edit; the SHOTS table is the
   contract to refine on the first run.
+
+- **Keycloak single sign-on.** `novaideo/oidc_sso.py` brings OpenID
+  Connect (authorization code) to KuneAgi for the AlirPunkto +
+  Keycloak deployments: discovery, state/nonce, claim validation and
+  UserInfo cross-check, e-mail lookup through the login form's own
+  catalog query, and first-login provisioning that mirrors
+  `ConfirmRegistration` — pseudonym-first (`preferred_username`, the
+  AlirPunkto pseudonym), Member+Owner, active, unusable local
+  password via `set_password`. Inert unless configured; guarded
+  button on the login page; nine tests (suite 128 -> 137, pass A
+  78 -> 87); bilingual guide `docs/{en,fr}/sso-keycloak.md`.

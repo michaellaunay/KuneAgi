@@ -30,6 +30,7 @@ from novaideo.content.processes.user_management.behaviors import LogIn
 from novaideo.content.novaideo_application import NovaIdeoApplication
 from novaideo.utilities.util import generate_navbars
 from novaideo.connectors.core import CONNECTOR_PROCESSES
+from novaideo.oidc_sso import login_button as oidc_sso_login_button
 
 
 @view_config(
@@ -130,6 +131,7 @@ class LoginView(BasicView):
             log.warning(e)
 
         values = dict(
+            oidc_sso=oidc_sso_login_button(request),
             url=request.resource_url(request.virtual_root, 'login'),
             came_from=came_from,
             login=login,

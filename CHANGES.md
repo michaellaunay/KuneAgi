@@ -1,6 +1,16 @@
 # Changelog
 
 ## Unreleased
+### Keycloak single sign-on (OpenID Connect) — 2026-08-15
+- Members federated by Keycloak — created by AlirPunkto in the
+  cooperative deployments — sign in through the standard
+  authorization-code flow: ``novaideo/oidc_sso.py``, two anonymous
+  routes (``/oidcsso/login``, ``/oidcsso/callback``), a guarded
+  button on the login page, first-login provisioning that mirrors
+  ``ConfirmRegistration`` (pseudonym-first naming, Member+Owner,
+  active), inert unless the ``oidc_sso.*`` settings are present.
+  Nine characterisation tests pin the contract (suite 128 -> 137);
+  setup guide ``docs/en/sso-keycloak.md``.
 ### Rename — 2026-07-17
 - The historical typos leave the code (nothing persisted): the
   ``pseudo_react`` callers move to daceui's ``action_informations``
