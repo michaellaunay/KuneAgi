@@ -523,3 +523,19 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   password via `set_password`. Inert unless configured; guarded
   button on the login page; nine tests (suite 128 -> 137, pass A
   78 -> 87); bilingual guide `docs/{en,fr}/sso-keycloak.md`.
+
+- **The production migration ran on the real 2026-08-20 freeze** (a
+  server-directory archive). Target pinned and proven first (137/137
+  on a fresh build at b96c848 + the trio heads). The at-rest
+  "encryption" was unmasked as a pass-through: ``enabled = false``
+  since 2021 wires the ``TrivialEncryptionUtility``, so the 99,141
+  ``.e`` records are tags over zlib (59,507) or raw pickles (39,634)
+  and no key ever existed - conversion strips the envelopes, 84,419
+  live objects restored with preserved tids (blobstorage pairs). M5
+  rehearsal on that base: evolve NO-OP, 61 indexes stable, 79,155
+  live objects / 381 classes / 0 broken. Era-hash gate: 26/26 ``$2a``
+  verify cleanly. Wake-up verdict: the reactor engages, re-arms the
+  three waiting timers - all future (2026-08-22 x2, 2026-11-11) - so
+  zero outbound is the correct drain; the 16 unprepared catch events
+  are historical leftovers. Web gates green (home and login HTTP 200).
+  Fixes recorded in CHANGES; suite recertified 137/137.

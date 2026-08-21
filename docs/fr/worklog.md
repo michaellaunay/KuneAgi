@@ -565,3 +565,21 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   `set_password`. Inerte sans configuration ; bouton gardé sur la page
   de connexion ; neuf tests (suite 128 -> 137, passe A 78 -> 87) ;
   guide bilingue `docs/{fr,en}/sso-keycloak.md`.
+
+- **La migration de production a tourné sur le vrai gel du 20/08/2026**
+  (archive du répertoire serveur). Cible épinglée et prouvée d'abord
+  (137/137 sur construction fraîche à b96c848 + têtes du trio). Le
+  « chiffrement » at-rest démasqué en passe-plat : ``enabled = false``
+  depuis 2021 branche la ``TrivialEncryptionUtility`` — les 99 141
+  enregistrements ``.e`` sont des étiquettes sur du zlib (59 507) ou
+  des pickles bruts (39 634), aucune clé n'a jamais existé ; la
+  conversion ôte les enveloppes : 84 419 objets vivants restaurés à
+  tids préservés (blobstorage appariable). Répétition M5 sur cette
+  base : évolution NO-OP, 61 index stables, 79 155 objets vivants /
+  381 classes / 0 cassé. Porte des hachés : 26/26 ``$2a`` se
+  vérifient proprement. Verdict du réveil : le réacteur s'engage,
+  réarme les trois minuteries en attente — toutes futures (22/08 ×2,
+  11/11/2026) — donc zéro sortant est le drainage correct ; les 16
+  événements non préparés sont des restes historiques. Portes web
+  vertes (accueil et connexion HTTP 200). Correctifs consignés au
+  CHANGES ; suite re-certifiée 137/137.

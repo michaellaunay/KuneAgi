@@ -1,6 +1,18 @@
 # Changelog
 
 ## Unreleased
+### Production wake-up fixes - 2026-08-21
+- The migration night proved the wake-up profile for real and fixed
+  what only a real boot could reveal: the mailer sink is installed by
+  ``main()`` through direct utility replacement (``novaideo.mail_debug``,
+  the ``testing.py`` pattern - including ``pyramid_mailer.debug``
+  conflicts with the one substanced pulls); the template mirrors the
+  legacy includes (``deform_treepy``, ``pyramid_retry``,
+  ``dace.wosystem`` for web workers - bare ``deform`` has no includeme
+  on deform 3, pontus installs it) and documents the two-process
+  topology (the system ini derives as ``start_system.bash`` does);
+  logging sections make the reactor re-arming visible at INFO.
+  Suite recertified 137/137 (87+50) with the fixes.
 ### Keycloak single sign-on (OpenID Connect) — 2026-08-15
 - Members federated by Keycloak — created by AlirPunkto in the
   cooperative deployments — sign in through the standard

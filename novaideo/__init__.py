@@ -13,6 +13,7 @@ from persistent.dict import PersistentDict
 from persistent.list import PersistentList
 
 from pyramid.config import Configurator
+from pyramid.settings import asbool
 from pyramid.exceptions import ConfigurationError
 from pyramid.i18n import TranslationStringFactory, default_locale_negotiator
 from pyramid.session import SignedCookieSessionFactory
@@ -1219,6 +1220,16 @@ def main(global_config, **settings):
     config.add_translation_dirs('colander:locale/')
     config.include('.graphql')
     config.include('.oidc_sso')
+    if asbool(config.registry.settings.get('novaideo.mail_debug', 'false')):
+        # Wake-up profile (production-migration runbook): outbound
+        # mail is written under mail.top_level_directory instead of
+        # reaching an SMTP host. Same override pattern as testing.py
+        # (the utility replaces the mailer substanced registered).
+        from pyramid_mailer.debug import DebugMailer
+        from pyramid_mailer.interfaces import IMailer
+        top_dir = config.registry.settings.get(
+            'novaideo.mail_out_dir', 'var/mail-out')
+        config.registry.registerUtility(DebugMailer(top_dir), IMailer)
     config.include("pyramid_sms")
     config.scan()
     config.add_static_view('novaideostatic',

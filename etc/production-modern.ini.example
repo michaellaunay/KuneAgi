@@ -20,21 +20,30 @@ mail.default_sender = kuneagi@example.org
 available_languages = en fr de
 
 pyramid.includes =
-    substanced
     pyramid_chameleon
     pyramid_layout
+    pyramid_mailer
+    pyramid_retry
     pyramid_tm
-    dace
+    substanced
+    dace.wosystem
     pontus
     daceui
+    deform_treepy
+
+retry.attempts = 3
+# deform 3 has no pyramid includeme: pontus installs it (M2 port).
+# Web workers run dace.wosystem (no reactor). The system process adds
+# dace.system — derive its ini exactly as start_system.bash does.
+
 # --- WAKE-UP PROFILE (first boots: outbound written to disk) --------
-    pyramid_mailer.debug
-# pyramid_mailer.debug writes every message under var/mail-out/:
-mail.debug_include_bcc = true
-mail.top_level_directory = %(here)s/../var/mail-out
+novaideo.mail_debug = true
+# novaideo.mail_debug replaces the mailer with a disk sink: every message is
+# written under var/mail-out/ instead of reaching an SMTP host.
+novaideo.mail_out_dir = %(here)s/../var/mail-out
 sms.service = novaideo.utilities.dummy_sms.DummySMSService
 # --- LIVE PROFILE (after the backlog review) ------------------------
-# replace 'pyramid_mailer.debug' above with 'pyramid_mailer' and set:
+# set novaideo.mail_debug = false and:
 # mail.host = smtp.example.org
 # mail.port = 587
 # mail.tls = true
@@ -47,3 +56,36 @@ sms.service = novaideo.utilities.dummy_sms.DummySMSService
 use = egg:waitress#main
 listen = 127.0.0.1:6543
 threads = 4
+
+# --- logging: make the reactor visible (re-arming logs at INFO) -----
+[loggers]
+keys = root, dace, novaideo
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = WARN
+handlers = console
+
+[logger_dace]
+level = INFO
+handlers =
+qualname = dace
+
+[logger_novaideo]
+level = INFO
+handlers =
+qualname = novaideo
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s %(levelname)-5.5s [%(name)s] %(message)s
