@@ -89,6 +89,27 @@ Le web (port 6543, plusieurs threads) ne porte pas le réacteur ; le
 système (port 5002, un seul worker) le porte — c'est l'architecture
 d'époque, débarrassée de la couche de chiffrement passe-plat.
 
+## Cohabitation avec l'ancienne pile (jusqu'à la bascule)
+
+Le conteneur legacy tourne en réseau hôte : il tient déjà, sur le
+loopback, le port **5002** (son processus système) et le socket du
+réacteur **12345**. Tant qu'il vit — et il doit vivre jusqu'à la
+victoire, c'est le rollback — la pile moderne prend des ports à
+elle :
+
+    # port waitress du processus système : 5003
+    sed -i 's/^listen = 127.0.0.1:5002/listen = 127.0.0.1:5003/' \
+        etc/production-system.ini
+    # socket du réacteur : 12346 (drop-in, survit aux mises à jour d'unités)
+    mkdir -p /etc/systemd/system/kuneagi-system.service.d
+    printf '[Service]\nEnvironment=DACE_SOCKET_URL=tcp://127.0.0.1:12346\n' \
+        > /etc/systemd/system/kuneagi-system.service.d/cohabitation.conf
+    systemctl daemon-reload
+
+(`DACE_SOCKET_URL` exige dace au niveau du correctif « socket
+surchargeable ».) Pointer le frontal vers 5003. Après la victoire,
+gardez ces ports — ils sont désormais ceux de la maison.
+
 ## Premier démarrage et bascule
 
 Les ini livrés sont en **profil réveil** (`novaideo.mail_debug =

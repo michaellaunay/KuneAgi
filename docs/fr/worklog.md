@@ -602,3 +602,11 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   quand zeo tourne ; la topologie B active les trois unités
   explicitement) et le guide gagne une note de dépannage du verrou
   (``fuser``, ``mask``, ne jamais supprimer le ``.lock``).
+
+- **Section cohabitation au guide de déploiement.** Le conteneur
+  legacy (réseau hôte) tient les ports loopback 5002 et 12345 ; le
+  guide prescrit désormais 5003 pour le processus système moderne et
+  ``DACE_SOCKET_URL=tcp://127.0.0.1:12346`` via un drop-in systemd
+  (exige le correctif « socket surchargeable » de dace), les deux
+  piles vivant côte à côte jusqu'à la bascule — et les nouveaux ports
+  ensuite.

@@ -558,3 +558,10 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   the three units explicitly) and the deployment guide gains a
   lock-troubleshooting note (``fuser``, ``mask``, never delete the
   ``.lock``).
+
+- **Cohabitation section in the deployment guide.** The legacy
+  container (host network) holds loopback ports 5002 and 12345; the
+  guide now prescribes 5003 for the modern system process and
+  ``DACE_SOCKET_URL=tcp://127.0.0.1:12346`` through a systemd drop-in
+  (requires dace's overridable-socket fix), keeping both stacks alive
+  side by side until switchover — and the new ports afterwards.

@@ -85,6 +85,27 @@ The web (port 6543, several threads) does not carry the reactor; the
 system process (port 5002, a single worker) does — the era's
 architecture, stripped of the pass-through encryption layer.
 
+## Cohabiting with the old stack (until switchover)
+
+The legacy container runs on the host network: it already holds,
+on the loopback, port **5002** (its system process) and the
+reactor socket **12345**. As long as it lives — and it must live
+until victory, it is the rollback — the modern stack takes ports
+of its own:
+
+    # waitress port of the system process: 5003
+    sed -i 's/^listen = 127.0.0.1:5002/listen = 127.0.0.1:5003/' \
+        etc/production-system.ini
+    # reactor socket: 12346 (drop-in, survives unit upgrades)
+    mkdir -p /etc/systemd/system/kuneagi-system.service.d
+    printf '[Service]\nEnvironment=DACE_SOCKET_URL=tcp://127.0.0.1:12346\n' \
+        > /etc/systemd/system/kuneagi-system.service.d/cohabitation.conf
+    systemctl daemon-reload
+
+(`DACE_SOCKET_URL` requires dace at the "overridable socket"
+fix level.) Point the frontend at 5003. After victory, keep these
+ports — they are now the house's.
+
 ## First boot and switchover
 
 The shipped inis are in **wake-up profile** (`novaideo.mail_debug =
