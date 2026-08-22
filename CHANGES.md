@@ -1,6 +1,14 @@
 # Changelog
 
 ## Unreleased
+### Clean server deployment - 2026-08-21
+- ``deploy/systemd/`` ships three hardened units (zeo, web, system)
+  and ``docs/{en,fr}/deployment.md`` describes the clean layout that
+  replaces the historical /home/admin-as-root installation: a
+  dedicated no-shell service account, /srv/kuneagi with code, data
+  and configuration separated, two topologies (single system
+  process on file://, or ZEO + web + system as the era ran), the
+  wake-up-to-live switchover, upgrades and repozo backups.
 ### Production wake-up fixes - 2026-08-21
 - The migration night proved the wake-up profile for real and fixed
   what only a real boot could reveal: the mailer sink is installed by

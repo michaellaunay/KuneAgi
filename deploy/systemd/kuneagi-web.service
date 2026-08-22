@@ -1,0 +1,22 @@
+[Unit]
+Description=KuneAgi web workers (dace.wosystem, no reactor)
+After=network.target kuneagi-zeo.service
+Wants=kuneagi-zeo.service
+
+[Service]
+Type=simple
+User=kuneagi
+Group=kuneagi
+WorkingDirectory=/srv/kuneagi
+ExecStart=/srv/kuneagi/app/.venv312/bin/pserve /srv/kuneagi/etc/production.ini
+Restart=on-failure
+RestartSec=5
+UMask=0027
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/kuneagi/var
+
+[Install]
+WantedBy=multi-user.target

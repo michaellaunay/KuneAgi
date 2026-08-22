@@ -539,3 +539,13 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   zero outbound is the correct drain; the 16 unprepared catch events
   are historical leftovers. Web gates green (home and login HTTP 200).
   Fixes recorded in CHANGES; suite recertified 137/137.
+
+- **Clean server deployment.** ``deploy/systemd/`` (three hardened
+  units: zeo, web, system) + bilingual ``docs/{en,fr}/deployment.md``:
+  a dedicated no-shell ``kuneagi`` service account (``zope`` works —
+  adapt ``User=``), ``/srv/kuneagi/{app,var,etc,backups}`` with code,
+  data and secrets separated, root demoted to installing units and
+  reading journals, both topologies documented, the migration
+  delivery's ``var``/``etc`` dropping in as-is, upgrades pinned by
+  sha, repozo backups, legacy Docker image retired (modern image =
+  open phase-5 work).

@@ -1,0 +1,21 @@
+[Unit]
+Description=KuneAgi ZEO storage server
+After=network.target
+
+[Service]
+Type=simple
+User=kuneagi
+Group=kuneagi
+WorkingDirectory=/srv/kuneagi
+ExecStart=/srv/kuneagi/app/.venv312/bin/runzeo -C /srv/kuneagi/etc/zeo-modern.conf
+Restart=on-failure
+RestartSec=5
+UMask=0027
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/kuneagi/var
+
+[Install]
+WantedBy=multi-user.target

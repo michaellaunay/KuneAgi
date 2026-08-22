@@ -583,3 +583,13 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   événements non préparés sont des restes historiques. Portes web
   vertes (accueil et connexion HTTP 200). Correctifs consignés au
   CHANGES ; suite re-certifiée 137/137.
+
+- **Déploiement serveur propre.** ``deploy/systemd/`` (trois unités
+  durcies : zeo, web, système) + ``docs/{fr,en}/deployment.md``
+  bilingue : compte de service ``kuneagi`` sans shell (``zope``
+  possible — adapter ``User=``), ``/srv/kuneagi/{app,var,etc,backups}``
+  avec code, données et secrets séparés, root réduit à installer les
+  unités et lire les journaux, les deux topologies documentées, le
+  ``var``/``etc`` de la livraison de migration se déposant tel quel,
+  mises à jour épinglées par sha, sauvegardes repozo, image Docker
+  legacy retirée (image moderne = chantier phase 5 ouvert).
