@@ -549,3 +549,12 @@ Version française : [`../fr/worklog.md`](../fr/worklog.md).
   delivery's ``var``/``etc`` dropping in as-is, upgrades pinned by
   sha, repozo backups, legacy Docker image retired (modern image =
   open phase-5 work).
+
+- **Units: ZEO is no longer pulled in by dependency.** First real
+  server start uncovered a self-sustaining loop: ``Wants=kuneagi-zeo``
+  in the web/system units resurrected ZEO at every ``Restart=`` cycle,
+  and ZEO's lock made the system unit fail again. ``Wants=`` is
+  removed (``After=`` alone orders when zeo runs; topology B enables
+  the three units explicitly) and the deployment guide gains a
+  lock-troubleshooting note (``fuser``, ``mask``, never delete the
+  ``.lock``).

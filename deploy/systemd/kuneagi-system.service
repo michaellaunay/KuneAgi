@@ -1,7 +1,9 @@
 [Unit]
 Description=KuneAgi system process (reactor: timers, crawler)
 After=network.target kuneagi-zeo.service
-Wants=kuneagi-zeo.service
+# No Wants= here: topology A (single system process on file://)
+# must not pull ZEO in. Topology B enables the three units
+# explicitly; After= alone gives the ordering when zeo runs.
 
 [Service]
 Type=simple

@@ -70,6 +70,15 @@ FileStorage.
 
     systemctl enable --now kuneagi-system
 
+> **Dépannage — verrou tenu au démarrage.** `LockError` sur
+> `Data.fs.lock` en boucle = un autre processus tient la base
+> (`fuser -v var/filestorage/Data.fs` le nomme). Un FileStorage
+> n'admet qu'un processus : en topologie A, ZEO et le web doivent
+> être arrêtés (`systemctl mask kuneagi-zeo` interdit toute
+> résurrection par dépendance ; `unmask` le jour de la topologie
+> B). Ne supprimez jamais le `.lock` : il meurt avec son
+> détenteur.
+
 **B. Fidèle au legacy (ZEO + web + système).** Passer `zodbconn.uri`
 à `zconfig://%(here)s/zodb-modern.conf#main` dans **les deux** ini,
 puis :

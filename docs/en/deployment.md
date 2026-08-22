@@ -67,6 +67,14 @@ serves the web and carries the reactor; `zodbconn.uri` stays on
 
     systemctl enable --now kuneagi-system
 
+> **Troubleshooting — lock held at startup.** A looping
+> `LockError` on `Data.fs.lock` means another process holds the
+> base (`fuser -v var/filestorage/Data.fs` names it). A
+> FileStorage admits one process only: in topology A, ZEO and the
+> web must be stopped (`systemctl mask kuneagi-zeo` forbids any
+> resurrection through dependencies; `unmask` on topology-B day).
+> Never delete the `.lock`: it dies with its holder.
+
 **B. Faithful to the legacy (ZEO + web + system).** Switch
 `zodbconn.uri` to `zconfig://%(here)s/zodb-modern.conf#main` in
 **both** ini files, then:

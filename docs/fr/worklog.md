@@ -593,3 +593,12 @@ English version: [`../en/worklog.md`](../en/worklog.md).
   ``var``/``etc`` de la livraison de migration se déposant tel quel,
   mises à jour épinglées par sha, sauvegardes repozo, image Docker
   legacy retirée (image moderne = chantier phase 5 ouvert).
+
+- **Unités : ZEO n'est plus tiré par dépendance.** Le premier vrai
+  démarrage serveur a révélé une boucle auto-entretenue :
+  ``Wants=kuneagi-zeo`` dans les unités web/système ressuscitait ZEO à
+  chaque cycle de ``Restart=``, et le verrou de ZEO refaisait échouer
+  l'unité système. Le ``Wants=`` est retiré (``After=`` seul ordonne
+  quand zeo tourne ; la topologie B active les trois unités
+  explicitement) et le guide gagne une note de dépannage du verrou
+  (``fuser``, ``mask``, ne jamais supprimer le ``.lock``).
